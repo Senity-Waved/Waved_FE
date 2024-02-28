@@ -1,6 +1,6 @@
 ---
 name: '🚨BUG'
-about: Create a report to help us improve
+about: Bug Report를 입력해주세요.
 title: '[BUG] 작업 내용'
 labels: '🚨 bugFix'
 assignees: ''
