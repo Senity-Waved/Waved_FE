@@ -1,5 +1,5 @@
 import { Theme } from '@emotion/react';
-import color from '@/const/color';
+import color from '@/constants/color';
 
 const theme: Theme = {
   color: {
