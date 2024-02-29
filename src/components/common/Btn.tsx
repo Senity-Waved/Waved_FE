@@ -35,7 +35,7 @@ export default function Btn({ btns }: IBtnWrapper) {
 export const SBtnWrapper = styled.div`
   display: flex;
   width: 100%;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 export const SBtn = styled.button<ISBtn>`
@@ -46,6 +46,6 @@ export const SBtn = styled.button<ISBtn>`
   color: ${({ fontColor }) => fontColor};
   font-size: 16px;
   line-height: ${({ size }) => (size === 'large' ? '48px' : '36px')};
-  font-weight: bold;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   cursor: ${({ isAble }) => isAble || 'not-allowed'};
 `;
