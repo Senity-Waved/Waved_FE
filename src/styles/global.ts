@@ -171,8 +171,7 @@ const global = css`
   }
 
   body {
-    display: flex;
-    justify-content: center;
+    display: block;
     font-family: var(--font-family);
   }
 
@@ -180,6 +179,7 @@ const global = css`
     position: relative;
     width: ${screenSize.max}px;
     height: 100vh;
+    margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     ${media.mobileMax} {
