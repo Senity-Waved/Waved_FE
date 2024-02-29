@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import Header from '@/components/common/Header';
 import TabMenu from '@/components/common/TabMenu';
+import Btn from '@/components/common/Btn';
 import Footer from '@/components/common/Footer';
+import color from '@/constants/color';
 
 export default function Home() {
   return (
@@ -19,6 +21,26 @@ export default function Home() {
             { href: '/', text: '메뉴1' },
             { href: '/menu2', text: '메뉴2' },
             { href: '/menu3', text: '메뉴3' },
+          ]}
+        />
+        <Btn
+          btns={[
+            {
+              type: 'button',
+              text: '버튼1',
+              isAble: true,
+              backgroundColor: `${color.NORMAL}`,
+              fontColor: `${color.WHITE}`,
+              size: 'large',
+            },
+            {
+              type: 'submit',
+              text: '버튼2',
+              isAble: false,
+              backgroundColor: `${color.GRAYDE}`,
+              fontColor: `${color.BLACK}`,
+              size: 'large',
+            },
           ]}
         />
         <Footer />
