@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import TestBtn from '@/components/TestBtn';
+import Header from '@/components/common/Header';
+import Footer from '@/components/common/Footer';
 
 export default function Home() {
   return (
@@ -11,8 +12,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Waved</h1>
-        <TestBtn message="Test Button" />
+        <Header />
+        <Footer />
       </main>
     </>
   );
