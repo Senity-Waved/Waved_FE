@@ -1,13 +1,5 @@
 import styled from '@emotion/styled';
-
-interface IBtn {
-  type: 'button' | 'submit';
-  text: string;
-  isAble: boolean;
-  backgroundColor: string;
-  fontColor: string;
-  size: 'large' | 'small';
-}
+import IBtn from '@/types/IBtn';
 
 interface IBtnWrapper {
   btns: IBtn[];
@@ -40,12 +32,13 @@ export default function Btn({ btns }: IBtnWrapper) {
   );
 }
 
-const SBtnWrapper = styled.div`
+export const SBtnWrapper = styled.div`
   display: flex;
+  width: 100%;
   gap: 8px;
 `;
 
-const SBtn = styled.button<ISBtn>`
+export const SBtn = styled.button<ISBtn>`
   width: 100%;
   height: ${({ size }) => (size === 'large' ? '48px' : '36px')};
   background-color: ${({ backgroundColor }) => backgroundColor};

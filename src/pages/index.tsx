@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Header from '@/components/common/Header';
 import TabMenu from '@/components/common/TabMenu';
 import Btn from '@/components/common/Btn';
+import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Footer from '@/components/common/Footer';
 import color from '@/constants/color';
 
@@ -39,6 +40,18 @@ export default function Home() {
               isAble: false,
               backgroundColor: `${color.GRAYDE}`,
               fontColor: `${color.BLACK}`,
+              size: 'large',
+            },
+          ]}
+        />
+        <BottomFixedBtn
+          btns={[
+            {
+              type: 'button',
+              text: '화면 하단 고정 버튼',
+              isAble: true,
+              backgroundColor: `${color.NORMAL}`,
+              fontColor: `${color.WHITE}`,
               size: 'large',
             },
           ]}
