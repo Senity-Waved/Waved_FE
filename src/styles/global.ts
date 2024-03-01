@@ -1,4 +1,6 @@
 import { css } from '@emotion/react';
+import screenSize from '@/constants/screenSize';
+import media from '@/styles/media';
 
 const global = css`
   /*
@@ -16,8 +18,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Black'),
-      url(./woff2/Pretendard-Black.woff2) format('woff2'),
-      url(./woff/Pretendard-Black.woff) format('woff');
+      url('/fonts/Pretendard-Black.woff2') format('woff2');
   }
 
   @font-face {
@@ -26,8 +27,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard ExtraBold'),
-      url(./woff2/Pretendard-ExtraBold.woff2) format('woff2'),
-      url(./woff/Pretendard-ExtraBold.woff) format('woff');
+      url('/fonts/Pretendard-ExtraBold.woff2') format('woff2');
   }
 
   @font-face {
@@ -36,8 +36,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Bold'),
-      url(./woff2/Pretendard-Bold.woff2) format('woff2'),
-      url(./woff/Pretendard-Bold.woff) format('woff');
+      url('/fonts/Pretendard-Bold.woff2') format('woff2');
   }
 
   @font-face {
@@ -46,8 +45,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard SemiBold'),
-      url(./woff2/Pretendard-SemiBold.woff2) format('woff2'),
-      url(./woff/Pretendard-SemiBold.woff) format('woff');
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
   }
 
   @font-face {
@@ -56,8 +54,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Medium'),
-      url(./woff2/Pretendard-Medium.woff2) format('woff2'),
-      url(./woff/Pretendard-Medium.woff) format('woff');
+      url('/fonts/Pretendard-Medium.woff2') format('woff2');
   }
 
   @font-face {
@@ -65,8 +62,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Regular'),
-      url(./woff2/Pretendard-Regular.woff2) format('woff2'),
-      url(./woff/Pretendard-Regular.woff) format('woff');
+      url('/fonts/Pretendard-Regular.woff2') format('woff2');
   }
 
   @font-face {
@@ -75,8 +71,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Light'),
-      url(./woff2/Pretendard-Light.woff2) format('woff2'),
-      url(./woff/Pretendard-Light.woff) format('woff');
+      url('/fonts/Pretendard-Light.woff2') format('woff2');
   }
 
   @font-face {
@@ -85,8 +80,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard ExtraLight'),
-      url(./woff2/Pretendard-ExtraLight.woff2) format('woff2'),
-      url(./woff/Pretendard-ExtraLight.woff) format('woff');
+      url('/fonts/Pretendard-ExtraLight.woff2') format('woff2');
   }
 
   @font-face {
@@ -95,8 +89,7 @@ const global = css`
     font-display: swap;
     src:
       local('Pretendard Thin'),
-      url(./woff2/Pretendard-Thin.woff2) format('woff2'),
-      url(./woff/Pretendard-Thin.woff) format('woff');
+      url('/fonts/Pretendard-Thin.woff2') format('woff2');
   }
 
   :root {
@@ -165,22 +158,27 @@ const global = css`
 
   html {
     background-color: #f1f1f1;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   body {
-    display: flex;
-    justify-content: center;
+    display: block;
     font-family: var(--font-family);
   }
 
   main {
     position: relative;
-    min-width: 375px;
-    max-width: 430px;
+    width: ${screenSize.max}px;
     height: 100vh;
+    margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    ${media.mobileMax} {
+      & {
+        width: 100vw;
+        min-width: ${screenSize.min}px;
+      }
+    }
   }
 
   a {
