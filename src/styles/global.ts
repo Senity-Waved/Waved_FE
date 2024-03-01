@@ -164,10 +164,13 @@ const global = css`
   body {
     display: block;
     font-family: var(--font-family);
+    position: relative;
   }
 
-  main {
-    position: relative;
+  #__next {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: ${screenSize.max}px;
     height: 100vh;
     margin: 0 auto;
@@ -179,6 +182,12 @@ const global = css`
         min-width: ${screenSize.min}px;
       }
     }
+  }
+
+  main {
+    flex: 1;
+    position: relative;
+    height: 100%;
   }
 
   a {

@@ -23,6 +23,7 @@ export default function Modal({ onClose }: IModal) {
   );
 }
 const SModalWrapper = styled.div`
+  z-index: 20;
   position: fixed;
   top: 0;
   left: 0;

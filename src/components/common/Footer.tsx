@@ -40,10 +40,10 @@ export default function Footer() {
 }
 
 const SFooterWrapper = styled.nav`
+  z-index: 10;
+  flex-shrink: 0;
   width: 100%;
   height: 56px;
-  position: absolute;
-  bottom: 0;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;

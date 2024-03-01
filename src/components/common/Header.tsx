@@ -34,6 +34,8 @@ export default function Header({ headerText, rightText }: IHeader) {
 }
 
 const SHeaderWrapper = styled.header`
+  z-index: 10;
+  flex-shrink: 0;
   position: relative;
   width: 100%;
   height: 56px;
@@ -58,6 +60,7 @@ const SHeaderCenter = styled.div`
   font-size: 1.25rem;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
+
 const SHeaderRightChild = styled.div`
   position: absolute;
   right: 0;
