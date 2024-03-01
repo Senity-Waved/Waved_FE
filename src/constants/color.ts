@@ -2,6 +2,7 @@ const color = {
   NORMAL: '#2470FF',
   LIGHT: '#E9F1FF',
   MIDDLE: '#508DFF',
+  DARK: '#1A50B5',
   POSITIVE: '##1FAD3B',
   ERROR: '#F50B5B',
   BLACK: '#000000',
