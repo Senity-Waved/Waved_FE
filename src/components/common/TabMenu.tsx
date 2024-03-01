@@ -44,7 +44,7 @@ const STab = styled.li<{ isActive: boolean }>`
     width: 100%;
     color: ${({ isActive, theme }) =>
       isActive ? theme.color.gray_3c : theme.color.gray_83};
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 48px;
     text-align: center;
   }

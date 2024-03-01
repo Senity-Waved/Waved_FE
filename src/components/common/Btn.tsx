@@ -44,7 +44,7 @@ export const SBtn = styled.button<ISBtn>`
   background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
   color: ${({ fontColor }) => fontColor};
-  font-size: 16px;
+  font-size: 1rem;
   line-height: ${({ size }) => (size === 'large' ? '48px' : '36px')};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   cursor: ${({ isAble }) => isAble || 'not-allowed'};
