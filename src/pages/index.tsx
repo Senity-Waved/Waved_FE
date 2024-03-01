@@ -15,7 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Header />
+        <Header headerText="Title" rightText="인증패스" />
         <TabMenu
           tabs={[
             { href: '/', text: '메뉴1' },

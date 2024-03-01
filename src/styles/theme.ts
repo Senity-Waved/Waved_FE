@@ -8,6 +8,7 @@ const theme: Theme = {
     normal: color.NORMAL,
     light: color.LIGHT,
     middle: color.MIDDLE,
+    dark: color.DARK,
     positive: color.POSITIVE,
     error: color.ERROR,
     black: color.BLACK,
