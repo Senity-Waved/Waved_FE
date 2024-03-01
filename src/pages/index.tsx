@@ -12,7 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Header headerText="탭 바" />
+        <Header headerText="Title" rightText="인증패스" />
         <Footer />
       </main>
     </>
