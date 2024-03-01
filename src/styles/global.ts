@@ -176,6 +176,12 @@ const global = css`
     margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    /* iOS only */
+    @supports (-webkit-touch-callout: none) {
+      & {
+        height: -webkit-fill-available;
+      }
+    }
     ${media.mobileMax} {
       & {
         width: 100vw;
