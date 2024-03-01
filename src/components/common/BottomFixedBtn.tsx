@@ -3,11 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { SBtn, SBtnWrapper } from '@/components/common/Btn';
 
 interface IBtn {
-  type: 'button' | 'submit';
+  type?: 'button' | 'submit';
   text: string;
-  isAble: boolean;
-  backgroundColor: string;
-  fontColor: string;
+  isDisabled?: boolean;
+  styleType: 'primary' | 'gray' | 'white';
   size: 'large' | 'small';
 }
 
@@ -21,10 +20,9 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
       {btns.map((btn) => (
         <SBtn
           key={uuidv4()}
-          type={btn.type}
-          isAble={btn.isAble}
-          backgroundColor={btn.backgroundColor}
-          fontColor={btn.fontColor}
+          type={btn.type || 'button'}
+          disabled={btn.isDisabled === true ? true : undefined}
+          styleType={btn.styleType}
           size={btn.size}
         >
           {btn.text}

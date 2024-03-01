@@ -4,7 +4,6 @@ import TabMenu from '@/components/common/TabMenu';
 import Btn from '@/components/common/Btn';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Footer from '@/components/common/Footer';
-import color from '@/constants/color';
 
 export default function Home() {
   return (
@@ -27,31 +26,29 @@ export default function Home() {
         <Btn
           btns={[
             {
-              type: 'button',
               text: '버튼1',
-              isAble: true,
-              backgroundColor: `${color.NORMAL}`,
-              fontColor: `${color.WHITE}`,
+              styleType: 'primary',
               size: 'large',
             },
             {
               type: 'submit',
               text: '버튼2',
-              isAble: false,
-              backgroundColor: `${color.GRAYDE}`,
-              fontColor: `${color.BLACK}`,
+              isDisabled: true,
+              styleType: 'gray',
               size: 'large',
+            },
+            {
+              text: '버튼3',
+              styleType: 'primary',
+              size: 'small',
             },
           ]}
         />
         <BottomFixedBtn
           btns={[
             {
-              type: 'button',
               text: '화면 하단 고정 버튼',
-              isAble: true,
-              backgroundColor: `${color.NORMAL}`,
-              fontColor: `${color.WHITE}`,
+              styleType: 'primary',
               size: 'large',
             },
           ]}

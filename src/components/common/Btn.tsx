@@ -2,11 +2,10 @@ import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IBtn {
-  type: 'button' | 'submit';
+  type?: 'button' | 'submit';
   text: string;
-  isAble: boolean;
-  backgroundColor: string;
-  fontColor: string;
+  isDisabled?: boolean;
+  styleType: 'primary' | 'gray' | 'white';
   size: 'large' | 'small';
 }
 
@@ -15,9 +14,7 @@ interface IBtnWrapper {
 }
 
 interface ISBtn {
-  isAble: boolean;
-  backgroundColor: string;
-  fontColor: string;
+  styleType: 'primary' | 'gray' | 'white';
   size: 'large' | 'small';
 }
 
@@ -27,10 +24,9 @@ export default function Btn({ btns }: IBtnWrapper) {
       {btns.map((btn) => (
         <SBtn
           key={uuidv4()}
-          type={btn.type}
-          isAble={btn.isAble}
-          backgroundColor={btn.backgroundColor}
-          fontColor={btn.fontColor}
+          type={btn.type || 'button'}
+          disabled={btn.isDisabled || undefined}
+          styleType={btn.styleType}
           size={btn.size}
         >
           {btn.text}
@@ -49,11 +45,28 @@ export const SBtnWrapper = styled.div`
 export const SBtn = styled.button<ISBtn>`
   width: 100%;
   height: ${({ size }) => (size === 'large' ? '48px' : '36px')};
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
-  color: ${({ fontColor }) => fontColor};
-  font-size: 1rem;
   line-height: ${({ size }) => (size === 'large' ? '48px' : '36px')};
+  background-color: ${({ styleType, theme }) =>
+    ({
+      primary: theme.color.normal,
+      gray: theme.color.gray_ec,
+      white: theme.color.white,
+    })[styleType]};
+  color: ${({ styleType, theme }) =>
+    ({
+      primary: theme.color.white,
+      gray: theme.color.gary_83,
+      white: theme.color.gray_ec,
+    })[styleType]};
+  border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  cursor: ${({ isAble }) => isAble || 'not-allowed'};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  transition: 0.2s ease-in;
+
+  &:hover,
+  &:focus {
+    background-color: ${({ styleType, theme }) =>
+      styleType === 'primary' ? theme.color.dark : undefined};
+  }
 `;
