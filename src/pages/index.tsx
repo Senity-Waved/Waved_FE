@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import HeadMeta from '@/components/HeadMeta';
 import Header from '@/components/common/Header';
 import TabMenu from '@/components/common/TabMenu';
 import Btn from '@/components/common/Btn';
@@ -9,12 +9,7 @@ import ModalTest from '@/components/modal/ModalTest';
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Waved</title>
-        <meta name="description" content="Waved 챌린지 서비스" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <HeadMeta title="HOME" />
       <main>
         <Header headerText="Title" rightText="인증패스" />
         <ModalTest />
