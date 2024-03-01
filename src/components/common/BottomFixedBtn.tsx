@@ -1,6 +1,14 @@
 import styled from '@emotion/styled';
 import { SBtn, SBtnWrapper } from '@/components/common/Btn';
-import IBtn from '@/types/IBtn';
+
+interface IBtn {
+  type: 'button' | 'submit';
+  text: string;
+  isAble: boolean;
+  backgroundColor: string;
+  fontColor: string;
+  size: 'large' | 'small';
+}
 
 interface IBottomFixedBtn {
   btns: IBtn[];
