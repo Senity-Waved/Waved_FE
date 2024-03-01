@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
+import ModalTest from '@/components/modal/ModalTest';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <main>
         <Header headerText="Title" rightText="인증패스" />
+        <ModalTest />
         <Footer />
       </main>
     </>
