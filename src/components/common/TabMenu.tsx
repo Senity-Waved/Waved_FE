@@ -24,9 +24,8 @@ function Tab({ href, text }: ITab) {
 export default function TabMenu({ tabs }: ITabMenu) {
   return (
     <STabMenu>
-      {tabs.map((tab, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <Tab key={index} {...tab} />
+      {tabs.map((tab) => (
+        <Tab key={tab.text} {...tab} />
       ))}
     </STabMenu>
   );

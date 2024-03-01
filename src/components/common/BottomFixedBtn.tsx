@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { v4 as uuidv4 } from 'uuid';
 import { SBtn, SBtnWrapper } from '@/components/common/Btn';
 
 interface IBtn {
@@ -17,10 +18,9 @@ interface IBottomFixedBtn {
 export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
   return (
     <SBottomFixedBtn>
-      {btns.map((btn, index) => (
+      {btns.map((btn) => (
         <SBtn
-          // eslint-disable-next-line react/no-array-index-key
-          key={index}
+          key={uuidv4()}
           type={btn.type}
           isAble={btn.isAble}
           backgroundColor={btn.backgroundColor}
