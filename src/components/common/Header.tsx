@@ -38,7 +38,7 @@ const SHeaderWrapper = styled.header`
   height: 56px;
   line-height: 56px;
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

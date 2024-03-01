@@ -49,7 +49,7 @@ const SFooterWrapper = styled.nav`
   justify-content: space-between;
   gap: 56px;
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
   border-top: 1px solid #dee1e5;
   padding: 10px 20px 0 20px;
 `;
