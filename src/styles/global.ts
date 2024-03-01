@@ -158,7 +158,7 @@ const global = css`
 
   html {
     background-color: #f1f1f1;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   body {
