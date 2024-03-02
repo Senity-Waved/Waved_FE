@@ -6,7 +6,7 @@ interface IBtn {
   type?: 'button' | 'submit';
   text: string;
   isDisabled?: boolean;
-  styleType: 'primary' | 'gray' | 'white';
+  styleType: 'primary' | 'gray' | 'white' | 'white_line';
   size: 'large' | 'small';
 }
 
