@@ -13,7 +13,7 @@ interface ITabMenu {
 
 function Tab({ href, text }: ITab) {
   const router = useRouter();
-  const isActive = router.pathname === href;
+  const isActive = router.asPath === href;
   return (
     <STab isActive={isActive}>
       <Link href={href}>{text}</Link>

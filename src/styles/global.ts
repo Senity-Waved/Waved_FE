@@ -1,6 +1,4 @@
 import { css } from '@emotion/react';
-import screenSize from '@/constants/screenSize';
-import media from '@/styles/media';
 
 const global = css`
   /*
@@ -164,21 +162,13 @@ const global = css`
   body {
     display: block;
     font-family: var(--font-family);
+    position: relative;
   }
 
   main {
+    flex: 1;
     position: relative;
-    width: ${screenSize.max}px;
-    height: 100vh;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    ${media.mobileMax} {
-      & {
-        width: 100vw;
-        min-width: ${screenSize.min}px;
-      }
-    }
+    height: 100%;
   }
 
   a {
