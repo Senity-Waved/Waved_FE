@@ -4,6 +4,7 @@ import TabMenu from '@/components/common/TabMenu';
 import Btn from '@/components/common/Btn';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Footer from '@/components/common/Footer';
+import ModalTest from '@/components/modal/ModalTest';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       </Head>
       <main>
         <Header headerText="Title" rightText="인증패스" />
+        <ModalTest />
         <TabMenu
           tabs={[
             { href: '/', text: '메뉴1' },
