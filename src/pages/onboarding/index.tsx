@@ -28,7 +28,7 @@ export default function OnBoarding() {
         </SGoogleLogo>
         <BottomFixedBtn
           btns={[
-            { text: '구글로 계속하기', styleType: 'white', size: 'large' },
+            { text: '구글로 계속하기', styleType: 'white_line', size: 'large' },
           ]}
         />
       </SLoginBtnWrapper>
