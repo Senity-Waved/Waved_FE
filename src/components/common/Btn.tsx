@@ -58,7 +58,7 @@ export const SBtn = styled.button<ISBtn>`
       gray: theme.color.gary_83,
       white: theme.color.gray_3c,
     })[styleType]};
-  border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
+  border-radius: 8px;
   border: ${({ styleType, theme }) =>
     styleType === 'white' ? `1px solid ${theme.color.gray_de}` : 'none'};
   font-size: 1rem;
