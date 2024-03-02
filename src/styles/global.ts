@@ -1,6 +1,4 @@
 import { css } from '@emotion/react';
-import screenSize from '@/constants/screenSize';
-import media from '@/styles/media';
 
 const global = css`
   /*
@@ -165,29 +163,6 @@ const global = css`
     display: block;
     font-family: var(--font-family);
     position: relative;
-  }
-
-  #__next {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: ${screenSize.max}px;
-    height: 100vh;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    /* iOS only */
-    @supports (-webkit-touch-callout: none) {
-      & {
-        height: -webkit-fill-available;
-      }
-    }
-    ${media.mobileMax} {
-      & {
-        width: 100vw;
-        min-width: ${screenSize.min}px;
-      }
-    }
   }
 
   main {
