@@ -56,7 +56,7 @@ export const SBtn = styled.button<ISBtn>`
     ({
       primary: theme.color.white,
       gray: theme.color.gary_83,
-      white: theme.color.gray_ec,
+      white: theme.color.gray_3c,
     })[styleType]};
   border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
   font-size: 1rem;
@@ -67,6 +67,10 @@ export const SBtn = styled.button<ISBtn>`
   &:hover,
   &:focus {
     background-color: ${({ styleType, theme }) =>
-      styleType === 'primary' ? theme.color.dark : undefined};
+      ({
+        primary: theme.color.dark,
+        gray: theme.color.gary_bf,
+        white: theme.color.gray_ec,
+      })[styleType]};
   }
 `;

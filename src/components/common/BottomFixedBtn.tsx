@@ -21,7 +21,7 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
         <SBtn
           key={uuidv4()}
           type={btn.type || 'button'}
-          disabled={btn.isDisabled === true ? true : undefined}
+          disabled={btn.isDisabled || undefined}
           styleType={btn.styleType}
           size={btn.size}
         >
@@ -38,5 +38,5 @@ const SBottomFixedBtn = styled(SBtnWrapper)`
   bottom: 0;
   width: 100%;
   margin: 14px 0 20px;
-  padding: 0 20px;
+  padding: ${({ theme }) => `0 ${theme.spacing.md}`};
 `;
