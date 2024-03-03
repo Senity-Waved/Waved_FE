@@ -93,6 +93,10 @@ const SRegisterCheckWrapper = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
 
+  & input[type='checkbox'] {
+    zoom: 1.5;
+  }
+
   & label {
     margin-left: 12px;
   }
@@ -101,7 +105,18 @@ const SRegisterCheckWrapper = styled.div`
 const SAllCheckInputWrapper = styled.div`
   font-size: 1rem;
   height: 22px;
-  margin-bottom: 28px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    width: 95%;
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_de};
+  }
 `;
 
 const SRegisterCheckInputWrapper = styled.div`
