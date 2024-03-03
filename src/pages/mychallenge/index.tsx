@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
+import { IChallengeItem } from '@/components/mychallenge/ChallengeItem';
+import EmptyView from '@/components/mychallenge/EmptyView';
 
 export default function MyChallenge() {
   return (
@@ -17,6 +19,8 @@ export default function MyChallenge() {
           { href: '/mychallenge#example3', text: '진행완료' },
         ]}
       />
+      <EmptyView />
+      {/* data.length == 0 일때 EmptyView + 챌린지탐색 */}
       <SWrapper>
         <ChallengeSection
           status="진행중"
@@ -40,4 +44,6 @@ export default function MyChallenge() {
 
 const SWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.gray_f9};
+  padding-bottom: ${({ theme }) => theme.spacing.xxs};
+  height: fit-content;
 `;
