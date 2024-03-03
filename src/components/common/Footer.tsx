@@ -15,7 +15,7 @@ export default function Footer() {
         />
         <p>홈</p>
       </SFooterIconBox>
-      <SFooterIconBox href="#">
+      <SFooterIconBox href="/mychallenge">
         <Image
           src="/icons/icon-mychallenge-normal.svg"
           alt="마이 챌린지 아이콘"
