@@ -46,12 +46,29 @@ export default function register() {
           </SRegisterCheckInputWrapper>
         </form>
       </SRegisterCheckWrapper>
-      <SSeriveTermImage
-        src="/images/image-service-terms.svg"
-        alt="개인정보 수집 목적, 항목, 보유기간 안내"
-        width={335}
-        height={140}
-      />
+      <SServiceTermTableWrapper>
+        <table>
+          <caption>개인정보 수집</caption>
+          <tbody>
+            <tr>
+              <th>목적</th>
+              <td>회원가입 및 관리, 재화 또는 서비스 이용 제공</td>
+            </tr>
+            <tr>
+              <th>항목</th>
+              <td>이메일, 출생연도, 성별</td>
+            </tr>
+            <tr>
+              <th>보유기간</th>
+              <td>회원 탈퇴 시 즉시 파기</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          *개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있으며, 동의 거부
+          시 회원가입이 제한됩니다.
+        </p>
+      </SServiceTermTableWrapper>
       <SRegisterNextBtnWrapper>
         <BottomFixedBtn
           btns={[{ text: '다음', styleType: 'gray', size: 'large' }]}
@@ -143,8 +160,28 @@ const SRegisterCheckInputWrapper = styled.div`
 const SServiceTermLink = styled.div`
   height: 20px;
 `;
-const SSeriveTermImage = styled(Image)`
-  margin-left: 20px;
+
+const SServiceTermTableWrapper = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.color.gray_f9};
+  height: 140px;
+  padding: 12px 16px;
+  color: ${({ theme }) => theme.color.gray_83};
+  font-size: 0.75rem;
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  text-align: left;
+  margin: 0 20px;
+
+  & table tr {
+    margin-bottom: 4px;
+  }
+
+  & table caption {
+    text-align: left;
+    margin-bottom: 4px;
+  }
 `;
 
 const SRegisterNextBtnWrapper = styled.div`
