@@ -6,7 +6,7 @@ import screenSize from '@/constants/screenSize';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Header from '@/components/common/Header';
 
-export default function register() {
+export default function Register() {
   return (
     <SRegisterWrapper>
       <Header headerText="회원가입" />
@@ -111,7 +111,7 @@ const SRegisterCheckWrapper = styled.div`
   }
 
   & input[type='checkbox'] {
-    zoom: 1.5;
+    transform: scale(1.5);
   }
 
   & label {
@@ -166,7 +166,7 @@ const SServiceTermTableWrapper = styled.div`
   flex-flow: column nowrap;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.gray_f9};
-  height: 140px;
+  height: auto;
   padding: 12px 16px;
   color: ${({ theme }) => theme.color.gray_83};
   font-size: 0.75rem;
@@ -174,7 +174,8 @@ const SServiceTermTableWrapper = styled.div`
   text-align: left;
   margin: 0 20px;
 
-  & table tr {
+  & table td,
+  & table th {
     margin-bottom: 4px;
   }
 
