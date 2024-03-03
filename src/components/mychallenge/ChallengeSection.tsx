@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import ChallengeCard, { IChallengeCard } from './ChallengeCard';
+import ChallengeItem, { IChallengeItem } from './ChallengeItem';
 
 interface IChallengeSection {
   status: '진행중' | '대기중' | '진행완료';
   statusImogi: '🧑🏻‍💻' | '👀' | '🥳';
   subText: string;
-  // challenges: IChallengeCard[];
+  // challenges: IChallengeItem [];
 }
 
 export default function ChallengeSection({
@@ -23,15 +23,22 @@ export default function ChallengeSection({
         <SSubText>{subText}</SSubText>
       </div>
       {/* challenges.map */}
-      <ChallengeCard />
+      <SChallengeList>
+        <li>
+          <ChallengeItem />
+        </li>
+        <li>
+          <ChallengeItem />
+        </li>
+        <li>
+          <ChallengeItem />
+        </li>
+      </SChallengeList>
     </SWrapper>
   );
 }
 
 const SWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.base};
   padding: ${({ theme }) => theme.spacing.base + ' ' + theme.spacing.md};
   margin-bottom: ${({ theme }) => theme.spacing.base};
 `;
@@ -49,4 +56,11 @@ const SSubText = styled.p`
   line-height: 1.25rem;
   font-weight: ${({ theme }) => theme.fontWeight.meduim};
   color: ${({ theme }) => theme.color.gray_99};
+`;
+
+const SChallengeList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.base};
+  margin-top: ${({ theme }) => theme.spacing.base};
 `;

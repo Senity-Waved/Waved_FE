@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
-export interface IChallengeCard {}
+export interface IChallengeItem {}
 
-export default function ChallengeCard({}: IChallengeCard) {
+export default function ChallengeItem({}: IChallengeItem) {
   return <SWrapper></SWrapper>;
 }
 
