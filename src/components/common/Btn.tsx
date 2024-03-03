@@ -5,7 +5,7 @@ interface IBtn {
   type?: 'button' | 'submit';
   text: string;
   isDisabled?: boolean;
-  styleType: 'primary' | 'gray' | 'white';
+  styleType: 'primary' | 'gray' | 'white' | 'white_line';
   size: 'large' | 'small';
 }
 
@@ -14,7 +14,7 @@ interface IBtnWrapper {
 }
 
 interface ISBtn {
-  styleType: 'primary' | 'gray' | 'white';
+  styleType: 'primary' | 'gray' | 'white' | 'white_line';
   size: 'large' | 'small';
 }
 
@@ -51,14 +51,18 @@ export const SBtn = styled.button<ISBtn>`
       primary: theme.color.normal,
       gray: theme.color.gray_ec,
       white: theme.color.white,
+      white_line: theme.color.white,
     })[styleType]};
   color: ${({ styleType, theme }) =>
     ({
       primary: theme.color.white,
       gray: theme.color.gary_83,
       white: theme.color.gray_3c,
+      white_line: theme.color.gray_3c,
     })[styleType]};
-  border-radius: ${({ size }) => (size === 'large' ? '4px' : '8px')};
+  border-radius: 8px;
+  border: ${({ styleType, theme }) =>
+    styleType === 'white_line' ? `1px solid ${theme.color.gray_de}` : 'none'};
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -71,6 +75,7 @@ export const SBtn = styled.button<ISBtn>`
         primary: theme.color.dark,
         gray: theme.color.gary_bf,
         white: theme.color.gray_ec,
+        white_line: theme.color.gray_ec,
       })[styleType]};
   }
 `;
