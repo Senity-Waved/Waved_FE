@@ -56,7 +56,7 @@ export const SBtn = styled.button<ISBtn>`
   color: ${({ styleType, theme }) =>
     ({
       primary: theme.color.white,
-      gray: theme.color.gary_83,
+      gray: theme.color.gray_83,
       white: theme.color.gray_3c,
       white_line: theme.color.gray_3c,
     })[styleType]};
@@ -73,7 +73,7 @@ export const SBtn = styled.button<ISBtn>`
     background-color: ${({ styleType, theme }) =>
       ({
         primary: theme.color.dark,
-        gray: theme.color.gary_bf,
+        gray: theme.color.gray_bf,
         white: theme.color.gray_ec,
         white_line: theme.color.gray_ec,
       })[styleType]};
