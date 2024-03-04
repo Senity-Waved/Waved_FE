@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import media from '@/styles/media';
 import screenSize from '@/constants/screenSize';
-import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Header from '@/components/common/Header';
+import Btn from '@/components/common/Btn';
 
 export default function Register() {
   return (
@@ -12,7 +12,10 @@ export default function Register() {
       <Header headerText="회원가입" />
       <h2 className="a11yHidden">회원가입</h2>
       <SRegisterCheckWrapper>
-        <h3>서비스 이용 약관에 동의해주세요.</h3>
+        <h3>
+          서비스 이용 약관에
+          <br /> 동의해주세요.
+        </h3>
         <form action="" method="post" name="registerForm">
           <SAllCheckInputWrapper>
             <input type="checkbox" name="allCheck" id="allCheck" />
@@ -52,7 +55,7 @@ export default function Register() {
           <tbody>
             <tr>
               <th>목적</th>
-              <td>회원가입 및 관리, 재화 또는 서비스 이용 제공</td>
+              <td>회원가입 및 관리, 재화 또는 서비스 이용 및 제공</td>
             </tr>
             <tr>
               <th>항목</th>
@@ -70,9 +73,7 @@ export default function Register() {
         </p>
       </SServiceTermTableWrapper>
       <SRegisterNextBtnWrapper>
-        <BottomFixedBtn
-          btns={[{ text: '다음', styleType: 'gray', size: 'large' }]}
-        />
+        <Btn btns={[{ text: '다음', styleType: 'gray', size: 'large' }]} />
       </SRegisterNextBtnWrapper>
     </SRegisterWrapper>
   );
@@ -95,10 +96,12 @@ const SRegisterWrapper = styled.div`
 `;
 
 const SRegisterCheckWrapper = styled.div`
-  margin-top: 32px;
-  margin-left: 20px;
+  margin-top: 2rem;
+  margin-left: 1.25rem;
 
   & h3 {
+    height: 53px;
+    line-height: 1.4;
     font-size: 1.25rem;
     font-weight: ${({ theme }) => theme.fontWeight.semibold};
     color: ${({ theme }) => theme.color.gray_3c};
@@ -111,11 +114,21 @@ const SRegisterCheckWrapper = styled.div`
   }
 
   & input[type='checkbox'] {
-    transform: scale(1.5);
+    display: none;
   }
 
-  & label {
-    margin-left: 12px;
+  & input[type='checkbox'] + label {
+    height: 24px;
+    cursor: pointer;
+    padding-left: 36px;
+    background-repeat: no-repeat;
+    background-image: url('/icons/icon-checkbox-not-checked.svg');
+    line-height: 24px;
+  }
+
+  & input[type='checkbox']:checked + label {
+    background-image: url('/icons/icon-checkbox-checked.svg');
+    height: 24px;
   }
 `;
 
@@ -140,7 +153,6 @@ const SRegisterCheckInputWrapper = styled.div`
   font-size: 0.875rem;
   height: 20px;
   margin-bottom: 20px;
-  line-height: 10px;
   display: flex;
   align-items: center;
 
@@ -176,6 +188,8 @@ const SServiceTermTableWrapper = styled.div`
 
   & table td,
   & table th {
+    height: 17px;
+    line-height: 1.4;
     margin-bottom: 4px;
   }
 
@@ -183,13 +197,17 @@ const SServiceTermTableWrapper = styled.div`
     text-align: left;
     margin-bottom: 4px;
   }
+
+  & p {
+    font-size: 0.625rem;
+    font-weight: ${({ theme }) => theme.fontWeight.regular};
+    line-height: 1.4;
+    margin-top: 8px;
+  }
 `;
 
 const SRegisterNextBtnWrapper = styled.div`
-  position: relative;
-  top: 10%;
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  color: ${({ theme }) => theme.color.gray_83};
-  margin-top: 16px;
+  margin: 1rem 1.25rem 0.625rem 1.25rem;
 `;
