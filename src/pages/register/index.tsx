@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-
 import media from '@/styles/media';
 import screenSize from '@/constants/screenSize';
 import Header from '@/components/common/Header';
@@ -15,7 +14,9 @@ export default function Register() {
         서비스 이용 약관에
         <br /> 동의해주세요.
       </h3>
-      <ServiceTermCheck />
+      <form action="" method="post" name="registerForm">
+        <ServiceTermCheck />
+      </form>
       <SRegisterNextBtnWrapper>
         <Btn btns={[{ text: '다음', styleType: 'gray', size: 'large' }]} />
       </SRegisterNextBtnWrapper>
@@ -43,15 +44,13 @@ const SRegisterWrapper = styled.div`
     margin-left: 1.25rem;
     height: 53px;
     line-height: 1.4;
-    font-size: 1.25rem;
-    font-weight: ${({ theme }) => theme.fontWeight.semibold};
+    font-size: ${({ theme }) => theme.fontSize.headline2};
+    font-weight: ${({ theme }) => theme.fontWeight.headline2};
     color: ${({ theme }) => theme.color.gray_3c};
-    margin-bottom: 17px;
+    margin-bottom: 1.0625rem;
   }
 `;
 
 const SRegisterNextBtnWrapper = styled.div`
-  font-size: 1rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   margin: 1rem 1.25rem 0.625rem 1.25rem;
 `;

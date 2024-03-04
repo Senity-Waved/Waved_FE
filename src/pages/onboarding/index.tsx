@@ -74,19 +74,22 @@ const SOnBoardingWrapper = styled.div`
   ${media.mobileMax} {
     width: 100vw;
   }
+
+  & form {
+    color: ${({ theme }) => theme.color.gray_3c};
+    font-weight: ${({ theme }) => theme.fontWeight.body2};
+  }
 `;
 
 const SPreviewImage = styled.div`
   width: 335px;
-  margin: 60px auto 0 auto;
+  margin: 3.75rem auto 0 auto;
 `;
 
 const SLoginBtnWrapper = styled.div`
   height: 48px;
   position: relative;
-  font-size: 1rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  margin: 24px 20px 36px 20px;
+  margin: 1.5rem 1.25rem 2.25rem 1.25rem;
 `;
 
 const SGoogleLogo = styled.div`
@@ -99,11 +102,12 @@ const SGoogleLogo = styled.div`
 
 const SNonMemberLink = styled.p`
   width: 89px;
-  height: 22px;
+  height: 18px;
+  line-height: 1.4;
   font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.fontWeight.regular};
-  color: ${({ theme }) => theme.color.gray_83};
+  color: ${({ theme }) => theme.color.gray_99};
   margin: 0 auto;
-  text-decoration: underline;
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray_99};
   margin-bottom: 15px;
 `;
