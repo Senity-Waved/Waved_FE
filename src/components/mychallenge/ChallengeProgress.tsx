@@ -29,7 +29,7 @@ export default function ChallengeProgress() {
 const SWrapper = styled.div``;
 
 const SProgressWrapper = styled.div`
-  padding-bottom: 16px;
+  padding-bottom: 1rem;
 `;
 
 const SProgressBar = styled.div`
@@ -40,7 +40,7 @@ const SProgressBar = styled.div`
 `;
 
 const SDealt = styled.div<{ dealt: number }>`
-  width: ${(props) => props.dealt + '%'};
+  width: ${({ dealt }) => dealt + '%'};
   height: 100%;
   border-radius: 8px;
   background-color: ${({ dealt, theme }) =>
@@ -54,7 +54,6 @@ const SDealt = styled.div<{ dealt: number }>`
 const SCountList = styled.ul`
   display: flex;
   justify-content: space-between;
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
   line-height: 1.4;
 
   li {
@@ -65,10 +64,12 @@ const SCountList = styled.ul`
 const SResult = styled.p`
   font-size: 0.75rem;
   color: ${({ theme }) => theme.color.gray_70};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
   margin-bottom: 8px;
 `;
 
 const SCount = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.color.gray_3c};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
 `;

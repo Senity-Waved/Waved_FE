@@ -44,6 +44,6 @@ export default function MyChallenge() {
 
 const SWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.gray_f9};
-  padding-bottom: ${({ theme }) => theme.spacing.xxs};
+  padding-bottom: 0.25rem;
   height: fit-content;
 `;

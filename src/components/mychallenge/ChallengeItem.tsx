@@ -39,7 +39,7 @@ export default function ChallengeItem({}: IChallengeItem) {
         </SDeposit>
       </SInfoWrapper>
       <ChallengeProgress />
-      <ChallengeBtn />
+      <ChallengeBtn challengeStatus="진행중" disabled={false} />
     </SWrapper>
   );
 }
@@ -58,7 +58,7 @@ const SWrapper = styled.div`
 const STitle = styled.h3`
   font-size: 1rem;
   line-height: 1.5rem;
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
   color: ${({ theme }) => theme.color.gray_3c};
 `;
 
@@ -75,14 +75,14 @@ const SInfoWrapper = styled.div`
   justify-content: space-between;
   gap: 0.5rem;
   font-size: 0.75rem;
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
   color: ${({ theme }) => theme.color.gray_3c};
 `;
 
 const SStatusLabel = styled.div`
   font-size: 0.75rem;
   line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
   color: ${({ theme }) => theme.color.gray_52};
   border-radius: 6px;
   background-color: ${({ theme }) => theme.color.gray_f9};

@@ -38,28 +38,28 @@ export default function ChallengeSection({
 }
 
 const SWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.base + ' ' + theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.base};
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
 `;
 
 const SStatus = styled.h2`
   font-size: 1.25rem;
   line-height: 1.75rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
-  margin-bottom: ${({ theme }) => theme.spacing.xxs};
+  margin-bottom: 0.25rem;
 `;
 
 const SSubText = styled.p`
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: ${({ theme }) => theme.fontWeight.meduim};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_99};
 `;
 
 const SChallengeList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.base};
-  margin-top: ${({ theme }) => theme.spacing.base};
+  gap: 1rem;
+  margin-top: 1rem;
 `;
