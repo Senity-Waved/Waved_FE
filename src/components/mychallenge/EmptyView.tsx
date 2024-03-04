@@ -9,7 +9,7 @@ export default function EmptyView() {
       <SEmptyTitle>아직 내 챌린지가 없어요</SEmptyTitle>
       <SEmptySubText>챌린지를 신청하고 내 챌린지를 시작해보세요!</SEmptySubText>
       <Image
-        src="/img/img-empty.png"
+        src="/images/img-empty.png"
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
         width={84}
         height={84}
@@ -39,5 +39,5 @@ const SEmptySubText = styled.p`
   line-height: 1.4;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   color: ${({ theme }) => theme.color.gray_99};
-  margin-bottom: ${({ theme }) => theme.spacing.xxs};
+  margin-bottom: 0.25rem;
 `;
