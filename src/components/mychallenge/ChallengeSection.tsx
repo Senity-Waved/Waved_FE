@@ -22,7 +22,6 @@ export default function ChallengeSection({
         </SStatus>
         <SSubText>{subText}</SSubText>
       </div>
-      {/* challenges.map */}
       <SChallengeList>
         <li>
           <ChallengeItem />
@@ -47,7 +46,7 @@ const SStatus = styled.h2`
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  color: ${({ theme }) => theme.color.black};
+  color: ${({ theme }) => theme.color.gray_3c};
   margin-bottom: ${({ theme }) => theme.spacing.xxs};
 `;
 
