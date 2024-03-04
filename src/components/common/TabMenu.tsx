@@ -16,7 +16,9 @@ function Tab({ href, text }: ITab) {
   const isActive = router.asPath === href;
   return (
     <STab isActive={isActive}>
-      <Link href={href}>{text}</Link>
+      <Link href={href} replace>
+        {text}
+      </Link>
     </STab>
   );
 }
