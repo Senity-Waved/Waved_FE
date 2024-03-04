@@ -152,6 +152,10 @@ const global = css`
     padding: 0;
     margin: 0;
     font-family: var(--font-family);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
   }
 
   html {

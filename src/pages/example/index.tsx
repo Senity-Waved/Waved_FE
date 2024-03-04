@@ -30,13 +30,12 @@ export default function Example() {
             {
               type: 'submit',
               text: '버튼2',
-              isDisabled: true,
-              styleType: 'gray',
+              styleType: 'white_line',
               size: 'large',
             },
             {
               text: '버튼3',
-              styleType: 'white',
+              styleType: 'disabled',
               size: 'large',
             },
           ]}
@@ -50,7 +49,12 @@ export default function Example() {
             },
             {
               text: '작은 버튼2',
-              styleType: 'primary',
+              styleType: 'white',
+              size: 'small',
+            },
+            {
+              text: '작은 버튼3',
+              styleType: 'gray',
               size: 'small',
             },
           ]}

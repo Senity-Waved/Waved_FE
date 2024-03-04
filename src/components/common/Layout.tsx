@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import media from '@/styles/media';
