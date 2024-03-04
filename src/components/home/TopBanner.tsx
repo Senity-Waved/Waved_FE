@@ -18,15 +18,15 @@ export default function TopBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bannerImages] = useState<IBannerImages[]>([
     {
-      src: 'https://via.placeholder.com/430x200.jpg?text=image1',
+      src: 'https://via.placeholder.com/375x200.jpg?text=image1',
       alt: '배너이미지1',
     },
     {
-      src: 'https://via.placeholder.com/430x200.jpg?text=image2',
+      src: 'https://via.placeholder.com/375x200.jpg?text=image2',
       alt: '배너이미지2',
     },
     {
-      src: 'https://via.placeholder.com/430x200.jpg?text=image3',
+      src: 'https://via.placeholder.com/375x200.jpg?text=image3',
       alt: '배너이미지3',
     },
   ]);
