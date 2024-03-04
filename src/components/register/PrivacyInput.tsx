@@ -21,36 +21,39 @@ export default function PrivacyInput({
   return (
     <SPrivacyInputWrapper>
       <SPrivacyText>챌린지 준비 첫 단계를 시작합니다!</SPrivacyText>
-      <div>
+      <SBirthYearWrapper>
         <label htmlFor="birthYearInput">출생연도</label>
-        <select
+        <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
           onChange={(e) => updateRegisterData({ birthYear: e.target.value })}
         >
+          <option disabled>출생연도</option>
           {YEARS.map((year) => (
             <option key={year} value={year}>
               {year}
             </option>
           ))}
-        </select>
-      </div>
+        </SBirthYearSelect>
+      </SBirthYearWrapper>
       <SGenderWrapper>
-        <p>성별(선택)</p>
-        <SFemaleBtn
-          type="button"
-          gender={currentGender}
-          onClick={() => updateRegisterData({ gender: Gender.Female })}
-        >
-          여자
-        </SFemaleBtn>
-        <SMaleBtn
-          type="button"
-          gender={currentGender}
-          onClick={() => updateRegisterData({ gender: Gender.Male })}
-        >
-          남자
-        </SMaleBtn>
+        <SGenderText>성별(선택)</SGenderText>
+        <SGenderBtnWrapper>
+          <SFemaleBtn
+            type="button"
+            gender={currentGender}
+            onClick={() => updateRegisterData({ gender: Gender.Female })}
+          >
+            여자
+          </SFemaleBtn>
+          <SMaleBtn
+            type="button"
+            gender={currentGender}
+            onClick={() => updateRegisterData({ gender: Gender.Male })}
+          >
+            남자
+          </SMaleBtn>
+        </SGenderBtnWrapper>
       </SGenderWrapper>
     </SPrivacyInputWrapper>
   );
@@ -75,11 +78,87 @@ const SPrivacyText = styled.p`
   }
 `;
 
-const SGenderWrapper = styled.div``;
+const SGenderWrapper = styled.div`
+  margin-left: 1.25rem;
+`;
+
+const SGenderText = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  color: ${({ theme }) => theme.color.gray_52};
+  margin-bottom: 1rem;
+`;
+
+const SGenderBtnWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0 20px;
+  text-align: center;
+  gap: 7px;
+`;
 
 const SFemaleBtn = styled.button<{ gender: GenderOrNull }>`
-  color: ${({ gender }) => (gender === Gender.Female ? 'yellow' : 'black')};
+  width: 100%;
+  height: 48px;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  color: ${({ theme, gender }) =>
+    gender === Gender.Female ? theme.color.gray_3c : theme.color.gray_99};
+  border: 1px solid
+    ${({ theme, gender }) =>
+      gender === Gender.Female ? theme.color.gray_3c : theme.color.gray_ec};
+  border-radius: 4px;
 `;
 const SMaleBtn = styled.button<{ gender: GenderOrNull }>`
-  color: ${({ gender }) => (gender === Gender.Male ? 'yellow' : 'black')};
+  width: 100%;
+  height: 48px;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  color: ${({ theme, gender }) =>
+    gender === Gender.Male ? theme.color.gray_3c : theme.color.gray_99};
+  border: 1px solid
+    ${({ theme, gender }) =>
+      gender === Gender.Male ? theme.color.gray_3c : theme.color.gray_ec};
+  border-radius: 4px;
+`;
+
+const SBirthYearWrapper = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  margin-left: 1.25rem;
+  margin-bottom: 1.5rem;
+
+  & label {
+    height: 20px;
+    line-height: 1.4;
+    color: ${({ theme }) => theme.color.gray_52};
+    font-size: ${({ theme }) => theme.fontSize.body4};
+    font-weight: ${({ theme }) => theme.fontWeight.body4};
+    margin-bottom: 1rem;
+  }
+
+  & select::-ms-expand {
+    display: none;
+  }
+`;
+
+const SBirthYearSelect = styled.select`
+  margin-right: 20px;
+  height: 48px;
+  background-color: ${({ theme }) => theme.color.gray_f9};
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  color: ${({ theme }) => theme.color.gray_52};
+  padding-left: 16px;
+  padding-right: 12px;
+
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-repeat: no-repeat;
+  background-image: url('/icons/icon-down-arrow.svg');
+  background-position: right 5% bottom 50%;
 `;

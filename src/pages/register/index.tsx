@@ -38,11 +38,11 @@ export default function Register() {
   const goToNextStep = () => {
     if (step === 0 && registerData.termAgreement) {
       setStep(1);
-    } else if (step === 1) {
+    } else if (step === 1 && registerData.birthYear) {
       setStep(2);
-    } else if (step === 2) {
+    } else if (step === 2 && registerData.nickname) {
       setStep(3);
-    } else if (step === 3) {
+    } else if (step === 3 && registerData.jobTitle) {
       console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
     }
   };
@@ -66,10 +66,21 @@ export default function Register() {
         회원가입용 뒤로가기
       </SRegisterBackBtn>
       <h2 className="a11yHidden">회원가입</h2>
-      <h3>
-        서비스 이용 약관에
-        <br /> 동의해주세요.
-      </h3>
+      {step === 0 && (
+        <h3>
+          서비스 이용 약관에
+          <br /> 동의해주세요.
+        </h3>
+      )}
+      {step === 1 && (
+        <h3>
+          회원님의 정보를
+          <br /> 입력해주세요.
+        </h3>
+      )}
+      {step === 2 && <h3>닉네임을 입력해주세요.</h3>}
+      {step === 3 && <h3>해당하는 직군을 선택해주세요.</h3>}
+
       <form action="" method="post" name="registerForm">
         {step === 0 && (
           <ServiceTermCheck updateRegisterData={updateRegisterData} />
