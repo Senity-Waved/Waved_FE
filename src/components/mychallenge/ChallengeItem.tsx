@@ -39,7 +39,7 @@ export default function ChallengeItem({}: IChallengeItem) {
         </SDeposit>
       </SInfoWrapper>
       <ChallengeProgress />
-      <ChallengeBtn challengeStatus="진행중" disabled={false} />
+      <ChallengeBtn challengeStatus="진행완료" isAbled={true} />
     </SWrapper>
   );
 }
