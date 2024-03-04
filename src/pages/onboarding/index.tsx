@@ -3,20 +3,41 @@ import Image from 'next/image';
 import Link from 'next/link';
 import media from '@/styles/media';
 import screenSize from '@/constants/screenSize';
-import BottomFixedBtn from '@/components/common/BottomFixedBtn';
+import Btn from '@/components/common/Btn';
+import PreviewSlider from '@/components/onboarding/PreviewSlider';
 
 export default function OnBoarding() {
   return (
     <SOnBoardingWrapper>
-      <SPreviewImage>
-        <Image
-          src="/images/image-waved-preview1.svg"
-          alt="Waved 서비스 미리보기 이미지"
-          width={335}
-          height={462}
-          priority
-        />
-      </SPreviewImage>
+      <PreviewSlider>
+        <SPreviewImage>
+          <Image
+            src="/images/image-waved-preview1.svg"
+            alt="Waved 서비스 미리보기 이미지"
+            width={335}
+            height={462}
+            priority
+          />
+        </SPreviewImage>
+        <SPreviewImage>
+          <Image
+            src="/images/image-waved-preview2.svg"
+            alt="Waved 서비스 미리보기 이미지"
+            width={335}
+            height={462}
+            priority
+          />
+        </SPreviewImage>
+        <SPreviewImage>
+          <Image
+            src="/images/image-waved-preview3.svg"
+            alt="Waved 서비스 미리보기 이미지3"
+            width={335}
+            height={462}
+            priority
+          />
+        </SPreviewImage>
+      </PreviewSlider>
       <SLoginBtnWrapper>
         <SGoogleLogo>
           <Image
@@ -26,7 +47,7 @@ export default function OnBoarding() {
             height={24}
           />
         </SGoogleLogo>
-        <BottomFixedBtn
+        <Btn
           btns={[
             { text: '구글로 계속하기', styleType: 'white_line', size: 'large' },
           ]}
@@ -57,9 +78,7 @@ const SOnBoardingWrapper = styled.div`
 
 const SPreviewImage = styled.div`
   width: 335px;
-  height: 496px;
   margin: 60px auto 0 auto;
-  padding-bottom: 24px;
 `;
 
 const SLoginBtnWrapper = styled.div`
@@ -67,14 +86,14 @@ const SLoginBtnWrapper = styled.div`
   position: relative;
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
-  margin-top: 24px;
-  margin-bottom: 36px;
+  margin: 24px 20px 36px 20px;
 `;
+
 const SGoogleLogo = styled.div`
   position: absolute;
   transform: translateY(-50%);
-  top: 15%;
-  left: 10%;
+  top: 50%;
+  left: 5%;
   z-index: 15;
 `;
 
@@ -86,4 +105,5 @@ const SNonMemberLink = styled.p`
   color: ${({ theme }) => theme.color.gray_83};
   margin: 0 auto;
   text-decoration: underline;
+  margin-bottom: 15px;
 `;
