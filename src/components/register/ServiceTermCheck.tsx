@@ -1,22 +1,72 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { IRegisterState } from '@/pages/register';
 
-export default function ServiceTermCheck() {
+interface IServiceTermCheck {
+  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+}
+
+export default function ServiceTermCheck({
+  updateRegisterData,
+}: IServiceTermCheck) {
+  const [checkList, setCheckList] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (checkList.length === 3) {
+      updateRegisterData({ termAgreement: true });
+    } else {
+      updateRegisterData({ termAgreement: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkList.length]);
+
+  const handleCheckAll = (e: ChangeEvent<HTMLInputElement>) => {
+    return e.target.checked
+      ? setCheckList(['age', 'term', 'privacy'])
+      : setCheckList([]);
+  };
+
+  const handleCheckItem = (e: ChangeEvent<HTMLInputElement>) => {
+    return e.target.checked
+      ? setCheckList([...checkList, e.target.name])
+      : setCheckList(
+          checkList.filter((selected) => selected !== e.target.name),
+        );
+  };
   return (
     <SServiceTermCheckWrapper>
-      <SRegisterCheckWrapper>
+      <SRegisterCheckBoxWrapper>
         <SAllCheckInputWrapper>
-          <input type="checkbox" name="allCheck" id="allCheck" />
+          <input
+            type="checkbox"
+            name="all"
+            id="allCheck"
+            onChange={handleCheckAll}
+            checked={checkList.length === 3}
+          />
           <label htmlFor="allCheck">전체 동의</label>
         </SAllCheckInputWrapper>
         <SRegisterCheckInputWrapper>
-          <input type="checkbox" name="ageCheck" id="ageCheck" />
+          <input
+            type="checkbox"
+            name="age"
+            id="ageCheck"
+            onChange={handleCheckItem}
+            checked={!!checkList.includes('age')}
+          />
           <label htmlFor="ageCheck">(필수) 만 14세 이상입니다.</label>
         </SRegisterCheckInputWrapper>
         <SRegisterCheckInputWrapper className="serviceTermCheck">
           <div>
-            <input type="checkbox" name="termCheck" id="termCheck" />
+            <input
+              type="checkbox"
+              name="term"
+              id="termCheck"
+              onChange={handleCheckItem}
+              checked={!!checkList.includes('term')}
+            />
             <label htmlFor="termCheck">(필수) 서비스 이용약관동의</label>
           </div>
           <SServiceTermLink>
@@ -31,12 +81,18 @@ export default function ServiceTermCheck() {
           </SServiceTermLink>
         </SRegisterCheckInputWrapper>
         <SRegisterCheckInputWrapper>
-          <input type="checkbox" name="privacyCheck" id="privacyCheck" />
+          <input
+            type="checkbox"
+            name="privacy"
+            id="privacyCheck"
+            onChange={handleCheckItem}
+            checked={!!checkList.includes('privacy')}
+          />
           <label htmlFor="privacyCheck">
             (필수) 개인정보 수집 및 이용 동의
           </label>
         </SRegisterCheckInputWrapper>
-      </SRegisterCheckWrapper>
+      </SRegisterCheckBoxWrapper>
       <SServiceTermTableWrapper>
         <table>
           <caption>개인정보 수집</caption>
@@ -66,7 +122,7 @@ export default function ServiceTermCheck() {
 
 const SServiceTermCheckWrapper = styled.div``;
 
-const SRegisterCheckWrapper = styled.div`
+const SRegisterCheckBoxWrapper = styled.div`
   margin-left: 1.25rem;
 
   & input[type='checkbox'] {
