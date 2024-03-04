@@ -169,6 +169,7 @@ const global = css`
     flex: 1;
     position: relative;
     height: 100%;
+    overflow-y: auto;
   }
 
   a {
