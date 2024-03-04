@@ -53,4 +53,8 @@ const STabMenu = styled.ul`
   display: flex;
   width: 100%;
   height: 48px;
+  position: sticky;
+  top: 0;
+  background-color: ${({ theme }) => theme.color.white};
+  z-index: 5;
 `;
