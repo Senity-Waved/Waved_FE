@@ -5,8 +5,7 @@ import { SBtn, SBtnWrapper } from '@/components/common/Btn';
 interface IBtn {
   type?: 'button' | 'submit';
   text: string;
-  isDisabled?: boolean;
-  styleType: 'primary' | 'gray' | 'white' | 'white_line';
+  styleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   size: 'large' | 'small';
 }
 
@@ -21,7 +20,7 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
         <SBtn
           key={uuidv4()}
           type={btn.type || 'button'}
-          disabled={btn.isDisabled || undefined}
+          disabled={btn.styleType === 'disabled' ? true : undefined}
           styleType={btn.styleType}
           size={btn.size}
         >
@@ -37,6 +36,6 @@ const SBottomFixedBtn = styled(SBtnWrapper)`
   position: absolute;
   bottom: 0;
   width: 100%;
-  margin: 14px 0 20px;
-  padding: ${({ theme }) => `0 ${theme.spacing.md}`};
+  margin: 0.875rem 0 1.25rem;
+  padding: 0 1.25rem;
 `;
