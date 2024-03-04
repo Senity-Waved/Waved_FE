@@ -153,6 +153,9 @@ const global = css`
     margin: 0;
     font-family: var(--font-family);
     font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
   }
 
   html {
