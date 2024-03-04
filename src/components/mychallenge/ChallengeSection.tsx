@@ -24,13 +24,13 @@ export default function ChallengeSection({
       </div>
       <SChallengeList>
         <li>
-          <ChallengeItem />
+          <ChallengeItem status={status} />
         </li>
         <li>
-          <ChallengeItem />
+          <ChallengeItem status={status} />
         </li>
         <li>
-          <ChallengeItem />
+          <ChallengeItem status={status} />
         </li>
       </SChallengeList>
     </SWrapper>
