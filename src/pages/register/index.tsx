@@ -50,12 +50,33 @@ export default function Register() {
   const goToPreviousStep = () => {
     if (step === 0) {
       router.back();
+      updateRegisterData({
+        termAgreement: false,
+        birthYear: '',
+        gender: null,
+        nickname: '',
+        jobTitle: '',
+      });
     } else if (step === 1) {
       setStep(0);
+      updateRegisterData({
+        termAgreement: false,
+        birthYear: '',
+        gender: null,
+      });
     } else if (step === 2) {
       setStep(1);
+      updateRegisterData({
+        birthYear: '',
+        gender: null,
+        nickname: '',
+      });
     } else if (step === 3) {
       setStep(2);
+      updateRegisterData({
+        nickname: '',
+        jobTitle: '',
+      });
     }
   };
 

@@ -28,7 +28,7 @@ export default function PrivacyInput({
           id="birthYearInput"
           onChange={(e) => updateRegisterData({ birthYear: e.target.value })}
         >
-          <option disabled>출생연도</option>
+          <option value="">출생연도</option>
           {YEARS.map((year) => (
             <option key={year} value={year}>
               {year}
