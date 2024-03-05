@@ -18,12 +18,12 @@ const myData = [
   },
   {
     challenge_id: 69565,
-    title: '기술 면접 3기',
+    title: '챌린지챌린지챌린지챌린지챌린지챌린지',
     thumbnail: 'https://via.placeholder.com/198x108.jpg',
   },
   {
     challenge_id: 154654,
-    title: '기술 면접 4기',
+    title: '챌린지챌린지챌린지챌린지챌린지챌린지',
     thumbnail: 'https://via.placeholder.com/198x108.jpg',
   },
 ];

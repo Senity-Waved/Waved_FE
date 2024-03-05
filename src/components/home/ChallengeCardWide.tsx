@@ -18,7 +18,7 @@ export default function ChallengeCardWide({
       <Link href={`/challenge/${challenge_id}`}>
         <SImage>
           <Image
-            src="https://via.placeholder.com/198x108.jpg"
+            src={thumbnail}
             alt={title || ''}
             width={198}
             height={108}
@@ -37,7 +37,6 @@ export default function ChallengeCardWide({
 const SChallengeCardWide = styled.li`
   display: inline-block;
   width: 198px;
-  height: 158px;
   &:not(:last-child) {
     margin-right: 0.75rem;
   }
@@ -48,6 +47,8 @@ const SImage = styled.div`
   width: 100%;
   margin-bottom: 0.5rem;
   line-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const STitle = styled.div`
