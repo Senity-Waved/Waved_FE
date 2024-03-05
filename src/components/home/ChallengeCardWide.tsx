@@ -20,7 +20,7 @@ export default function ChallengeCardWide({
           <Image
             src={thumbnail}
             alt={title || ''}
-            width={198}
+            width={226}
             height={108}
             priority
           />
@@ -36,7 +36,7 @@ export default function ChallengeCardWide({
 
 const SChallengeCardWide = styled.li`
   display: inline-block;
-  width: 198px;
+  width: 226px;
   &:not(:last-child) {
     margin-right: 0.75rem;
   }
