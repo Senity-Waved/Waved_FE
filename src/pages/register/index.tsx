@@ -22,7 +22,7 @@ export interface IRegisterState {
 
 export default function Register() {
   const router = useRouter();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [registerData, setRegisterData] = useState<IRegisterState>({
     termAgreement: false,
     birthYear: '',
@@ -32,25 +32,26 @@ export default function Register() {
   });
 
   console.log(registerData);
+  console.log(step);
 
   const updateRegisterData = (newData: Partial<IRegisterState>) => {
     setRegisterData({ ...registerData, ...newData });
   };
 
   const goToNextStep = () => {
-    if (step === 0 && registerData.termAgreement) {
-      setStep(1);
-    } else if (step === 1 && registerData.birthYear) {
+    if (step === 1 && registerData.termAgreement) {
       setStep(2);
-    } else if (step === 2 && registerData.nickname) {
+    } else if (step === 2 && registerData.birthYear) {
       setStep(3);
-    } else if (step === 3 && registerData.jobTitle) {
+    } else if (step === 3 && registerData.nickname) {
+      setStep(4);
+    } else if (step === 4 && registerData.jobTitle) {
       console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
     }
   };
 
   const goToPreviousStep = () => {
-    if (step === 0) {
+    if (step === 1) {
       router.back();
       updateRegisterData({
         termAgreement: false,
@@ -59,22 +60,22 @@ export default function Register() {
         nickname: '',
         jobTitle: '',
       });
-    } else if (step === 1) {
-      setStep(0);
+    } else if (step === 2) {
+      setStep(1);
       updateRegisterData({
         termAgreement: false,
         birthYear: '',
         gender: null,
       });
-    } else if (step === 2) {
-      setStep(1);
+    } else if (step === 3) {
+      setStep(2);
       updateRegisterData({
         birthYear: '',
         gender: null,
         nickname: '',
       });
-    } else if (step === 3) {
-      setStep(2);
+    } else if (step === 4) {
+      setStep(3);
       updateRegisterData({
         nickname: '',
         jobTitle: '',
@@ -94,35 +95,37 @@ export default function Register() {
         />
       </SRegisterBackBtn>
       <h2 className="a11yHidden">회원가입</h2>
-      {step === 0 && (
-        <h3>
-          서비스 이용 약관에
-          <br /> 동의해주세요.
-        </h3>
-      )}
-      {step === 1 && (
-        <h3>
-          회원님의 정보를
-          <br /> 입력해주세요.
-        </h3>
-      )}
-      {step === 2 && <h3>닉네임을 입력해주세요.</h3>}
-      {step === 3 && <h3>해당하는 직군을 선택해주세요.</h3>}
-
+      <SRegisterStepGuide>
+        <SCurrentStep step={step}>({step}/4)</SCurrentStep>
+        {step === 1 && (
+          <h3>
+            서비스 이용 약관에
+            <br /> 동의해주세요.
+          </h3>
+        )}
+        {step === 2 && (
+          <h3>
+            회원님의 정보를
+            <br /> 입력해주세요.
+          </h3>
+        )}
+        {step === 3 && <h3>닉네임을 입력해주세요.</h3>}
+        {step === 4 && <h3>해당하는 직군을 선택해주세요.</h3>}
+      </SRegisterStepGuide>
       <form action="" method="post" name="registerForm">
-        {step === 0 && (
+        {step === 1 && (
           <ServiceTermCheck updateRegisterData={updateRegisterData} />
         )}
-        {step === 1 && (
+        {step === 2 && (
           <PrivacyInput
             gender={registerData.gender}
             updateRegisterData={updateRegisterData}
           />
         )}
-        {step === 2 && (
+        {step === 3 && (
           <NicknameInput updateRegisterData={updateRegisterData} />
         )}
-        {step === 3 && (
+        {step === 4 && (
           <JobTitleInput
             updateRegisterData={updateRegisterData}
             jobTitle={registerData.jobTitle}
@@ -130,27 +133,13 @@ export default function Register() {
         )}
       </form>
       <SRegisterNextBtnWrapper onClick={goToNextStep}>
-        {step === 0 && (
-          <Btn
-            btns={[
-              {
-                text: '다음',
-                styleType:
-                  step === 0 && !registerData.termAgreement
-                    ? 'disabled'
-                    : 'primary',
-                size: 'large',
-              },
-            ]}
-          />
-        )}
         {step === 1 && (
           <Btn
             btns={[
               {
                 text: '다음',
                 styleType:
-                  step === 1 && !registerData.birthYear
+                  step === 1 && !registerData.termAgreement
                     ? 'disabled'
                     : 'primary',
                 size: 'large',
@@ -164,7 +153,9 @@ export default function Register() {
               {
                 text: '다음',
                 styleType:
-                  step === 2 && !registerData.nickname ? 'disabled' : 'primary',
+                  step === 2 && !registerData.birthYear
+                    ? 'disabled'
+                    : 'primary',
                 size: 'large',
               },
             ]}
@@ -174,9 +165,21 @@ export default function Register() {
           <Btn
             btns={[
               {
+                text: '다음',
+                styleType:
+                  step === 3 && !registerData.nickname ? 'disabled' : 'primary',
+                size: 'large',
+              },
+            ]}
+          />
+        )}
+        {step === 4 && (
+          <Btn
+            btns={[
+              {
                 text: '완료',
                 styleType:
-                  step === 3 && !registerData.jobTitle ? 'disabled' : 'primary',
+                  step === 4 && !registerData.jobTitle ? 'disabled' : 'primary',
                 size: 'large',
               },
             ]}
@@ -225,6 +228,24 @@ const SRegisterBackBtn = styled.button`
   font-size: 0.625rem;
   z-index: 15;
   height: 25px;
+`;
+
+const SRegisterStepGuide = styled.div`
+  position: relative;
+  h3 {
+    line-height: 1.4;
+    height: 56px;
+  }
+`;
+
+const SCurrentStep = styled.span<{ step: number }>`
+  position: absolute;
+  top: ${({ step }) => (step === 3 || step === 4 ? '40%' : '55%')};
+  right: 10%;
+  transform: translate(50%, -50%);
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  color: ${({ theme }) => theme.color.gray_bf};
 `;
 
 const SRegisterNextBtnWrapper = styled.div`
