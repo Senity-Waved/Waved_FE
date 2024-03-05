@@ -6,14 +6,15 @@ import screenSize from '@/constants/screenSize';
 import Header from '@/components/common/Header';
 import Btn from '@/components/common/Btn';
 import ServiceTermCheck from '@/components/register/ServiceTermCheck';
-import PrivacyInput, { GenderOrNull } from '@/components/register/PrivacyInput';
+import PrivacyInput from '@/components/register/PrivacyInput';
 import NicknameInput from '@/components/register/NicknameInput';
 import JobTitleInput from '@/components/register/JobTitleInput';
+import { TGenderOrNull } from '@/types/gender';
 
 export interface IRegisterState {
   termAgreement: boolean;
   birthYear: string;
-  gender: GenderOrNull;
+  gender: TGenderOrNull;
   nickname: string;
   jobTitle: string;
 }

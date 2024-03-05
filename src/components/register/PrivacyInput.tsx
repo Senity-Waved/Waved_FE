@@ -1,16 +1,10 @@
 import styled from '@emotion/styled';
 import YEARS from '@/constants/years';
 import { IRegisterState } from '@/pages/register';
-
-enum Gender {
-  Male = 'male',
-  Female = 'female',
-}
-
-export type GenderOrNull = Gender | null;
+import { EGender, TGenderOrNull } from '@/types/gender';
 
 interface IPravacyInput {
-  gender: GenderOrNull;
+  gender: TGenderOrNull;
   updateRegisterData: (newData: Partial<IRegisterState>) => void;
 }
 
@@ -42,14 +36,14 @@ export default function PrivacyInput({
           <SFemaleBtn
             type="button"
             gender={currentGender}
-            onClick={() => updateRegisterData({ gender: Gender.Female })}
+            onClick={() => updateRegisterData({ gender: EGender.Female })}
           >
             여자
           </SFemaleBtn>
           <SMaleBtn
             type="button"
             gender={currentGender}
-            onClick={() => updateRegisterData({ gender: Gender.Male })}
+            onClick={() => updateRegisterData({ gender: EGender.Male })}
           >
             남자
           </SMaleBtn>
@@ -97,26 +91,26 @@ const SGenderBtnWrapper = styled.div`
   gap: 7px;
 `;
 
-const SFemaleBtn = styled.button<{ gender: GenderOrNull }>`
+const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
   width: 100%;
   height: 48px;
   font-size: ${({ theme }) => theme.fontSize.body4};
   color: ${({ theme, gender }) =>
-    gender === Gender.Female ? theme.color.gray_3c : theme.color.gray_99};
+    gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_99};
   border: 1px solid
     ${({ theme, gender }) =>
-      gender === Gender.Female ? theme.color.gray_3c : theme.color.gray_ec};
+      gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_ec};
   border-radius: 8px;
 `;
-const SMaleBtn = styled.button<{ gender: GenderOrNull }>`
+const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
   width: 100%;
   height: 48px;
   font-size: ${({ theme }) => theme.fontSize.body4};
   color: ${({ theme, gender }) =>
-    gender === Gender.Male ? theme.color.gray_3c : theme.color.gray_99};
+    gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_99};
   border: 1px solid
     ${({ theme, gender }) =>
-      gender === Gender.Male ? theme.color.gray_3c : theme.color.gray_ec};
+      gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_ec};
   border-radius: 8px;
 `;
 
