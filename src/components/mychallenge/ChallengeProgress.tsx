@@ -45,7 +45,7 @@ const SProgerssNum = styled.div`
   line-height: 1.4;
   color: ${({ theme }) => theme.color.gray_3c};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 `;
 
 const SProgressBar = styled.div`
@@ -98,7 +98,7 @@ const SResult = styled.p`
   font-size: 0.75rem;
   color: ${({ theme }) => theme.color.gray_70};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 `;
 
 const SCount = styled.p`

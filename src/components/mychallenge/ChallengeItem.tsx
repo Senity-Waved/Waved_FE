@@ -43,10 +43,10 @@ export default function ChallengeItem({ status }: IChallengeItem) {
         <span>획득한 인증패스는 인증내역에서 확인할 수 있어요.</span>
       </SCompletedWrapper>} */}
       {status !== '대기중' && <ChallengeProgress />}
-      <ChallengeBtn challengeStatus={status} isAbled={true} />
+      <ChallengeBtn challengeStatus={status} isAbled />
       <SDetailBtn>
         <Image
-          src="/icons/icon-right-arrow.svg"
+          src="/icons/icon-left-arrow.svg"
           alt="뒤로가기 아이콘"
           width={24}
           height={24}
@@ -72,6 +72,7 @@ const SDetailBtn = styled.button`
   top: 1rem;
   right: 1rem;
   height: 1.5rem;
+  transform: rotate(180deg);
 `;
 
 const SInfoWrapper = styled.div`

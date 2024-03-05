@@ -23,7 +23,7 @@ const SExploreWrapper = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.color.white};
   padding: 1.5rem 1.25rem 1rem 1.25rem;
-  margin-top: 6px;
+  margin-top: 0.375rem;
 
   h2 {
     font-size: 1.25rem;
