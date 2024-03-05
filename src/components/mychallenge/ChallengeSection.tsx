@@ -39,9 +39,9 @@ export default function ChallengeSection({
   );
 }
 
-const SWrapper = styled.div`
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
+const SWrapper = styled.section`
+  background-color: ${({ theme }) => theme.color.gray_f9};
+  padding: 1rem 1.25rem 2rem 1.25rem;
 `;
 
 const SStatus = styled.h2`
@@ -49,7 +49,6 @@ const SStatus = styled.h2`
   line-height: 1.75rem;
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
-  margin-bottom: 0.25rem;
 `;
 
 const SSubText = styled.p`

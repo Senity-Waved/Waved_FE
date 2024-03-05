@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
-import EmptyView from '@/components/mychallenge/EmptyView';
+import EmptyView from '@/components/common/EmptyView';
+import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 
 export default function MyChallenge() {
   return (
@@ -18,31 +19,23 @@ export default function MyChallenge() {
           { href: '/mychallenge#example3', text: '진행완료' },
         ]}
       />
-      <EmptyView />
       {/* data.length == 0 일때 EmptyView + 챌린지탐색 */}
-      <SWrapper>
-        <ChallengeSection
-          status="진행중"
-          statusImogi="🧑🏻‍💻"
-          subText="현재 진행하고 있는 챌린지예요!"
-        />
-        <ChallengeSection
-          status="대기중"
-          statusImogi="👀"
-          subText="신청을 완료하고 시작을 대기중인 챌린지예요!"
-        />
-        <ChallengeSection
-          status="진행완료"
-          statusImogi="🥳"
-          subText="진행을 완료한 챌린지예요!"
-        />
-      </SWrapper>
+      <ChallengeEmptyView />
+      <ChallengeSection
+        status="진행중"
+        statusImogi="🧑🏻‍💻"
+        subText="현재 진행하고 있는 챌린지예요!"
+      />
+      <ChallengeSection
+        status="대기중"
+        statusImogi="👀"
+        subText="신청을 완료하고 시작을 대기중인 챌린지예요!"
+      />
+      <ChallengeSection
+        status="진행완료"
+        statusImogi="🥳"
+        subText="진행을 완료한 챌린지예요!"
+      />
     </Layout>
   );
 }
-
-const SWrapper = styled.div`
-  background-color: ${({ theme }) => theme.color.gray_f9};
-  padding-bottom: 0.25rem;
-  height: fit-content;
-`;
