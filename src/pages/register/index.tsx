@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import media from '@/styles/media';
 import screenSize from '@/constants/screenSize';
 import Header from '@/components/common/Header';
@@ -85,7 +86,12 @@ export default function Register() {
     <SRegisterWrapper>
       <Header headerText="회원가입" />
       <SRegisterBackBtn onClick={goToPreviousStep}>
-        회원가입용 뒤로가기
+        <Image
+          src="/icons/icon-left-arrow.svg"
+          width={24}
+          height={24}
+          alt="뒤로가기 버튼"
+        />
       </SRegisterBackBtn>
       <h2 className="a11yHidden">회원가입</h2>
       {step === 0 && (
@@ -206,11 +212,16 @@ const SRegisterWrapper = styled.div`
     color: ${({ theme }) => theme.color.gray_3c};
     margin-bottom: 1.0625rem;
   }
+
+  position: relative;
 `;
 
 const SRegisterBackBtn = styled.button`
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.color.gray_ec};
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  width: 25px;
+  background-color: ${({ theme }) => theme.color.white};
   font-size: 0.625rem;
   z-index: 15;
   height: 25px;
