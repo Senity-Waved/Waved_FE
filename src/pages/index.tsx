@@ -5,6 +5,7 @@ import Layout from '@/components/common/Layout';
 import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import ChallengeCard from '@/components/home/ChallengeCard';
+import ChallengeRequest from '@/components/home/ChallengeRequest';
 
 const myData = [
   {
@@ -96,6 +97,7 @@ export default function Home() {
           ))}
         </SListGrid>
       </SSection>
+      <ChallengeRequest />
     </Layout>
   );
 }
