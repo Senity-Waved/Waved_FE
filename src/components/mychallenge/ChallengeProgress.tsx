@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export default function ChallengeProgress() {
-  const dealt = 70;
+  const dealt = 0;
 
   return (
     <SWrapper>
@@ -66,7 +66,9 @@ const SDealt = styled.div<{ dealt: number }>`
 
   &::after {
     content: '';
-    display: block;
+    display: ${({ dealt }) =>
+      dealt === 100 || dealt === 0 ? 'none' : 'block'};
+    height: 100%;
     width: 14px;
     height: 18px;
     background-image: ${({ dealt }) =>
