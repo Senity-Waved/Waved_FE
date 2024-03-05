@@ -33,9 +33,8 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
 
 const SBottomFixedBtn = styled(SBtnWrapper)`
   z-index: 10;
-  position: absolute;
+  position: sticky;
   bottom: 0;
-  width: 100%;
-  margin: 0.875rem 0 1.25rem;
-  padding: 0 1.25rem;
+  padding: 1.75rem 1.25rem 2.125rem;
+  background-color: ${({ theme }) => theme.color.white};
 `;
