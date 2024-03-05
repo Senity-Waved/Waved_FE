@@ -32,6 +32,7 @@ export default function EmptyView({ pageType }: IEmptyView) {
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
         width={84}
         height={84}
+        priority
       />
       <SEmptyMainText>{mainText}</SEmptyMainText>
       <SEmptySubText>{subText}</SEmptySubText>
