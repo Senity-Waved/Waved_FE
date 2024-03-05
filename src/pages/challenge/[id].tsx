@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import ChallengeInfo from '@/components/challenge/ChallengeInfo';
+import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 
 export default function Challenge() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Challenge() {
           <dd>사진인증</dd>
         </STagList>
       </SImage>
-      <ChallengeInfo condition="recruiting" />
+      <ChallengeSummary condition="recruiting" />
       <TabMenu
         tabs={[
           { href: `/challenge/${id}#info`, text: '정보' },

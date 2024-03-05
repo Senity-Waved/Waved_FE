@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-interface IChallengeInfo {
+interface IChallengeSummary {
   condition: 'closed' | 'recruiting' | 'processing';
 }
 
-export default function ChallengeInfo({ condition }: IChallengeInfo) {
+export default function ChallengeSummary({ condition }: IChallengeSummary) {
   return (
     <SInfoCard>
       <STitle>기술 면접 챌린지 1기</STitle>
@@ -44,7 +44,7 @@ const STitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
-const SStatus = styled.span<IChallengeInfo>`
+const SStatus = styled.span<IChallengeSummary>`
   justify-self: end;
   height: 20px;
   line-height: 20px;
