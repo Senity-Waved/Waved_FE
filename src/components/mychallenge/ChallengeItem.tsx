@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import ChallengeProgress from './ChallengeProgress';
-import ChallengeBtn from './ChallengeBtn';
+import ChallengeProgress from '@/components/mychallenge/ChallengeProgress';
+import ChallengeBtn from '@/components/mychallenge/ChallengeBtn';
 
 export interface IChallengeItem {
   // challengeId: number;

@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
-import { IChallengeItem } from '@/components/mychallenge/ChallengeItem';
 import EmptyView from '@/components/mychallenge/EmptyView';
 
 export default function MyChallenge() {

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import ChallengeItem, { IChallengeItem } from './ChallengeItem';
+import ChallengeItem, {
+  IChallengeItem,
+} from '@/components/mychallenge/ChallengeItem';
 
 interface IChallengeSection {
   status: '진행중' | '대기중' | '진행완료';
