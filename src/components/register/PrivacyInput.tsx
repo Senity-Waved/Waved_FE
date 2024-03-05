@@ -14,7 +14,6 @@ export default function PrivacyInput({
 }: IPravacyInput) {
   return (
     <SPrivacyInputWrapper>
-      <SPrivacyText>챌린지 준비 첫 단계를 시작합니다!</SPrivacyText>
       <SBirthYearWrapper>
         <label htmlFor="birthYearInput">출생연도</label>
         <SBirthYearSelect
@@ -54,65 +53,6 @@ export default function PrivacyInput({
 }
 
 const SPrivacyInputWrapper = styled.div``;
-
-const SPrivacyText = styled.p`
-  height: 20px;
-  position: relative;
-  margin-bottom: 1.8125rem;
-  margin-left: 1.25rem;
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    width: 95%;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_de};
-  }
-`;
-
-const SGenderWrapper = styled.div`
-  margin-left: 1.25rem;
-`;
-
-const SGenderText = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_52};
-  margin-bottom: 1rem;
-`;
-
-const SGenderBtnWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  margin: 0 20px;
-  text-align: center;
-  gap: 7px;
-`;
-
-const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
-  width: 100%;
-  height: 48px;
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  color: ${({ theme, gender }) =>
-    gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_99};
-  border: 1px solid
-    ${({ theme, gender }) =>
-      gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_ec};
-  border-radius: 8px;
-`;
-const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
-  width: 100%;
-  height: 48px;
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  color: ${({ theme, gender }) =>
-    gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_99};
-  border: 1px solid
-    ${({ theme, gender }) =>
-      gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_ec};
-  border-radius: 8px;
-`;
 
 const SBirthYearWrapper = styled.div`
   display: flex;
@@ -155,4 +95,46 @@ const SBirthYearSelect = styled.select`
   background-repeat: no-repeat;
   background-image: url('/icons/icon-down-arrow.svg');
   background-position: right 5% bottom 50%;
+`;
+
+const SGenderWrapper = styled.div`
+  margin-left: 1.25rem;
+`;
+
+const SGenderText = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  color: ${({ theme }) => theme.color.gray_52};
+  margin-bottom: 1rem;
+`;
+
+const SGenderBtnWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0 20px;
+  text-align: center;
+  gap: 7px;
+`;
+
+const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
+  width: 100%;
+  height: 48px;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  color: ${({ theme, gender }) =>
+    gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_99};
+  border: 1px solid
+    ${({ theme, gender }) =>
+      gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_ec};
+  border-radius: 8px;
+`;
+const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
+  width: 100%;
+  height: 48px;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  color: ${({ theme, gender }) =>
+    gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_99};
+  border: 1px solid
+    ${({ theme, gender }) =>
+      gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_ec};
+  border-radius: 8px;
 `;
