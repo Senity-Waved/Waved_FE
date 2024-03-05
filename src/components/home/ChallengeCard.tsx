@@ -17,7 +17,13 @@ export default function ChallengeCard({
     <SChallengeCard>
       <Link href={`/challenge/${challenge_id}`}>
         <SImage>
-          <Image src={thumbnail} alt={title || ''} fill priority />
+          <Image
+            src={thumbnail}
+            alt={title || ''}
+            fill
+            sizes="183px"
+            priority
+          />
           <SParticipant>2</SParticipant>
         </SImage>
         <STitle>
@@ -82,6 +88,7 @@ const STitle = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 0 0.25rem;
   line-height: 22px;
   h3 {
     flex: 1;

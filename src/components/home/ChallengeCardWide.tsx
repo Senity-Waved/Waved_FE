@@ -55,6 +55,7 @@ const STitle = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 0 0.25rem;
   line-height: 22px;
   h3 {
     flex: 1;

@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <Layout headerText="WAVED">
       <TopBanner />
-      <section>
+      <SSection>
         <STitleLink href="/mychallenge">
           <h2>진행 중인 챌린지</h2>
           <Image
@@ -46,11 +46,13 @@ export default function Home() {
         </STitleLink>
         <SListScrollX>
           {myData.map((challenge) => (
+            // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
+            // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
             <ChallengeCardWide {...challenge} />
           ))}
         </SListScrollX>
-      </section>
-      <section>
+      </SSection>
+      <SSection>
         <STitle>
           <h2>💻 프론트엔드 챌린지</h2>
           <p>프론트엔드 개발자들을 위한 챌린지</p>
@@ -60,8 +62,8 @@ export default function Home() {
             <ChallengeCard {...challenge} />
           ))}
         </SListGrid>
-      </section>
-      <section>
+      </SSection>
+      <SSection>
         <STitle>
           <h2>👨‍💻 백엔드 챌린지</h2>
           <p>백엔드 개발자들을 위한 챌린지</p>
@@ -71,8 +73,8 @@ export default function Home() {
             <ChallengeCard {...challenge} />
           ))}
         </SListGrid>
-      </section>
-      <section>
+      </SSection>
+      <SSection>
         <STitle>
           <h2>🏃‍♂️ 학습 챌린지</h2>
           <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
@@ -82,8 +84,8 @@ export default function Home() {
             <ChallengeCard {...challenge} />
           ))}
         </SListGrid>
-      </section>
-      <section>
+      </SSection>
+      <SSection>
         <STitle>
           <h2>🏃‍♂️ 생활 챌린지</h2>
           <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
@@ -93,10 +95,16 @@ export default function Home() {
             <ChallengeCard {...challenge} />
           ))}
         </SListGrid>
-      </section>
+      </SSection>
     </Layout>
   );
 }
+
+const SSection = styled.section`
+  &:last-of-type {
+    padding-bottom: 20px;
+  }
+`;
 
 const STitleLink = styled(Link)`
   display: flex;
