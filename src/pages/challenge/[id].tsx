@@ -5,6 +5,7 @@ import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import ChallengeInformation from '@/components/challenge/ChallengeInformation';
 
 export default function Challenge() {
   const router = useRouter();
@@ -45,14 +46,16 @@ export default function Challenge() {
         </STagList>
       </SImage>
       <ChallengeSummary condition="recruiting" />
-      <TabMenu
-        tabs={[
-          { href: `/challenge/${id}#info`, text: '정보' },
-          { href: `/challenge/${id}#review`, text: '후기' },
-          { href: `/challenge/${id}#certification`, text: '인증' },
-        ]}
-      />
-      <SSection />
+      <SDescription>
+        <TabMenu
+          tabs={[
+            { href: `/challenge/${id}#information`, text: '정보' },
+            { href: `/challenge/${id}#review`, text: '후기' },
+            { href: `/challenge/${id}#certification`, text: '인증' },
+          ]}
+        />
+        <ChallengeInformation />
+      </SDescription>
       <BottomFixedBtn
         btns={[
           {
@@ -92,6 +95,21 @@ const STagList = styled.dl`
   }
 `;
 
-const SSection = styled.section`
-  padding: 1.25rem;
+const SDescription = styled.div`
+  section {
+    position: relative;
+    padding: 1.5rem 1.25rem;
+    color: ${({ theme }) => theme.color.gray_3c};
+    &:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block;
+      width: 100%;
+      height: 6px;
+      background-color: ${({ theme }) => theme.color.gray_ec};
+    }
+  }
 `;
