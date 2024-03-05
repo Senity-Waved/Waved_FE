@@ -49,7 +49,7 @@ const theme: Theme = {
     body4: '500',
     caption1: '600',
     caption2: '500',
-    caption3: '400',
+    caption3: '500',
   },
   fontSize: {
     headline1: '1.5rem',
