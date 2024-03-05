@@ -22,14 +22,13 @@ export default function PreviewSlider({ children }: IPreviewSlider) {
 }
 
 const SSliderWrapper = styled(Slider)`
-  margin-bottom: 24px;
   outline: none;
-  & img {
-    margin: 0 auto;
-  }
+  margin: 60px 20px 38px 20px;
+  margin-top: 0;
+  line-height: 0;
 
-  .slick-dots {
-    height: 30px;
+  .slick-slide div {
+    outline: none;
   }
 
   .slick-dots li {
@@ -40,6 +39,9 @@ const SSliderWrapper = styled(Slider)`
   .slick-dots li button::before {
     color: ${({ theme }) => theme.color.gray_de};
     opacity: 100;
+    line-height: 1.4;
+    height: 4px;
+    margin-top: 4px;
   }
 
   .slick-dots .slick-active button::before {
