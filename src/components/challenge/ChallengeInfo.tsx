@@ -1,11 +1,19 @@
 import styled from '@emotion/styled';
 
-export default function ChallengeInfoCard() {
+interface IChallengeInfo {
+  condition: 'closed' | 'recruiting' | 'processing';
+}
+
+export default function ChallengeInfo({ condition }: IChallengeInfo) {
   return (
     <SInfoCard>
       <STitle>기술 면접 챌린지 1기</STitle>
-      <SStatus>모집중</SStatus>
-      <SDate>3월 4일 (월) ~ 3월 15일 (금)</SDate>
+      <SStatus condition={condition}>
+        {condition === 'closed' && '마감'}
+        {condition === 'recruiting' && '모집중'}
+        {condition === 'processing' && '진행중'}
+      </SStatus>
+      <SDate>03월 04일 (월) ~ 03월 15일 (금)</SDate>
       <SParticipant>23명</SParticipant>
     </SInfoCard>
   );
@@ -36,14 +44,25 @@ const STitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
-const SStatus = styled.span`
+const SStatus = styled.span<IChallengeInfo>`
   justify-self: end;
   height: 20px;
   line-height: 20px;
   padding: 0 8px;
-  border: 1px solid ${({ theme }) => theme.color.normal};
+  border: 1px solid
+    ${({ condition, theme }) =>
+      ({
+        closed: theme.color.error,
+        recruiting: theme.color.normal,
+        processing: theme.color.positive,
+      })[condition]};
   border-radius: 10px;
-  color: ${({ theme }) => theme.color.normal};
+  color: ${({ condition, theme }) =>
+    ({
+      closed: theme.color.error,
+      recruiting: theme.color.normal,
+      processing: theme.color.positive,
+    })[condition]};
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
 `;
@@ -57,7 +76,7 @@ const SDate = styled.p`
 const SParticipant = styled.span`
   justify-self: end;
   background: url('/icons/icon-participant-black.svg') no-repeat 0;
-  padding: 0 0.5rem 0 1.5rem;
+  padding: 0 0.375rem 0 1.5rem;
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;

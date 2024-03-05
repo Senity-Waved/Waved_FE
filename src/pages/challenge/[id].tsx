@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import ChallengeInfoCard from '@/components/challenge/ChallengeInfoCard';
+import ChallengeInfo from '@/components/challenge/ChallengeInfo';
 
 export default function Challenge() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Challenge() {
           <dd>사진인증</dd>
         </STagList>
       </SImage>
-      <ChallengeInfoCard />
+      <ChallengeInfo condition="recruiting" />
       <TabMenu
         tabs={[
           { href: `/challenge/${id}#info`, text: '정보' },
@@ -87,8 +87,8 @@ const STagList = styled.dl`
     border-radius: 12px;
     line-height: 24px;
     color: ${({ theme }) => theme.color.gray_ec};
-    font-size: 0.875rem;
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
+    font-size: ${({ theme }) => theme.fontSize.body4};
+    font-weight: ${({ theme }) => theme.fontWeight.body4};
   }
 `;
 
