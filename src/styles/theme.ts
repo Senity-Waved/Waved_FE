@@ -62,7 +62,7 @@ const theme: Theme = {
     body4: '.875rem',
     caption1: '.75rem',
     caption2: '.75rem',
-    caption3: '10px',
+    caption3: '.625rem',
   },
 };
 
