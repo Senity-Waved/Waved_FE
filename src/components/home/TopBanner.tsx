@@ -51,9 +51,8 @@ export default function TopBanner() {
             <Image
               src={image.src}
               alt={image.alt}
-              width={0}
-              height={0}
-              sizes="100vw"
+              width={375}
+              height={200}
               priority
             />
           </SSlides>
@@ -72,10 +71,12 @@ const SSlider = styled(Slider)`
   position: relative;
   width: 100%;
   line-height: 0;
+  .slick-slide div {
+    outline: 0;
+  }
 `;
 
 const SSlides = styled.div`
-  position: relative;
   img {
     width: 100%;
     height: auto;
