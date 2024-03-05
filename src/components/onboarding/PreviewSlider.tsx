@@ -23,7 +23,7 @@ export default function PreviewSlider({ children }: IPreviewSlider) {
 
 const SSliderWrapper = styled(Slider)`
   outline: none;
-  margin: 60px 20px 38px 20px;
+  margin: 3.75rem 1.25rem 2.375rem 1.25rem;
   margin-top: 0;
   line-height: 0;
 
@@ -41,7 +41,7 @@ const SSliderWrapper = styled(Slider)`
     opacity: 100;
     line-height: 1.4;
     height: 4px;
-    margin-top: 4px;
+    margin-top: 0.25rem;
   }
 
   .slick-dots .slick-active button::before {

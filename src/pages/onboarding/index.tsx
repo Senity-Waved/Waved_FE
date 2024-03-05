@@ -87,7 +87,7 @@ const SOnBoardingWrapper = styled(SLayoutWrapper)`
 
 const SPreviewImage = styled.div`
   height: 445px;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   position: relative;
   top: 30%;
   left: 50%;
@@ -122,7 +122,7 @@ const SNonMemberLink = styled.p`
   color: ${({ theme }) => theme.color.gray_99};
   margin: 0 auto;
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_99};
-  margin-bottom: 27px;
+  margin-bottom: 1.6875rem;
 `;
 
 const SServiceRegisterText = styled.p`
@@ -134,7 +134,7 @@ const SServiceRegisterText = styled.p`
   line-height: 1.4;
   margin: 0 auto;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 `;
 
 const SServicePolicyLink = styled(Link)`

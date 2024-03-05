@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IRegisterState } from '@/pages/register';
+import { IRegisterState } from '@/types/register';
 
 interface INicknameInput {
   updateRegisterData: (newData: Partial<IRegisterState>) => void;

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import YEARS from '@/constants/years';
-import { IRegisterState } from '@/pages/register';
 import { EGender, TGenderOrNull } from '@/types/gender';
+import { IRegisterState } from '@/types/register';
 
 interface IPravacyInput {
   gender: TGenderOrNull;
@@ -75,7 +75,7 @@ const SBirthYearWrapper = styled.div`
 `;
 
 const SBirthYearSelect = styled.select`
-  margin-right: 20px;
+  margin-right: 1.25rem;
   height: 48px;
   background-color: ${({ theme }) => theme.color.gray_f9};
   border-radius: 8px;
@@ -84,8 +84,8 @@ const SBirthYearSelect = styled.select`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_52};
-  padding-left: 16px;
-  padding-right: 12px;
+  padding-left: 1rem;
+  padding-right: 0.75rem;
 
   -o-appearance: none;
   -webkit-appearance: none;
@@ -98,7 +98,7 @@ const SBirthYearSelect = styled.select`
 `;
 
 const SGenderWrapper = styled.div`
-  margin-left: 1.25rem;
+  margin: 0 1.25rem;
 `;
 
 const SGenderText = styled.p`
@@ -111,9 +111,9 @@ const SGenderText = styled.p`
 const SGenderBtnWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  margin: 0 20px;
+  margin: 0 1.25rem;
   text-align: center;
-  gap: 7px;
+  gap: 0.4375rem;
 `;
 
 const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
@@ -127,6 +127,7 @@ const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
       gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_ec};
   border-radius: 8px;
 `;
+
 const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
   width: 100%;
   height: 48px;
