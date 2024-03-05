@@ -5,7 +5,7 @@ interface IBtn {
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
-  link?: string; //버튼 클릭시 이동경로 - 인증내역,인증하기,후기작성
+  link?: string[]; //버튼 클릭시 이동경로 - 인증내역,인증하기,후기작성
 }
 
 export default function ChallengeBtn({
