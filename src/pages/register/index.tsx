@@ -95,7 +95,7 @@ export default function Register() {
         />
       </SRegisterBackBtn>
       <h2 className="a11yHidden">회원가입</h2>
-      <SRegisterStepGuide>
+      <SRegisterStepGuide step={step}>
         <SCurrentStep step={step}>({step}/4)</SCurrentStep>
         {step === 1 && (
           <h3>
@@ -204,18 +204,6 @@ const SRegisterWrapper = styled.div`
   ${media.mobileMax} {
     width: 100vw;
   }
-
-  & h3 {
-    margin-top: 2rem;
-    margin-left: 1.25rem;
-    height: 53px;
-    line-height: 1.4;
-    font-size: ${({ theme }) => theme.fontSize.headline2};
-    font-weight: ${({ theme }) => theme.fontWeight.headline2};
-    color: ${({ theme }) => theme.color.gray_3c};
-    margin-bottom: 1.0625rem;
-  }
-
   position: relative;
 `;
 
@@ -230,17 +218,23 @@ const SRegisterBackBtn = styled.button`
   height: 25px;
 `;
 
-const SRegisterStepGuide = styled.div`
+const SRegisterStepGuide = styled.div<{ step: number }>`
   position: relative;
   h3 {
     line-height: 1.4;
-    height: 56px;
+    height: ${({ step }) => (step === 3 || step === 4 ? '28px' : '56px')};
+    margin-bottom: ${({ step }) => (step === 3 || step === 4 ? '8px' : '16px')};
+    margin-top: 2rem;
+    margin-left: 1.25rem;
+    font-size: ${({ theme }) => theme.fontSize.headline2};
+    font-weight: ${({ theme }) => theme.fontWeight.headline2};
+    color: ${({ theme }) => theme.color.gray_3c};
   }
 `;
 
 const SCurrentStep = styled.span<{ step: number }>`
   position: absolute;
-  top: ${({ step }) => (step === 3 || step === 4 ? '40%' : '55%')};
+  top: ${({ step }) => (step === 3 || step === 4 ? '65%' : '55%')};
   right: 10%;
   transform: translate(50%, -50%);
   font-size: ${({ theme }) => theme.fontSize.body4};
