@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import YEARS from '../../constants/years';
+import YEARS from '@/constants/years';
 import { IRegisterState } from '@/pages/register';
 
 enum Gender {
@@ -106,7 +106,7 @@ const SFemaleBtn = styled.button<{ gender: GenderOrNull }>`
   border: 1px solid
     ${({ theme, gender }) =>
       gender === Gender.Female ? theme.color.gray_3c : theme.color.gray_ec};
-  border-radius: 4px;
+  border-radius: 8px;
 `;
 const SMaleBtn = styled.button<{ gender: GenderOrNull }>`
   width: 100%;
@@ -117,7 +117,7 @@ const SMaleBtn = styled.button<{ gender: GenderOrNull }>`
   border: 1px solid
     ${({ theme, gender }) =>
       gender === Gender.Male ? theme.color.gray_3c : theme.color.gray_ec};
-  border-radius: 4px;
+  border-radius: 8px;
 `;
 
 const SBirthYearWrapper = styled.div`
@@ -144,7 +144,7 @@ const SBirthYearSelect = styled.select`
   margin-right: 20px;
   height: 48px;
   background-color: ${({ theme }) => theme.color.gray_f9};
-  border-radius: 4px;
+  border-radius: 8px;
   outline: none;
   border: none;
   font-size: ${({ theme }) => theme.fontSize.body4};

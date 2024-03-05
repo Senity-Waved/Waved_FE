@@ -1,7 +1,7 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChangeEvent, useEffect, useState } from 'react';
 import { IRegisterState } from '@/pages/register';
 
 interface IServiceTermCheck {
