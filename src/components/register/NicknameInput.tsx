@@ -8,7 +8,7 @@ interface INicknameInput {
 export default function NicknameInput({ updateRegisterData }: INicknameInput) {
   return (
     <SNicknameInputWrapper>
-      <SNickNameWordsText>최대 20자</SNickNameWordsText>
+      <SNickNameWordsText>최대 10자</SNickNameWordsText>
       <SNicknameInput
         type="text"
         name="nickname"
@@ -42,7 +42,7 @@ const SNicknameInput = styled.input`
   padding-bottom: 0.0625rem;
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-  margin-bottom: 13.875rem;
+  margin-bottom: 10.625rem;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_de};

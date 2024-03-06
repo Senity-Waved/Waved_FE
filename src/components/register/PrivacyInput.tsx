@@ -58,8 +58,9 @@ const SPrivacyInputWrapper = styled.div`
     position: absolute;
     width: 90%;
     margin: 0 20px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_de};
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
+  margin-bottom: 40px;
 `;
 
 const SBirthYearWrapper = styled.div`
@@ -119,8 +120,6 @@ const SGenderText = styled.p`
 const SGenderBtnWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  margin: 0 1.25rem;
-  margin-bottom: 1rem;
   text-align: center;
   gap: 0.4375rem;
 `;

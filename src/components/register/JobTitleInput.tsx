@@ -85,7 +85,7 @@ export default function JobTitleInput({
 const SJobTitleInputWrapper = styled.div``;
 
 const SJobTitleChipWrapper = styled.div`
-  margin: 1.5rem 1.25rem 12.375rem 1.25rem;
+  margin: 1.5rem 1.25rem 2.5rem 1.25rem;
   width: auto;
   display: flex;
   flex-flow: row wrap;

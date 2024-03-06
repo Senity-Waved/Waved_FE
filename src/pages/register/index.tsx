@@ -85,7 +85,7 @@ export default function Register() {
         </SRegisterBackBtn>
         <h2 className="a11yHidden">회원가입</h2>
         <SRegisterStepGuide step={step}>
-          <SCurrentStep step={step}>({step}/4)</SCurrentStep>
+          <SCurrentStep>({step}/4)</SCurrentStep>
           {step === 1 && (
             <h3>
               서비스 이용 약관에
@@ -215,9 +215,10 @@ const SRegisterStepGuide = styled.div<{ step: number }>`
   }
 `;
 
-const SCurrentStep = styled.span<{ step: number }>`
+const SCurrentStep = styled.span`
   position: absolute;
-  top: ${({ step }) => (step === 3 || step === 4 ? '65%' : '55%')};
+  line-height: 1.4;
+  top: 50%;
   right: 10%;
   transform: translate(50%, -50%);
   font-size: ${({ theme }) => theme.fontSize.body4};

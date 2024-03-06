@@ -157,7 +157,7 @@ const SAllCheckInputWrapper = styled.div`
     position: absolute;
     bottom: -20px;
     width: 95%;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_de};
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
 `;
 
@@ -195,7 +195,7 @@ const SServiceTermTableWrapper = styled.div`
   font-size: ${({ theme }) => theme.fontSize.caption2};
   text-align: left;
   padding: 0.75rem 1rem;
-  margin: 0 1.25rem 1rem 1.25rem;
+  margin: 0 1.25rem 2.5rem 1.25rem;
 
   & table td,
   & table th {
