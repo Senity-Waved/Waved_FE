@@ -23,8 +23,7 @@ export default function PreviewSlider({ children }: IPreviewSlider) {
 
 const SSliderWrapper = styled(Slider)`
   outline: none;
-  margin: 3.75rem 1.25rem 2.375rem 1.25rem;
-  margin-top: 0;
+  margin: 0 1.25rem 2.375rem 1.25rem;
   line-height: 0;
 
   .slick-slide div {
