@@ -7,9 +7,10 @@ export default function ChallengeRequest() {
 
 const SChallengeRequest = styled(Link)`
   position: fixed;
-  right: 20px;
   bottom: 112px;
+  left: 54%;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   background-color: ${({ theme }) => theme.color.normal};
