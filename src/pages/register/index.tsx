@@ -22,6 +22,13 @@ export default function Register() {
     jobTitle: '',
   });
 
+  const goToSuccess = () => {
+    if (step === 4 && registerData.jobTitle)
+      router.push('/register/success').catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
+  };
+
   const updateRegisterData = (newData: Partial<IRegisterState>) => {
     setRegisterData({ ...registerData, ...newData });
   };
@@ -33,8 +40,6 @@ export default function Register() {
       setStep(3);
     } else if (step === 3 && registerData.nickname) {
       setStep(4);
-    } else if (step === 4 && registerData.jobTitle) {
-      console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
     }
   };
 
@@ -174,6 +179,7 @@ export default function Register() {
                       ? 'disabled'
                       : 'primary',
                   size: 'large',
+                  onClick: goToSuccess,
                 },
               ]}
             />

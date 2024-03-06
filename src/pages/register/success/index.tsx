@@ -1,9 +1,17 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
 
 export default function RegisterSuccess() {
+  const router = useRouter();
+  const goToHome = () => {
+    router.push('/').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
+  };
+
   return (
     <SRegisterSuccessWrapper>
       <main>
@@ -19,7 +27,7 @@ export default function RegisterSuccess() {
             <p>함께 챌린지를 시작해볼까요?</p>
           </div>
         </SRegisterSuccessBox>
-        <SRegisterSuccessBtnWrapper>
+        <SRegisterSuccessBtnWrapper onClick={goToHome}>
           <Btn
             btns={[
               {
