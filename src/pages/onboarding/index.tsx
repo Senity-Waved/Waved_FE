@@ -14,8 +14,8 @@ export default function OnBoarding() {
             <Image
               src="/images/image-waved-preview1.svg"
               alt="개발자들과 함께 챌린지를 시작해요. 개발자 직군만 모여있는 유일한 챌린지 서비스. WAVED에서 챌린지를 시작해 보세요!"
-              width={335}
-              height={462}
+              width={390}
+              height={518}
               priority
             />
           </SPreviewImage>
@@ -23,8 +23,8 @@ export default function OnBoarding() {
             <Image
               src="/images/image-waved-preview2.svg"
               alt="목표에 돈을 걸어서 목표를 달성해보세요. 목표를 세우고 잘 못 지키는 일이 있었나요? WAVED와 함께라면 달성할 수 있어요!"
-              width={335}
-              height={462}
+              width={390}
+              height={518}
               priority
             />
           </SPreviewImage>
@@ -32,8 +32,8 @@ export default function OnBoarding() {
             <Image
               src="/images/image-waved-preview3.svg"
               alt="결심을 100% 달성하면 전액 환급을 받을 수 있어요."
-              width={335}
-              height={462}
+              width={390}
+              height={518}
               priority
             />
           </SPreviewImage>
