@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export default function ChallengeProgress() {
-  const dealt = 0;
+  const dealt = 50;
 
   return (
     <SWrapper>
@@ -60,7 +60,7 @@ const SDealt = styled.div<{ dealt: number }>`
   height: 100%;
   border-radius: 8px;
   background-color: ${({ dealt, theme }) =>
-    dealt >= 80 ? theme.color.middle : theme.color.gray_52};
+    dealt >= 80 ? theme.color.middle : theme.color.gray_83};
   position: relative;
   z-index: 1;
 
