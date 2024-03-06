@@ -11,6 +11,7 @@ interface ILayout {
   rightText?: string;
   title?: string;
   description?: string;
+  noFooter?: boolean;
 }
 
 export default function Layout({
@@ -19,6 +20,7 @@ export default function Layout({
   rightText,
   title,
   description,
+  noFooter,
 }: ILayout) {
   return (
     <SLayoutWrapper>
@@ -37,7 +39,7 @@ export default function Layout({
       <h1 className="a11yHidden">WAVED</h1>
       <Header headerText={headerText} rightText={rightText} />
       <main>{children}</main>
-      <Footer />
+      {noFooter || <Footer />}
     </SLayoutWrapper>
   );
 }

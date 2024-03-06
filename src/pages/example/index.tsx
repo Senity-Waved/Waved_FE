@@ -11,6 +11,7 @@ export default function Example() {
       description="각 최상위 페이지에 지금과 같이 HeadMeta를 사용하면 됩니다. 공통 컴포넌트 예시를 모아두기 위한 페이지입니다. 배포 이전 삭제 예정입니다."
       headerText="마이 챌린지"
       rightText="인증패스"
+      noFooter
     >
       <TabMenu
         tabs={[
