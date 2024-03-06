@@ -72,7 +72,7 @@ export default function ServiceTermCheck({
           <SServiceTermLink>
             <Link href="/">
               <Image
-                src="/icons/icon-right-arrow.svg"
+                src="/icons/icon-small-arrow.svg"
                 alt="서비스 이용약관 보기"
                 width={24}
                 height={24}
@@ -191,11 +191,11 @@ const SServiceTermTableWrapper = styled.div`
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.gray_f9};
   height: auto;
-  padding: 0.75rem 1rem;
   color: ${({ theme }) => theme.color.gray_83};
   font-size: ${({ theme }) => theme.fontSize.caption2};
   text-align: left;
-  margin: 0 1.25rem;
+  padding: 0.75rem 1rem;
+  margin: 0 1.25rem 1rem 1.25rem;
 
   & table td,
   & table th {
@@ -208,8 +208,8 @@ const SServiceTermTableWrapper = styled.div`
   & table caption {
     text-align: left;
     margin-bottom: 0.25rem;
-    font-size: ${({ theme }) => theme.fontSize.caption3};
-    font-weight: ${({ theme }) => theme.fontWeight.caption3};
+    font-size: ${({ theme }) => theme.fontSize.caption2};
+    font-weight: ${({ theme }) => theme.fontWeight.caption2};
   }
 
   & p {

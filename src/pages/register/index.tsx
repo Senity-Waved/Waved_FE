@@ -22,9 +22,6 @@ export default function Register() {
     jobTitle: '',
   });
 
-  console.log(registerData);
-  console.log(step);
-
   const updateRegisterData = (newData: Partial<IRegisterState>) => {
     setRegisterData({ ...registerData, ...newData });
   };
@@ -229,5 +226,5 @@ const SCurrentStep = styled.span<{ step: number }>`
 `;
 
 const SRegisterNextBtnWrapper = styled.div`
-  margin: 1rem 1.25rem 0.625rem 1.25rem;
+  margin: 0 1.25rem 0.625rem 1.25rem;
 `;

@@ -52,14 +52,21 @@ export default function PrivacyInput({
   );
 }
 
-const SPrivacyInputWrapper = styled.div``;
+const SPrivacyInputWrapper = styled.div`
+  ::before {
+    content: '';
+    position: absolute;
+    width: 90%;
+    margin: 0 20px;
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_de};
+  }
+`;
 
 const SBirthYearWrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
   margin-left: 1.25rem;
   margin-bottom: 1.5rem;
-
   & label {
     height: 20px;
     line-height: 1.4;
@@ -67,6 +74,7 @@ const SBirthYearWrapper = styled.div`
     font-size: ${({ theme }) => theme.fontSize.body4};
     font-weight: ${({ theme }) => theme.fontWeight.body4};
     margin-bottom: 1rem;
+    margin-top: 0.625rem;
   }
 
   & select::-ms-expand {
@@ -75,7 +83,6 @@ const SBirthYearWrapper = styled.div`
 `;
 
 const SBirthYearSelect = styled.select`
-  margin-right: 1.25rem;
   height: 48px;
   background-color: ${({ theme }) => theme.color.gray_f9};
   border-radius: 8px;
@@ -84,6 +91,7 @@ const SBirthYearSelect = styled.select`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_52};
+  margin-right: 1.25rem;
   padding-left: 1rem;
   padding-right: 0.75rem;
 
@@ -112,6 +120,7 @@ const SGenderBtnWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   margin: 0 1.25rem;
+  margin-bottom: 1rem;
   text-align: center;
   gap: 0.4375rem;
 `;
@@ -121,10 +130,10 @@ const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
   height: 48px;
   font-size: ${({ theme }) => theme.fontSize.body4};
   color: ${({ theme, gender }) =>
-    gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_99};
+    gender === EGender.Female ? theme.color.normal : theme.color.gray_99};
   border: 1px solid
     ${({ theme, gender }) =>
-      gender === EGender.Female ? theme.color.gray_3c : theme.color.gray_ec};
+      gender === EGender.Female ? theme.color.normal : theme.color.gray_ec};
   border-radius: 8px;
 `;
 
@@ -133,9 +142,9 @@ const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
   height: 48px;
   font-size: ${({ theme }) => theme.fontSize.body4};
   color: ${({ theme, gender }) =>
-    gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_99};
+    gender === EGender.Male ? theme.color.normal : theme.color.gray_99};
   border: 1px solid
     ${({ theme, gender }) =>
-      gender === EGender.Male ? theme.color.gray_3c : theme.color.gray_ec};
+      gender === EGender.Male ? theme.color.normal : theme.color.gray_ec};
   border-radius: 8px;
 `;
