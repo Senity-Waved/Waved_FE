@@ -106,7 +106,7 @@ const SStatusLabel = styled.div`
 `;
 
 const SDuration = styled.p`
-  margin-right: 1.25rem;
+  flex: 1;
 `;
 
 const SDeposit = styled.p`
