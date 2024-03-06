@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 
 interface ITextArea {
-  placeholder?: string;
+  placeholder: string;
 }
 
-export default function TextArea() {
+export default function TextArea({ placeholder }: ITextArea) {
   return (
     <SWrapper>
-      <STextArea placeholder="dkdkdkdk" />
+      <STextArea placeholder={placeholder} />
       <STextLength>&#40;7/300&#41;</STextLength>
     </SWrapper>
   );
@@ -30,6 +30,7 @@ const STextArea = styled.textarea`
   padding: 0.5rem;
   box-shadow: 0 3px 8px 2px rgba(35, 62, 112, 0.05);
   resize: none;
+  margin-bottom: 1.5rem;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_bf};
@@ -48,5 +49,5 @@ const STextLength = styled.span`
   position: absolute;
   bottom: 3px;
   right: 0;
-  margin: 0.5rem;
+  margin: 2rem 0.5rem;
 `;
