@@ -5,7 +5,7 @@ interface IBtn {
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
-  link?: string[]; //버튼 클릭시 이동경로 - 인증내역,인증하기,후기작성
+  link?: string[]; // 버튼 클릭시 이동경로 - 인증내역,인증하기,후기작성
 }
 
 export default function ChallengeBtn({
@@ -50,6 +50,8 @@ export default function ChallengeBtn({
           <SBtn styleType={isAbled ? 'middle' : 'gray'}>후기작성</SBtn>
         </SBtnWrapper>
       );
+    default:
+      return null;
   }
 }
 
@@ -89,14 +91,14 @@ const SBtn = styled.a<{ styleType: 'light' | 'gray' | 'middle' }>`
       ({
         light: '#BBD3FF',
         middle: theme.color.dark,
-        gray: '',
+        gray: theme.color.gray_ec,
       })[styleType]};
 
     color: ${({ styleType, theme }) =>
       ({
         light: theme.color.dark,
         middle: theme.color.white,
-        gray: '',
+        gray: theme.color.gray_83,
       })[styleType]};
   }
 `;

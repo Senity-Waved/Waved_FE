@@ -56,7 +56,7 @@ const SProgressBar = styled.div`
 `;
 
 const SDealt = styled.div<{ dealt: number }>`
-  width: ${({ dealt }) => dealt + '%'};
+  width: ${({ dealt }) => `${dealt}%`};
   height: 100%;
   border-radius: 8px;
   background-color: ${({ dealt, theme }) =>
