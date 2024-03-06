@@ -160,7 +160,9 @@ const global = css`
 
   html {
     background-color: #f1f1f1;
+    color: #3c3f44;
     font-size: 16px;
+    line-height: 1.4;
   }
 
   body {
