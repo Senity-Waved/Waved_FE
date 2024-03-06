@@ -43,7 +43,7 @@ const SFooterWrapper = styled.nav`
   z-index: 10;
   flex-shrink: 0;
   width: 100%;
-  height: 56px;
+  height: 94px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -51,7 +51,7 @@ const SFooterWrapper = styled.nav`
   font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   border-top: 1px solid #dee1e5;
-  padding: 10px 20px 0 20px;
+  padding: 0.625rem 1.25rem 2.375rem;
 `;
 
 const SFooterIconBox = styled(Link)`
