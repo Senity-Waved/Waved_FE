@@ -3,19 +3,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface IChallengeCardWide {
-  challenge_id: number;
+  challengeId: number;
   title: string;
   thumbnail: string;
 }
 
 export default function ChallengeCardWide({
-  challenge_id,
+  challengeId,
   thumbnail,
   title,
 }: IChallengeCardWide) {
   return (
     <SChallengeCardWide>
-      <Link href={`/challenge/${challenge_id}`}>
+      <Link href={`/challenge/${challengeId}`}>
         <SImage>
           <Image
             src={thumbnail}

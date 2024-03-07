@@ -3,19 +3,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface IChallengeCard {
-  challenge_id: number;
+  challengeId: number;
   title: string;
   thumbnail: string;
 }
 
 export default function ChallengeCard({
-  challenge_id,
+  challengeId,
   thumbnail,
   title,
 }: IChallengeCard) {
   return (
     <SChallengeCard>
-      <Link href={`/challenge/${challenge_id}`}>
+      <Link href={`/challenge/${challengeId}`}>
         <SImage>
           <Image
             src={thumbnail}
@@ -36,7 +36,9 @@ export default function ChallengeCard({
           <dt className="a11yHidden">챌린지 진행 기한</dt>
           <dd>2주</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
-          <dd>사진인증</dd>
+          <dd>사진</dd>
+          <dt className="a11yHidden">챌린지 예치금 유무</dt>
+          <dd>무료</dd>
         </STagList>
       </Link>
     </SChallengeCard>

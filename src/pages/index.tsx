@@ -1,30 +1,37 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
 import Layout from '@/components/common/Layout';
 import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import ChallengeCard from '@/components/home/ChallengeCard';
 import ChallengeRequest from '@/components/home/ChallengeRequest';
 
-const myData = [
+interface IChallenge {
+  challengeId: number;
+  title: string;
+  thumbnail: string;
+}
+
+const challengeData: IChallenge[] = [
   {
-    challenge_id: 34525,
+    challengeId: 34525,
     title: '기술 면접 1기',
     thumbnail: 'https://via.placeholder.com/226x108.jpg',
   },
   {
-    challenge_id: 341756,
+    challengeId: 341756,
     title: '기술 면접 2기',
     thumbnail: 'https://via.placeholder.com/226x108.jpg',
   },
   {
-    challenge_id: 69565,
+    challengeId: 69565,
     title: '챌린지챌린지챌린지챌린지챌린지챌린지',
     thumbnail: 'https://via.placeholder.com/226x108.jpg',
   },
   {
-    challenge_id: 154654,
+    challengeId: 154654,
     title: '챌린지챌린지챌린지챌린지챌린지챌린지',
     thumbnail: 'https://via.placeholder.com/226x108.jpg',
   },
@@ -46,10 +53,11 @@ export default function Home() {
           />
         </STitleLink>
         <SListScrollX>
-          {myData.map((challenge) => (
+          {challengeData.map((challenge) => (
             // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
             // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
-            <ChallengeCardWide {...challenge} />
+            // 하단 map들도 같은 목업 데이터를 사용하고 있어 동일 이슈 => uuid를 이용해 임시 대처 진행
+            <ChallengeCardWide key={uuidv4()} {...challenge} />
           ))}
         </SListScrollX>
       </SSection>
@@ -59,8 +67,8 @@ export default function Home() {
           <p>프론트엔드 개발자들을 위한 챌린지</p>
         </STitle>
         <SListGrid>
-          {myData.map((challenge) => (
-            <ChallengeCard {...challenge} />
+          {challengeData.map((challenge) => (
+            <ChallengeCard key={uuidv4()} {...challenge} />
           ))}
         </SListGrid>
       </SSection>
@@ -70,8 +78,8 @@ export default function Home() {
           <p>백엔드 개발자들을 위한 챌린지</p>
         </STitle>
         <SListGrid>
-          {myData.map((challenge) => (
-            <ChallengeCard {...challenge} />
+          {challengeData.map((challenge) => (
+            <ChallengeCard key={uuidv4()} {...challenge} />
           ))}
         </SListGrid>
       </SSection>
@@ -81,8 +89,8 @@ export default function Home() {
           <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
         </STitle>
         <SListGrid>
-          {myData.map((challenge) => (
-            <ChallengeCard {...challenge} />
+          {challengeData.map((challenge) => (
+            <ChallengeCard key={uuidv4()} {...challenge} />
           ))}
         </SListGrid>
       </SSection>
@@ -92,8 +100,8 @@ export default function Home() {
           <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
         </STitle>
         <SListGrid>
-          {myData.map((challenge) => (
-            <ChallengeCard {...challenge} />
+          {challengeData.map((challenge) => (
+            <ChallengeCard key={uuidv4()} {...challenge} />
           ))}
         </SListGrid>
       </SSection>
