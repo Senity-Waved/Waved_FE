@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Btn from '@/components/common/Btn';
@@ -8,6 +9,16 @@ import { SLayoutWrapper } from '@/components/common/Layout';
 export default function OnBoarding() {
   return (
     <SOnBoardingWrapper>
+      <Head>
+        <title>WAVED</title>
+        <meta name="description" content="WAVED의 온보딩 페이지입니다." />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <h1 className="a11yHidden">WAVED</h1>
       <main>
         <PreviewSlider>
           <SPreviewImage>

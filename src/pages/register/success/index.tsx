@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
 
@@ -14,6 +15,16 @@ export default function RegisterSuccess() {
 
   return (
     <SRegisterSuccessWrapper>
+      <Head>
+        <title>WAVED | 회원가입</title>
+        <meta name="description" content="회원가입 완료" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <h1 className="a11yHidden">WAVED</h1>
       <main>
         <SRegisterSuccessBox>
           <div>
@@ -64,7 +75,7 @@ const SRegisterSuccessBox = styled.div`
   color: ${({ theme }) => theme.color.gray_83};
 `;
 
-const SSuccessText = styled.p`
+const SSuccessText = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
   color: ${({ theme }) => theme.color.gray_3c};

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -24,9 +25,10 @@ export default function Register() {
 
   const goToSuccess = () => {
     if (step === 4 && registerData.jobTitle)
-      router.push('/register/success').catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+      console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
+    router.push('/register/success').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
   };
 
   const updateRegisterData = (newData: Partial<IRegisterState>) => {
@@ -78,16 +80,26 @@ export default function Register() {
 
   return (
     <SRegisterWrapper>
+      <Head>
+        <title>WAVED | 회원가입</title>
+        <meta name="description" content="WAVED의 회원가입 페이지입니다." />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <h1 className="a11yHidden">WAVED</h1>
+      <Header headerText="회원가입" />
+      <SRegisterBackBtn onClick={goToPreviousStep}>
+        <Image
+          src="/icons/icon-left-arrow.svg"
+          width={24}
+          height={24}
+          alt="뒤로가기 버튼"
+        />
+      </SRegisterBackBtn>
       <main>
-        <Header headerText="회원가입" />
-        <SRegisterBackBtn onClick={goToPreviousStep}>
-          <Image
-            src="/icons/icon-left-arrow.svg"
-            width={24}
-            height={24}
-            alt="뒤로가기 버튼"
-          />
-        </SRegisterBackBtn>
         <h2 className="a11yHidden">회원가입</h2>
         <SRegisterStepGuide step={step}>
           <SCurrentStep>({step}/4)</SCurrentStep>
