@@ -6,7 +6,7 @@ interface IChallengeSummary {
 
 export default function ChallengeSummary({ condition }: IChallengeSummary) {
   return (
-    <SInfoCard>
+    <SChallengeSummary>
       <STitle>기술 면접 챌린지 1기</STitle>
       <SStatus condition={condition}>
         {condition === 'closed' && '마감'}
@@ -15,22 +15,22 @@ export default function ChallengeSummary({ condition }: IChallengeSummary) {
       </SStatus>
       <SDate>03월 04일 (월) ~ 03월 15일 (금)</SDate>
       <SParticipant>23명</SParticipant>
-    </SInfoCard>
+    </SChallengeSummary>
   );
 }
 
-const SInfoCard = styled.div`
+const SChallengeSummary = styled.div`
   position: sticky;
   top: 0;
+  background-color: ${({ theme }) => theme.color.white};
+  z-index: 5;
   display: grid;
   grid-template-columns: 1fr 80px;
   grid-template-rows: 1fr 20px;
   align-items: center;
   gap: 6px;
   padding: 1.25rem;
-  background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.gray_3c};
-  z-index: 5;
   &::after {
     position: absolute;
     bottom: 0;
