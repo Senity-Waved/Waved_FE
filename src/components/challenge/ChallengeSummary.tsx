@@ -20,14 +20,17 @@ export default function ChallengeSummary({ condition }: IChallengeSummary) {
 }
 
 const SInfoCard = styled.div`
-  position: relative;
+  position: sticky;
+  top: 0;
   display: grid;
   grid-template-columns: 1fr 80px;
   grid-template-rows: 1fr 20px;
   align-items: center;
   gap: 6px;
   padding: 1.25rem;
+  background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.gray_3c};
+  z-index: 5;
   &::after {
     position: absolute;
     bottom: 0;

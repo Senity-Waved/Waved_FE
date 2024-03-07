@@ -15,8 +15,6 @@ export default function Challenge() {
     <Layout
       title="챌린지 상세 정보"
       description="챌린지 상세 정보 페이지 수정해야 함"
-      headerText=""
-      rightText=""
     >
       <span
         css={{
@@ -48,6 +46,7 @@ export default function Challenge() {
       <ChallengeSummary condition="recruiting" />
       <SDescription>
         <TabMenu
+          positionTop={90}
           tabs={[
             { href: `/challenge/${id}#information`, text: '정보' },
             { href: `/challenge/${id}#review`, text: '후기' },

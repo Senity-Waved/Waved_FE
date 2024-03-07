@@ -9,6 +9,7 @@ interface ITab {
 
 interface ITabMenu {
   tabs: ITab[];
+  positionTop?: number;
 }
 
 function Tab({ href, text }: ITab) {
@@ -23,9 +24,9 @@ function Tab({ href, text }: ITab) {
   );
 }
 
-export default function TabMenu({ tabs }: ITabMenu) {
+export default function TabMenu({ tabs, positionTop }: ITabMenu) {
   return (
-    <STabMenu>
+    <STabMenu positionTop={positionTop}>
       {tabs.map((tab) => (
         <Tab key={tab.text} {...tab} />
       ))}
@@ -51,12 +52,12 @@ const STab = styled.li<{ isActive: boolean }>`
   }
 `;
 
-const STabMenu = styled.ul`
+const STabMenu = styled.ul<{ positionTop?: number }>`
   display: flex;
   width: 100%;
   height: 48px;
   position: sticky;
-  top: 0;
+  top: ${({ positionTop }) => `${positionTop}px` || 0};
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
 `;
