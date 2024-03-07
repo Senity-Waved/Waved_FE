@@ -30,7 +30,6 @@ export default function ChallengeItem({ status }: IChallengeItem) {
       <SInfoWrapper>
         <h3>챌린지명</h3>
         <div>
-          <SStatusLabel>{statusLabel[status]}</SStatusLabel>
           <SDuration>02/19~03/04, 주 3일</SDuration>
           <SDeposit>
             <span>예치금</span>
@@ -42,7 +41,7 @@ export default function ChallengeItem({ status }: IChallengeItem) {
         <p>모든 인증을 완료했어요 🎉</p>
         <span>획득한 인증패스는 인증내역에서 확인할 수 있어요.</span>
       </SCompletedWrapper>} */}
-      {status !== '대기중' && <ChallengeProgress />}
+      {status === '진행중' && <ChallengeProgress />}
       <ChallengeBtn challengeStatus={status} isAbled />
       <SDetailBtn>
         <Image
@@ -95,46 +94,10 @@ const SInfoWrapper = styled.div`
   }
 `;
 
-const SStatusLabel = styled.div`
-  font-size: 0.75rem;
-  line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.caption1};
-  color: ${({ theme }) => theme.color.gray_52};
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.color.gray_f9};
-  padding: 0.375rem 0.5rem;
-`;
-
-const SDuration = styled.p`
-  flex: 1;
-`;
+const SDuration = styled.p``;
 
 const SDeposit = styled.p`
   span {
     padding-right: 0.5rem;
-  }
-`;
-
-const SCompletedWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  align-items: center;
-  border: 1px solid ${({ theme }) => theme.color.gray_ec};
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.color.gray_f9};
-  padding: 0.75rem 1rem;
-  line-height: 1.4;
-
-  p {
-    color: ${({ theme }) => theme.color.gray_3c};
-    font-size: 0.875rem;
-    font-weight: ${({ theme }) => theme.fontWeight.body3};
-  }
-
-  span {
-    color: ${({ theme }) => theme.color.gray_52};
-    font-size: 0.75rem;
-    font-weight: ${({ theme }) => theme.fontWeight.caption2};
   }
 `;

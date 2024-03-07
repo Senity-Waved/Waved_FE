@@ -29,11 +29,3 @@ const SQuestion = styled.p`
   color: ${({ theme }) => theme.color.gray_52};
   margin-bottom: 0.25rem;
 `;
-
-const SPassDay = styled.div`
-  width: 100%;
-  height: 220px;
-  background-color: ${({ theme }) => theme.color.white};
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-`;

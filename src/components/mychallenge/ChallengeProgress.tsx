@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export default function ChallengeProgress() {
-  const dealt = 50;
+  const dealt = 70;
 
   return (
     <SWrapper>
@@ -10,7 +10,7 @@ export default function ChallengeProgress() {
           <p>{dealt}%</p>
           <p>100%</p>
         </SProgerssNum>
-        <SProgressBar>
+        <SProgressBar dealt={dealt}>
           <SDealt dealt={dealt} />
         </SProgressBar>
       </SProgressWrapper>
@@ -48,26 +48,16 @@ const SProgerssNum = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-const SProgressBar = styled.div`
+const SProgressBar = styled.div<{ dealt: number }>`
   width: 100%;
   height: 10px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.gray_ec};
-`;
-
-const SDealt = styled.div<{ dealt: number }>`
-  width: ${({ dealt }) => `${dealt}%`};
-  height: 100%;
-  border-radius: 8px;
-  background-color: ${({ dealt, theme }) =>
-    dealt >= 80 ? theme.color.middle : theme.color.gray_83};
   position: relative;
-  z-index: 1;
 
-  &::after {
+  &::before {
     content: '';
-    display: ${({ dealt }) =>
-      dealt === 100 || dealt === 0 ? 'none' : 'block'};
+    display: block;
     height: 100%;
     width: 14px;
     height: 18px;
@@ -79,9 +69,17 @@ const SDealt = styled.div<{ dealt: number }>`
     background-size: cover;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 20%;
     transform: translate(50%, -100%);
   }
+`;
+
+const SDealt = styled.div<{ dealt: number }>`
+  width: ${({ dealt }) => `${dealt}%`};
+  height: 100%;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.middle};
+  z-index: 1;
 `;
 
 const SCountList = styled.ul`
