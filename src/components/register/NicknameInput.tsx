@@ -45,6 +45,6 @@ const SNicknameInput = styled.input`
   margin-bottom: 10.625rem;
 
   &::placeholder {
-    color: ${({ theme }) => theme.color.gray_de};
+    color: ${({ theme }) => theme.color.gray_ec};
   }
 `;
