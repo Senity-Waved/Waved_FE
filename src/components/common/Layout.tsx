@@ -12,6 +12,7 @@ interface ILayout {
   title?: string;
   description?: string;
   noFooter?: boolean;
+  rightOnClick?: () => void;
 }
 
 export default function Layout({
@@ -21,6 +22,7 @@ export default function Layout({
   title,
   description,
   noFooter,
+  rightOnClick,
 }: ILayout) {
   return (
     <SLayoutWrapper>
@@ -37,7 +39,11 @@ export default function Layout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
-      <Header headerText={headerText} rightText={rightText} />
+      <Header
+        headerText={headerText}
+        rightText={rightText}
+        rightOnClick={rightOnClick}
+      />
       <main>{children}</main>
       {noFooter || <Footer />}
     </SLayoutWrapper>
