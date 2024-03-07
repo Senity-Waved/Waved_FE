@@ -23,7 +23,7 @@ export default function Footer() {
             alt="홈 아이콘"
             width={24}
             height={24}
-            priority
+            blurDataURL="/icons/icon-home-normal"
           />
           <p>홈</p>
         </SFooterNavItem>
@@ -39,7 +39,7 @@ export default function Footer() {
             alt="마이 챌린지 아이콘"
             width={24}
             height={24}
-            priority
+            blurDataURL="/icons/icon-mychallenge-normal"
           />
           <p>마이 챌린지</p>
         </SFooterNavItem>
@@ -51,7 +51,7 @@ export default function Footer() {
             alt="프로필 아이콘"
             width={24}
             height={24}
-            priority
+            blurDataURL="/icons/icon-profile-normal"
           />
           <p>프로필</p>
         </SFooterNavItem>
