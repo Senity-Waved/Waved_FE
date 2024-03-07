@@ -32,20 +32,20 @@ export default function PrivacyInput({
       <SGenderWrapper>
         <SGenderText>성별(선택)</SGenderText>
         <SGenderBtnWrapper>
-          <SFemaleBtn
+          <SGenderBtn
             type="button"
-            gender={currentGender}
+            selectedGender={currentGender === EGender.Female}
             onClick={() => updateRegisterData({ gender: EGender.Female })}
           >
             여자
-          </SFemaleBtn>
-          <SMaleBtn
+          </SGenderBtn>
+          <SGenderBtn
             type="button"
-            gender={currentGender}
+            selectedGender={currentGender === EGender.Male}
             onClick={() => updateRegisterData({ gender: EGender.Male })}
           >
             남자
-          </SMaleBtn>
+          </SGenderBtn>
         </SGenderBtnWrapper>
       </SGenderWrapper>
     </SPrivacyInputWrapper>
@@ -124,26 +124,14 @@ const SGenderBtnWrapper = styled.div`
   gap: 0.4375rem;
 `;
 
-const SFemaleBtn = styled.button<{ gender: TGenderOrNull }>`
+const SGenderBtn = styled.button<{ selectedGender: boolean }>`
   width: 100%;
   height: 48px;
   font-size: ${({ theme }) => theme.fontSize.body4};
-  color: ${({ theme, gender }) =>
-    gender === EGender.Female ? theme.color.normal : theme.color.gray_99};
+  color: ${({ theme, selectedGender }) =>
+    selectedGender ? theme.color.normal : theme.color.gray_99};
   border: 1px solid
-    ${({ theme, gender }) =>
-      gender === EGender.Female ? theme.color.normal : theme.color.gray_ec};
-  border-radius: 8px;
-`;
-
-const SMaleBtn = styled.button<{ gender: TGenderOrNull }>`
-  width: 100%;
-  height: 48px;
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  color: ${({ theme, gender }) =>
-    gender === EGender.Male ? theme.color.normal : theme.color.gray_99};
-  border: 1px solid
-    ${({ theme, gender }) =>
-      gender === EGender.Male ? theme.color.normal : theme.color.gray_ec};
+    ${({ theme, selectedGender }) =>
+      selectedGender ? theme.color.normal : theme.color.gray_ec};
   border-radius: 8px;
 `;
