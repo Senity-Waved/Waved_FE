@@ -5,9 +5,14 @@ import { useRouter } from 'next/router';
 interface IHeader {
   headerText?: string;
   rightText?: string;
+  rightOnClick?: () => void;
 }
 
-export default function Header({ headerText, rightText }: IHeader) {
+export default function Header({
+  headerText,
+  rightText,
+  rightOnClick,
+}: IHeader) {
   const router = useRouter();
   return (
     <SHeaderWrapper>
@@ -25,7 +30,7 @@ export default function Header({ headerText, rightText }: IHeader) {
         />
       </SBackBtn>
       <SHeaderCenter>{headerText && <span>{headerText}</span>}</SHeaderCenter>
-      <SHeaderRightChild>
+      <SHeaderRightChild onClick={rightOnClick}>
         <span>{rightText}</span>
       </SHeaderRightChild>
     </SHeaderWrapper>
@@ -63,7 +68,7 @@ const SHeaderCenter = styled.div`
 const SHeaderRightChild = styled.div`
   position: absolute;
   right: 0;
-  margin-right: 18px;
+  margin-right: 1.125rem;
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
