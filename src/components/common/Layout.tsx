@@ -32,7 +32,7 @@ export default function Layout({
         <title>{title ? `WAVED | ${title}` : 'WAVED'}</title>
         <meta
           name="description"
-          content={description || 'Waved 챌린지 서비스'}
+          content={description || 'Waved 챌린지 서비스입니다.'}
         />
         <meta
           name="viewport"
