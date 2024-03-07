@@ -7,6 +7,7 @@ import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 
 interface IChallengeReview {
   reviewId: number;
@@ -117,6 +118,16 @@ export default function Challenge() {
             <p key={uuidv4()}>{line}</p>
           ))}
         </SSectionContext>
+      </SSection>
+      <SSection id="review">
+        <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
+        <ul>
+          {challengeData.reviews.map((review) => {
+            const { reviewId, ...rest } = review;
+            return <ChallengeReviewItem key={reviewId} {...rest} />;
+          })}
+        </ul>
+        <SMoreBtn type="button">더보기</SMoreBtn>
       </SSection>
       <SSection id="verification">
         <SSectionTitle>인증 방식</SSectionTitle>
@@ -237,6 +248,30 @@ const SSectionContext = styled.div`
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
   line-height: 1.8;
+`;
+
+const SMoreBtn = styled.button`
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  padding: 0 1.75rem 0 0.5rem;
+  border-radius: 12px;
+  line-height: 24px;
+  background-color: ${({ theme }) => theme.color.light};
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
+  &::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    width: 6px;
+    height: 6px;
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
+    border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
+    transform: rotate(45deg);
+  }
 `;
 
 const SSectionScrollX = styled.div`
