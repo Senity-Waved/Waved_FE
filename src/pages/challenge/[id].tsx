@@ -5,7 +5,6 @@ import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
-import ChallengeInformation from '@/components/challenge/ChallengeInformation';
 
 export default function Challenge() {
   const router = useRouter();
@@ -53,7 +52,6 @@ export default function Challenge() {
             { href: `/challenge/${id}#certification`, text: '인증' },
           ]}
         />
-        <ChallengeInformation />
       </SDescription>
       <BottomFixedBtn
         btns={[
