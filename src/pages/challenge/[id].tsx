@@ -15,17 +15,6 @@ export default function Challenge() {
       title="챌린지 상세 정보"
       description="챌린지 상세 정보 페이지 수정해야 함"
     >
-      <span
-        css={{
-          position: 'absolute',
-          top: 0,
-          backgroundColor: 'orange',
-          zIndex: 30,
-        }}
-      >
-        {/* 챌린지 id 테스트 */}
-        {id}
-      </span>
       <SImage>
         <Image
           src="https://via.placeholder.com/600x400.jpg"
