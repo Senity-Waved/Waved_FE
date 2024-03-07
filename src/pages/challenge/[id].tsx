@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styled from '@emotion/styled';
+import { v4 as uuidv4 } from 'uuid';
+import Link from 'next/link';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -68,17 +70,20 @@ const challengeData: IChallenge = {
 export default function Challenge() {
   const router = useRouter();
   const id = typeof router.query.id === 'string' ? router.query.id : '';
-
   return (
     <Layout
       title="챌린지 상세 정보"
       description="챌린지 상세 정보 페이지 수정해야 함"
+      noFooter
     >
-      <SImage>
+      <SThumbnail>
         <Image
-          src="https://via.placeholder.com/600x400.jpg"
-          alt={id}
-          fill
+          alt={`${id} 대표 이미지`}
+          src={challengeData.thumbnail}
+          width="0"
+          height="0"
+          sizes="100vw"
+          style={{ width: '100%', height: 'auto' }}
           priority
         />
         <STagList>
@@ -88,19 +93,72 @@ export default function Challenge() {
           <dd>2주</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
           <dd>사진인증</dd>
+          {challengeData.isFree && (
+            <>
+              <dt className="a11yHidden">챌린지 예치금 유무</dt>
+              <dd>무료</dd>
+            </>
+          )}
         </STagList>
-      </SImage>
+      </SThumbnail>
       <ChallengeSummary condition="recruiting" />
-      <SDescription>
-        <TabMenu
-          positionTop={90}
-          tabs={[
-            { href: `/challenge/${id}#information`, text: '정보' },
-            { href: `/challenge/${id}#review`, text: '후기' },
-            { href: `/challenge/${id}#certification`, text: '인증' },
-          ]}
+      <TabMenu
+        positionTop={90}
+        tabs={[
+          { href: `/challenge/${id}`, text: '정보' },
+          { href: `/challenge/${id}#review`, text: '후기' },
+          { href: `/challenge/${id}#verification`, text: '인증' },
+        ]}
+      />
+      <SSection id="information">
+        <SSectionTitle>{challengeData.title}</SSectionTitle>
+        <SSectionContext>
+          {challengeData.description.split('\n').map((line) => (
+            <p key={uuidv4()}>{line}</p>
+          ))}
+        </SSectionContext>
+      </SSection>
+      <SSection id="verification">
+        <SSectionTitle>인증 방식</SSectionTitle>
+        <SSectionContext>
+          {challengeData.description.split('\n').map((line) => (
+            <p key={uuidv4()}>{line}</p>
+          ))}
+        </SSectionContext>
+        <SSectionTitle>예시</SSectionTitle>
+        <SSectionScrollX>
+          {challengeData.verificationExample.map((url) => (
+            <Image
+              key={uuidv4()}
+              src={url}
+              width={150}
+              height={218}
+              priority
+              alt="인증 예시"
+            />
+          ))}
+        </SSectionScrollX>
+      </SSection>
+      <SLinkItem href="/">
+        <h3>주의사항</h3>
+        <Image
+          src="/icons/icon-left-arrow.svg"
+          alt="마이 챌린지로 가기"
+          width={24}
+          height={24}
+          priority
         />
-      </SDescription>
+      </SLinkItem>
+      <SLinkItem href="/">
+        <h3>예치금 환불 안내</h3>
+        <Image
+          src="/icons/icon-left-arrow.svg"
+          alt="마이 챌린지로 가기"
+          width={24}
+          height={24}
+          priority
+        />
+      </SLinkItem>
       <BottomFixedBtn
         btns={[
           {
@@ -114,11 +172,8 @@ export default function Challenge() {
   );
 }
 
-const SImage = styled.div`
+const SThumbnail = styled.div`
   position: relative;
-  width: 100%;
-  height: 246px;
-  object-fit: cover;
 `;
 
 const STagList = styled.dl`
@@ -140,21 +195,86 @@ const STagList = styled.dl`
   }
 `;
 
-const SDescription = styled.div`
-  section {
+const SSection = styled.section`
+  position: relative;
+  padding: 1.5rem 0;
+  color: ${({ theme }) => theme.color.gray_3c};
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+  &:not(:last-of-type)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background-color: ${({ theme }) => theme.color.gray_ec};
+  }
+`;
+
+const SSectionTitle = styled.h3`
+  padding: 0 1.25rem;
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
+  div + & {
     position: relative;
-    padding: 1.5rem 1.25rem;
-    color: ${({ theme }) => theme.color.gray_3c};
-    &:not(:last-of-type)::after {
+    padding-top: 3rem;
+    &::before {
       content: '';
       position: absolute;
-      bottom: 0;
+      top: 1.25rem;
       left: 0;
       right: 0;
-      display: block;
-      width: 100%;
-      height: 6px;
+      height: 1px;
       background-color: ${({ theme }) => theme.color.gray_ec};
     }
+  }
+`;
+
+const SSectionContext = styled.div`
+  padding: 1rem 1.25rem 0;
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  line-height: 1.8;
+`;
+
+const SSectionScrollX = styled.div`
+  display: flex;
+  gap: 0.625rem;
+  width: 100%;
+  height: 254px;
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  /* 스크롤바 미노출 */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
+`;
+
+const SLinkItem = styled(Link)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 1.25rem;
+  h2 {
+    line-height: 56px;
+    color: ${({ theme }) => theme.color.gray_3c};
+    font-size: ${({ theme }) => theme.fontSize.body1};
+    font-weight: ${({ theme }) => theme.fontWeight.body1};
+  }
+  img {
+    transform: rotate(180deg);
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+  }
+  &:not(:last-of-type) {
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
 `;
