@@ -31,8 +31,9 @@ export default function RegisterSuccess() {
             <Image
               src="/images/image-fanfare.svg"
               alt="팡파레 이미지"
-              width={88}
-              height={88}
+              width={120}
+              height={120}
+              priority
             />
             <SSuccessText>회원가입 완료</SSuccessText>
             <p>함께 챌린지를 시작해볼까요?</p>
@@ -70,8 +71,8 @@ const SRegisterSuccessBox = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
   color: ${({ theme }) => theme.color.gray_83};
 `;
 
@@ -79,6 +80,8 @@ const SSuccessText = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
   color: ${({ theme }) => theme.color.gray_3c};
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
 `;
 
 const SRegisterSuccessBtnWrapper = styled.div`
