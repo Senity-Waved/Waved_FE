@@ -6,6 +6,11 @@ interface INicknameInput {
 }
 
 export default function NicknameInput({ updateRegisterData }: INicknameInput) {
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
   return (
     <SNicknameInputWrapper>
       <SNickNameWordsText>최대 10자</SNickNameWordsText>
@@ -15,6 +20,7 @@ export default function NicknameInput({ updateRegisterData }: INicknameInput) {
         id="nicknameInput"
         placeholder="닉네임"
         onChange={(e) => updateRegisterData({ nickname: e.target.value })}
+        onKeyDown={handleEnterKey}
       />
     </SNicknameInputWrapper>
   );
