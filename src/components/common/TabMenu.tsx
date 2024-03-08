@@ -24,7 +24,7 @@ function Tab({ href, text }: ITab) {
   );
 }
 
-export default function TabMenu({ tabs, positionTop }: ITabMenu) {
+export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
   return (
     <STabMenu positionTop={positionTop}>
       {tabs.map((tab) => (
@@ -57,7 +57,7 @@ const STabMenu = styled.ul<{ positionTop?: number }>`
   width: 100%;
   height: 48px;
   position: sticky;
-  top: ${({ positionTop }) => `${positionTop}px` || 0};
+  top: ${({ positionTop }) => `${positionTop}px`};
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
 `;
