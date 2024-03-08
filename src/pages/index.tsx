@@ -6,7 +6,7 @@ import Layout from '@/components/common/Layout';
 import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import ChallengeCard from '@/components/home/ChallengeCard';
-import ChallengeRequest from '@/components/home/ChallengeRequest';
+import FloatingBtn from '@/components/home/FloatingBtn';
 
 interface IChallenge {
   challengeId: number;
@@ -38,6 +38,7 @@ const challengeData: IChallenge[] = [
 ];
 
 export default function Home() {
+  const user = true; // 로그인된 유저 테스트용 변수
   return (
     <Layout headerText="WAVED">
       <TopBanner />
@@ -105,7 +106,7 @@ export default function Home() {
           ))}
         </SListGrid>
       </SSection>
-      <ChallengeRequest />
+      <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
     </Layout>
   );
 }

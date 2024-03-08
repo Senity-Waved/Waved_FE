@@ -1,11 +1,24 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-export default function ChallengeRequest() {
-  return <SChallengeRequest href="/request">챌린지 요청</SChallengeRequest>;
+interface IFloatingBtn {
+  type: 'challengeRequest' | 'register';
 }
 
-const SChallengeRequest = styled(Link)`
+export default function FloatingBtn({ type }: IFloatingBtn) {
+  const renderButtonContent = () => {
+    if (type === 'challengeRequest') {
+      return <SChallengeRequest href="/request">챌린지 요청</SChallengeRequest>;
+    }
+    if (type === 'register') {
+      return <SRegister href="/register">회원가입 및 로그인</SRegister>;
+    }
+    return null;
+  };
+  return renderButtonContent();
+}
+
+const SFloatingBtn = styled(Link)`
   position: fixed;
   bottom: 112px;
   left: 54%;
@@ -19,6 +32,10 @@ const SChallengeRequest = styled(Link)`
   color: ${({ theme }) => theme.color.gray_ec};
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+`;
+
+const SChallengeRequest = styled(SFloatingBtn)`
+  left: 54%;
   &::before {
     content: '';
     display: inline-block;
@@ -26,4 +43,9 @@ const SChallengeRequest = styled(Link)`
     height: 24px;
     background: url('/icons/icon-write-form.svg') no-repeat center;
   }
+`;
+
+const SRegister = styled(SFloatingBtn)`
+  left: 50%;
+  transform: translateX(-50%);
 `;
