@@ -54,7 +54,7 @@ export default function Layout({
   );
 }
 
-const SLayoutWrapper = styled.div`
+export const SLayoutWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
