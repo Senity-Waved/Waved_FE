@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import ChallengeCard from '@/components/home/ChallengeCard';
-import IChallengeList from '@/types/IChallengeList';
+import IChallengeList from '@/types/challengeList';
 
 interface IRecrutingList {
   title: string;

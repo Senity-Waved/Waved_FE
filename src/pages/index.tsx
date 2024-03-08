@@ -9,7 +9,7 @@ import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import RecrutingList from '@/components/home/RecrutingList';
-import IChallengeList from '@/types/IChallengeList';
+import IChallengeList from '@/types/challengeList';
 
 const challengeData: IChallengeList[] = [
   {

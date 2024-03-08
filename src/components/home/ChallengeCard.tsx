@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import IChallengeList from '@/types/IChallengeList';
+import IChallengeList from '@/types/challengeList';
 
 export default function ChallengeCard({
   challengeId,
