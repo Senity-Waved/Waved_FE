@@ -1,25 +1,27 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ITextArea {
   placeholder: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function TextArea({ placeholder }: ITextArea) {
+export default function TextArea({ placeholder, setText }: ITextArea) {
   const [textLength, setTextLength] = useState<number>(0);
 
   const countTextLength = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextLength(e.target.value.length);
+    setText(e.target.value);
   };
 
   return (
     <SWrapper>
       <STextArea
         placeholder={placeholder}
-        maxLength={700}
+        maxLength={300}
         onChange={countTextLength}
       />
-      <STextLength>&#40;{textLength}/700&#41;</STextLength>
+      <STextLength>&#40;{textLength}/300&#41;</STextLength>
     </SWrapper>
   );
 }

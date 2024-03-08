@@ -31,7 +31,9 @@ export default function ChallengeBtn({
           {isAuto ? (
             <SBtn styleType="gray">자동인증</SBtn>
           ) : (
-            <SBtn styleType={isAbled ? 'middle' : 'gray'}>인증하기</SBtn>
+            <SBtn href="/verification" styleType={isAbled ? 'middle' : 'gray'}>
+              인증하기
+            </SBtn>
           )}
         </SBtnWrapper>
       );

@@ -9,20 +9,14 @@ export interface IChallengeItem {
   status: '진행중' | '대기중' | '진행완료';
   // startDate: number;
   // endDate: number;
-  // certificationType: '글' | '링크' | '사진' | '커밋';
-  // successCount: number;
-  // failCount: number;
-  // totalCount: number;
+  // certificationType: '글' | '링크' | '사진' | '자동';
+  // successCount?: number;
+  // failCount?: number;
+  // totalCount?: number;
   // deposit: number;
-  // isTodayCertification: boolean;
-  // isReviewd: boolean;
+  // isTodayCertification?: boolean;
+  // isReviewd?: boolean;
 }
-
-const statusLabel = {
-  진행중: '진행 중',
-  대기중: '시작 전',
-  진행완료: '완료',
-};
 
 export default function ChallengeItem({ status }: IChallengeItem) {
   return (
@@ -37,10 +31,6 @@ export default function ChallengeItem({ status }: IChallengeItem) {
           </SDeposit>
         </div>
       </SInfoWrapper>
-      {/* {totalCount === successCount && <SCompletedWrapper>
-        <p>모든 인증을 완료했어요 🎉</p>
-        <span>획득한 인증패스는 인증내역에서 확인할 수 있어요.</span>
-      </SCompletedWrapper>} */}
       {status === '진행중' && <ChallengeProgress />}
       <ChallengeBtn challengeStatus={status} isAbled />
       <SDetailBtn>
@@ -70,7 +60,7 @@ const SDetailBtn = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  height: 1.5rem;
+  height: 24px;
   transform: rotate(180deg);
 `;
 
