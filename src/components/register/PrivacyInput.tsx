@@ -60,7 +60,6 @@ const SPrivacyInputWrapper = styled.div`
     margin: 0 20px;
     border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
-  margin-bottom: 40px;
 `;
 
 const SBirthYearWrapper = styled.div`

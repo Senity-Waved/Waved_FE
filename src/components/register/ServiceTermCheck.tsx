@@ -211,7 +211,7 @@ const SServiceTermTableWrapper = styled.div`
   font-size: ${({ theme }) => theme.fontSize.caption2};
   text-align: left;
   padding: 0.75rem 1rem;
-  margin: 0 1.25rem 2.5rem 1.25rem;
+  margin: 0 1.25rem 0 1.25rem;
 
   & table td,
   & table th {

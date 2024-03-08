@@ -139,7 +139,7 @@ export default function Register() {
             />
           )}
           {step === 4 && (
-            <SRegisterNextBtnWrapper>
+            <SRegisterNextBtnWrapper step={step}>
               <Btn
                 btns={[
                   {
@@ -156,7 +156,7 @@ export default function Register() {
             </SRegisterNextBtnWrapper>
           )}
         </form>
-        <SRegisterNextBtnWrapper onClick={goToNextStep}>
+        <SRegisterNextBtnWrapper onClick={goToNextStep} step={step}>
           {step === 1 && (
             <Btn
               btns={[
@@ -246,6 +246,20 @@ const SCurrentStep = styled.span`
   color: ${({ theme }) => theme.color.gray_bf};
 `;
 
-const SRegisterNextBtnWrapper = styled.div`
+const SRegisterNextBtnWrapper = styled.div<{ step: number }>`
   margin: 0 1.25rem 0.625rem 1.25rem;
+  width: calc(100% - 40px);
+  position: absolute;
+  bottom: ${({ step }) => {
+    if (step === 1) {
+      return `calc(100% - 31.8125rem)`;
+    }
+    if (step === 2) {
+      return `calc(100% - 25.0625rem)`;
+    }
+    if (step === 3) {
+      return `calc(100% - 22.8125rem)`;
+    }
+    return `calc(100% - 17.5rem)`;
+  }};
 `;

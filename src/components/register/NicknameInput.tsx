@@ -48,7 +48,6 @@ const SNicknameInput = styled.input`
   padding-bottom: 0.0625rem;
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-  margin-bottom: 10.625rem;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_ec};
