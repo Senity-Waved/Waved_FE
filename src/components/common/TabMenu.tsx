@@ -16,7 +16,9 @@ function Tab({ href, text }: ITab) {
   const isActive = router.asPath === href;
   return (
     <STab isActive={isActive}>
-      <Link href={href}>{text}</Link>
+      <Link href={href} replace>
+        {text}
+      </Link>
     </STab>
   );
 }
@@ -53,4 +55,8 @@ const STabMenu = styled.ul`
   display: flex;
   width: 100%;
   height: 48px;
+  position: sticky;
+  top: 0;
+  background-color: ${({ theme }) => theme.color.white};
+  z-index: 5;
 `;

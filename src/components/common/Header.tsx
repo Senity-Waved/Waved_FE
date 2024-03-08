@@ -5,15 +5,21 @@ import { useRouter } from 'next/router';
 interface IHeader {
   headerText?: string;
   rightText?: string;
+  rightOnClick?: () => void;
 }
 
-export default function Header({ headerText, rightText }: IHeader) {
+export default function Header({
+  headerText,
+  rightText,
+  rightOnClick,
+}: IHeader) {
   const router = useRouter();
   return (
     <SHeaderWrapper>
       <SBackBtn
         type="button"
         onClick={() => router.back()}
+        tabIndex={headerText === '회원가입' ? -1 : 0}
         aria-label="뒤로 가기"
       >
         <Image
@@ -25,7 +31,7 @@ export default function Header({ headerText, rightText }: IHeader) {
         />
       </SBackBtn>
       <SHeaderCenter>{headerText && <span>{headerText}</span>}</SHeaderCenter>
-      <SHeaderRightChild>
+      <SHeaderRightChild onClick={rightOnClick}>
         <span>{rightText}</span>
       </SHeaderRightChild>
     </SHeaderWrapper>
@@ -56,14 +62,14 @@ const SHeaderCenter = styled.div`
   left: 50%;
   transform: translateX(-50%);
   margin: 0 auto;
-  font-size: 1.25rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
 const SHeaderRightChild = styled.div`
   position: absolute;
   right: 0;
-  margin-right: 18px;
+  margin-right: 1.125rem;
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 `;
