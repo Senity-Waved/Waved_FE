@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Layout from '@/components/common/Layout';
 
 export default function Profile() {
+  const isLogined = false;
   return (
     <Layout noHeader>
       <SNotificationBtn type="button">
@@ -19,78 +20,120 @@ export default function Profile() {
         <SProfileShortcutWrapper>
           <h3 className="a11yHidden">프로필 인사말</h3>
           <SProfileGreetingWrapper>
-            <p>
-              <span>웨이브드</span> 프론트엔드
-            </p>
+            {isLogined ? (
+              <p>
+                <span>웨이브드</span>&nbsp;프론트엔드
+              </p>
+            ) : (
+              <Link href="/">
+                <p>
+                  <span>로그인</span>&nbsp;혹은&nbsp;<span>회원가입</span>
+                  <Image
+                    src="/icons/icon-down-arrow.svg"
+                    alt="화살표 아이콘"
+                    width={34}
+                    height={34}
+                    style={{ transform: 'rotate(270deg)' }}
+                  />
+                </p>
+              </Link>
+            )}
+
             <p>개발자님 오늘도 화이팅하세요!</p>
           </SProfileGreetingWrapper>
-          <SGithubIdBtnWrapper>
-            <Image
-              src="/icons/icon-github-logo.svg"
-              alt="깃허브 로고"
-              width={18}
-              height={18}
-            />
-            <SGithubIdBtn type="button">깃허브 연동하기</SGithubIdBtn>
-          </SGithubIdBtnWrapper>
+          {isLogined && (
+            <SGithubIdBtnWrapper>
+              <Image
+                src="/icons/icon-github-logo.svg"
+                alt="깃허브 로고"
+                width={18}
+                height={18}
+              />
+              <SGithubIdBtn type="button">깃허브 연동하기</SGithubIdBtn>
+            </SGithubIdBtnWrapper>
+          )}
         </SProfileShortcutWrapper>
         <div>
           <h3>챌린지 기록</h3>
           <ul>
-            <SProfileMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
               <Link href="/">
                 <p>나의 후기</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SProfileMenuWrapper>
+            </SProfileActiveMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
               <Link href="/">
                 <p>예치금 내역</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
                 />
               </Link>
-            </SProfileMenuWrapper>
+            </SProfileActiveMenuWrapper>
           </ul>
         </div>
         <div>
           <h3>계정 설정</h3>
           <ul>
-            <SProfileMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
               <Link href="/">
                 <p>프로필 수정</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SProfileMenuWrapper>
+            </SProfileActiveMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
               <Link href="/">
                 <p>깃허브 연동 관리</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SLogoutBtnWrapper>
+            </SProfileActiveMenuWrapper>
+            <SLogoutBtnWrapper isLogined={isLogined}>
               <button type="button">로그아웃</button>
             </SLogoutBtnWrapper>
           </ul>
@@ -98,54 +141,60 @@ export default function Profile() {
         <div>
           <h3>고객 센터</h3>
           <ul>
-            <SProfileMenuWrapper>
+            <SPropfileBaseMenuWrapper>
               <Link href="/">
                 <p>자주 묻는 질문</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src="/icons/icon-down-arrow.svg"
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{ transform: 'rotate(270deg)' }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SProfileMenuWrapper>
+            </SPropfileBaseMenuWrapper>
+            <SPropfileBaseMenuWrapper>
               <Link href="/">
                 <p>1:1 문의하기</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src="/icons/icon-down-arrow.svg"
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{ transform: 'rotate(270deg)' }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SProfileMenuWrapper>
+            </SPropfileBaseMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
               <Link href="/">
                 <p>챌린지 요청</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
                 />
               </Link>
-            </SProfileMenuWrapper>
-            <SProfileMenuWrapper>
+            </SProfileActiveMenuWrapper>
+            <SPropfileBaseMenuWrapper>
               <Link href="/">
                 <p>약관 및 정책</p>
                 <Image
-                  src="/icons/icon-left-arrow.svg"
+                  src="/icons/icon-down-arrow.svg"
                   alt="화살표 아이콘"
                   width={24}
                   height={24}
-                  style={{ transform: 'rotate(180deg)' }}
+                  style={{ transform: 'rotate(270deg)' }}
                 />
               </Link>
-            </SProfileMenuWrapper>
+            </SPropfileBaseMenuWrapper>
           </ul>
         </div>
         <SProfileEtc>
@@ -154,8 +203,9 @@ export default function Profile() {
             <p>1.0.0</p>
           </div>
         </SProfileEtc>
+
         <SwithdrawalBtnWrapper>
-          <button type="button">회원 탈퇴</button>
+          {isLogined && <button type="button">회원 탈퇴</button>}
         </SwithdrawalBtnWrapper>
       </SProfileWrapper>
     </Layout>
@@ -184,7 +234,7 @@ const SNotificationBtn = styled.button`
   right: 16px;
 `;
 
-const SProfileMenuWrapper = styled.li`
+const SPropfileBaseMenuWrapper = styled.li<{ isLogined?: boolean }>`
   position: relative;
 
   & > a {
@@ -205,8 +255,15 @@ const SProfileMenuWrapper = styled.li`
   }
 `;
 
+const SProfileActiveMenuWrapper = styled(SPropfileBaseMenuWrapper)`
+  & > a {
+    color: ${({ theme, isLogined }) =>
+      isLogined ? theme.color.gray_3c : theme.color.gray_bf};
+    cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
+  }
+`;
+
 const SProfileShortcutWrapper = styled.div`
-  height: 162px;
   margin-top: 3.5rem;
   display: flex;
   flex-flow: column nowrap;
@@ -226,9 +283,16 @@ const SProfileGreetingWrapper = styled.div`
   width: 335px;
   height: 70px;
 
+  & a {
+    width: 230px;
+  }
+
   & p {
     font-size: ${({ theme }) => theme.fontSize.headline1};
     font-weight: ${({ theme }) => theme.fontWeight.headline1};
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
   }
 
   & span {
@@ -278,16 +342,20 @@ const SProfileEtc = styled.div`
   }
 `;
 
-const SLogoutBtnWrapper = styled.li`
+const SLogoutBtnWrapper = styled.li<{ isLogined: boolean }>`
   position: relative;
 
   & button {
+    width: 100%;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
     height: 56px;
     font-size: ${({ theme }) => theme.fontSize.body2};
+    color: ${({ theme, isLogined }) =>
+      isLogined ? theme.color.gray_3c : theme.color.gray_bf};
+    cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
   }
 
   &::after {
