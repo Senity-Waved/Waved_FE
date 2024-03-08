@@ -21,21 +21,21 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
 const SFloatingBtn = styled(Link)`
   position: fixed;
   bottom: 112px;
-  left: 54%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
   background-color: ${({ theme }) => theme.color.normal};
   border-radius: 24px;
   box-shadow: 0px 2px 5px 2px rgba(82, 85, 92, 0.25);
   color: ${({ theme }) => theme.color.gray_ec};
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  font-size: ${({ theme }) => theme.fontSize.body1};
+  font-weight: ${({ theme }) => theme.fontWeight.body1};
+  line-height: 24px;
 `;
 
 const SChallengeRequest = styled(SFloatingBtn)`
-  left: 54%;
+  left: 58%;
+  padding: 0.625rem 1.25rem;
   &::before {
     content: '';
     display: inline-block;
@@ -48,4 +48,5 @@ const SChallengeRequest = styled(SFloatingBtn)`
 const SRegister = styled(SFloatingBtn)`
   left: 50%;
   transform: translateX(-50%);
+  padding: 0.75rem 1.25rem;
 `;
