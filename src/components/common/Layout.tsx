@@ -7,11 +7,13 @@ import Footer from '@/components/common/Footer';
 
 interface ILayout {
   children: React.ReactNode;
-  headerText: string;
+  headerText?: string;
   rightText?: string;
   title?: string;
   description?: string;
   noFooter?: boolean;
+  noHeader?: boolean;
+  rightOnClick?: () => void;
 }
 
 export default function Layout({
@@ -21,6 +23,8 @@ export default function Layout({
   title,
   description,
   noFooter,
+  noHeader,
+  rightOnClick,
 }: ILayout) {
   return (
     <SLayoutWrapper>
@@ -28,7 +32,7 @@ export default function Layout({
         <title>{title ? `WAVED | ${title}` : 'WAVED'}</title>
         <meta
           name="description"
-          content={description || 'Waved 챌린지 서비스'}
+          content={description || 'Waved 챌린지 서비스입니다.'}
         />
         <meta
           name="viewport"
@@ -37,14 +41,20 @@ export default function Layout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
-      <Header headerText={headerText} rightText={rightText} />
+      {noHeader || (
+        <Header
+          headerText={headerText}
+          rightText={rightText}
+          rightOnClick={rightOnClick}
+        />
+      )}
       <main>{children}</main>
       {noFooter || <Footer />}
     </SLayoutWrapper>
   );
 }
 
-const SLayoutWrapper = styled.div`
+export const SLayoutWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
