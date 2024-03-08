@@ -3,11 +3,12 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
-import Layout from '@/components/common/Layout';
+import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
+import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 
 interface IChallengeReview {
   reviewId: number;
@@ -72,111 +73,110 @@ export default function Challenge() {
   const router = useRouter();
   const id = typeof router.query.id === 'string' ? router.query.id : '';
   return (
-    <Layout
-      title="챌린지 상세 정보"
-      description="챌린지 상세 정보 페이지 수정해야 함"
-      noFooter
-    >
-      <SThumbnail>
-        <Image
-          alt={`${id} 대표 이미지`}
-          src={challengeData.thumbnail}
-          fill
-          sizes="100vw"
-          priority
+    <SLayoutWrapper>
+      <ChallengeHeader />
+      <main>
+        <SThumbnail>
+          <Image
+            alt={`${id} 대표 이미지`}
+            src={challengeData.thumbnail}
+            fill
+            sizes="100vw"
+            priority
+          />
+          <SChips>
+            <dt className="a11yHidden">챌린지 인증 빈도</dt>
+            <dd>매일</dd>
+            <dt className="a11yHidden">챌린지 진행 기한</dt>
+            <dd>2주</dd>
+            <dt className="a11yHidden">챌린지 인증 방식</dt>
+            <dd>사진인증</dd>
+            {challengeData.isFree && (
+              <>
+                <dt className="a11yHidden">챌린지 예치금 유무</dt>
+                <dd>무료</dd>
+              </>
+            )}
+          </SChips>
+        </SThumbnail>
+        <ChallengeSummary condition="recruiting" />
+        <TabMenu
+          positionTop={90}
+          tabs={[
+            { href: `/challenge/${id}`, text: '정보' },
+            { href: `/challenge/${id}#review`, text: '후기' },
+            { href: `/challenge/${id}#verification`, text: '인증' },
+          ]}
         />
-        <SChips>
-          <dt className="a11yHidden">챌린지 인증 빈도</dt>
-          <dd>매일</dd>
-          <dt className="a11yHidden">챌린지 진행 기한</dt>
-          <dd>2주</dd>
-          <dt className="a11yHidden">챌린지 인증 방식</dt>
-          <dd>사진인증</dd>
-          {challengeData.isFree && (
-            <>
-              <dt className="a11yHidden">챌린지 예치금 유무</dt>
-              <dd>무료</dd>
-            </>
-          )}
-        </SChips>
-      </SThumbnail>
-      <ChallengeSummary condition="recruiting" />
-      <TabMenu
-        positionTop={90}
-        tabs={[
-          { href: `/challenge/${id}`, text: '정보' },
-          { href: `/challenge/${id}#review`, text: '후기' },
-          { href: `/challenge/${id}#verification`, text: '인증' },
-        ]}
-      />
-      <SSection id="information">
-        <SSectionTitle>{challengeData.title}</SSectionTitle>
-        <SSectionContext>
-          {challengeData.description.split('\n').map((line) => (
-            <p key={uuidv4()}>{line}</p>
-          ))}
-        </SSectionContext>
-      </SSection>
-      <SSection id="review">
-        <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-        <ul>
-          {challengeData.reviews.map((review) => {
-            const { reviewId, ...rest } = review;
-            return <ChallengeReviewItem key={reviewId} {...rest} />;
-          })}
-        </ul>
-        <SMoreBtn type="button">더보기</SMoreBtn>
-      </SSection>
-      <SSection id="verification">
-        <SSectionTitle>인증 방식</SSectionTitle>
-        <SSectionContext>
-          {challengeData.description.split('\n').map((line) => (
-            <p key={uuidv4()}>{line}</p>
-          ))}
-        </SSectionContext>
-        <SSectionTitle>예시</SSectionTitle>
-        <SSectionScrollX>
-          {challengeData.verificationExample.map((url) => (
-            <Image
-              key={uuidv4()}
-              src={url}
-              width={150}
-              height={218}
-              priority
-              alt="인증 예시"
-            />
-          ))}
-        </SSectionScrollX>
-      </SSection>
-      <SLinkItem href="/">
-        <h3>주의사항</h3>
-        <Image
-          src="/icons/icon-left-arrow.svg"
-          alt="마이 챌린지로 가기"
-          width={24}
-          height={24}
-          priority
+        <SSection id="information">
+          <SSectionTitle>{challengeData.title}</SSectionTitle>
+          <SSectionContext>
+            {challengeData.description.split('\n').map((line) => (
+              <p key={uuidv4()}>{line}</p>
+            ))}
+          </SSectionContext>
+        </SSection>
+        <SSection id="review">
+          <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
+          <ul>
+            {challengeData.reviews.map((review) => {
+              const { reviewId, ...rest } = review;
+              return <ChallengeReviewItem key={reviewId} {...rest} />;
+            })}
+          </ul>
+          <SMoreBtn type="button">더보기</SMoreBtn>
+        </SSection>
+        <SSection id="verification">
+          <SSectionTitle>인증 방식</SSectionTitle>
+          <SSectionContext>
+            {challengeData.description.split('\n').map((line) => (
+              <p key={uuidv4()}>{line}</p>
+            ))}
+          </SSectionContext>
+          <SSectionTitle>예시</SSectionTitle>
+          <SSectionScrollX>
+            {challengeData.verificationExample.map((url) => (
+              <Image
+                key={uuidv4()}
+                src={url}
+                width={150}
+                height={218}
+                priority
+                alt="인증 예시"
+              />
+            ))}
+          </SSectionScrollX>
+        </SSection>
+        <SLinkItem href="/">
+          <h3>주의사항</h3>
+          <Image
+            src="/icons/icon-left-arrow.svg"
+            alt="마이 챌린지로 가기"
+            width={24}
+            height={24}
+            priority
+          />
+        </SLinkItem>
+        <SLinkItem href="/">
+          <h3>예치금 환불 안내</h3>
+          <Image
+            src="/icons/icon-left-arrow.svg"
+            alt="마이 챌린지로 가기"
+            width={24}
+            height={24}
+          />
+        </SLinkItem>
+        <BottomFixedBtn
+          btns={[
+            {
+              text: '화면 하단 고정 버튼',
+              styleType: 'primary',
+              size: 'large',
+            },
+          ]}
         />
-      </SLinkItem>
-      <SLinkItem href="/">
-        <h3>예치금 환불 안내</h3>
-        <Image
-          src="/icons/icon-left-arrow.svg"
-          alt="마이 챌린지로 가기"
-          width={24}
-          height={24}
-        />
-      </SLinkItem>
-      <BottomFixedBtn
-        btns={[
-          {
-            text: '화면 하단 고정 버튼',
-            styleType: 'primary',
-            size: 'large',
-          },
-        ]}
-      />
-    </Layout>
+      </main>
+    </SLayoutWrapper>
   );
 }
 
