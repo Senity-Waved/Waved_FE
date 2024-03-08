@@ -62,6 +62,7 @@ const STitle = styled.div`
   line-height: 22px;
   h3 {
     flex: 1;
+    max-width: 176px;
     color: ${({ theme }) => theme.color.gray_3c};
     font-size: ${({ theme }) => theme.fontSize.body2};
     font-weight: ${({ theme }) => theme.fontWeight.body2};

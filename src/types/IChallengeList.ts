@@ -3,6 +3,7 @@ interface IChallengeList {
   challengeType: 'frontend' | 'backend' | 'study' | 'life';
   title: string;
   thumbnail: string;
+  isFree: boolean;
 }
 
 export default IChallengeList;

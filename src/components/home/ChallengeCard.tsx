@@ -1,39 +1,45 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface IChallengeCard {
-  challengeId: number;
-  title: string;
-  thumbnail: string;
-}
+import IChallengeList from '@/types/IChallengeList';
 
 export default function ChallengeCard({
   challengeId,
   thumbnail,
   title,
-}: IChallengeCard) {
+  isFree,
+}: Partial<IChallengeList>) {
   return (
     <SChallengeCard>
       <Link href={`/challenge/${challengeId}`}>
         <SImage>
-          <Image src={thumbnail} alt={title || ''} fill sizes="50vw" priority />
+          <Image
+            src={thumbnail || ''}
+            alt={title || ''}
+            fill
+            sizes="50vw"
+            priority
+          />
           <SParticipant>2</SParticipant>
         </SImage>
         <STitle>
           <h3>{title}</h3>
           <span>D-5</span>
         </STitle>
-        <STagList>
+        <SChips>
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
           <dd>매일</dd>
           <dt className="a11yHidden">챌린지 진행 기한</dt>
           <dd>2주</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
           <dd>사진</dd>
-          <dt className="a11yHidden">챌린지 예치금 유무</dt>
-          <dd>무료</dd>
-        </STagList>
+          {isFree && (
+            <>
+              <dt className="a11yHidden">챌린지 예치금 유무</dt>
+              <dd>무료</dd>
+            </>
+          )}
+        </SChips>
       </Link>
     </SChallengeCard>
   );
@@ -81,7 +87,6 @@ const SParticipant = styled.span`
 const STitle = styled.div`
   display: flex;
   justify-content: space-around;
-  align-items: center;
   padding: 0 0.25rem;
   line-height: 22px;
   h3 {
@@ -89,9 +94,6 @@ const STitle = styled.div`
     color: ${({ theme }) => theme.color.gray_3c};
     font-size: ${({ theme }) => theme.fontSize.body2};
     font-weight: ${({ theme }) => theme.fontWeight.body2};
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
   }
   span {
     flex-shrink: 0;
@@ -101,7 +103,7 @@ const STitle = styled.div`
   }
 `;
 
-const STagList = styled.dl`
+const SChips = styled.dl`
   display: flex;
   gap: 0.25rem;
   margin-top: 0.25rem;

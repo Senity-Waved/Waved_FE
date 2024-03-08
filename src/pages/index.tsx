@@ -17,36 +17,42 @@ const challengeData: IChallengeList[] = [
     title: '프론트엔드 기술 면접 1기',
     thumbnail: 'https://via.placeholder.com/400x600.jpg',
     challengeType: 'frontend',
+    isFree: false,
   },
   {
     challengeId: 583545,
     title: '백엔드 기술 면접 1기',
     thumbnail: 'https://via.placeholder.com/400x600.jpg',
     challengeType: 'backend',
+    isFree: false,
   },
   {
     challengeId: 17858,
     title: '블로그 포스팅',
     thumbnail: 'https://via.placeholder.com/300x800.jpg',
     challengeType: 'study',
+    isFree: false,
   },
   {
     challengeId: 7563,
     title: '깃허브 1일 1커밋',
     thumbnail: 'https://via.placeholder.com/800x500.jpg',
     challengeType: 'study',
+    isFree: false,
   },
   {
     challengeId: 9764353,
     title: '핸드폰 하루 6시간',
     thumbnail: 'https://via.placeholder.com/400x600.jpg',
     challengeType: 'life',
+    isFree: true,
   },
   {
     challengeId: 47423,
     title: '미라클 모닝',
     thumbnail: 'https://via.placeholder.com/400x600.jpg',
     challengeType: 'life',
+    isFree: true,
   },
 ];
 
