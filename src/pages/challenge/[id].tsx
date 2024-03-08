@@ -9,6 +9,7 @@ import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
+import EmptyView from '@/components/common/EmptyView';
 
 interface IChallengeReview {
   reviewId: number;
@@ -27,6 +28,7 @@ interface IChallenge {
   startDate: string;
   endDate: string;
   isFree: boolean;
+  reviewCount: number;
   reviews: IChallengeReview[];
   verificationMethod: string;
   verificationExample: string[];
@@ -42,6 +44,7 @@ const challengeData: IChallenge = {
   startDate: '03월 04일 (월)',
   endDate: '03월 15일 (금)',
   isFree: true,
+  reviewCount: 4,
   reviews: [
     {
       reviewId: 325544,
@@ -118,13 +121,21 @@ export default function Challenge() {
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          <ul>
-            {challengeData.reviews.map((review) => {
-              const { reviewId, ...rest } = review;
-              return <ChallengeReviewItem key={reviewId} {...rest} />;
-            })}
-          </ul>
-          <SMoreBtn type="button">더보기</SMoreBtn>
+          {challengeData.reviewCount === 0 ? (
+            <SEmptyViewWrapper>
+              <EmptyView pageType="챌린지후기" />
+            </SEmptyViewWrapper>
+          ) : (
+            <>
+              <ul>
+                {challengeData.reviews.map((review) => {
+                  const { reviewId, ...rest } = review;
+                  return <ChallengeReviewItem key={reviewId} {...rest} />;
+                })}
+              </ul>
+              <SMoreBtn type="button">더보기</SMoreBtn>
+            </>
+          )}
         </SSection>
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
@@ -259,12 +270,16 @@ const SSectionTitle = styled.h3`
     }
   }
 `;
-
 const SSectionContext = styled.div`
   padding: 1rem 1.25rem 0;
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
   line-height: 1.8;
+`;
+
+const SEmptyViewWrapper = styled.div`
+  position: relative;
+  height: 340px;
 `;
 
 const SMoreBtn = styled.button`

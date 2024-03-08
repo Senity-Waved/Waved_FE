@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface IEmptyView {
-  pageType: '마이챌린지' | '후기내역' | '예치금내역';
+  pageType: '마이챌린지' | '챌린지후기' | '내후기' | '예치금내역';
 }
 
 const emptyText = {
@@ -11,7 +11,11 @@ const emptyText = {
     '아직 내 챌린지가 없어요',
     '챌린지를 신청하고 내 챌린지를 시작해보세요!',
   ],
-  후기내역: [
+  챌린지후기: [
+    '남기신 후기가 없어요',
+    '챌린지에 참여하시고 후기를 남겨보세요!',
+  ],
+  내후기: [
     '남기신 후기가 없어요',
     '마이챌린지에서 참여하신 챌린지 후기를 남겨보세요!',
   ],
