@@ -18,22 +18,12 @@ const challengeData: IChallenge[] = [
   {
     challengeId: 34525,
     title: '기술 면접 1기',
-    thumbnail: 'https://via.placeholder.com/226x108.jpg',
+    thumbnail: 'https://via.placeholder.com/400x600.jpg',
   },
   {
     challengeId: 341756,
     title: '기술 면접 2기',
-    thumbnail: 'https://via.placeholder.com/226x108.jpg',
-  },
-  {
-    challengeId: 69565,
-    title: '챌린지챌린지챌린지챌린지챌린지챌린지',
-    thumbnail: 'https://via.placeholder.com/226x108.jpg',
-  },
-  {
-    challengeId: 154654,
-    title: '챌린지챌린지챌린지챌린지챌린지챌린지',
-    thumbnail: 'https://via.placeholder.com/226x108.jpg',
+    thumbnail: 'https://via.placeholder.com/300x800.jpg',
   },
 ];
 
@@ -163,17 +153,16 @@ const SListScrollX = styled.ul`
   padding: 0 20px;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  /* 스크롤바 미노출 */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome , Safari , Opera */
+    display: none;
   }
 `;
 
 const SListGrid = styled.ul`
   display: grid;
-  grid-template-columns: repeat(2, minmax(10px, 1fr));
+  grid-template-columns: repeat(2, minmax(164px, 1fr));
   grid-row-gap: 1rem;
   grid-column-gap: 0.5rem;
   width: 100%;

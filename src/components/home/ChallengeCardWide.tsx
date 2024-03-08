@@ -49,6 +49,9 @@ const SImage = styled.div`
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
+  img {
+    object-fit: cover;
+  }
 `;
 
 const STitle = styled.div`

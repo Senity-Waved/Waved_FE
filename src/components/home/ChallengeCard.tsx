@@ -17,13 +17,7 @@ export default function ChallengeCard({
     <SChallengeCard>
       <Link href={`/challenge/${challengeId}`}>
         <SImage>
-          <Image
-            src={thumbnail}
-            alt={title || ''}
-            fill
-            sizes="183px"
-            priority
-          />
+          <Image src={thumbnail} alt={title || ''} fill sizes="50vw" priority />
           <SParticipant>2</SParticipant>
         </SImage>
         <STitle>
@@ -50,15 +44,13 @@ const SChallengeCard = styled.li``;
 const SImage = styled.div`
   position: relative;
   width: 100%;
-  min-width: 164px;
-  min-height: 164px;
+  padding-bottom: 100%;
   margin-bottom: 0.5rem;
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
   img {
-    width: 100%;
-    height: auto;
+    object-fit: cover;
   }
 `;
 
