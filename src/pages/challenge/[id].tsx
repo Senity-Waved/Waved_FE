@@ -34,7 +34,7 @@ interface IChallenge {
 const challengeData: IChallenge = {
   type: 'photo',
   title: '기술 면접 챌린지 1기',
-  thumbnail: 'https://via.placeholder.com/600x400.jpg',
+  thumbnail: 'https://via.placeholder.com/800x700.jpg',
   description:
     '자기 개발은 목표를 설정하고 달성하기 위한 여정입니다. 이 블로그 포스트에서는 일상 생활에 쉽게 통합할 수 있는 5가지 핵심 습관을 소개합니다. 첫 번째는 목표 설정과 시간 관리입니다. 이는 개인적 성취와 전문적 성장을 위한 기초를 마련합니다.\n두 번째 습관은 긍정적 사고를 통한 자기 격려입니다. 이는 도전을 극복하고 성공으로 나아가는 데 중요합니다. 세 번째는 건강 유지를 위한 일상적인 운동과 균형 잡힌 식단입니다. 건강한 몸은 능률적인 마음의 기초입니다. 네 번째는 지속적인 학습과 자기 계발입니다. ',
   participantCount: 23,
@@ -81,13 +81,11 @@ export default function Challenge() {
         <Image
           alt={`${id} 대표 이미지`}
           src={challengeData.thumbnail}
-          width="0"
-          height="0"
+          fill
           sizes="100vw"
-          style={{ width: '100%', height: 'auto' }}
           priority
         />
-        <STagList>
+        <SChips>
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
           <dd>매일</dd>
           <dt className="a11yHidden">챌린지 진행 기한</dt>
@@ -100,7 +98,7 @@ export default function Challenge() {
               <dd>무료</dd>
             </>
           )}
-        </STagList>
+        </SChips>
       </SThumbnail>
       <ChallengeSummary condition="recruiting" />
       <TabMenu
@@ -167,7 +165,6 @@ export default function Challenge() {
           alt="마이 챌린지로 가기"
           width={24}
           height={24}
-          priority
         />
       </SLinkItem>
       <BottomFixedBtn
@@ -185,14 +182,34 @@ export default function Challenge() {
 
 const SThumbnail = styled.div`
   position: relative;
+  line-height: 0;
+  width: 100%;
+  height: 246px;
+  img {
+    object-fit: cover;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
 `;
 
-const STagList = styled.dl`
+const SChips = styled.dl`
   position: absolute;
   left: 20px;
   bottom: 24px;
   display: flex;
   gap: 8px;
+  z-index: 1;
   dd {
     display: inline-block;
     height: 24px;
