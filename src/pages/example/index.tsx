@@ -4,6 +4,7 @@ import TabMenu from '@/components/common/TabMenu';
 import Btn from '@/components/common/Btn';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ModalTest from '@/components/modal/ModalTest';
+import SnackBar from '@/components/common/SnackBar';
 
 export default function Example() {
   const router = useRouter();
@@ -89,7 +90,7 @@ export default function Example() {
           ]}
         />
       </div>
-      <div id="example3">
+      <div id="example3" style={{ marginBottom: 1000 }}>
         <ModalTest />
       </div>
       <BottomFixedBtn
@@ -100,6 +101,11 @@ export default function Example() {
             size: 'large',
           },
         ]}
+      />
+      <SnackBar
+        text="스낵바입니다."
+        // type="warning" // 노랑 경고 아이콘 쓸 때만 명시
+        // noFooter // footer없는 경우에 명시
       />
     </Layout>
   );
