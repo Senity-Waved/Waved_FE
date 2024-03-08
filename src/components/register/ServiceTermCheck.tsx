@@ -45,6 +45,7 @@ export default function ServiceTermCheck({
             id="allCheck"
             onChange={handleCheckAll}
             checked={checkList.length === 3}
+            tabIndex={0}
           />
           <label htmlFor="allCheck">전체 동의</label>
         </SAllCheckInputWrapper>
@@ -55,6 +56,7 @@ export default function ServiceTermCheck({
             id="ageCheck"
             onChange={handleCheckItem}
             checked={!!checkList.includes('age')}
+            tabIndex={0}
           />
           <label htmlFor="ageCheck">(필수) 만 14세 이상입니다.</label>
         </SRegisterCheckInputWrapper>
@@ -66,6 +68,7 @@ export default function ServiceTermCheck({
               id="termCheck"
               onChange={handleCheckItem}
               checked={!!checkList.includes('term')}
+              tabIndex={0}
             />
             <label htmlFor="termCheck">(필수) 서비스 이용약관동의</label>
           </div>
@@ -87,6 +90,7 @@ export default function ServiceTermCheck({
             id="privacyCheck"
             onChange={handleCheckItem}
             checked={!!checkList.includes('privacy')}
+            tabIndex={0}
           />
           <label htmlFor="privacyCheck">
             (필수) 개인정보 수집 및 이용 동의
@@ -126,21 +130,33 @@ const SRegisterCheckBoxWrapper = styled.div`
   margin-left: 1.25rem;
 
   & input[type='checkbox'] {
-    display: none;
-  }
+    display: inline-block;
+    overflow: hidden;
+    clip: rect(0px, 0px, 0px, 0px);
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    position: absolute !important;
 
-  & input[type='checkbox'] + label {
-    height: 24px;
-    cursor: pointer;
-    padding-left: 2.25rem;
-    background-repeat: no-repeat;
-    background-image: url('/icons/icon-checkbox-not-checked.svg');
-    line-height: 24px;
-  }
+    & + label {
+      height: 24px;
+      cursor: pointer;
+      padding-left: 2.25rem;
+      line-height: 24px;
+      background-repeat: no-repeat;
+      background-image: url('/icons/icon-checkbox-not-checked.svg');
+    }
 
-  & input[type='checkbox']:checked + label {
-    background-image: url('/icons/icon-checkbox-checked.svg');
-    height: 24px;
+    &:checked + label {
+      background-image: url('/icons/icon-checkbox-checked.svg');
+      height: 24px;
+    }
+
+    &:focus-visible + label {
+      outline: 2px solid black;
+      outline-offset: 1px;
+    }
   }
 `;
 

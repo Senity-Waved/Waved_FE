@@ -87,7 +87,6 @@ const SBirthYearSelect = styled.select`
   height: 48px;
   background-color: ${({ theme }) => theme.color.gray_f9};
   border-radius: 8px;
-  outline: none;
   border: none;
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
