@@ -19,6 +19,7 @@ export default function Header({
       <SBackBtn
         type="button"
         onClick={() => router.back()}
+        tabIndex={headerText === '회원가입' ? -1 : 0}
         aria-label="뒤로 가기"
       >
         <Image
