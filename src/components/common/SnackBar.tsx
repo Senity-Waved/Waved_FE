@@ -40,9 +40,8 @@ const fadeOut = keyframes`
 const SSnackBar = styled.p<Partial<ISnackBar>>`
   position: fixed;
   bottom: ${({ noFooter }) => (noFooter ? '30px' : '107px')};
-  width: 100%;
+  width: calc(100% - 2.5rem);
   max-width: calc(430px - 2.5rem);
-  min-width: calc(375px - 2.5rem);
   margin: 0 1.25rem;
   padding: 0.6875rem 0.875rem;
   background-color: ${({ theme }) => theme.color.gray_3c};
