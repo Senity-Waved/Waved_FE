@@ -23,7 +23,8 @@ export default function Register() {
     jobTitle: '',
   });
 
-  const goToSuccess = () => {
+  const handleForSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (step === 4 && registerData.jobTitle)
       console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
     router.push('/register/success').catch((error) => {
@@ -118,7 +119,7 @@ export default function Register() {
           {step === 3 && <h3>닉네임을 입력해주세요.</h3>}
           {step === 4 && <h3>해당하는 직군을 선택해주세요.</h3>}
         </SRegisterStepGuide>
-        <form action="" method="post" name="registerForm">
+        <form method="post" onSubmit={handleForSubmit} name="registerForm">
           {step === 1 && (
             <ServiceTermCheck updateRegisterData={updateRegisterData} />
           )}
@@ -136,6 +137,23 @@ export default function Register() {
               updateRegisterData={updateRegisterData}
               jobTitle={registerData.jobTitle}
             />
+          )}
+          {step === 4 && (
+            <SRegisterNextBtnWrapper>
+              <Btn
+                btns={[
+                  {
+                    text: '완료',
+                    type: 'submit',
+                    styleType:
+                      step === 4 && !registerData.jobTitle
+                        ? 'disabled'
+                        : 'primary',
+                    size: 'large',
+                  },
+                ]}
+              />
+            </SRegisterNextBtnWrapper>
           )}
         </form>
         <SRegisterNextBtnWrapper onClick={goToNextStep}>
@@ -177,21 +195,6 @@ export default function Register() {
                       ? 'disabled'
                       : 'primary',
                   size: 'large',
-                },
-              ]}
-            />
-          )}
-          {step === 4 && (
-            <Btn
-              btns={[
-                {
-                  text: '완료',
-                  styleType:
-                    step === 4 && !registerData.jobTitle
-                      ? 'disabled'
-                      : 'primary',
-                  size: 'large',
-                  onClick: goToSuccess,
                 },
               ]}
             />
