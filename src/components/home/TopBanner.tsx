@@ -117,7 +117,7 @@ const SPagination = styled.span`
   right: 16px;
   height: 20px;
   line-height: 20px;
-  padding: 0 6px;
+  padding: 0 0.375rem;
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   color: ${({ theme }) => theme.color.gray_f9};

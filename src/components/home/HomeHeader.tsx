@@ -21,7 +21,7 @@ export default function HomeHeader() {
 
 const SHeader = styled(SHeaderWrapper)`
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 1.25rem;
 `;
 
 const SLogo = styled.div`

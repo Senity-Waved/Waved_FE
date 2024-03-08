@@ -31,7 +31,7 @@ export default function RecrutingList({
 
 const SSection = styled.section`
   &:last-of-type {
-    padding-bottom: 80px;
+    padding-bottom: 5rem;
   }
 `;
 

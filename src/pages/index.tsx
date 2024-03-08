@@ -119,7 +119,7 @@ export default function Home() {
 
 const SSection = styled.section`
   &:last-of-type {
-    padding-bottom: 80px;
+    padding-bottom: 5rem;
   }
 `;
 
@@ -146,7 +146,7 @@ const STitleLink = styled(Link)`
 const SListScrollX = styled.ul`
   width: 100%;
   overflow-x: auto;
-  padding: 0 20px;
+  padding: 0 1.25rem;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
