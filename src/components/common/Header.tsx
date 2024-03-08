@@ -62,8 +62,8 @@ const SHeaderCenter = styled.div`
   left: 50%;
   transform: translateX(-50%);
   margin: 0 auto;
-  font-size: 1.25rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
 const SHeaderRightChild = styled.div`
