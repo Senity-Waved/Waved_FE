@@ -203,8 +203,7 @@ export default function Register() {
 }
 
 const SRegisterWrapper = styled(SLayoutWrapper)`
-  & main {
-  }
+  position: relative;
 `;
 
 const SRegisterBackBtn = styled.button`

@@ -68,9 +68,7 @@ export default function OnBoarding() {
             ]}
           />
         </SLoginBtnWrapper>
-        <SNonMemberLink>
-          <Link href="/">먼저 둘러볼게요</Link>
-        </SNonMemberLink>
+        <SNonMemberLink href="/">먼저 둘러볼게요</SNonMemberLink>
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
           <SServicePolicyLink href="/">
@@ -118,21 +116,20 @@ const SLoginBtnWrapper = styled.div`
 const SGoogleLogo = styled.div`
   position: absolute;
   transform: translateY(-50%);
+  height: 24px;
   top: 50%;
   left: 5%;
-  z-index: 15;
 `;
 
-const SNonMemberLink = styled.p`
+const SNonMemberLink = styled(Link)`
   width: 89px;
   height: 18px;
   line-height: 1.4;
   font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: ${({ theme }) => theme.color.gray_99};
-  margin: 0 auto;
+  margin: 0 auto 1.625rem auto;
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_99};
-  margin-bottom: 1.6875rem;
 `;
 
 const SServiceRegisterText = styled.p`
