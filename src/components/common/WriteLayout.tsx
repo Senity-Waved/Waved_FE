@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Btn from './Btn';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import writeLayoutText from '@/constants/writeLayoutText';
 
 interface IWriteLayout {
@@ -11,19 +11,40 @@ interface IWriteLayout {
     | '글인증'
     | '링크인증'
     | '사진인증';
-  text: string;
+  text?: string;
+  file?: File | null;
   children: React.ReactNode;
-  onSubmit: () => void;
+  onSubmit?: () => void;
+  onClick?: () => void;
 }
 
 export default function WriteLayout({
   pageType,
   children,
   text,
+  file,
   onSubmit,
 }: IWriteLayout) {
   const { mainText } = writeLayoutText[pageType];
   const { btnText } = writeLayoutText[pageType];
+  const [isBtnActive, setIsBtnActive] = useState(false);
+
+  const checkValidation = () => {
+    switch (pageType) {
+      case '사진인증':
+        console.log(file);
+        return file ? true : false;
+      case '링크인증':
+        return text ? true : false;
+      default:
+        return text ? (text.length >= 10 ? true : false) : false;
+    }
+  };
+
+  useEffect(() => {
+    const isActive = checkValidation();
+    setIsBtnActive(isActive);
+  }, [text, file]);
 
   return (
     <SWrapper>
@@ -35,7 +56,7 @@ export default function WriteLayout({
             {
               type: 'submit',
               text: btnText,
-              styleType: text.length >= 10 ? 'primary' : 'disabled',
+              styleType: isBtnActive ? 'primary' : 'disabled',
               size: 'large',
             },
           ]}
