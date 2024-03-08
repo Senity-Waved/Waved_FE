@@ -1,8 +1,11 @@
-import styled from '@emotion/styled';
+import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
+import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
-import Layout from '@/components/common/Layout';
+import { SLayoutWrapper } from '@/components/common/Layout';
+import { SHeaderWrapper } from '@/components/common/Header';
+import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import ChallengeCard from '@/components/home/ChallengeCard';
@@ -30,80 +33,124 @@ const challengeData: IChallenge[] = [
 export default function Home() {
   const user = true; // 로그인된 유저 테스트용 변수
   return (
-    <Layout headerText="WAVED">
-      <TopBanner />
-      <SSection>
-        <STitleLink href="/mychallenge">
-          <h2>진행 중인 챌린지</h2>
+    <SLayoutWrapper>
+      <Head>
+        <title>WAVED</title>
+        <meta
+          name="description"
+          content="개발직군 취준생들을 위한 챌린지 서비스 WAVED입니다."
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <SHeader>
+        <SLogo>
+          <h1 className="a11yHidden">WAVED</h1>
           <Image
-            src="/icons/icon-left-arrow.svg"
-            alt="마이 챌린지로 가기"
-            width={24}
-            height={24}
-            priority
+            alt="WAVED 로고"
+            src="https://via.placeholder.com/100x30.jpg"
+            width={100}
+            height={30}
           />
-        </STitleLink>
-        <SListScrollX>
-          {challengeData.map((challenge) => (
-            // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
-            // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
-            // 하단 map들도 같은 목업 데이터를 사용하고 있어 동일 이슈 => uuid를 이용해 임시 대처 진행
-            <ChallengeCardWide key={uuidv4()} {...challenge} />
-          ))}
-        </SListScrollX>
-      </SSection>
-      <SSection>
-        <STitle>
-          <h2>💻 프론트엔드 챌린지</h2>
-          <p>프론트엔드 개발자들을 위한 챌린지</p>
-        </STitle>
-        <SListGrid>
-          {challengeData.map((challenge) => (
-            <ChallengeCard key={uuidv4()} {...challenge} />
-          ))}
-        </SListGrid>
-      </SSection>
-      <SSection>
-        <STitle>
-          <h2>👨‍💻 백엔드 챌린지</h2>
-          <p>백엔드 개발자들을 위한 챌린지</p>
-        </STitle>
-        <SListGrid>
-          {challengeData.map((challenge) => (
-            <ChallengeCard key={uuidv4()} {...challenge} />
-          ))}
-        </SListGrid>
-      </SSection>
-      <SSection>
-        <STitle>
-          <h2>🏃‍♂️ 학습 챌린지</h2>
-          <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
-        </STitle>
-        <SListGrid>
-          {challengeData.map((challenge) => (
-            <ChallengeCard key={uuidv4()} {...challenge} />
-          ))}
-        </SListGrid>
-      </SSection>
-      <SSection>
-        <STitle>
-          <h2>🏃‍♂️ 생활 챌린지</h2>
-          <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
-        </STitle>
-        <SListGrid>
-          {challengeData.map((challenge) => (
-            <ChallengeCard key={uuidv4()} {...challenge} />
-          ))}
-        </SListGrid>
-      </SSection>
-      <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
-    </Layout>
+        </SLogo>
+        <SAlarm type="button" />
+      </SHeader>
+      <main>
+        <TopBanner />
+        <SSection>
+          <STitleLink href="/mychallenge">
+            <h2>진행 중인 챌린지</h2>
+            <Image
+              src="/icons/icon-left-arrow.svg"
+              alt="마이 챌린지로 가기"
+              width={24}
+              height={24}
+              priority
+            />
+          </STitleLink>
+          <SListScrollX>
+            {challengeData.map((challenge) => (
+              // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
+              // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
+              // 하단 map들도 같은 목업 데이터를 사용하고 있어 동일 이슈 => uuid를 이용해 임시 대처 진행
+              <ChallengeCardWide key={uuidv4()} {...challenge} />
+            ))}
+          </SListScrollX>
+        </SSection>
+        <SSection>
+          <STitle>
+            <h2>💻 프론트엔드 챌린지</h2>
+            <p>프론트엔드 개발자들을 위한 챌린지</p>
+          </STitle>
+          <SListGrid>
+            {challengeData.map((challenge) => (
+              <ChallengeCard key={uuidv4()} {...challenge} />
+            ))}
+          </SListGrid>
+        </SSection>
+        <SSection>
+          <STitle>
+            <h2>👨‍💻 백엔드 챌린지</h2>
+            <p>백엔드 개발자들을 위한 챌린지</p>
+          </STitle>
+          <SListGrid>
+            {challengeData.map((challenge) => (
+              <ChallengeCard key={uuidv4()} {...challenge} />
+            ))}
+          </SListGrid>
+        </SSection>
+        <SSection>
+          <STitle>
+            <h2>🏃‍♂️ 학습 챌린지</h2>
+            <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
+          </STitle>
+          <SListGrid>
+            {challengeData.map((challenge) => (
+              <ChallengeCard key={uuidv4()} {...challenge} />
+            ))}
+          </SListGrid>
+        </SSection>
+        <SSection>
+          <STitle>
+            <h2>🏃‍♂️ 생활 챌린지</h2>
+            <p>확정 텍스트가 필요한 챌린지 챌린지 챌린지</p>
+          </STitle>
+          <SListGrid>
+            {challengeData.map((challenge) => (
+              <ChallengeCard key={uuidv4()} {...challenge} />
+            ))}
+          </SListGrid>
+        </SSection>
+        <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
+      </main>
+      <Footer />
+    </SLayoutWrapper>
   );
 }
 
+const SHeader = styled(SHeaderWrapper)`
+  justify-content: space-between;
+  padding: 0 20px;
+`;
+
+const SLogo = styled.div`
+  height: 30px;
+  line-height: 0;
+`;
+
+const SAlarm = styled.button`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url('/icons/icon-alarm-active.svg') no-repeat center;
+`;
+
 const SSection = styled.section`
   &:last-of-type {
-    padding-bottom: 20px;
+    padding-bottom: 80px;
   }
 `;
 

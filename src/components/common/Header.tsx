@@ -32,7 +32,7 @@ export default function Header({ headerText, rightText }: IHeader) {
   );
 }
 
-const SHeaderWrapper = styled.header`
+export const SHeaderWrapper = styled.header`
   z-index: 10;
   flex-shrink: 0;
   position: relative;
