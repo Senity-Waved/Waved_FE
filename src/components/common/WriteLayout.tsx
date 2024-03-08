@@ -1,51 +1,46 @@
 import styled from '@emotion/styled';
 import Btn from './Btn';
+import { useState } from 'react';
+import writeLayoutText from '@/constants/writeLayoutText';
 
 interface IWriteLayout {
+  pageType:
+    | '후기작성'
+    | '후기수정'
+    | '챌린지요청'
+    | '글인증'
+    | '링크인증'
+    | '사진인증';
+  text: string;
   children: React.ReactNode;
-  pageType: '후기작성' | '챌린지요청' | '링크인증' | '글인증' | '사진인증';
+  onSubmit: () => void;
 }
 
-const writeLayoutText = {
-  후기작성: {
-    btnText: '작성완료',
-    mainText: '챌린지 후기를 작성해주세요',
-  },
-  챌린지요청: {
-    btnText: '요청하기',
-    mainText: '요청 내용을 작성해주세요.',
-  },
-  링크인증: {
-    btnText: '제출하기',
-    mainText: '챌린지 인증 링크를 입력해주세요.',
-  },
-  글인증: {
-    btnText: '제출하기',
-    mainText: '챌린지 인증 내용을 작성해주세요.',
-  },
-  사진인증: {
-    btnText: '요청하기',
-    mainText: '챌린지 인증 사진을 첨부해주세요.',
-  },
-};
-
-export default function WriteLayout({ children, pageType }: IWriteLayout) {
+export default function WriteLayout({
+  pageType,
+  children,
+  text,
+  onSubmit,
+}: IWriteLayout) {
   const { mainText } = writeLayoutText[pageType];
   const { btnText } = writeLayoutText[pageType];
 
   return (
     <SWrapper>
       <SMainText>{mainText}</SMainText>
-      {children}
-      <Btn
-        btns={[
-          {
-            text: btnText,
-            styleType: 'primary',
-            size: 'large',
-          },
-        ]}
-      />
+      <form onSubmit={onSubmit}>
+        {children}
+        <Btn
+          btns={[
+            {
+              type: 'submit',
+              text: btnText,
+              styleType: text.length >= 10 ? 'primary' : 'disabled',
+              size: 'large',
+            },
+          ]}
+        />
+      </form>
     </SWrapper>
   );
 }
@@ -61,12 +56,4 @@ const SMainText = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
   color: ${({ theme }) => theme.color.gray_3c};
   margin-bottom: 1rem;
-`;
-
-const SSubText = styled.p`
-  font-size: 0.875rem;
-  line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_52};
-  margin-bottom: 0.25rem;
 `;

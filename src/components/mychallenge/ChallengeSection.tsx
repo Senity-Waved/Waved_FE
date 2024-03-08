@@ -2,26 +2,12 @@ import styled from '@emotion/styled';
 import ChallengeItem, {
   IChallengeItem,
 } from '@/components/mychallenge/ChallengeItem';
+import challengeSectionText from '@/constants/challengeSectionText';
 
 interface IChallengeSection {
   status: '진행중' | '대기중' | '진행완료';
   // challenges: IChallengeItem [];
 }
-
-const challengeSectionText = {
-  진행중: {
-    imogi: '🧑🏻‍💻 ',
-    subText: '현재 진행하고 있는 챌린지예요!',
-  },
-  대기중: {
-    imogi: '📚 ',
-    subText: '신청을 완료하고 시작을 대기중인 챌린지예요!',
-  },
-  진행완료: {
-    imogi: '🥳 ',
-    subText: '진행을 완료한 챌린지예요!',
-  },
-};
 
 export default function ChallengeSection({
   status,

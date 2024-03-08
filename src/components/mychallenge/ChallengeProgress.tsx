@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export default function ChallengeProgress() {
-  const dealt = 70;
+  const dealt = 80;
 
   return (
     <SWrapper>
