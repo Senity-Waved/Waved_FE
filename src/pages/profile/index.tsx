@@ -1,13 +1,26 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import JOBTITLE from '@/constants/jobTitle';
 
 export default function Profile() {
-  const nickName = '웨이브드';
-  const jobTitle = JOBTITLE.FRONT && '프론트엔드';
+  const profileInfo = {
+    nickName: '웨이브드',
+    jobTitle: JOBTITLE.FRONT && '프론트엔드',
+    githubId: 'hello_world',
+  };
   const isLogined = true;
+
+  const router = useRouter();
+
+  const goToGithub = () => {
+    router.push('/profile/github').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
+  };
+
   return (
     <Layout
       noHeader
@@ -29,7 +42,7 @@ export default function Profile() {
           <SProfileGreetingWrapper>
             {isLogined ? (
               <p>
-                <span>{nickName}</span>&nbsp;{jobTitle}
+                <span>{profileInfo.nickName}</span>&nbsp;{profileInfo.jobTitle}
               </p>
             ) : (
               <Link href="/">
@@ -48,14 +61,22 @@ export default function Profile() {
             <p>개발자님 오늘도 화이팅하세요!</p>
           </SProfileGreetingWrapper>
           {isLogined && (
-            <SGithubIdBtn type="button">
+            <SGithubIdBtn
+              type="button"
+              onClick={goToGithub}
+              isGithub={!!profileInfo.githubId}
+            >
               <Image
                 src="/icons/icon-github-logo.svg"
                 alt="깃허브 로고"
                 width={18}
                 height={18}
               />
-              <p>깃허브 연동하기</p>
+              <p>
+                {isLogined && profileInfo.githubId
+                  ? profileInfo.githubId
+                  : '깃허브 연동하기'}
+              </p>
             </SGithubIdBtn>
           )}
         </SProfileShortcutWrapper>
@@ -122,7 +143,7 @@ export default function Profile() {
               </Link>
             </SProfileActiveMenuWrapper>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/">
+              <Link href="/profile/github">
                 <p>깃허브 연동 관리</p>
                 <Image
                   src={
@@ -300,8 +321,8 @@ const SProfileGreetingWrapper = styled.div`
   }
 `;
 
-const SGithubIdBtn = styled.button`
-  width: 134px;
+const SGithubIdBtn = styled.button<{ isGithub: boolean }>`
+  width: ${({ isGithub }) => (isGithub ? '118px' : '135px')};
   height: 28px;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.color.gray_83};
@@ -309,6 +330,7 @@ const SGithubIdBtn = styled.button`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 0 10px;
   color: ${({ theme }) => theme.color.gray_f9};
   font-size: ${({ theme }) => theme.fontSize.body4};
