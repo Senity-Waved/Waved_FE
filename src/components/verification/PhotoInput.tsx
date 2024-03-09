@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface IPhotoInput {
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
@@ -19,7 +19,7 @@ export default function PhotoInput({ setFile }: IPhotoInput) {
     }
   };
 
-  const deletePhoto = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const deletePhoto = () => {
     setPhotoPreview('');
     setFile(null);
   };

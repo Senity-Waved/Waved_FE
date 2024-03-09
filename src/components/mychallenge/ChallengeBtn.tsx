@@ -15,9 +15,9 @@ export default function ChallengeBtn({
   isAuto,
   link,
 }: IBtn) {
-  const preventLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const preventLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isAbled) {
-      event.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
+      e.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
     }
   };
 

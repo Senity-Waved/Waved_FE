@@ -1,18 +1,16 @@
+import styled from '@emotion/styled';
+import { useState } from 'react';
 import Layout from '@/components/common/Layout';
 import WriteLayout from '@/components/common/WriteLayout';
-import styled from '@emotion/styled';
 import writeLayoutText from '@/constants/writeLayoutText';
 import PhotoInput from '@/components/verification/PhotoInput';
 import TextArea from '@/components/common/TextArea';
-import { useState } from 'react';
 
-interface IVerification {}
-
-export default function Verification({}: IVerification) {
+export default function Verification() {
   const { placeholder } = writeLayoutText['링크인증'];
   const [text, setText] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
-  const onSubmit = () => {
+  const handleSubmit = () => {
     console.log('test');
   };
 
@@ -24,7 +22,7 @@ export default function Verification({}: IVerification) {
     >
       <WriteLayout
         pageType="링크인증"
-        onSubmit={onSubmit}
+        handleSubmit={handleSubmit}
         text={text}
         file={file}
       >
