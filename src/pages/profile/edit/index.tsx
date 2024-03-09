@@ -6,7 +6,7 @@ import NicknameInput from '@/components/register/NicknameInput';
 import { IRegisterState } from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
-import Btn from '@/components/common/Btn';
+import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -51,18 +51,16 @@ export default function ProfileEdit() {
             gender={editProfile.gender}
             updateData={updateProfileData}
           />
-          <SEditBtnWrapper>
-            <Btn
-              btns={[
-                {
-                  text: '수정하기',
-                  styleType: 'primary',
-                  size: 'large',
-                  type: 'submit',
-                },
-              ]}
-            />
-          </SEditBtnWrapper>
+          <BottomFixedBtn
+            btns={[
+              {
+                text: '수정하기',
+                styleType: 'primary',
+                size: 'large',
+                type: 'submit',
+              },
+            ]}
+          />
         </form>
       </SProfileEditWrapper>
     </Layout>
@@ -79,8 +77,4 @@ const SProfileEditWrapper = styled.div`
     font-size: ${({ theme }) => theme.fontSize.headline2};
     font-weight: ${({ theme }) => theme.fontWeight.headline2};
   }
-`;
-
-const SEditBtnWrapper = styled.div`
-  margin: 1.875rem 1.25rem 0 1.25rem;
 `;
