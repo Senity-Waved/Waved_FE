@@ -120,21 +120,17 @@ export default function Register() {
           {step === 4 && <h3>해당하는 직군을 선택해주세요.</h3>}
         </SRegisterStepGuide>
         <form method="post" onSubmit={handleForSubmit} name="registerForm">
-          {step === 1 && (
-            <ServiceTermCheck updateRegisterData={updateRegisterData} />
-          )}
+          {step === 1 && <ServiceTermCheck updateData={updateRegisterData} />}
           {step === 2 && (
             <PrivacyInput
               gender={registerData.gender}
-              updateRegisterData={updateRegisterData}
+              updateData={updateRegisterData}
             />
           )}
-          {step === 3 && (
-            <NicknameInput updateRegisterData={updateRegisterData} />
-          )}
+          {step === 3 && <NicknameInput updateData={updateRegisterData} />}
           {step === 4 && (
             <JobTitleInput
-              updateRegisterData={updateRegisterData}
+              updateData={updateRegisterData}
               jobTitle={registerData.jobTitle}
             />
           )}

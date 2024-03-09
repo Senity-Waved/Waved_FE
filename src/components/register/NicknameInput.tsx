@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { IRegisterState } from '@/types/register';
 
 interface INicknameInput {
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  updateData: (newData: Partial<IRegisterState>) => void;
 }
 
-export default function NicknameInput({ updateRegisterData }: INicknameInput) {
+export default function NicknameInput({ updateData }: INicknameInput) {
   const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -19,7 +19,7 @@ export default function NicknameInput({ updateRegisterData }: INicknameInput) {
         name="nickname"
         id="nicknameInput"
         placeholder="닉네임"
-        onChange={(e) => updateRegisterData({ nickname: e.target.value })}
+        onChange={(e) => updateData({ nickname: e.target.value })}
         onKeyDown={handleEnterKey}
       />
     </SNicknameInputWrapper>

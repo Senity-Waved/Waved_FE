@@ -5,12 +5,12 @@ import { IRegisterState } from '@/types/register';
 
 interface IPravacyInput {
   gender: TGenderOrNull;
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  updateData: (newData: Partial<IRegisterState>) => void;
 }
 
 export default function PrivacyInput({
   gender: currentGender,
-  updateRegisterData,
+  updateData,
 }: IPravacyInput) {
   return (
     <SPrivacyInputWrapper>
@@ -19,7 +19,7 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
-          onChange={(e) => updateRegisterData({ birthYear: e.target.value })}
+          onChange={(e) => updateData({ birthYear: e.target.value })}
         >
           <option value="">출생연도</option>
           {YEARS.map((year) => (
@@ -35,14 +35,14 @@ export default function PrivacyInput({
           <SGenderBtn
             type="button"
             selectedGender={currentGender === EGender.Female}
-            onClick={() => updateRegisterData({ gender: EGender.Female })}
+            onClick={() => updateData({ gender: EGender.Female })}
           >
             여자
           </SGenderBtn>
           <SGenderBtn
             type="button"
             selectedGender={currentGender === EGender.Male}
-            onClick={() => updateRegisterData({ gender: EGender.Male })}
+            onClick={() => updateData({ gender: EGender.Male })}
           >
             남자
           </SGenderBtn>
