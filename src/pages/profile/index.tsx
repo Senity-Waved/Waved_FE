@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Layout from '@/components/common/Layout';
 
 export default function Profile() {
-  const isLogined = false;
+  const isLogined = true;
   return (
     <Layout noHeader>
       <SNotificationBtn type="button">
@@ -38,19 +38,18 @@ export default function Profile() {
                 </p>
               </Link>
             )}
-
             <p>개발자님 오늘도 화이팅하세요!</p>
           </SProfileGreetingWrapper>
           {isLogined && (
-            <SGithubIdBtnWrapper>
+            <SGithubIdBtn type="button">
               <Image
                 src="/icons/icon-github-logo.svg"
                 alt="깃허브 로고"
                 width={18}
                 height={18}
               />
-              <SGithubIdBtn type="button">깃허브 연동하기</SGithubIdBtn>
-            </SGithubIdBtnWrapper>
+              <p>깃허브 연동하기</p>
+            </SGithubIdBtn>
           )}
         </SProfileShortcutWrapper>
         <div>
@@ -213,13 +212,14 @@ export default function Profile() {
 }
 
 const SProfileWrapper = styled.div`
+  margin: 0 1.25rem;
+
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
-  margin: 0 1.25rem;
 
   & h3 {
     font-size: ${({ theme }) => theme.fontSize.subtitle1};
@@ -236,6 +236,12 @@ const SNotificationBtn = styled.button`
 
 const SPropfileBaseMenuWrapper = styled.li<{ isLogined?: boolean }>`
   position: relative;
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
+
+  & p {
+    font-weight: ${({ theme }) => theme.fontWeight.body2};
+    font-size: ${({ theme }) => theme.fontSize.body2};
+  }
 
   & > a {
     display: flex;
@@ -243,15 +249,6 @@ const SPropfileBaseMenuWrapper = styled.li<{ isLogined?: boolean }>`
     align-items: center;
     justify-content: space-between;
     height: 56px;
-  }
-
-  &::after {
-    content: ' ';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
 `;
 
@@ -283,10 +280,6 @@ const SProfileGreetingWrapper = styled.div`
   width: 335px;
   height: 70px;
 
-  & a {
-    width: 230px;
-  }
-
   & p {
     font-size: ${({ theme }) => theme.fontSize.headline1};
     font-weight: ${({ theme }) => theme.fontWeight.headline1};
@@ -300,7 +293,7 @@ const SProfileGreetingWrapper = styled.div`
   }
 `;
 
-const SGithubIdBtnWrapper = styled.div`
+const SGithubIdBtn = styled.button`
   width: 134px;
   height: 28px;
   border-radius: 16px;
@@ -308,14 +301,11 @@ const SGithubIdBtnWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  padding-left: 0.625rem;
-`;
-
-const SGithubIdBtn = styled.button`
+  justify-content: space-between;
+  padding: 0 10px;
   color: ${({ theme }) => theme.color.gray_f9};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  margin-left: 0.5rem;
 `;
 
 const SProfileEtc = styled.div`
@@ -323,6 +313,7 @@ const SProfileEtc = styled.div`
   color: ${({ theme }) => theme.color.gray_99};
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
 
   & > div {
     display: flex;
@@ -330,15 +321,6 @@ const SProfileEtc = styled.div`
     align-items: center;
     justify-content: space-between;
     height: 56px;
-  }
-
-  &::after {
-    content: ' ';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   }
 `;
 
