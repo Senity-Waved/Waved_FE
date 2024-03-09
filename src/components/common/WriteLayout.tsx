@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import Btn from './Btn';
 import { useEffect, useState } from 'react';
+import Btn from './Btn';
 import writeLayoutText from '@/constants/writeLayoutText';
+import regex from '@/constants/regex';
 
 interface IWriteLayout {
   pageType:
@@ -14,7 +15,7 @@ interface IWriteLayout {
   text?: string;
   file?: File | null;
   children: React.ReactNode;
-  onSubmit?: () => void;
+  handleSubmit?: () => void;
   onClick?: () => void;
 }
 
@@ -23,7 +24,7 @@ export default function WriteLayout({
   children,
   text,
   file,
-  onSubmit,
+  handleSubmit,
 }: IWriteLayout) {
   const { mainText } = writeLayoutText[pageType];
   const { btnText } = writeLayoutText[pageType];
@@ -35,7 +36,7 @@ export default function WriteLayout({
         console.log(file);
         return file ? true : false;
       case '링크인증':
-        return text ? true : false;
+        return text ? (regex.url.test(text) ? true : false) : false;
       default:
         return text ? (text.length >= 10 ? true : false) : false;
     }
@@ -44,12 +45,12 @@ export default function WriteLayout({
   useEffect(() => {
     const isActive = checkValidation();
     setIsBtnActive(isActive);
-  }, [text, file]);
+  }, [text, file, checkValidation]);
 
   return (
     <SWrapper>
       <SMainText>{mainText}</SMainText>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         {children}
         <Btn
           btns={[
