@@ -36,13 +36,17 @@ export default function ProfileEdit() {
       title="프로필 수정"
       description="회원의 닉네임, 직군, 출생연도, 성별 등 개인 정보를 수정할 수 있는 페이지입니다."
     >
-      <div>
+      <SProfileEditWrapper>
+        <h2 className="a11yHidden">프로필 수정</h2>
         <form onSubmit={handleSubmit}>
+          <h3>닉네임을 입력해주세요.</h3>
           <NicknameInput updateData={updateProfileData} />
+          <h3>해당하는 직군을 선택해주세요.</h3>
           <JobTitleInput
             jobTitle={editProfile.jobTitle}
             updateData={updateProfileData}
           />
+          <h3>회원님의 정보를 입력해주세요.</h3>
           <PrivacyInput
             gender={editProfile.gender}
             updateData={updateProfileData}
@@ -60,11 +64,23 @@ export default function ProfileEdit() {
             />
           </SEditBtnWrapper>
         </form>
-      </div>
+      </SProfileEditWrapper>
     </Layout>
   );
 }
 
+const SProfileEditWrapper = styled.div`
+  & h3 {
+    margin: 0 1.25rem;
+    line-height: 1.4;
+    height: 28px;
+    margin-bottom: 0.5rem;
+    margin-top: 1.875rem;
+    font-size: ${({ theme }) => theme.fontSize.headline2};
+    font-weight: ${({ theme }) => theme.fontWeight.headline2};
+  }
+`;
+
 const SEditBtnWrapper = styled.div`
-  margin: 1.25rem 1.25rem 0 1.25rem;
+  margin: 1.875rem 1.25rem 0 1.25rem;
 `;
