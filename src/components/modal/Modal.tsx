@@ -1,10 +1,24 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import Btn from '../common/Btn';
 
 interface IModal {
+  mainText: string;
+  subText?: string;
+  image?: string;
+  btnText: string;
+  onClick: () => void;
   onClose: () => void;
 }
 
-export default function Modal({ onClose }: IModal) {
+export default function Modal({
+  mainText,
+  subText,
+  image,
+  btnText,
+  onClick,
+  onClose,
+}: IModal) {
   const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -14,10 +28,35 @@ export default function Modal({ onClose }: IModal) {
   return (
     <SModalWrapper onClick={handleBackgroundClick}>
       <SModalContent>
-        <div>모달 내용이 들어갑니다.</div>
-        <SCloseBtn type="button" onClick={onClose}>
-          닫기
-        </SCloseBtn>
+        {image && (
+          <SModalImage
+            src={image}
+            alt="모달 이미지"
+            width={88}
+            height={88}
+            priority
+          />
+        )}
+        <SModalMainText marginBottom={subText ? true : false}>
+          {mainText}
+        </SModalMainText>
+        {subText && <SModalSubText>{subText}</SModalSubText>}
+        <Btn
+          btns={[
+            {
+              text: '아니요',
+              styleType: 'gray',
+              size: 'small',
+              onClick: onClose,
+            },
+            {
+              text: btnText,
+              styleType: 'primary',
+              size: 'small',
+              onClick: onClick,
+            },
+          ]}
+        />
       </SModalContent>
     </SModalWrapper>
   );
@@ -32,7 +71,7 @@ const SModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 const SModalContent = styled.div`
@@ -40,15 +79,29 @@ const SModalContent = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  width: 250px;
-  height: 100px;
+  width: 19.5rem;
   background-color: ${({ theme }) => theme.color.white};
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem 1rem 0.75rem 1rem;
+  border-radius: 8px;
 `;
 
-const SCloseBtn = styled.button`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  margin-top: 15px;
+const SModalMainText = styled.h2<{ marginBottom: boolean }>`
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  margin-bottom: ${({ marginBottom }) => (marginBottom ? '.25rem' : '1.5rem')};
+`;
+
+const SModalSubText = styled.p`
+  font-size: 1rem;
+  line-height: 1.4;
+  color: ${({ theme }) => theme.color.gray_70};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  margin-bottom: 1.5rem;
+  text-align: center;
+`;
+
+const SModalImage = styled(Image)`
+  margin-bottom: 1rem;
 `;
