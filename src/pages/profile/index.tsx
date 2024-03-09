@@ -9,7 +9,11 @@ export default function Profile() {
   const jobTitle = JOBTITLE.FRONT && '프론트엔드';
   const isLogined = true;
   return (
-    <Layout noHeader>
+    <Layout
+      noHeader
+      title="프로필"
+      description="WAVED 회원의 프로필 페이지입니다. 챌린지 기록, 계정 설정, 고객 센터 등을 확인할 수 있습니다. "
+    >
       <SNotificationBtn type="button">
         <Image
           src="/icons/icon-notification.svg"
