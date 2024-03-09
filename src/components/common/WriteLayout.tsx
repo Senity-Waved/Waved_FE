@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Btn from './Btn';
 import writeLayoutText from '@/constants/writeLayoutText';
 import regex from '@/constants/regex';
@@ -25,27 +25,28 @@ export default function WriteLayout({
   text,
   file,
   handleSubmit,
+  onClick,
 }: IWriteLayout) {
   const { mainText } = writeLayoutText[pageType];
   const { btnText } = writeLayoutText[pageType];
   const [isBtnActive, setIsBtnActive] = useState(false);
+  const isVerificationPage = pageType.includes('인증');
 
-  const checkValidation = () => {
+  const checkValidation = useCallback(() => {
     switch (pageType) {
       case '사진인증':
-        console.log(file);
-        return file ? true : false;
+        return file !== null;
       case '링크인증':
-        return text ? (regex.url.test(text) ? true : false) : false;
+        return text !== undefined && regex.url.test(text);
       default:
-        return text ? (text.length >= 10 ? true : false) : false;
+        return text !== undefined && text.length >= 10;
     }
-  };
+  }, [text, file, pageType]);
 
   useEffect(() => {
     const isActive = checkValidation();
     setIsBtnActive(isActive);
-  }, [text, file, checkValidation]);
+  }, [checkValidation]);
 
   return (
     <SWrapper>
@@ -55,10 +56,11 @@ export default function WriteLayout({
         <Btn
           btns={[
             {
-              type: 'submit',
+              type: isVerificationPage ? 'button' : 'submit',
               text: btnText,
               styleType: isBtnActive ? 'primary' : 'disabled',
               size: 'large',
+              onClick: isVerificationPage ? onClick : undefined,
             },
           ]}
         />
