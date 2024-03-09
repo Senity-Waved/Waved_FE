@@ -2,8 +2,11 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '@/components/common/Layout';
+import JOBTITLE from '@/constants/jobTitle';
 
 export default function Profile() {
+  const nickName = '웨이브드';
+  const jobTitle = JOBTITLE.FRONT && '프론트엔드';
   const isLogined = true;
   return (
     <Layout noHeader>
@@ -22,7 +25,7 @@ export default function Profile() {
           <SProfileGreetingWrapper>
             {isLogined ? (
               <p>
-                <span>웨이브드</span>&nbsp;프론트엔드
+                <span>{nickName}</span>&nbsp;{jobTitle}
               </p>
             ) : (
               <Link href="/">
@@ -97,7 +100,7 @@ export default function Profile() {
           <h3>계정 설정</h3>
           <ul>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/">
+              <Link href="/profile/edit">
                 <p>프로필 수정</p>
                 <Image
                   src={
