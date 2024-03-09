@@ -16,7 +16,7 @@ export default function ChallengeBtn({
   isAbled,
   isAuto,
 }: IBtn) {
-  const preventLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const preventLink = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isAbled) {
       e.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
     }
@@ -39,7 +39,12 @@ export default function ChallengeBtn({
               }}
               as={`/verification`}
             >
-              <SBtn styleType={isAbled ? 'middle' : 'gray'}>인증하기</SBtn>
+              <SBtn
+                styleType={isAbled ? 'middle' : 'gray'}
+                onClick={preventLink}
+              >
+                인증하기
+              </SBtn>
             </SLink>
           )}
         </SBtnWrapper>
@@ -59,7 +64,9 @@ export default function ChallengeBtn({
             <SBtn styleType="light">인증내역</SBtn>
           </SLink>
           <SLink href="#">
-            <SBtn styleType={isAbled ? 'middle' : 'gray'}>후기작성</SBtn>
+            <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
+              후기작성
+            </SBtn>
           </SLink>
         </SBtnWrapper>
       );
