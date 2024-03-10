@@ -9,6 +9,13 @@ export default function ChallengeParticipant() {
   const [deposit, setDeposit] = useState<number>(5000);
   const depositAmounts = [5000, 10000, 20000, 25000, 30000, 50000, 100000];
 
+  const handleChange = (newDeposit: number) => {
+    const closestDeposit = depositAmounts.reduce((prev, curr) =>
+      Math.abs(curr - newDeposit) < Math.abs(prev - newDeposit) ? curr : prev,
+    );
+    setDeposit(closestDeposit);
+  };
+
   return (
     <Layout
       noFooter
@@ -23,12 +30,12 @@ export default function ChallengeParticipant() {
           <SDepositSliderWrapper>
             <input
               type="range"
-              min={5000}
-              max={100000}
-              step={5000}
+              min={depositAmounts[0]}
+              max={depositAmounts[depositAmounts.length - 1]}
+              step={1}
               value={deposit}
               onChange={(e) => {
-                setDeposit(e.target.valueAsNumber);
+                handleChange(e.target.valueAsNumber);
               }}
             />
           </SDepositSliderWrapper>
