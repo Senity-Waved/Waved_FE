@@ -22,9 +22,16 @@ export default function ProfileEdit() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`프로필 수정: ${JSON.stringify(editProfile)}`);
-    router.push('/profile').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    router
+      .push({
+        pathname: '/profile',
+        query: {
+          profileEdit: true,
+        },
+      })
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   const updateProfileData = (newProfile: Partial<IRegisterState>) => {

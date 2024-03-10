@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -11,34 +11,47 @@ interface IGithub {
 }
 
 export default function MyGithub() {
+  const router = useRouter();
   const [githubData, setGithubData] = useState<IGithub>({
     githubId: '',
     githubToken: '',
   });
 
+  const isGithubValid = true;
+
+  // 깃허브 연동 상태
   const [isGithubLinked, setIsGithubLinked] = useState<boolean>(
     githubData.githubId !== '' && githubData.githubToken !== '',
   );
 
-  const router = useRouter();
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const navigateToProfile = (queryParam: {
+      [key: string]: boolean;
+    }): void => {
+      router
+        .push({
+          pathname: '/profile',
+          query: queryParam,
+        })
+        .catch((error: Error) => {
+          console.error('페이지 이동에 실패하였습니다.', error);
+        });
+    };
+
     if (isGithubLinked) {
       setIsGithubLinked(false);
-      console.log('연동 해지');
-    } else {
+      navigateToProfile({ linkedCancel: true });
+    } else if (isGithubValid) {
       setIsGithubLinked(true);
-      console.log(`깃허브 연동 : ${JSON.stringify(githubData)}`);
+      console.log(`깃허브 연동: ${JSON.stringify(githubData)}`);
+      navigateToProfile({ githubLinked: true });
+    } else {
+      console.log('유효하지 않은 깃허브 아이디 혹은 토큰입니다.');
+      navigateToProfile({ linkedFail: true });
     }
-    router.push('/profile').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
   };
-
-  useEffect(() => {
-    console.log(`깃허브 연동 상태 : ${isGithubLinked}`);
-  }, [isGithubLinked]);
 
   return (
     <Layout
