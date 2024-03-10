@@ -36,9 +36,10 @@ export default function NicknameInput({
         placeholder="닉네임"
         onChange={handleChange}
         onKeyDown={handleEnterKey}
+        isNicknameValid={isNicknameValid}
       />
       <SNicknameValidText>
-        {!isNicknameValid && '최대 10글자까지만 입력 가능합니다.'}
+        {!isNicknameValid && '10글자 이하로 입력해 주세요.'}
       </SNicknameValidText>
     </SNicknameInputWrapper>
   );
@@ -56,7 +57,7 @@ const SNickNameWordsText = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-const SNicknameInput = styled.input`
+const SNicknameInput = styled.input<{ isNicknameValid: boolean }>`
   height: 25px;
   width: 100%;
   margin-right: 1.25rem;
@@ -70,12 +71,18 @@ const SNicknameInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_ec};
   }
+
+  &:focus {
+    border-bottom: 2px solid
+      ${({ theme, isNicknameValid }) =>
+        isNicknameValid ? theme.color.gray_3c : theme.color.error};
+  }
 `;
 
 const SNicknameValidText = styled.p`
   height: 20px;
   margin-top: 4px;
-  color: ${({ theme }) => theme.color.normal};
+  color: ${({ theme }) => theme.color.error};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;
