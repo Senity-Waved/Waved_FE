@@ -10,6 +10,7 @@ import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
+import screenSize from '@/constants/screenSize';
 
 interface IChallengeReview {
   reviewId: number;
@@ -83,7 +84,7 @@ export default function Challenge() {
             alt={`${id} 대표 이미지`}
             src={challengeData.thumbnail}
             fill
-            sizes="100vw"
+            sizes={`${screenSize.max}px`}
             priority
           />
           <SChips>
