@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface ITab {
   href: string;
@@ -12,9 +12,7 @@ interface ITabMenu {
   positionTop?: number;
 }
 
-function Tab({ href, text }: ITab) {
-  const router = useRouter();
-  const isActive = router.asPath === href;
+function Tab({ href, text, isActive }: ITab & { isActive: boolean }) {
   return (
     <STab isActive={isActive}>
       <Link href={href} replace>
@@ -25,10 +23,34 @@ function Tab({ href, text }: ITab) {
 }
 
 export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
+  const [activeTab, setActiveTab] = useState('');
+
+  useEffect(() => {
+    setActiveTab(tabs[0].href);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -70% 0px',
+      },
+    );
+    tabs.forEach((tab) => {
+      const id = tab.href.slice(1);
+      const section = document.querySelector(`#${id}`);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, [tabs]);
+
   return (
     <STabMenu positionTop={positionTop}>
       {tabs.map((tab) => (
-        <Tab key={tab.text} {...tab} />
+        <Tab key={tab.text} {...tab} isActive={activeTab === tab.href} />
       ))}
     </STabMenu>
   );

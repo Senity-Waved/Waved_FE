@@ -55,6 +55,27 @@ const challengeData: IChallenge = {
         '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
     },
     {
+      reviewId: 5462,
+      author: '서퍼dfk34s',
+      createdDate: '2024년 12월 31일',
+      context:
+        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+    },
+    {
+      reviewId: 865877,
+      author: '서퍼dfk34s',
+      createdDate: '2024년 12월 31일',
+      context:
+        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+    },
+    {
+      reviewId: 3464364,
+      author: '서퍼dfk34s',
+      createdDate: '2024년 12월 31일',
+      context:
+        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+    },
+    {
       reviewId: 8535435,
       author: '닉네임은최대열글자로',
       jobTitle: '프론트엔드',
@@ -79,7 +100,7 @@ export default function Challenge() {
     <SLayoutWrapper>
       <ChallengeHeader />
       <main>
-        <SThumbnail>
+        <SThumbnail id="information">
           <Image
             alt={`${id} 대표 이미지`}
             src={challengeData.thumbnail}
@@ -112,12 +133,12 @@ export default function Challenge() {
         <TabMenu
           positionTop={90}
           tabs={[
-            { href: `/challenge/${id}`, text: '정보' },
-            { href: `/challenge/${id}#review`, text: '후기' },
-            { href: `/challenge/${id}#verification`, text: '인증' },
+            { href: '#information', text: '정보' },
+            { href: '#review', text: '후기' },
+            { href: '#verification', text: '인증' },
           ]}
         />
-        <SSection id="information">
+        <SSection>
           <SSectionTitle>{challengeData.title}</SSectionTitle>
           <SSectionContext>
             {challengeData.description.split('\n').map((line) => (
@@ -243,6 +264,7 @@ const SSection = styled.section`
   position: relative;
   padding: 1.5rem 0;
   color: ${({ theme }) => theme.color.gray_3c};
+  scroll-margin-top: 134px;
   &:last-of-type {
     padding-bottom: 0;
   }
