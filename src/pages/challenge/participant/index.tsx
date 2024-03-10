@@ -4,9 +4,13 @@ import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
 import DepositGuide from '@/components/challenge/participant/DepositGuide';
+import paymentMethods from '@/constants/payment';
 
 export default function ChallengeParticipant() {
   const [deposit, setDeposit] = useState<number>(5000);
+  const [selectedPayment, setSelectedPayment] = useState(
+    paymentMethods.CREDITCARD,
+  );
   const depositAmounts = [5000, 10000, 20000, 25000, 30000, 50000, 100000];
 
   const handleChange = (newDeposit: number) => {
@@ -58,6 +62,32 @@ export default function ChallengeParticipant() {
           </SDepositBtnWrapper>
         </SDepositSettingWrapper>
         <DepositRefundGuide />
+        <SPaymentMethodWrapper>
+          <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
+          <SpaymentMethodItemWrapper>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.CREDITCARD}
+              onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
+            >
+              <p>신용카드</p>
+            </SPaymentMethodItem>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
+              onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
+            >
+              <p>가상계좌</p>
+            </SPaymentMethodItem>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
+              onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
+            >
+              <p>카카오페이</p>
+            </SPaymentMethodItem>
+          </SpaymentMethodItemWrapper>
+        </SPaymentMethodWrapper>
         <BottomFixedBtn
           btns={[
             {
@@ -106,6 +136,12 @@ const SDepositBtnWrapper = styled.ul`
   overflow-x: auto;
   margin: 0 1.25rem 2.5rem 1.25rem;
   gap: 14px;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
@@ -126,5 +162,42 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
+  }
+`;
+
+const SPaymentMethodWrapper = styled.div`
+  height: 116px;
+  margin: 0 1.25rem 2.5rem 1.25rem;
+`;
+const SPaymentMethodTitle = styled.p`
+  height: 74px;
+  line-height: 74px;
+  font-size: ${({ theme }) => theme.fontSize.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+`;
+
+const SpaymentMethodItemWrapper = styled.div`
+  height: 42px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+`;
+const SPaymentMethodItem = styled.button<{ isSelectedPayment: boolean }>`
+  padding: 0.625rem 0.375rem;
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  color: ${({ theme, isSelectedPayment }) =>
+    isSelectedPayment ? theme.color.normal : theme.color.gray_99};
+  border: 1px solid
+    ${({ theme, isSelectedPayment }) =>
+      isSelectedPayment ? theme.color.normal : theme.color.gray_99};
+  border-radius: 8px;
+
+  & p {
+    width: 94px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
   }
 `;
