@@ -49,7 +49,6 @@ const challengeData: IChallenge = {
     {
       reviewId: 325544,
       author: '서퍼dfk34s',
-      jobTitle: '직군',
       createdDate: '2024년 12월 31일',
       context:
         '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
@@ -102,7 +101,13 @@ export default function Challenge() {
             )}
           </SChips>
         </SThumbnail>
-        <ChallengeSummary condition="recruiting" />
+        <ChallengeSummary
+          title={challengeData.title}
+          participantCount={challengeData.participantCount}
+          startDate={challengeData.startDate}
+          endDate={challengeData.endDate}
+          condition="recruiting"
+        />
         <TabMenu
           positionTop={90}
           tabs={[
@@ -165,7 +170,6 @@ export default function Challenge() {
             alt="마이 챌린지로 가기"
             width={24}
             height={24}
-            priority
           />
         </SLinkItem>
         <SLinkItem href="/">

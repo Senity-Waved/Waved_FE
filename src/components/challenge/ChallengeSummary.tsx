@@ -1,20 +1,34 @@
 import styled from '@emotion/styled';
 
+type TCondition = 'closed' | 'recruiting' | 'processing';
+
 interface IChallengeSummary {
-  condition: 'closed' | 'recruiting' | 'processing';
+  title: string;
+  participantCount: number;
+  startDate: string;
+  endDate: string;
+  condition: TCondition;
 }
 
-export default function ChallengeSummary({ condition }: IChallengeSummary) {
+export default function ChallengeSummary({
+  title,
+  participantCount,
+  startDate,
+  endDate,
+  condition,
+}: IChallengeSummary) {
   return (
     <SChallengeSummary>
-      <STitle>기술 면접 챌린지 1기</STitle>
+      <STitle>{title}</STitle>
       <SStatus condition={condition}>
         {condition === 'closed' && '마감'}
         {condition === 'recruiting' && '모집중'}
         {condition === 'processing' && '진행중'}
       </SStatus>
-      <SDate>03월 04일 (월) ~ 03월 15일 (금)</SDate>
-      <SParticipant>23명</SParticipant>
+      <SDate>
+        {startDate} ~ {endDate}
+      </SDate>
+      <SParticipant>{participantCount}명</SParticipant>
     </SChallengeSummary>
   );
 }
@@ -47,7 +61,9 @@ const STitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
-const SStatus = styled.span<IChallengeSummary>`
+const SStatus = styled.span<{
+  condition: TCondition;
+}>`
   justify-self: end;
   height: 20px;
   line-height: 20px;
