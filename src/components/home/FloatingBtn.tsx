@@ -19,7 +19,7 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
 }
 
 const SFloatingBtn = styled(Link)`
-  position: fixed;
+  position: absolute;
   bottom: 112px;
   display: flex;
   align-items: center;
@@ -34,7 +34,7 @@ const SFloatingBtn = styled(Link)`
 `;
 
 const SChallengeRequest = styled(SFloatingBtn)`
-  left: 58%;
+  right: 20px;
   padding: 0.625rem 1.25rem;
   &::before {
     content: '';
@@ -48,5 +48,5 @@ const SChallengeRequest = styled(SFloatingBtn)`
 const SRegister = styled(SFloatingBtn)`
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
 `;

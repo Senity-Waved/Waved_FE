@@ -72,7 +72,7 @@ const filteredChallenge = {
 export default function Home() {
   const user = true; // 로그인된 유저 테스트용 변수
   return (
-    <SLayoutWrapper>
+    <SHomeWrapper>
       <HomeHeader />
       <main>
         <TopBanner />
@@ -111,12 +111,16 @@ export default function Home() {
           subtitle={HOME_SECTION_TITLE.LIFE.sub}
           challenges={filteredChallenge.life}
         />
-        <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
       </main>
+      <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
       <Footer />
-    </SLayoutWrapper>
+    </SHomeWrapper>
   );
 }
+
+const SHomeWrapper = styled(SLayoutWrapper)`
+  position: relative;
+`;
 
 const SSection = styled.section`
   &:last-of-type {
