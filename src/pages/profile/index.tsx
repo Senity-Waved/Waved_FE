@@ -8,16 +8,17 @@ import JOBTITLE from '@/constants/jobTitle';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
 import SnackBar from '@/components/common/SnackBar';
 import profileSnackBarText from '@/constants/profileSnackBarText';
-
-interface ISnackBarState {
-  open: boolean;
-  text: string;
-  type?: 'correct' | 'warning';
-}
+import Portal from '@/components/modal/ModalPortal';
+import Modal from '@/components/modal/Modal';
+import { ISnackBarState } from '@/types/snackbar';
 
 export default function Profile() {
   const router = useRouter();
   const { query } = useRouter();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalState, setModalState] = useState<string>('');
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
   const isLogined = true;
 
   const profileInfo = {
@@ -31,6 +32,23 @@ export default function Profile() {
     text: '',
     type: 'correct',
   });
+
+  const clickModalBtn = () => {
+    router
+      .push({
+        pathname: '/onboarding',
+        query:
+          modalState === 'logout' ? { logout: true } : { withdrawal: true },
+      })
+      .catch((error: Error) => {
+        console.error(
+          modalState === 'logout'
+            ? '로그아웃에 실패하였습니다.'
+            : '회원 탈퇴에 실패하였습니다.',
+          error,
+        );
+      });
+  };
 
   useEffect(() => {
     const handleRouting = (
@@ -154,7 +172,15 @@ export default function Profile() {
               </Link>
             </SProfileActiveMenuWrapper>
             <SLogoutBtnWrapper isLogined={isLogined}>
-              <button type="button">로그아웃</button>
+              <button
+                type="button"
+                onClick={() => {
+                  openModal();
+                  setModalState('logout');
+                }}
+              >
+                로그아웃
+              </button>
             </SLogoutBtnWrapper>
           </ul>
         </div>
@@ -224,7 +250,17 @@ export default function Profile() {
           </div>
         </SProfileEtc>
         <SwithdrawalBtnWrapper>
-          {isLogined && <button type="button">회원 탈퇴</button>}
+          {isLogined && (
+            <button
+              type="button"
+              onClick={() => {
+                openModal();
+                setModalState('withdrawal');
+              }}
+            >
+              회원 탈퇴
+            </button>
+          )}
         </SwithdrawalBtnWrapper>
       </SProfileWrapper>
       {snackBarState.open && (
@@ -233,6 +269,26 @@ export default function Profile() {
           type={snackBarState.type}
           noFooter
         />
+      )}
+      {isModalOpen && (
+        <Portal>
+          <Modal
+            image="/icons/icon-exclamation-mark.svg"
+            mainText={
+              modalState === 'logout'
+                ? '로그아웃'
+                : '정말 계정을 탈퇴하시겠습니까?'
+            }
+            subText={
+              modalState === 'logout'
+                ? '로그아웃하시겠습니까?'
+                : '탈퇴 이후에 예치금을 돌려받으실 수 없으며, 등록된 정보는 전부 삭제되어 재가입 후에도 확인하실 수 없습니다.'
+            }
+            btnText={modalState === 'logout' ? '로그아웃' : '네, 탈퇴할게요.'}
+            onClick={clickModalBtn}
+            onClose={closeModal}
+          />
+        </Portal>
       )}
     </Layout>
   );

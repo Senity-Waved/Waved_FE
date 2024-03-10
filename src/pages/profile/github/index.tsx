@@ -52,11 +52,6 @@ export default function MyGithub() {
     }
   };
 
-  // 해지하기
-  const handleCancel = () => {
-    openModal();
-  };
-
   const clickModalBtn = () => {
     if (isGithubLinked) {
       setIsGithubLinked(false);
@@ -112,7 +107,7 @@ export default function MyGithub() {
                   styleType: 'primary',
                   size: 'large',
                   type: isGithubLinked ? 'button' : 'submit',
-                  onClick: isGithubLinked ? handleCancel : undefined,
+                  onClick: isGithubLinked ? openModal : undefined,
                 },
               ]}
             />
