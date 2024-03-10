@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import DepositItem from '@/components/profile/DepositItem';
+import EmptyView from '@/components/common/EmptyView';
 
 export default function MyDeposit() {
   const depositData = {
@@ -9,6 +10,7 @@ export default function MyDeposit() {
     challengeDate: '2023년 02월 27일',
     deposit: 5000,
   };
+  const haveDeposit = true;
   return (
     <Layout
       noFooter
@@ -18,11 +20,18 @@ export default function MyDeposit() {
     >
       <SMyDepositWrapper>
         <h2 className="a11yHidden">예치금 내역</h2>
-        <DepositItem depositData={depositData} />
-        <DepositItem depositData={depositData} />
+        {haveDeposit ? (
+          <SDepositItemWrapper>
+            <DepositItem depositData={depositData} />
+            <DepositItem depositData={depositData} />
+          </SDepositItemWrapper>
+        ) : (
+          <EmptyView pageType="예치금내역" />
+        )}
       </SMyDepositWrapper>
     </Layout>
   );
 }
 
 const SMyDepositWrapper = styled.div``;
+const SDepositItemWrapper = styled.div``;
