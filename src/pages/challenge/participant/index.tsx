@@ -104,13 +104,13 @@ export default function ChallengeParticipant() {
 
 const SChallengeParticipantWrapper = styled.div``;
 
-const SChallengeSummary = styled.div`
+const SChallengeSummary = styled.section`
   height: 84px;
   background-color: lightblue;
   text-align: center;
 `;
 
-const SDepositSettingWrapper = styled.div`
+const SDepositSettingWrapper = styled.section`
   border-bottom: 6px solid ${({ theme }) => theme.color.gray_ec};
   height: 188px;
   display: flex;
@@ -129,6 +129,46 @@ const SDepositSliderWrapper = styled.div`
   height: 60px;
   line-height: 60px;
   margin: 0 20px;
+  & input[type='range'] {
+    -webkit-appearance: none;
+    accent-color: ${({ theme }) => theme.color.normal};
+    width: 100%;
+    height: 8px;
+    background: ${({ theme }) => theme.color.light};
+    border-radius: 16px;
+    outline: none;
+  }
+
+  & input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: ${({ theme }) => theme.color.normal};
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  & input[type='range']::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: ${({ theme }) => theme.color.normal};
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  & input[type='range']::-ms-thumb {
+    width: 28px;
+    height: 28px;
+    background: ${({ theme }) => theme.color.normal};
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const SDepositBtnWrapper = styled.ul`
@@ -165,7 +205,7 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
   }
 `;
 
-const SPaymentMethodWrapper = styled.div`
+const SPaymentMethodWrapper = styled.section`
   height: 116px;
   margin: 0 1.25rem 2.5rem 1.25rem;
 `;

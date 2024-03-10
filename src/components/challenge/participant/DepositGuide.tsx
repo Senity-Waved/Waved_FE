@@ -11,7 +11,7 @@ export default function DepositGuide() {
   );
 }
 
-const SDepositGuideWrapper = styled.div`
+const SDepositGuideWrapper = styled.section`
   height: 112px;
   margin: 1.5rem;
   display: flex;
