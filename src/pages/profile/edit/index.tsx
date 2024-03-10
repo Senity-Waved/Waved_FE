@@ -79,8 +79,19 @@ const SProfileEditWrapper = styled.div`
     line-height: 1.4;
     height: 28px;
     margin-bottom: 0.5rem;
-    margin-top: 1.875rem;
     font-size: ${({ theme }) => theme.fontSize.headline2};
     font-weight: ${({ theme }) => theme.fontWeight.headline2};
+  }
+
+  & h3:first-of-type {
+    margin-top: 1.5rem;
+  }
+
+  & h3:nth-of-type(2) {
+    margin-top: 1rem;
+  }
+
+  & h3:last-of-type {
+    margin-top: 2.25rem;
   }
 `;
