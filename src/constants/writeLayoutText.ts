@@ -1,5 +1,3 @@
-import { write } from 'fs';
-
 const writeLayoutText = {
   후기작성: {
     btnText: '작성완료',
