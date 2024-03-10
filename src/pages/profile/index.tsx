@@ -154,7 +154,7 @@ export default function Profile() {
               </Link>
             </SProfileActiveMenuWrapper>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/profile/github">
+              <Link href="/profile/mygithub">
                 <p>깃허브 연동 관리</p>
                 <Image
                   src={

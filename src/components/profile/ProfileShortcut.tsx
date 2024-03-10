@@ -18,7 +18,7 @@ export default function ProfileShortcut({
   const router = useRouter();
 
   const goToGithub = () => {
-    router.push('/profile/github').catch((error) => {
+    router.push('/profile/mygithub').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
     });
   };
