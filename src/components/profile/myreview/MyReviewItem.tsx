@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import IMyReview from '@/types/myReview';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
@@ -9,6 +10,7 @@ interface IMyReviewItem extends IMyReview {
 }
 
 export default function MyReviewItem({
+  id,
   challengeTitle,
   createdDate,
   context,
@@ -26,7 +28,15 @@ export default function MyReviewItem({
         </STitleWrapper>
         <SContext>{context}</SContext>
         <SBtnWrapper>
-          <SEditBtn type="button">수정</SEditBtn>
+          <SEditBtn
+            href={{
+              pathname: `myreview/edit`,
+              query: { context, reviewId: id },
+            }}
+            as={`myreview/edit?reviewId=${id}`}
+          >
+            수정
+          </SEditBtn>
           <SDeleteBtn type="button" onClick={openDeleteModal}>
             삭제
           </SDeleteBtn>
@@ -87,38 +97,45 @@ const SBtnWrapper = styled.div`
   text-align: right;
 `;
 
-const SBtn = styled.button`
+const SEditBtn = styled(Link)`
   display: inline-block;
+  margin-right: 0.5rem;
   padding: 0.25rem 0.5rem;
+  background-color: ${({ theme }) => theme.color.light};
+  border-radius: 16px;
   line-height: 16px;
+  color: ${({ theme }) => theme.color.normal};
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
-  border-radius: 16px;
+  text-align: center;
   &::before {
     content: '';
     display: inline-block;
     width: 12px;
     height: 12px;
     margin: 0.125rem 0.25rem 0.125rem 0;
-    background-repeat: no-repeat;
-    background-position: center;
+    background: url('/icons/icon-edit.svg') no-repeat center;
     vertical-align: bottom;
   }
 `;
 
-const SEditBtn = styled(SBtn)`
-  margin-right: 0.5rem;
-  background-color: ${({ theme }) => theme.color.light};
-  color: ${({ theme }) => theme.color.normal};
-  &::before {
-    background-image: url('/icons/icon-edit.svg');
-  }
-`;
-
-const SDeleteBtn = styled(SBtn)`
+const SDeleteBtn = styled.button`
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
   background-color: ${({ theme }) => theme.color.gray_ec};
+  border-radius: 16px;
+  line-height: 16px;
   color: ${({ theme }) => theme.color.gray_52};
+  font-size: ${({ theme }) => theme.fontSize.caption2};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
+  text-align: center;
   &::before {
-    background-image: url('/icons/icon-trash.svg');
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0.125rem 0.25rem 0.125rem 0;
+    background: url('/icons/icon-trash.svg') no-repeat center;
+    vertical-align: bottom;
   }
 `;
