@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import IMyReview from '@/types/myReview';
 
-export default function myReviewData(
+export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<IMyReview[]>,
 ) {

@@ -1,23 +1,49 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import IMyReview from '@/types/myReview';
+import Portal from '@/components/modal/ModalPortal';
+import Modal from '@/components/modal/Modal';
 
 export default function MyReviewItem({
+  id,
   challengeTitle,
   createdDate,
   context,
 }: IMyReview) {
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const openDeleteModal = () => setDeleteModalOpen(true);
+  const closeDeleteModal = () => setDeleteModalOpen(false);
+  const deleteReview = () => {
+    console.log(`리뷰 ${id} 삭제 동작`);
+  };
   return (
-    <SMyReviewItem>
-      <STitleWrapper>
-        <STitle>{challengeTitle}</STitle>
-        <SDate>{createdDate}</SDate>
-      </STitleWrapper>
-      <SContext>{context}</SContext>
-      <SBtnWrapper>
-        <SEditBtn type="button">수정</SEditBtn>
-        <SDeleteBtn type="button">삭제</SDeleteBtn>
-      </SBtnWrapper>
-    </SMyReviewItem>
+    <>
+      <SMyReviewItem>
+        <STitleWrapper>
+          <STitle>{challengeTitle}</STitle>
+          <SDate>{createdDate}</SDate>
+        </STitleWrapper>
+        <SContext>{context}</SContext>
+        <SBtnWrapper>
+          <SEditBtn type="button">수정</SEditBtn>
+          <SDeleteBtn type="button" onClick={openDeleteModal}>
+            삭제
+          </SDeleteBtn>
+        </SBtnWrapper>
+      </SMyReviewItem>
+      {isDeleteModalOpen && (
+        <Portal>
+          <Modal
+            mainText="남기신 후기를 삭제하시겠습니까?"
+            btnText="삭제하기"
+            onClick={() => {
+              deleteReview();
+            }}
+            onClose={closeDeleteModal}
+          />
+        </Portal>
+      )}
+    </>
   );
 }
 
