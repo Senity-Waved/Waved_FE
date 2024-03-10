@@ -9,7 +9,7 @@ export default function MyReview({
   getMyReviewData: IMyReview[];
 }) {
   return (
-    <Layout headerText="나의 후기" title="나의 후기">
+    <Layout headerText="나의 후기" title="나의 후기" noFooter>
       <ul>
         {getMyReviewData.map((review) => (
           <MyReviewItem key={review.id} {...review} />
