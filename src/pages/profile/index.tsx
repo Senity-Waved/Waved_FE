@@ -95,7 +95,7 @@ export default function Profile() {
           <h3>챌린지 기록</h3>
           <ul>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/">
+              <Link href="/profile/myreview">
                 <p>나의 후기</p>
                 <Image
                   src={
@@ -113,7 +113,7 @@ export default function Profile() {
               </Link>
             </SProfileActiveMenuWrapper>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/">
+              <Link href="/profile/mydeposit">
                 <p>예치금 내역</p>
                 <Image
                   src={
