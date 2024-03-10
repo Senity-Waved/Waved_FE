@@ -15,7 +15,7 @@ interface IWriteLayout {
   text?: string;
   file?: File | null;
   children: React.ReactNode;
-  handleSubmit?: () => void;
+  handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onClick?: () => void;
 }
 
