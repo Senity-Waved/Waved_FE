@@ -17,9 +17,9 @@ export default function Footer() {
   return (
     <SFooterWrapper>
       <SFooterNavLink href="/">
-        <SFooterNavItem isActive={router.asPath === '/'}>
+        <SFooterNavItem isActive={router.pathname === '/'}>
           <Image
-            src={router.asPath === '/' ? homeFilled : homeNormal}
+            src={router.pathname === '/' ? homeFilled : homeNormal}
             alt="홈 아이콘"
             width={24}
             height={24}
@@ -29,10 +29,10 @@ export default function Footer() {
         </SFooterNavItem>
       </SFooterNavLink>
       <SFooterNavLink href="/mychallenge">
-        <SFooterNavItem isActive={router.asPath === '/mychallenge'}>
+        <SFooterNavItem isActive={router.pathname === '/mychallenge'}>
           <Image
             src={
-              router.asPath === '/mychallenge'
+              router.pathname === '/mychallenge'
                 ? myChallengeFilled
                 : myChallengeNormal
             }
@@ -45,9 +45,9 @@ export default function Footer() {
         </SFooterNavItem>
       </SFooterNavLink>
       <SFooterNavLink href="/profile">
-        <SFooterNavItem isActive={router.asPath === '/profile'}>
+        <SFooterNavItem isActive={router.pathname === '/profile'}>
           <Image
-            src={router.asPath === '/profile' ? profileFilled : profileNormal}
+            src={router.pathname === '/profile' ? profileFilled : profileNormal}
             alt="프로필 아이콘"
             width={24}
             height={24}
