@@ -9,7 +9,7 @@ import TextArea from '@/components/common/TextArea';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 
-export default function Verification() {
+export default function VerificationPost() {
   //const { type } = useRouter().query;
   const { placeholder } = writeLayoutText['링크인증'];
   const [text, setText] = useState<string>('');

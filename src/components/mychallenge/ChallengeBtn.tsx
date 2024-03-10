@@ -6,7 +6,7 @@ interface IBtn {
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
-  // challengeID: string;
+  // challengeId: string;
   // verificationType: string;
 }
 
@@ -34,10 +34,9 @@ export default function ChallengeBtn({
           ) : (
             <SLink
               href={{
-                pathname: '/verification',
-                query: { type: '글인증' },
+                pathname: '/verification/post/1',
+                query: { type: 'text' },
               }}
-              as={`/verification`}
             >
               <SBtn
                 styleType={isAbled ? 'middle' : 'gray'}
