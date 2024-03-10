@@ -1,14 +1,20 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import IChallengeList from '@/types/challengeList';
+
+interface IChallengeCard {
+  challengeId: number;
+  title: string;
+  thumbnail: string;
+  isFree: boolean;
+}
 
 export default function ChallengeCard({
   challengeId,
   thumbnail,
   title,
   isFree,
-}: Partial<IChallengeList>) {
+}: IChallengeCard) {
   return (
     <SChallengeCard>
       <Link href={`/challenge/${challengeId}`}>
