@@ -23,6 +23,8 @@ export default function Register() {
     jobTitle: '',
   });
 
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
+
   const handleForSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step === 4 && registerData.jobTitle)
@@ -41,7 +43,11 @@ export default function Register() {
       setStep(2);
     } else if (step === 2 && registerData.birthYear) {
       setStep(3);
-    } else if (step === 3 && registerData.nickname) {
+    } else if (
+      step === 3 &&
+      registerData.nickname &&
+      registerData.nickname.length <= 10
+    ) {
       setStep(4);
     }
   };
@@ -127,7 +133,13 @@ export default function Register() {
               updateData={updateRegisterData}
             />
           )}
-          {step === 3 && <NicknameInput updateData={updateRegisterData} />}
+          {step === 3 && (
+            <NicknameInput
+              updateData={updateRegisterData}
+              setIsNicknameValid={setIsNicknameValid}
+              isNicknameValid={isNicknameValid}
+            />
+          )}
           {step === 4 && (
             <JobTitleInput
               updateData={updateRegisterData}
@@ -187,7 +199,7 @@ export default function Register() {
                 {
                   text: '다음',
                   styleType:
-                    step === 3 && !registerData.nickname
+                    (step === 3 && !registerData.nickname) || !isNicknameValid
                       ? 'disabled'
                       : 'primary',
                   size: 'large',

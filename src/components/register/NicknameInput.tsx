@@ -3,9 +3,24 @@ import { IRegisterState } from '@/types/register';
 
 interface INicknameInput {
   updateData: (newData: Partial<IRegisterState>) => void;
+  setIsNicknameValid: (nicknmaeValid: boolean) => void;
+  isNicknameValid: boolean;
 }
 
-export default function NicknameInput({ updateData }: INicknameInput) {
+export default function NicknameInput({
+  updateData,
+  setIsNicknameValid,
+  isNicknameValid,
+}: INicknameInput) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nicknameValue = e.target.value;
+    const valid = nicknameValue.length <= 10;
+    setIsNicknameValid(valid); // 부모 컴포넌트의 상태 업데이트
+    if (valid) {
+      updateData({ nickname: nicknameValue });
+    }
+  };
+
   const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -19,9 +34,12 @@ export default function NicknameInput({ updateData }: INicknameInput) {
         name="nickname"
         id="nicknameInput"
         placeholder="닉네임"
-        onChange={(e) => updateData({ nickname: e.target.value })}
+        onChange={handleChange}
         onKeyDown={handleEnterKey}
       />
+      <SNicknameValidText>
+        {!isNicknameValid && '최대 10글자까지만 입력 가능합니다.'}
+      </SNicknameValidText>
     </SNicknameInputWrapper>
   );
 }
@@ -52,4 +70,12 @@ const SNicknameInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_ec};
   }
+`;
+
+const SNicknameValidText = styled.p`
+  height: 20px;
+  margin-top: 4px;
+  color: ${({ theme }) => theme.color.normal};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;

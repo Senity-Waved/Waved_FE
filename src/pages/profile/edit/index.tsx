@@ -17,6 +17,8 @@ export default function ProfileEdit() {
     jobTitle: '',
   });
 
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(`프로필 수정: ${JSON.stringify(editProfile)}`);
@@ -40,7 +42,11 @@ export default function ProfileEdit() {
         <h2 className="a11yHidden">프로필 수정</h2>
         <form onSubmit={handleSubmit}>
           <h3>닉네임을 입력해주세요.</h3>
-          <NicknameInput updateData={updateProfileData} />
+          <NicknameInput
+            updateData={updateProfileData}
+            setIsNicknameValid={setIsNicknameValid}
+            isNicknameValid={isNicknameValid}
+          />
           <h3>해당하는 직군을 선택해주세요.</h3>
           <JobTitleInput
             jobTitle={editProfile.jobTitle}
@@ -55,7 +61,7 @@ export default function ProfileEdit() {
             btns={[
               {
                 text: '수정하기',
-                styleType: 'primary',
+                styleType: !isNicknameValid ? 'disabled' : 'primary',
                 size: 'large',
                 type: 'submit',
               },
