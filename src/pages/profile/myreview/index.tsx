@@ -4,6 +4,7 @@ import Layout from '@/components/common/Layout';
 import IMyReview from '@/types/myReview';
 import MyReviewItem from '@/components/profile/myreview/MyReviewItem';
 import SnackBar from '@/components/common/SnackBar';
+import EmptyView from '@/components/common/EmptyView';
 
 export default function MyReview({
   getMyReviews,
@@ -19,15 +20,20 @@ export default function MyReview({
   };
   return (
     <Layout headerText="나의 후기" title="나의 후기" noFooter>
-      <ul>
-        {reviews.map((review) => (
-          <MyReviewItem
-            key={review.id}
-            {...review}
-            onDelete={() => deleteReview(review.id)}
-          />
-        ))}
-      </ul>
+      {reviews.length === 0 ? (
+        <EmptyView pageType="내후기" />
+      ) : (
+        <ul>
+          {reviews.map((review) => (
+            <MyReviewItem
+              key={review.id}
+              {...review}
+              onDelete={() => deleteReview(review.id)}
+            />
+          ))}
+        </ul>
+      )}
+
       {isSnackBarVisible && <SnackBar text="후기가 삭제되었습니다." noFooter />}
     </Layout>
   );
