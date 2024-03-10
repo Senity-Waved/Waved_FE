@@ -1,17 +1,61 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Layout from '@/components/common/Layout';
 import JOBTITLE from '@/constants/jobTitle';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
+import SnackBar from '@/components/common/SnackBar';
+import profileSnackBarText from '@/constants/profileSnackBarText';
+
+interface ISnackBarState {
+  open: boolean;
+  text: string;
+  type?: 'correct' | 'warning';
+}
 
 export default function Profile() {
+  const router = useRouter();
+  const { query } = useRouter();
+  const isLogined = true;
+
   const profileInfo = {
     nickName: '웨이브드',
     jobTitle: JOBTITLE.FRONT && '프론트엔드',
     githubId: 'hello_world',
   };
-  const isLogined = true;
+
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+    type: 'correct',
+  });
+
+  useEffect(() => {
+    const handleRouting = (
+      snackBarText: string,
+      snackBarType: 'correct' | 'warning' = 'correct',
+    ): void => {
+      setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
+      router
+        .replace('/profile', undefined, { shallow: true })
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
+        );
+    };
+
+    if (query.profileEdit) {
+      handleRouting(profileSnackBarText.PROFILE_EDIT);
+    } else if (query.linkedCancel) {
+      handleRouting(profileSnackBarText.LINKED_CANCEL);
+    } else if (query.githubLinked) {
+      handleRouting(profileSnackBarText.GITHUB_LINKED);
+    } else if (query.linkedFail) {
+      handleRouting(profileSnackBarText.LINKED_FAIL, 'warning');
+    }
+  }, [query, router]);
+
   return (
     <Layout
       noHeader
@@ -183,6 +227,13 @@ export default function Profile() {
           {isLogined && <button type="button">회원 탈퇴</button>}
         </SwithdrawalBtnWrapper>
       </SProfileWrapper>
+      {snackBarState.open && (
+        <SnackBar
+          text={snackBarState.text}
+          type={snackBarState.type}
+          noFooter
+        />
+      )}
     </Layout>
   );
 }
