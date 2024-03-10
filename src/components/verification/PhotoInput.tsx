@@ -47,11 +47,12 @@ export default function PhotoInput({ setFile }: IPhotoInput) {
             height={109}
             priority
           />
-          <SPhotoUploadInput
+          <input
             type="file"
             id="photo"
             accept="image/*"
             onChange={uploadPhoto}
+            className="a11yHidden"
           />
         </SPhotoUploadBtn>
       )}
@@ -67,14 +68,11 @@ const SWrapper = styled.div`
   border-radius: 8px;
   box-shadow: 0 3px 8px 2px rgba(35, 62, 112, 0.05);
   margin-bottom: 1.5rem;
-  overflow: hidden;
 `;
 
 const SPhotoPreview = styled(Image)`
-  width: 100%;
-  height: 100%;
   object-fit: cover;
-  object-position: center;
+  border-radius: 8px;
 `;
 
 const SPhotoUploadBtn = styled.label`
@@ -84,10 +82,11 @@ const SPhotoUploadBtn = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+  border-radius: 8px;
 
-const SPhotoUploadInput = styled.input`
-  display: none;
+  &:focus-within {
+    outline: 2px solid #035ecc;
+  }
 `;
 
 const SPhotoDeleteBtn = styled.button`

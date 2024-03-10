@@ -13,7 +13,7 @@ export default function ChallengeSection({
   status,
   // challenges,
 }: IChallengeSection) {
-  const mainText = challengeSectionText[status].imogi + status;
+  const mainText = challengeSectionText[status].emoji + status;
   const { subText } = challengeSectionText[status];
 
   return (
