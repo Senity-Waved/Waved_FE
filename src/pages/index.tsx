@@ -10,6 +10,7 @@ import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import RecrutingList from '@/components/home/RecrutingList';
 import IChallengeList from '@/types/challengeList';
+import HOME_SECTION_TITLE from '@/constants/homeSectionTitle';
 
 const challengeData: IChallengeList[] = [
   {
@@ -56,7 +57,7 @@ const challengeData: IChallengeList[] = [
   },
 ];
 
-const filteredData = {
+const filteredChallenge = {
   skill: challengeData.filter(
     (challenge) =>
       challenge.challengeType === 'frontend' ||
@@ -96,19 +97,19 @@ export default function Home() {
           </SListScrollX>
         </SSection>
         <RecrutingList
-          title="👨‍💻 기술 면접 챌린지"
-          subtitle="기술 능력을 검증하고 새로운 기술을 학습하는 챌린지"
-          challenges={filteredData.skill}
+          title={HOME_SECTION_TITLE.SKILL.main}
+          subtitle={HOME_SECTION_TITLE.SKILL.sub}
+          challenges={filteredChallenge.skill}
         />
         <RecrutingList
-          title="📚 학습 챌린지"
-          subtitle="개발자 취준생들과 함께 배우며 습득하는 학습 챌린지"
-          challenges={filteredData.study}
+          title={HOME_SECTION_TITLE.STUDY.main}
+          subtitle={HOME_SECTION_TITLE.STUDY.sub}
+          challenges={filteredChallenge.study}
         />
         <RecrutingList
-          title="🏃‍♂️ 생활 챌린지"
-          subtitle="취준도 루틴을 통해 실천하는 생활 습관 챌린지"
-          challenges={filteredData.life}
+          title={HOME_SECTION_TITLE.LIFE.main}
+          subtitle={HOME_SECTION_TITLE.LIFE.sub}
+          challenges={filteredChallenge.life}
         />
         <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
       </main>
