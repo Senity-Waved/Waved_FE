@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
+import Portal from '@/components/modal/ModalPortal';
+import Modal from '@/components/modal/Modal';
 
 interface IGithub {
   githubId: string;
@@ -12,38 +14,35 @@ interface IGithub {
 
 export default function MyGithub() {
   const router = useRouter();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
   const [githubData, setGithubData] = useState<IGithub>({
-    githubId: '',
-    githubToken: '',
+    githubId: 'hello_world',
+    githubToken: '12345678',
   });
-
   const isGithubValid = true;
-
   // 깃허브 연동 상태
   const [isGithubLinked, setIsGithubLinked] = useState<boolean>(
     githubData.githubId !== '' && githubData.githubToken !== '',
   );
 
+  const navigateToProfile = (queryParam: { [key: string]: boolean }): void => {
+    router
+      .push({
+        pathname: '/profile',
+        query: queryParam,
+      })
+      .catch((error: Error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
+  };
+
+  // 연동하기
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const navigateToProfile = (queryParam: {
-      [key: string]: boolean;
-    }): void => {
-      router
-        .push({
-          pathname: '/profile',
-          query: queryParam,
-        })
-        .catch((error: Error) => {
-          console.error('페이지 이동에 실패하였습니다.', error);
-        });
-    };
-
-    if (isGithubLinked) {
-      setIsGithubLinked(false);
-      navigateToProfile({ linkedCancel: true });
-    } else if (isGithubValid) {
+    if (isGithubValid) {
       setIsGithubLinked(true);
       console.log(`깃허브 연동: ${JSON.stringify(githubData)}`);
       navigateToProfile({ githubLinked: true });
@@ -51,6 +50,19 @@ export default function MyGithub() {
       console.log('유효하지 않은 깃허브 아이디 혹은 토큰입니다.');
       navigateToProfile({ linkedFail: true });
     }
+  };
+
+  // 해지하기
+  const handleCancel = () => {
+    openModal();
+  };
+
+  const clickModalBtn = () => {
+    if (isGithubLinked) {
+      setIsGithubLinked(false);
+      navigateToProfile({ linkedCancel: true });
+    }
+    closeModal();
   };
 
   return (
@@ -99,7 +111,8 @@ export default function MyGithub() {
                   text: isGithubLinked ? '해지하기' : '연동하기',
                   styleType: 'primary',
                   size: 'large',
-                  type: 'submit',
+                  type: isGithubLinked ? 'button' : 'submit',
+                  onClick: isGithubLinked ? handleCancel : undefined,
                 },
               ]}
             />
@@ -111,6 +124,18 @@ export default function MyGithub() {
           </SGithubGuideLink>
         </SGithubGuideBtnWrapper>
       </SMyGithubWrapper>
+      {isModalOpen && (
+        <Portal>
+          <Modal
+            image="/icons/icon-exclamation-mark.svg"
+            mainText="정말 연동을 해지하시겠습니까?"
+            subText="연동을 해지하면, 현재 깃허브 챌린지를 참가하고 있을 경우 중도 포기로 간주됩니다."
+            btnText="네, 해지할게요"
+            onClick={clickModalBtn}
+            onClose={closeModal}
+          />
+        </Portal>
+      )}
     </Layout>
   );
 }
