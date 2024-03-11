@@ -99,6 +99,6 @@ const SProfileEditWrapper = styled.div`
   }
 
   & h3:last-of-type {
-    margin-top: 2.25rem;
+    margin-top: 2.5rem;
   }
 `;
