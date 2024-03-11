@@ -1,7 +1,7 @@
-const paymentMethods = {
+const PAYMENT = {
   CREDITCARD: 'creditCard',
   VIRTUAL: 'VirtualAccount',
   KAKAO: 'kakaoPay',
 };
 
-export default paymentMethods;
+export default PAYMENT;
