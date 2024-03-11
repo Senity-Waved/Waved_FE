@@ -26,7 +26,7 @@ export default function ChallengeBtn({
     case '진행중':
       return (
         <SBtnWrapper>
-          <SLink href="#">
+          <SLink href="/verification/collection/1">
             <SBtn styleType="light">인증내역</SBtn>
           </SLink>
           {isAuto ? (
@@ -102,7 +102,7 @@ const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
   background-color: ${({ styleType, theme }) =>
     ({
       light: theme.color.light,
-      middle: theme.color.middle,
+      middle: theme.color.normal,
       gray: theme.color.gray_ec,
     })[styleType]};
   cursor: ${({ styleType }) =>
