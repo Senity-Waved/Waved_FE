@@ -10,7 +10,7 @@ import SnackBar from '@/components/common/SnackBar';
 import profileSnackBarText from '@/constants/profileSnackBarText';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
-import { ISnackBarState } from '@/types/snackbar';
+import ISnackBarState from '@/types/snackbar';
 
 export default function Profile() {
   const router = useRouter();

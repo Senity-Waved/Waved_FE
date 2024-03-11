@@ -8,7 +8,7 @@ import Btn from '@/components/common/Btn';
 import PreviewSlider from '@/components/onboarding/PreviewSlider';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import SnackBar from '@/components/common/SnackBar';
-import { ISnackBarState } from '@/types/snackbar';
+import ISnackBarState from '@/types/snackbar';
 
 export default function OnBoarding() {
   const { query } = useRouter();
