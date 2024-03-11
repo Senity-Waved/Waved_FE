@@ -8,17 +8,25 @@ import paymentMethods from '@/constants/payment';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 
 export default function ChallengeParticipant() {
-  const [deposit, setDeposit] = useState<number>(5000);
-  const [selectedPayment, setSelectedPayment] = useState(
-    paymentMethods.CREDITCARD,
-  );
-  const depositAmounts = [5000, 10000, 20000, 25000, 30000, 50000, 100000];
+  const [selectedPayment, setSelectedPayment] = useState('');
+  const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const challengeData = {
     title: '기술면접 챌린지 1기',
     participantCount: 23,
     startDate: '03월 04일 (월)',
     endDate: '03월 15일 (금)',
+    isFree: true,
   };
+  const [deposit, setDeposit] = useState<number>(
+    challengeData.isFree ? 0 : 5000,
+  );
+
+  let buttonStyleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
+  if (challengeData.isFree) {
+    buttonStyleType = 'primary';
+  } else {
+    buttonStyleType = selectedPayment ? 'primary' : 'disabled';
+  }
 
   return (
     <Layout
@@ -40,10 +48,10 @@ export default function ChallengeParticipant() {
           <SDepositSliderWrapper>
             <input
               type="range"
-              min={0}
+              min={challengeData.isFree ? 0 : 1}
               max={depositAmounts.length - 1}
               step={1}
-              defaultValue={0}
+              defaultValue={challengeData.isFree ? 0 : 1}
               onChange={(e) => {
                 setDeposit(depositAmounts[e.target.valueAsNumber]);
               }}
@@ -81,7 +89,7 @@ export default function ChallengeParticipant() {
           btns={[
             {
               text: '신청하기',
-              styleType: 'primary',
+              styleType: buttonStyleType,
               size: 'large',
             },
           ]}
@@ -172,7 +180,7 @@ const SpaymentMethodItemWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
 `;
 const SPaymentMethodItem = styled.button<{ isSelectedPayment: boolean }>`
   padding: 0.625rem 0.375rem;
