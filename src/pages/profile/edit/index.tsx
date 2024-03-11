@@ -23,15 +23,12 @@ export default function ProfileEdit() {
     e.preventDefault();
     console.log(`프로필 수정: ${JSON.stringify(editProfile)}`);
     router
-      .push(
-        {
-          pathname: '/profile',
-          query: {
-            profileEdit: true,
-          },
+      .push({
+        pathname: '/profile',
+        query: {
+          profileEdit: true,
         },
-        '/profile',
-      )
+      })
       .catch((error) => {
         console.error('페이지 이동에 실패하였습니다.', error);
       });

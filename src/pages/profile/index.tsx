@@ -35,14 +35,11 @@ export default function Profile() {
 
   const clickModalBtn = () => {
     router
-      .push(
-        {
-          pathname: '/onboarding',
-          query:
-            modalState === 'logout' ? { logout: true } : { withdrawal: true },
-        },
-        '/onbarding',
-      )
+      .push({
+        pathname: '/onboarding',
+        query:
+          modalState === 'logout' ? { logout: true } : { withdrawal: true },
+      })
       .catch((error: Error) => {
         console.error(
           modalState === 'logout'
@@ -59,6 +56,11 @@ export default function Profile() {
       snackBarType: 'correct' | 'warning' = 'correct',
     ): void => {
       setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
+      router
+        .replace('/profile', undefined, { shallow: true })
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
+        );
     };
 
     if (query.profileEdit) {
