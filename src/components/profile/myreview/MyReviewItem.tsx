@@ -30,10 +30,10 @@ export default function MyReviewItem({
         <SBtnWrapper>
           <SEditBtn
             href={{
-              pathname: `myreview/edit`,
+              pathname: `/profile/myreview/edit`,
               query: { context, reviewId: id },
             }}
-            as={`myreview/edit?reviewId=${id}`}
+            as="myreview/edit"
           >
             수정
           </SEditBtn>
