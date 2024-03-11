@@ -129,6 +129,7 @@ export default function Register() {
           {step === 1 && <ServiceTermCheck updateData={updateRegisterData} />}
           {step === 2 && (
             <PrivacyInput
+              birthYear={registerData.birthYear}
               gender={registerData.gender}
               updateData={updateRegisterData}
             />

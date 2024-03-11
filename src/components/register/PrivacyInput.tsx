@@ -5,8 +5,8 @@ import { IRegisterState } from '@/types/register';
 
 interface IPravacyInput {
   gender: TGenderOrNull;
-  updateData: (newData: Partial<IRegisterState>) => void;
   birthYear: string;
+  updateData: (newData: Partial<IRegisterState>) => void;
 }
 
 export default function PrivacyInput({
