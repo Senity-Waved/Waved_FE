@@ -37,9 +37,7 @@ export default function Modal({
             priority
           />
         )}
-        <SModalMainText marginBottom={subText ? true : false}>
-          {mainText}
-        </SModalMainText>
+        <SModalMainText marginBottom={!!subText}>{mainText}</SModalMainText>
         {subText && <SModalSubText>{subText}</SModalSubText>}
         <Btn
           btns={[
