@@ -3,15 +3,22 @@ import { useState } from 'react';
 
 interface ITextArea {
   placeholder: string;
+  text?: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function TextArea({ placeholder, setText }: ITextArea) {
-  const [textLength, setTextLength] = useState<number>(0);
+export default function TextArea({
+  placeholder,
+  text = '',
+  setText,
+}: ITextArea) {
+  const [value, setValue] = useState<string>(text);
+  const [textLength, setTextLength] = useState<number>(text.length);
 
   const countTextLength = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextLength(e.target.value.length);
-    setText(e.target.value);
+    setValue(e.target.value);
+    setText(value);
+    setTextLength(value.length);
   };
 
   return (
@@ -20,6 +27,7 @@ export default function TextArea({ placeholder, setText }: ITextArea) {
         placeholder={placeholder}
         maxLength={300}
         onChange={countTextLength}
+        value={value}
       />
       <STextLength>&#40;{textLength}/300&#41;</STextLength>
     </SWrapper>
