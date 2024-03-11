@@ -77,18 +77,22 @@ export default function MyGithub() {
             토큰 입력 전 유효기간을 꼭 확인하고 해주세요.
           </p>
         </SGithubGuide>
-        <SGithubForm onSubmit={handleSubmit}>
+        <SGithubForm onSubmit={handleSubmit} isGithubLinked={isGithubLinked}>
           <div>
             <label htmlFor="githubIdInput">아이디</label>
             <input
               type="text"
               id="githubIdInput"
               name="githubId"
-              value={githubData.githubId}
+              readOnly={isGithubLinked}
               onChange={(e) =>
                 setGithubData({ ...githubData, githubId: e.target.value })
               }
-              placeholder="깃허브 아이디를 입력해주세요"
+              placeholder={
+                isGithubLinked
+                  ? githubData.githubId
+                  : '깃허브 아이디를 입력해주세요'
+              }
             />
           </div>
           <div>
@@ -97,11 +101,13 @@ export default function MyGithub() {
               type="text"
               id="githubTokenInput"
               name="githubToken"
-              value={githubData.githubToken}
+              readOnly={isGithubLinked}
               onChange={(e) =>
                 setGithubData({ ...githubData, githubToken: e.target.value })
               }
-              placeholder="토큰을 입력해주세요"
+              placeholder={
+                isGithubLinked ? githubData.githubToken : '토큰을 입력해주세요'
+              }
             />
           </div>
           <SMyGithubBtnWrapper>
@@ -166,7 +172,7 @@ const SGithubGuide = styled.div`
   }
 `;
 
-const SGithubForm = styled.form`
+const SGithubForm = styled.form<{ isGithubLinked: boolean }>`
   height: 262px;
   display: flex;
   flex-flow: column nowrap;
@@ -191,7 +197,8 @@ const SGithubForm = styled.form`
     margin: 1rem 1.25rem 0 1.25rem;
 
     &::placeholder {
-      color: ${({ theme }) => theme.color.gray_ec};
+      color: ${({ theme, isGithubLinked }) =>
+        isGithubLinked ? theme.color.gray_de : theme.color.gray_bf};
     }
   }
 
