@@ -32,7 +32,7 @@ export default function ProfileShortcut({
             <span>{profileInfo.nickName}</span>&nbsp;{profileInfo.jobTitle}
           </p>
         ) : (
-          <Link href="/">
+          <Link href="/onboarding">
             <p>
               <span>로그인</span>&nbsp;혹은&nbsp;<span>회원가입</span>
               <Image
