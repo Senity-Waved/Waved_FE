@@ -15,7 +15,9 @@ export default function EditReview() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`수정완료! ${text}`);
+    console.log(
+      `${typeof reviewId === 'string' && reviewId} 수정완료! : ${text}`,
+    );
     router
       .push({
         pathname: '/profile/myreview',
@@ -38,7 +40,6 @@ export default function EditReview() {
       <WriteLayout pageType="후기수정" handleSubmit={handleSubmit} text={text}>
         <TextArea placeholder={placeholder} text={text} setText={setText} />
       </WriteLayout>
-      {reviewId}
     </Layout>
   );
 }
