@@ -22,7 +22,6 @@ export default function MyGithub() {
     githubToken: '12345678',
   });
   const isGithubValid = true;
-  // 깃허브 연동 상태
   const [isGithubLinked, setIsGithubLinked] = useState<boolean>(
     githubData.githubId !== '' && githubData.githubToken !== '',
   );
@@ -38,7 +37,6 @@ export default function MyGithub() {
       });
   };
 
-  // 연동하기
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
