@@ -30,6 +30,12 @@ export default function MyReview({
       open: true,
       text: REVIEW_SNACKBAR_TEXT.DELETE,
     });
+    setTimeout(() => {
+      setSnackBarState({
+        open: false,
+        text: '',
+      });
+    }, 3500);
   };
 
   useEffect(() => {
@@ -47,6 +53,12 @@ export default function MyReview({
         .catch((error: Error) =>
           console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
         );
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
     };
     if (query.editReviewSuccess) {
       handleRouting(REVIEW_SNACKBAR_TEXT.EDIT);
