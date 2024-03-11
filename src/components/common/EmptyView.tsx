@@ -4,7 +4,7 @@ import Image from 'next/image';
 import emptyText from '@/constants/emptyText';
 
 interface IEmptyView {
-  pageType: '마이챌린지' | '후기내역' | '예치금내역';
+  pageType: '마이챌린지' | '챌린지후기' | '내후기' | '예치금내역';
 }
 
 export default function EmptyView({ pageType }: IEmptyView) {

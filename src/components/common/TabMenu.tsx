@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface ITab {
   href: string;
@@ -9,11 +9,10 @@ interface ITab {
 
 interface ITabMenu {
   tabs: ITab[];
+  positionTop?: number;
 }
 
-function Tab({ href, text }: ITab) {
-  const router = useRouter();
-  const isActive = router.asPath === href;
+function Tab({ href, text, isActive }: ITab & { isActive: boolean }) {
   return (
     <STab isActive={isActive}>
       <Link href={href} replace>
@@ -23,11 +22,35 @@ function Tab({ href, text }: ITab) {
   );
 }
 
-export default function TabMenu({ tabs }: ITabMenu) {
+export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
+  const [activeTab, setActiveTab] = useState('');
+
+  useEffect(() => {
+    setActiveTab(tabs[0].href);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -70% 0px',
+      },
+    );
+    tabs.forEach((tab) => {
+      const id = tab.href.slice(1);
+      const section = document.querySelector(`#${id}`);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, [tabs]);
+
   return (
-    <STabMenu>
+    <STabMenu positionTop={positionTop}>
       {tabs.map((tab) => (
-        <Tab key={tab.text} {...tab} />
+        <Tab key={tab.text} {...tab} isActive={activeTab === tab.href} />
       ))}
     </STabMenu>
   );
@@ -51,12 +74,12 @@ const STab = styled.li<{ isActive: boolean }>`
   }
 `;
 
-const STabMenu = styled.ul`
+const STabMenu = styled.ul<{ positionTop?: number }>`
   display: flex;
   width: 100%;
   height: 48px;
   position: sticky;
-  top: 0;
+  top: ${({ positionTop }) => `${positionTop}px`};
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
 `;
