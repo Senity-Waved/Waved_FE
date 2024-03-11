@@ -6,11 +6,13 @@ import { IRegisterState } from '@/types/register';
 interface IPravacyInput {
   gender: TGenderOrNull;
   updateData: (newData: Partial<IRegisterState>) => void;
+  birthYear: string;
 }
 
 export default function PrivacyInput({
   gender: currentGender,
   updateData,
+  birthYear,
 }: IPravacyInput) {
   return (
     <SPrivacyInputWrapper>
@@ -19,6 +21,7 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
+          value={birthYear}
           onChange={(e) => updateData({ birthYear: e.target.value })}
         >
           <option value="">출생연도</option>

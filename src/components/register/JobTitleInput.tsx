@@ -5,16 +5,19 @@ import { IRegisterState } from '@/types/register';
 interface IJobTitleInput {
   jobTitle: string;
   updateData: (newData: Partial<IRegisterState>) => void;
+  value?: string;
 }
 
 export default function JobTitleInput({
   jobTitle: currentJobTitle,
   updateData,
+  value,
 }: IJobTitleInput) {
   return (
     <SJobTitleInputWrapper>
       <SJobTitleChipWrapper>
         <SJobTitleChip
+          value={value}
           type="button"
           active={currentJobTitle === JOBTITLE.FRONT}
           onClick={() => updateData({ jobTitle: JOBTITLE.FRONT })}

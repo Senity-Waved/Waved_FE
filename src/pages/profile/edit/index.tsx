@@ -7,14 +7,15 @@ import { IRegisterState } from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
+import JOBTITLE from '@/constants/jobTitle';
 
 export default function ProfileEdit() {
   const router = useRouter();
   const [editProfile, setEditProfile] = useState<IRegisterState>({
-    birthYear: '',
+    birthYear: '1999',
     gender: null,
-    nickname: '',
-    jobTitle: '',
+    nickname: '웨이브드',
+    jobTitle: JOBTITLE.FRONT,
   });
 
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
@@ -50,17 +51,20 @@ export default function ProfileEdit() {
         <form onSubmit={handleSubmit}>
           <h3>닉네임을 입력해주세요.</h3>
           <NicknameInput
+            value={editProfile.nickname}
             updateData={updateProfileData}
             setIsNicknameValid={setIsNicknameValid}
             isNicknameValid={isNicknameValid}
           />
           <h3>해당하는 직군을 선택해주세요.</h3>
           <JobTitleInput
+            value={editProfile.jobTitle}
             jobTitle={editProfile.jobTitle}
             updateData={updateProfileData}
           />
           <h3>회원님의 정보를 입력해주세요.</h3>
           <PrivacyInput
+            birthYear={editProfile.birthYear}
             gender={editProfile.gender}
             updateData={updateProfileData}
           />

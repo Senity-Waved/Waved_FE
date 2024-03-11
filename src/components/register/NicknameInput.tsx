@@ -5,12 +5,14 @@ interface INicknameInput {
   updateData: (newData: Partial<IRegisterState>) => void;
   setIsNicknameValid: (nicknmaeValid: boolean) => void;
   isNicknameValid: boolean;
+  value?: string;
 }
 
 export default function NicknameInput({
   updateData,
   setIsNicknameValid,
   isNicknameValid,
+  value,
 }: INicknameInput) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nicknameValue = e.target.value;
@@ -34,6 +36,7 @@ export default function NicknameInput({
         name="nickname"
         id="nicknameInput"
         placeholder="닉네임"
+        value={value}
         onChange={handleChange}
         onKeyDown={handleEnterKey}
         isNicknameValid={isNicknameValid}
