@@ -15,7 +15,7 @@ export default function NicknameInput({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nicknameValue = e.target.value;
     const valid = nicknameValue.length <= 10;
-    setIsNicknameValid(valid); // 부모 컴포넌트의 상태 업데이트
+    setIsNicknameValid(valid);
     if (valid) {
       updateData({ nickname: nicknameValue });
     }
@@ -39,7 +39,7 @@ export default function NicknameInput({
         isNicknameValid={isNicknameValid}
       />
       <SNicknameValidText>
-        {!isNicknameValid && '10글자 이하로 입력해 주세요.'}
+        {!isNicknameValid && '최대 10글자까지 입력 가능합니다.'}
       </SNicknameValidText>
     </SNicknameInputWrapper>
   );
