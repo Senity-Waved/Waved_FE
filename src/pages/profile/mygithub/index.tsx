@@ -70,7 +70,12 @@ export default function MyGithub() {
       <SMyGithubWrapper>
         <h2 className="a11yHidden">깃허브 연동 관리</h2>
         <SGithubGuide>
-          해당 연동은 &#34;1일 1커밋&#34; 챌린지 참여자에게 필수입니다.
+          <p>해당 연동은 &#34;1일 1커밋&#34; 챌린지 참여자에게 필수입니다.</p>
+          <p>
+            Waved에서는 토큰의 유효기간을 확인해주지 않습니다.
+            <br />
+            토큰 입력 전 유효기간을 꼭 확인하고 해주세요.
+          </p>
         </SGithubGuide>
         <SGithubForm onSubmit={handleSubmit}>
           <div>
@@ -137,16 +142,28 @@ export default function MyGithub() {
 
 const SMyGithubWrapper = styled.div``;
 
-const SGithubGuide = styled.p`
+const SGithubGuide = styled.div`
   margin: 1.5rem 1.25rem 1rem 1.25rem;
-  height: 52px;
-  line-height: 52px;
-  text-align: center;
-  border-radius: 6px;
   background-color: ${({ theme }) => theme.color.light};
-  color: ${({ theme }) => theme.color.normal};
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  text-align: center;
+  height: 106px;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+
+  & p:first-of-type {
+    color: ${({ theme }) => theme.color.normal};
+    font-size: ${({ theme }) => theme.fontSize.body4};
+    font-weight: ${({ theme }) => theme.fontWeight.body4};
+  }
+
+  & p:last-of-type {
+    font-size: ${({ theme }) => theme.fontSize.caption2};
+    font-weight: ${({ theme }) => theme.fontWeight.caption2};
+    color: ${({ theme }) => theme.color.gray_83};
+  }
 `;
 
 const SGithubForm = styled.form`
