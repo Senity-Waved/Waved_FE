@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import JOBTITLE from '@/constants/jobTitle';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 
 interface IJobTitleInput {
   jobTitle: string;

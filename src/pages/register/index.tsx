@@ -9,7 +9,7 @@ import ServiceTermCheck from '@/components/register/ServiceTermCheck';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import NicknameInput from '@/components/register/NicknameInput';
 import JobTitleInput from '@/components/register/JobTitleInput';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 import { SLayoutWrapper } from '@/components/common/Layout';
 
 export default function Register() {
