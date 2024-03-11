@@ -35,6 +35,6 @@ const SBottomFixedBtn = styled(SBtnWrapper)`
   z-index: 10;
   position: sticky;
   bottom: 0;
-  padding: 1.75rem 1.25rem 2.125rem;
+  padding: 1rem 1.25rem 3.125rem;
   background-color: ${({ theme }) => theme.color.white};
 `;

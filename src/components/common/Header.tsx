@@ -38,7 +38,7 @@ export default function Header({
   );
 }
 
-const SHeaderWrapper = styled.header`
+export const SHeaderWrapper = styled.header`
   z-index: 10;
   flex-shrink: 0;
   position: relative;
@@ -50,7 +50,7 @@ const SHeaderWrapper = styled.header`
   align-items: center;
 `;
 
-const SBackBtn = styled.button`
+export const SBackBtn = styled.button`
   position: absolute;
   left: 0;
   margin-left: ${({ theme }) => theme.spacing.md};
