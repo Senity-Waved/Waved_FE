@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 interface IBtn {
   challengeStatus: '진행중' | '대기중' | '진행완료';
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
-  link?: string[]; // 버튼 클릭시 이동경로 - 인증내역,인증하기,후기작성
+  // challengeId: string;
+  // verificationType: string;
 }
 
 export default function ChallengeBtn({
@@ -13,11 +15,10 @@ export default function ChallengeBtn({
   dday,
   isAbled,
   isAuto,
-  link,
 }: IBtn) {
-  const preventLink = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const preventLink = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isAbled) {
-      event.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
+      e.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
     }
   };
 
@@ -25,13 +26,25 @@ export default function ChallengeBtn({
     case '진행중':
       return (
         <SBtnWrapper>
-          <SBtn styleType="light" href="#">
-            인증내역
-          </SBtn>
+          <SLink href="#">
+            <SBtn styleType="light">인증내역</SBtn>
+          </SLink>
           {isAuto ? (
             <SBtn styleType="gray">자동인증</SBtn>
           ) : (
-            <SBtn styleType={isAbled ? 'middle' : 'gray'}>인증하기</SBtn>
+            <SLink
+              href={{
+                pathname: '/verification/post/1',
+                query: { type: 'text' },
+              }}
+            >
+              <SBtn
+                styleType={isAbled ? 'middle' : 'gray'}
+                onClick={preventLink}
+              >
+                인증하기
+              </SBtn>
+            </SLink>
           )}
         </SBtnWrapper>
       );
@@ -46,8 +59,14 @@ export default function ChallengeBtn({
     case '진행완료':
       return (
         <SBtnWrapper>
-          <SBtn styleType="light">인증내역</SBtn>
-          <SBtn styleType={isAbled ? 'middle' : 'gray'}>후기작성</SBtn>
+          <SLink href="#">
+            <SBtn styleType="light">인증내역</SBtn>
+          </SLink>
+          <SLink href="#">
+            <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
+              후기작성
+            </SBtn>
+          </SLink>
         </SBtnWrapper>
       );
     default:
@@ -60,11 +79,15 @@ const SBtnWrapper = styled.div`
   gap: 9px;
 `;
 
-const SBtn = styled.a<{ styleType: 'light' | 'gray' | 'middle' }>`
+const SLink = styled(Link)`
+  width: 100%;
+`;
+
+const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
   width: 100%;
   height: 40px;
-  text-align: center;
   line-height: 40px;
+  text-align: center;
   border-radius: 8px;
   border: none;
   font-size: 0.875rem;
