@@ -25,11 +25,6 @@ export default function OnBoarding() {
       snackBarType: 'correct' | 'warning' = 'correct',
     ): void => {
       setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
-      router
-        .replace('/onboarding', undefined, { shallow: true })
-        .catch((error: Error) =>
-          console.error('쿼리스트링 제거 후 URL 변경 실패', error),
-        );
     };
 
     if (query.logout) {

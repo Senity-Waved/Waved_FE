@@ -29,10 +29,13 @@ export default function MyGithub() {
 
   const navigateToProfile = (queryParam: { [key: string]: boolean }): void => {
     router
-      .push({
-        pathname: '/profile',
-        query: queryParam,
-      })
+      .push(
+        {
+          pathname: '/profile',
+          query: queryParam,
+        },
+        '/profile',
+      )
       .catch((error: Error) => {
         console.error('페이지 이동에 실패하였습니다.', error);
       });
