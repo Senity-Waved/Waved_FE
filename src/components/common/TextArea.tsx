@@ -17,8 +17,8 @@ export default function TextArea({
 
   const countTextLength = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
-    setText(value);
-    setTextLength(value.length);
+    setText(e.target.value);
+    setTextLength(e.target.value.length);
   };
 
   return (
