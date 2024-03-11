@@ -262,11 +262,7 @@ export default function Profile() {
         </SwithdrawalBtnWrapper>
       </SProfileWrapper>
       {snackBarState.open && (
-        <SnackBar
-          text={snackBarState.text}
-          type={snackBarState.type}
-          noFooter
-        />
+        <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
       {isModalOpen && (
         <Portal>
