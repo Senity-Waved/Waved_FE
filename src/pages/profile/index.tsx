@@ -385,7 +385,7 @@ const SwithdrawalBtnWrapper = styled.div`
   height: 84px;
   text-align: right;
   line-height: 84px;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 
   & button {
     font-size: ${({ theme }) => theme.fontSize.body4};

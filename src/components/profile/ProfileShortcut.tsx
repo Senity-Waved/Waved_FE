@@ -87,7 +87,7 @@ const SProfileShortcutWrapper = styled.div`
 `;
 
 const SProfileGreetingWrapper = styled.div`
-  width: 335px;
+  width: 336px;
   height: 70px;
 
   & p {
@@ -104,7 +104,7 @@ const SProfileGreetingWrapper = styled.div`
 `;
 
 const SGithubIdBtn = styled.button<{ isGithub: boolean }>`
-  width: ${({ isGithub }) => (isGithub ? '118px' : '135px')};
+  width: ${({ isGithub }) => (isGithub ? '118px' : '136px')};
   height: 28px;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.color.gray_83};
@@ -112,8 +112,8 @@ const SGithubIdBtn = styled.button<{ isGithub: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 0 10px;
+  gap: 0.5rem;
+  padding: 0 0.625rem;
   color: ${({ theme }) => theme.color.gray_f9};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};

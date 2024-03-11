@@ -21,10 +21,10 @@ export default function MyDeposit() {
       <SMyDepositWrapper>
         <h2 className="a11yHidden">예치금 내역</h2>
         {haveDeposit ? (
-          <SDepositItemWrapper>
+          <div>
             <DepositItem depositData={depositData} />
             <DepositItem depositData={depositData} />
-          </SDepositItemWrapper>
+          </div>
         ) : (
           <EmptyView pageType="예치금내역" />
         )}
@@ -34,4 +34,3 @@ export default function MyDeposit() {
 }
 
 const SMyDepositWrapper = styled.div``;
-const SDepositItemWrapper = styled.div``;

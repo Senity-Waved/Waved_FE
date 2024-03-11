@@ -86,10 +86,9 @@ export default function ProfileEdit() {
 
 const SProfileEditWrapper = styled.div`
   & h3 {
-    margin: 0 1.25rem;
+    margin: 0 1.25rem 0.5rem 1.25rem;
     line-height: 1.4;
     height: 28px;
-    margin-bottom: 0.5rem;
     font-size: ${({ theme }) => theme.fontSize.headline2};
     font-weight: ${({ theme }) => theme.fontWeight.headline2};
   }
