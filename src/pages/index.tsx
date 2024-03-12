@@ -92,9 +92,16 @@ const SHomeWrapper = styled(SLayoutWrapper)`
 
 const SSection = styled.section`
   position: relative;
-  &:last-of-type::after {
+  &:last-of-type {
+    margin-bottom: 4rem;
+  }
+  &:not(:last-of-type)::after {
+    content: '';
     position: absolute;
     display: inline-block;
+    width: 100%;
+    height: 6px;
+    background-color: ${({ theme }) => theme.color.gray_ec};
   }
 `;
 
