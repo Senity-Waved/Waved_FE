@@ -1,17 +1,29 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import YEARS from '@/constants/years';
 import { EGender, TGenderOrNull } from '@/types/gender';
 import { IRegisterState } from '@/types/register';
 
 interface IPravacyInput {
   gender: TGenderOrNull;
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  birthYear: string;
+  updateData: (newData: Partial<IRegisterState>) => void;
 }
 
 export default function PrivacyInput({
   gender: currentGender,
-  updateRegisterData,
+  updateData,
+  birthYear: currentBirthYear,
 }: IPravacyInput) {
+  const [selectedBirthYear, setSelectedBirthYear] =
+    useState<string>(currentBirthYear);
+
+  const handleBirthYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = e.target.value;
+    setSelectedBirthYear(newYear);
+    updateData({ birthYear: newYear });
+  };
+
   return (
     <SPrivacyInputWrapper>
       <SBirthYearWrapper>
@@ -19,9 +31,10 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
-          onChange={(e) => updateRegisterData({ birthYear: e.target.value })}
+          value={selectedBirthYear}
+          onChange={handleBirthYearChange}
         >
-          <option value="">출생연도</option>
+          <option value="출생연도">출생연도</option>
           {YEARS.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -35,14 +48,14 @@ export default function PrivacyInput({
           <SGenderBtn
             type="button"
             selectedGender={currentGender === EGender.Female}
-            onClick={() => updateRegisterData({ gender: EGender.Female })}
+            onClick={() => updateData({ gender: EGender.Female })}
           >
             여자
           </SGenderBtn>
           <SGenderBtn
             type="button"
             selectedGender={currentGender === EGender.Male}
-            onClick={() => updateRegisterData({ gender: EGender.Male })}
+            onClick={() => updateData({ gender: EGender.Male })}
           >
             남자
           </SGenderBtn>
@@ -93,6 +106,7 @@ const SBirthYearSelect = styled.select`
   margin-right: 1.25rem;
   padding-left: 1rem;
   padding-right: 0.75rem;
+  /* outline: blue; */
 
   -o-appearance: none;
   -webkit-appearance: none;

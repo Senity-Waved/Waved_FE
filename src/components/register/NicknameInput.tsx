@@ -2,10 +2,27 @@ import styled from '@emotion/styled';
 import { IRegisterState } from '@/types/register';
 
 interface INicknameInput {
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  updateData: (newData: Partial<IRegisterState>) => void;
+  setIsNicknameValid: (nicknmaeValid: boolean) => void;
+  isNicknameValid: boolean;
+  value?: string;
 }
 
-export default function NicknameInput({ updateRegisterData }: INicknameInput) {
+export default function NicknameInput({
+  updateData,
+  setIsNicknameValid,
+  isNicknameValid,
+  value,
+}: INicknameInput) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nicknameValue = e.target.value;
+    const valid = nicknameValue.length <= 10;
+    setIsNicknameValid(valid);
+    if (valid) {
+      updateData({ nickname: nicknameValue });
+    }
+  };
+
   const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -19,9 +36,14 @@ export default function NicknameInput({ updateRegisterData }: INicknameInput) {
         name="nickname"
         id="nicknameInput"
         placeholder="닉네임"
-        onChange={(e) => updateRegisterData({ nickname: e.target.value })}
+        value={value}
+        onChange={handleChange}
         onKeyDown={handleEnterKey}
+        isNicknameValid={isNicknameValid}
       />
+      <SNicknameValidText>
+        {!isNicknameValid && '최대 10글자까지 입력 가능합니다.'}
+      </SNicknameValidText>
     </SNicknameInputWrapper>
   );
 }
@@ -38,7 +60,7 @@ const SNickNameWordsText = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-const SNicknameInput = styled.input`
+const SNicknameInput = styled.input<{ isNicknameValid: boolean }>`
   height: 25px;
   width: 100%;
   margin-right: 1.25rem;
@@ -52,4 +74,18 @@ const SNicknameInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_ec};
   }
+
+  &:focus {
+    border-bottom: 2px solid
+      ${({ theme, isNicknameValid }) =>
+        isNicknameValid ? theme.color.gray_3c : theme.color.error};
+  }
+`;
+
+const SNicknameValidText = styled.p`
+  height: 20px;
+  margin-top: 4px;
+  color: ${({ theme }) => theme.color.error};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;

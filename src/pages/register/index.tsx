@@ -23,6 +23,8 @@ export default function Register() {
     jobTitle: '',
   });
 
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
+
   const handleForSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step === 4 && registerData.jobTitle)
@@ -41,7 +43,11 @@ export default function Register() {
       setStep(2);
     } else if (step === 2 && registerData.birthYear) {
       setStep(3);
-    } else if (step === 3 && registerData.nickname) {
+    } else if (
+      step === 3 &&
+      registerData.nickname &&
+      registerData.nickname.length <= 10
+    ) {
       setStep(4);
     }
   };
@@ -120,21 +126,24 @@ export default function Register() {
           {step === 4 && <h3>해당하는 직군을 선택해주세요.</h3>}
         </SRegisterStepGuide>
         <form method="post" onSubmit={handleForSubmit} name="registerForm">
-          {step === 1 && (
-            <ServiceTermCheck updateRegisterData={updateRegisterData} />
-          )}
+          {step === 1 && <ServiceTermCheck updateData={updateRegisterData} />}
           {step === 2 && (
             <PrivacyInput
+              birthYear={registerData.birthYear}
               gender={registerData.gender}
-              updateRegisterData={updateRegisterData}
+              updateData={updateRegisterData}
             />
           )}
           {step === 3 && (
-            <NicknameInput updateRegisterData={updateRegisterData} />
+            <NicknameInput
+              updateData={updateRegisterData}
+              setIsNicknameValid={setIsNicknameValid}
+              isNicknameValid={isNicknameValid}
+            />
           )}
           {step === 4 && (
             <JobTitleInput
-              updateRegisterData={updateRegisterData}
+              updateData={updateRegisterData}
               jobTitle={registerData.jobTitle}
             />
           )}
@@ -191,7 +200,7 @@ export default function Register() {
                 {
                   text: '다음',
                   styleType:
-                    step === 3 && !registerData.nickname
+                    (step === 3 && !registerData.nickname) || !isNicknameValid
                       ? 'disabled'
                       : 'primary',
                   size: 'large',
