@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import YEARS from '@/constants/years';
 import { EGender, TGenderOrNull } from '@/types/gender';
 import { IRegisterState } from '@/types/register';
@@ -12,8 +13,17 @@ interface IPravacyInput {
 export default function PrivacyInput({
   gender: currentGender,
   updateData,
-  birthYear,
+  birthYear: currentBirthYear,
 }: IPravacyInput) {
+  const [selectedBirthYear, setSelectedBirthYear] =
+    useState<string>(currentBirthYear);
+
+  const handleBirthYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = e.target.value;
+    setSelectedBirthYear(newYear);
+    updateData({ birthYear: newYear });
+  };
+
   return (
     <SPrivacyInputWrapper>
       <SBirthYearWrapper>
@@ -21,10 +31,10 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
-          value={birthYear}
-          onChange={(e) => updateData({ birthYear: e.target.value })}
+          value={selectedBirthYear}
+          onChange={handleBirthYearChange}
         >
-          <option value="">출생연도</option>
+          <option value="출생연도">출생연도</option>
           {YEARS.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -96,6 +106,7 @@ const SBirthYearSelect = styled.select`
   margin-right: 1.25rem;
   padding-left: 1rem;
   padding-right: 0.75rem;
+  /* outline: blue; */
 
   -o-appearance: none;
   -webkit-appearance: none;
