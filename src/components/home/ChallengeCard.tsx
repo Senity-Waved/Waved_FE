@@ -1,36 +1,29 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface IChallengeCard {
-  challengeId: number;
-  title: string;
-  thumbnail: string;
-  isFree: boolean;
-}
+import IRecrutingChallenge from '@/types/recrutingChallenge';
+import VERIFICATION_TYPE from '@/constants/verficationType';
 
 export default function ChallengeCard({
-  challengeId,
+  challengeGroupId,
+  groupTitle,
   thumbnail,
-  title,
+  verificationType,
+  participantCount,
+  startDate,
   isFree,
-}: IChallengeCard) {
+}: IRecrutingChallenge) {
   return (
     <SChallengeCard>
-      <Link href={`/challenge/${challengeId}`}>
+      <Link href={`/challenge/${challengeGroupId}`}>
         <SImage>
-          <Image
-            src={thumbnail || ''}
-            alt={title || ''}
-            fill
-            sizes="50vw"
-            priority
-          />
-          <SParticipant>2</SParticipant>
+          <Image src={thumbnail} alt={groupTitle} fill sizes="50vw" priority />
+          <SParticipant>{participantCount}</SParticipant>
         </SImage>
         <STitle>
-          <h3>{title}</h3>
+          <h3>{groupTitle}</h3>
           <span>D-5</span>
+          <span className="a11yHiddend">{startDate}</span>
         </STitle>
         <SChips>
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
@@ -38,7 +31,7 @@ export default function ChallengeCard({
           <dt className="a11yHidden">챌린지 진행 기한</dt>
           <dd>2주</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
-          <dd>사진</dd>
+          <dd>{VERIFICATION_TYPE[verificationType]}</dd>
           {isFree && (
             <>
               <dt className="a11yHidden">챌린지 예치금 유무</dt>
