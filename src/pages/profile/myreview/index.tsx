@@ -14,13 +14,12 @@ export default function MyReview({
 }: {
   getMyReviews: IMyReview[];
 }) {
-  const [reviews, setReviews] = useState(getMyReviews);
   const router = useRouter();
   const { query } = router;
+  const [reviews, setReviews] = useState(getMyReviews);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
-    type: 'correct',
   });
 
   const deleteReview = (id: string) => {

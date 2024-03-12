@@ -7,7 +7,8 @@ import writeLayoutText from '@/constants/writeLayoutText';
 
 export default function EditReview() {
   const router = useRouter();
-  const { reviewId, context } = router.query;
+  const reviewId = router.query.reviewId as string;
+  const context = router.query.context as string;
   const { placeholder } = writeLayoutText['후기수정'];
   const [text, setText] = useState<string>(
     typeof context === 'string' ? context : '',
@@ -15,9 +16,7 @@ export default function EditReview() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(
-      `${typeof reviewId === 'string' && reviewId} 수정완료! : ${text}`,
-    );
+    console.log(`${reviewId} 수정완료! : ${text}`);
     router
       .push({
         pathname: '/profile/myreview',
