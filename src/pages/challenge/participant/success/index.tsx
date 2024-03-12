@@ -125,7 +125,7 @@ const SParticipantSuccessInfoWrapper = styled.div`
 const SPayDepositWrapper = styled.div`
   height: 74px;
   line-height: 74px;
-  margin: 0 24px;
+  margin: 0 1.5rem;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -145,5 +145,5 @@ const SPayDepositWrapper = styled.div`
 
 const SParticipantSuccessBtnWrapper = styled.div`
   width: calc(100% - 40px);
-  margin: 0 1.25rem 50px 1.25rem;
+  margin: 0 1.25rem 3.125rem 1.25rem;
 `;
