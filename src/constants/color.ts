@@ -4,7 +4,7 @@ const color = {
   MIDDLE: '#508DFF',
   DARK: '#1A50B5',
   POSITIVE: '##1FAD3B',
-  ERROR: '#F50B5B',
+  ERROR: '#E50C19',
   BLACK: '#000000',
   WHITE: '#FFFFFF',
   GRAYF9: '#F9F9FA',
