@@ -73,35 +73,35 @@ export default function ChallengeParticipant() {
         </SDepositSettingWrapper>
         <DepositRefundGuide />
         <SPaymentMethodWrapper>
-          {deposit !== 0 && (
-            <>
-              <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
-              <SpaymentMethodItemWrapper>
-                <SPaymentMethodItem
-                  type="button"
-                  isSelectedPayment={
-                    selectedPayment === paymentMethods.CREDITCARD
-                  }
-                  onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
-                >
-                  <p>신용카드</p>
-                </SPaymentMethodItem>
-                <SPaymentMethodItem
-                  type="button"
-                  isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
-                  onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
-                >
-                  <p>가상계좌</p>
-                </SPaymentMethodItem>
-                <SPaymentMethodItem
-                  type="button"
-                  isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
-                  onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
-                >
-                  <p>카카오페이</p>
-                </SPaymentMethodItem>
-              </SpaymentMethodItemWrapper>
-            </>
+          <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
+          {deposit !== 0 ? (
+            <SpaymentMethodItemWrapper>
+              <SPaymentMethodItem
+                type="button"
+                isSelectedPayment={
+                  selectedPayment === paymentMethods.CREDITCARD
+                }
+                onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
+              >
+                <p>신용카드</p>
+              </SPaymentMethodItem>
+              <SPaymentMethodItem
+                type="button"
+                isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
+                onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
+              >
+                <p>가상계좌</p>
+              </SPaymentMethodItem>
+              <SPaymentMethodItem
+                type="button"
+                isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
+                onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
+              >
+                <p>카카오페이</p>
+              </SPaymentMethodItem>
+            </SpaymentMethodItemWrapper>
+          ) : (
+            <SNotPaymentGuide>0원은 결제 수단이 없습니다.</SNotPaymentGuide>
           )}
         </SPaymentMethodWrapper>
         <BottomFixedBtn
@@ -209,4 +209,11 @@ const SPaymentMethodItem = styled.button<{ isSelectedPayment: boolean }>`
     line-height: 22px;
     margin: 0 auto;
   }
+`;
+
+const SNotPaymentGuide = styled.p`
+  text-align: center;
+  color: ${({ theme }) => theme.color.gray_bf};
+  font-size: ${({ theme }) => theme.fontSize.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
 `;
