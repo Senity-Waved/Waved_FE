@@ -12,7 +12,6 @@ import changePriceFormat from '@/utils/changePriceFormat';
 export default function ChallengeParticipant() {
   const router = useRouter();
   const [selectedPayment, setSelectedPayment] = useState('');
-  const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const challengeData = {
     title: '기술면접 챌린지 1기',
     participantCount: 23,
@@ -20,24 +19,31 @@ export default function ChallengeParticipant() {
     endDate: '03월 15일 (금)',
     isFree: true,
   };
+  const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
+  const filteredDepositAmounts = challengeData.isFree
+    ? depositAmounts
+    : depositAmounts.filter((amount) => amount !== 0);
+
   const [deposit, setDeposit] = useState<number>(
     challengeData.isFree ? 0 : 5000,
   );
 
-  if (!challengeData.isFree) depositAmounts.shift();
-
-  let buttonStyleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
-  if (challengeData.isFree) {
-    if (deposit === 0) {
-      buttonStyleType = 'primary';
-    } else if (deposit !== 0 && selectedPayment) {
-      buttonStyleType = 'primary';
-    } else {
-      buttonStyleType = 'disabled';
+  const getButtonStyleType = ():
+    | 'primary'
+    | 'gray'
+    | 'white'
+    | 'white_line'
+    | 'disabled' => {
+    if (challengeData.isFree && deposit === 0) {
+      return 'primary';
     }
-  } else {
-    buttonStyleType = selectedPayment ? 'primary' : 'disabled';
-  }
+    if (!challengeData.isFree && selectedPayment) {
+      return 'primary';
+    }
+    return 'disabled';
+  };
+
+  const buttonStyleType = getButtonStyleType();
 
   const goToSuccess = () => {
     console.log('챌린지 신청 성공');
@@ -64,7 +70,7 @@ export default function ChallengeParticipant() {
         <SDepositSettingWrapper>
           <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
           <SDepositBtnWrapper>
-            {depositAmounts.map((amount) => (
+            {filteredDepositAmounts.map((amount) => (
               <li key={amount}>
                 <SDepositBtn
                   isSelectedDeposit={amount === deposit}
