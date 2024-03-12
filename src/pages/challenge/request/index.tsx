@@ -12,16 +12,9 @@ export default function ChallengeRequest() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router
-      .push({
-        pathname: '/challenge/request/success',
-        query: {
-          challengeRequestSuccess: true,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동 실패', error);
-      });
+    router.push('/challenge/request/success').catch((error) => {
+      console.error('페이지 이동 실패', error);
+    });
   };
   return (
     <Layout
