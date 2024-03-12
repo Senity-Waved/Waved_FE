@@ -5,7 +5,7 @@ import EmptyView from '@/components/common/EmptyView';
 
 export default function MyDeposit() {
   const depositData = {
-    challengeName: '기술면접 챌린지',
+    challengeName: '백엔드 기술면접 챌린지 2기',
     challengeResult: '성공',
     challengeDate: '2023년 02월 27일',
     deposit: 5000,

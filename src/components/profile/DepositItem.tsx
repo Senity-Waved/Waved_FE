@@ -32,18 +32,22 @@ const SDepositItemWrapper = styled.div`
   padding: 1.5rem 1.25rem;
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   & > div {
+    height: 22px;
     display: flex;
     flex-flow: row nowrap;
-    align-items: center;
     justify-content: space-between;
   }
 `;
 
 const SChallengeInfo = styled.p`
+  line-height: 22px;
+  width: 200px;
+  flex: 1;
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
 `;
 const SDepositHistoryDate = styled.p`
+  flex-shrink: 0;
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
   color: ${({ theme }) => theme.color.gray_70};
