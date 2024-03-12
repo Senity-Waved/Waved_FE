@@ -7,6 +7,7 @@ import DepositRefundGuide from '@/components/challenge/participant/DepositRefund
 import DepositGuide from '@/components/challenge/participant/DepositGuide';
 import paymentMethods from '@/constants/payment';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import changePriceFormat from '@/utils/changePriceFormat';
 
 export default function ChallengeParticipant() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function ChallengeParticipant() {
         />
         <DepositGuide />
         <SDepositSettingWrapper>
-          <SDepositAmout>{deposit.toLocaleString()}원</SDepositAmout>
+          <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
           <SDepositBtnWrapper>
             {depositAmounts.map((amount) => (
               <li key={amount}>
@@ -72,7 +73,7 @@ export default function ChallengeParticipant() {
                   onClick={() => setDeposit(amount)}
                 >
                   <p>
-                    {amount.toLocaleString()}
+                    {changePriceFormat(amount)}
                     <span>원</span>
                   </p>
                 </SDepositBtn>
