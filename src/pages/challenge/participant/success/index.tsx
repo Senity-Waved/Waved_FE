@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Head from 'next/head';
+import Link from 'next/link';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
@@ -13,6 +14,7 @@ export default function ParticipantSuccess() {
     endDate: '03월 15일 (금)',
     isFree: true,
   };
+
   return (
     <SParticipantSuccessWrapper>
       <Head>
@@ -55,15 +57,17 @@ export default function ParticipantSuccess() {
           </SParticipantSuccessInfoWrapper>
         </div>
         <SParticipantSuccessBtnWrapper>
-          <Btn
-            btns={[
-              {
-                text: '확인',
-                styleType: 'primary',
-                size: 'large',
-              },
-            ]}
-          />
+          <Link href="/mychallenge">
+            <Btn
+              btns={[
+                {
+                  text: '확인',
+                  styleType: 'primary',
+                  size: 'large',
+                },
+              ]}
+            />
+          </Link>
         </SParticipantSuccessBtnWrapper>
       </main>
     </SParticipantSuccessWrapper>

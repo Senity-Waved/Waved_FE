@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
@@ -8,6 +9,7 @@ import paymentMethods from '@/constants/payment';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 
 export default function ChallengeParticipant() {
+  const router = useRouter();
   const [selectedPayment, setSelectedPayment] = useState('');
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const challengeData = {
@@ -35,6 +37,13 @@ export default function ChallengeParticipant() {
   } else {
     buttonStyleType = selectedPayment ? 'primary' : 'disabled';
   }
+
+  const goToSuccess = () => {
+    console.log('챌린지 신청 성공');
+    router.push('/challenge/participant/success').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
+  };
 
   return (
     <Layout
@@ -110,6 +119,7 @@ export default function ChallengeParticipant() {
               text: '신청하기',
               styleType: buttonStyleType,
               size: 'large',
+              onClick: goToSuccess,
             },
           ]}
         />

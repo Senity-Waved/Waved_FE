@@ -7,6 +7,7 @@ interface IBtn {
   text: string;
   styleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   size: 'large' | 'small';
+  onClick?: () => void;
 }
 
 interface IBottomFixedBtn {
@@ -23,6 +24,7 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
           disabled={btn.styleType === 'disabled' ? true : undefined}
           styleType={btn.styleType}
           size={btn.size}
+          onClick={btn.onClick}
         >
           {btn.text}
         </SBtn>
