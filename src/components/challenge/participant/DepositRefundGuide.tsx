@@ -6,11 +6,11 @@ export default function DepositRefundGuide() {
       <SDepositRefundGuideTitle>예치금 환급 안내</SDepositRefundGuideTitle>
       <SDepositRefundGuide>
         <SDepositRefundGuideItem>
-          <p>80% 이상 성공</p>
+          <p>달성률 80% 이상</p>
           <p>예치금 전액 환불</p>
         </SDepositRefundGuideItem>
         <SDepositRefundGuideItem>
-          <p>80% 미만 성공</p>
+          <p>달성률 80% 미만</p>
           <p>예치금 환불 불가</p>
         </SDepositRefundGuideItem>
       </SDepositRefundGuide>

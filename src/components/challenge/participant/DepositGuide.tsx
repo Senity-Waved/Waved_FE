@@ -13,7 +13,7 @@ export default function DepositGuide() {
 
 const SDepositGuideWrapper = styled.section`
   height: 112px;
-  margin: 1.5rem;
+  margin: 0 1.5rem;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

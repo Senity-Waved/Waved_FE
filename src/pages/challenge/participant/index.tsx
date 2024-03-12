@@ -21,9 +21,17 @@ export default function ChallengeParticipant() {
     challengeData.isFree ? 0 : 5000,
   );
 
+  if (!challengeData.isFree) depositAmounts.shift();
+
   let buttonStyleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   if (challengeData.isFree) {
-    buttonStyleType = 'primary';
+    if (deposit === 0) {
+      buttonStyleType = 'primary';
+    } else if (deposit !== 0 && selectedPayment) {
+      buttonStyleType = 'primary';
+    } else {
+      buttonStyleType = 'disabled';
+    }
   } else {
     buttonStyleType = selectedPayment ? 'primary' : 'disabled';
   }
@@ -45,45 +53,56 @@ export default function ChallengeParticipant() {
         <DepositGuide />
         <SDepositSettingWrapper>
           <SDepositAmout>{deposit.toLocaleString()}원</SDepositAmout>
-          <SDepositSliderWrapper>
-            <input
-              type="range"
-              min={challengeData.isFree ? 0 : 1}
-              max={depositAmounts.length - 1}
-              step={1}
-              defaultValue={challengeData.isFree ? 0 : 1}
-              onChange={(e) => {
-                setDeposit(depositAmounts[e.target.valueAsNumber]);
-              }}
-            />
-          </SDepositSliderWrapper>
+          <SDepositBtnWrapper>
+            {depositAmounts.map((amount) => (
+              <li key={amount}>
+                <SDepositBtn
+                  isSelectedDeposit={amount === deposit}
+                  value={amount}
+                  type="button"
+                  onClick={() => setDeposit(amount)}
+                >
+                  <p>
+                    {amount.toLocaleString()}
+                    <span>원</span>
+                  </p>
+                </SDepositBtn>
+              </li>
+            ))}
+          </SDepositBtnWrapper>
         </SDepositSettingWrapper>
         <DepositRefundGuide />
         <SPaymentMethodWrapper>
-          <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
-          <SpaymentMethodItemWrapper>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.CREDITCARD}
-              onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
-            >
-              <p>신용카드</p>
-            </SPaymentMethodItem>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
-              onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
-            >
-              <p>가상계좌</p>
-            </SPaymentMethodItem>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
-              onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
-            >
-              <p>카카오페이</p>
-            </SPaymentMethodItem>
-          </SpaymentMethodItemWrapper>
+          {deposit !== 0 && (
+            <>
+              <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
+              <SpaymentMethodItemWrapper>
+                <SPaymentMethodItem
+                  type="button"
+                  isSelectedPayment={
+                    selectedPayment === paymentMethods.CREDITCARD
+                  }
+                  onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
+                >
+                  <p>신용카드</p>
+                </SPaymentMethodItem>
+                <SPaymentMethodItem
+                  type="button"
+                  isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
+                  onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
+                >
+                  <p>가상계좌</p>
+                </SPaymentMethodItem>
+                <SPaymentMethodItem
+                  type="button"
+                  isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
+                  onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
+                >
+                  <p>카카오페이</p>
+                </SPaymentMethodItem>
+              </SpaymentMethodItemWrapper>
+            </>
+          )}
         </SPaymentMethodWrapper>
         <BottomFixedBtn
           btns={[
@@ -109,64 +128,53 @@ const SDepositSettingWrapper = styled.section`
 `;
 
 const SDepositAmout = styled.p`
+  width: 148px;
   text-align: center;
+  margin: 0 auto;
   font-size: ${({ theme }) => theme.fontSize.headline1};
   font-weight: ${({ theme }) => theme.fontWeight.headline1};
-  height: 34px;
+  height: 48px;
+  line-height: 48px;
+  border-bottom: 2px solid ${({ theme }) => theme.color.gray_3c};
 `;
 
-const SDepositSliderWrapper = styled.div`
-  height: 60px;
-  line-height: 60px;
-  margin: 0 1.25rem 1rem 1.25rem;
-  & input[type='range'] {
-    -webkit-appearance: none;
-    accent-color: ${({ theme }) => theme.color.normal};
+const SDepositBtnWrapper = styled.ul`
+  display: flex;
+  overflow-x: auto;
+  margin: 1.5rem 0 2.5rem 1.25rem;
+  gap: 0.75rem;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
+  height: 30px;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid
+    ${({ theme, isSelectedDeposit }) =>
+      isSelectedDeposit ? theme.color.normal : theme.color.gray_f9};
+  border-radius: 32px;
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  color: ${({ theme, isSelectedDeposit }) =>
+    isSelectedDeposit ? theme.color.gray_ec : theme.color.gray_83};
+  background-color: ${({ theme, isSelectedDeposit }) =>
+    isSelectedDeposit ? theme.color.normal : theme.color.gray_ec};
+
+  > p {
     width: 100%;
-    height: 8px;
-    background: ${({ theme }) => theme.color.light};
-    border-radius: 16px;
-    outline: none;
-  }
-
-  & input[type='range']::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 40px;
-    height: 20px;
-    border-radius: 40px;
-    background: ${({ theme }) => theme.color.normal} url('/icons/icon-list.svg')
-      no-repeat center center;
-    background-size: 13px 13px;
-    cursor: pointer;
-  }
-
-  & input[type='range']::-moz-range-thumb {
-    width: 40px;
-    height: 20px;
-    border-radius: 40px;
-    background: ${({ theme }) => theme.color.normal} url('/icons/icon-list.svg')
-      no-repeat center center;
-    background-size: 13px 13px;
-    cursor: pointer;
-    border: none;
-  }
-
-  & input[type='range']::-ms-thumb {
-    width: 40px;
-    height: 20px;
-    border-radius: 40px;
-    background: ${({ theme }) => theme.color.normal} url('/icons/icon-list.svg')
-      no-repeat center center;
-    background-size: 13px 13px;
-    cursor: pointer;
-    border: none;
+    display: flex;
+    flex-flow: row nowrap;
   }
 `;
 
 const SPaymentMethodWrapper = styled.section`
-  height: 116px;
-  margin: 0 1.25rem 2.5rem 1.25rem;
+  height: 114px;
+  margin: 0 1.25rem 1.5rem 1.25rem;
 `;
 const SPaymentMethodTitle = styled.p`
   height: 74px;
@@ -178,6 +186,7 @@ const SPaymentMethodTitle = styled.p`
 const SpaymentMethodItemWrapper = styled.div`
   height: 42px;
   display: flex;
+  gap: 0.625rem;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
@@ -192,11 +201,12 @@ const SPaymentMethodItem = styled.button<{ isSelectedPayment: boolean }>`
     ${({ theme, isSelectedPayment }) =>
       isSelectedPayment ? theme.color.normal : theme.color.gray_99};
   border-radius: 8px;
+  width: 100%;
 
   & p {
     width: 94px;
     height: 22px;
     line-height: 22px;
-    text-align: center;
+    margin: 0 auto;
   }
 `;
