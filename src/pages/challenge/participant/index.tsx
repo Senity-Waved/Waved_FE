@@ -28,10 +28,6 @@ export default function ChallengeParticipant() {
     isFree: false,
   });
 
-  useEffect(() => {
-    setChallengeData(selectedChallenge);
-  }, [selectedChallenge]);
-
   const filteredDepositAmounts = challengeData.isFree
     ? depositAmounts
     : depositAmounts.filter((amount) => amount !== 0);
@@ -39,6 +35,11 @@ export default function ChallengeParticipant() {
   const [deposit, setDeposit] = useState<number>(
     challengeData.isFree ? 0 : 5000,
   );
+
+  useEffect(() => {
+    setChallengeData(selectedChallenge);
+    setDeposit(challengeData.isFree ? 0 : 5000);
+  }, [challengeData.isFree, selectedChallenge]);
 
   const getButtonStyleType = ():
     | 'primary'

@@ -47,7 +47,7 @@ const challengeData: IChallenge = {
   participantCount: 23,
   startDate: '03월 04일 (월)',
   endDate: '03월 15일 (금)',
-  isFree: true,
+  isFree: false,
   reviewCount: 4,
   reviews: [
     {
