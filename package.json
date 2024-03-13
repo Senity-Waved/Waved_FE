@@ -19,6 +19,7 @@
     "react-dom": "^18",
     "react-slick": "^0.30.2",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "slick-carousel": "^1.8.1",
     "uuid": "^9.0.1"
   },
