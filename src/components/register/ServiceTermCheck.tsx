@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 
 interface IServiceTermCheck {
   updateData: (newData: Partial<IRegisterState>) => void;

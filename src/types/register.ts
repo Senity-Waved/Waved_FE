@@ -1,9 +1,11 @@
-import { TGenderOrNull } from './gender';
+import TGenderOrNull from './gender';
 
-export interface IRegisterState {
+interface IRegisterState {
   termAgreement?: boolean;
   birthYear: string;
   gender: TGenderOrNull;
   nickname: string;
   jobTitle: string;
 }
+
+export default IRegisterState;

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import YEARS from '@/constants/years';
-import { EGender, TGenderOrNull } from '@/types/gender';
-import { IRegisterState } from '@/types/register';
+import TGenderOrNull, { EGender } from '@/types/gender';
+import IRegisterState from '@/types/register';
 
 interface IPravacyInput {
   gender: TGenderOrNull;
