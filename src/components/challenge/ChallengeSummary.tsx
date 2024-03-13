@@ -51,6 +51,8 @@ const SChallengeSummary = styled.div`
 `;
 
 const STitle = styled.h2`
+  min-height: 28px;
+  line-height: 28px;
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;

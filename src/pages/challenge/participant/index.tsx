@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useRecoilValue } from 'recoil';
 import Layout from '@/components/common/Layout';
@@ -18,13 +18,26 @@ export default function ChallengeParticipant() {
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const selectedChallenge =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
+  const [challengeData, setChallengeData] = useState<ISelectedChallenge>({
+    challengeGroupId: '',
+    groupTitle: '',
+    startDate: '',
+    endDate: '',
+    condition: 'recruiting',
+    participantCount: 0,
+    isFree: false,
+  });
 
-  const filteredDepositAmounts = selectedChallenge.isFree
+  useEffect(() => {
+    setChallengeData(selectedChallenge);
+  }, [selectedChallenge]);
+
+  const filteredDepositAmounts = challengeData.isFree
     ? depositAmounts
     : depositAmounts.filter((amount) => amount !== 0);
 
   const [deposit, setDeposit] = useState<number>(
-    selectedChallenge.isFree ? 0 : 5000,
+    challengeData.isFree ? 0 : 5000,
   );
 
   const getButtonStyleType = ():
@@ -33,10 +46,10 @@ export default function ChallengeParticipant() {
     | 'white'
     | 'white_line'
     | 'disabled' => {
-    if (selectedChallenge.isFree && deposit === 0) {
+    if (challengeData.isFree && deposit === 0) {
       return 'primary';
     }
-    if (!selectedChallenge.isFree && selectedPayment) {
+    if (!challengeData.isFree && selectedPayment) {
       return 'primary';
     }
     return 'disabled';
@@ -59,12 +72,13 @@ export default function ChallengeParticipant() {
     >
       <SChallengeParticipantWrapper>
         <ChallengeSummary
-          groupTitle={selectedChallenge.groupTitle}
-          participantCount={selectedChallenge.participantCount}
-          startDate={selectedChallenge.startDate}
-          endDate={selectedChallenge.endDate}
-          condition={selectedChallenge.condition}
+          groupTitle={challengeData.groupTitle}
+          participantCount={challengeData.participantCount}
+          startDate={challengeData.startDate}
+          endDate={challengeData.endDate}
+          condition={challengeData.condition}
         />
+
         <DepositGuide />
         <SDepositSettingWrapper>
           <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
