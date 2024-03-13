@@ -1,18 +1,30 @@
 import styled from '@emotion/styled';
+import { useEffect, useRef } from 'react';
 import ISelectedChallenge from '@/types/selectedChallenge';
 
+interface IChallengeSummary
+  extends Pick<
+    ISelectedChallenge,
+    'groupTitle' | 'startDate' | 'endDate' | 'condition' | 'participantCount'
+  > {
+  setSummaryHeight?: (height: number) => void;
+}
 export default function ChallengeSummary({
   groupTitle,
   participantCount,
   startDate,
   endDate,
   condition,
-}: Pick<
-  ISelectedChallenge,
-  'groupTitle' | 'startDate' | 'endDate' | 'condition' | 'participantCount'
->) {
+  setSummaryHeight,
+}: IChallengeSummary) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current && setSummaryHeight) {
+      setSummaryHeight(ref.current.offsetHeight);
+    }
+  }, [ref, setSummaryHeight]);
   return (
-    <SChallengeSummary>
+    <SChallengeSummary ref={ref}>
       <STitle>{groupTitle}</STitle>
       <SStatus condition={condition}>
         {condition === 'closed' && '마감'}
@@ -36,18 +48,10 @@ const SChallengeSummary = styled.div`
   grid-template-columns: 1fr 80px;
   grid-template-rows: 1fr 20px;
   align-items: center;
-  gap: 6px;
-  padding: 1.25rem;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
   color: ${({ theme }) => theme.color.gray_3c};
-  &::after {
-    position: absolute;
-    bottom: 0;
-    display: block;
-    width: 100%;
-    height: 6px;
-    background-color: ${({ theme }) => theme.color.gray_ec};
-    content: '';
-  }
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
 `;
 
 const STitle = styled.h2`

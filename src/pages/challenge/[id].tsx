@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
+import { useState } from 'react';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -40,7 +41,7 @@ interface IChallenge {
 
 const challengeData: IChallenge = {
   type: 'photo',
-  title: '기술 면접 챌린지 1기',
+  title: '프론트엔드 아티클 공유 챌린지 3기',
   thumbnail: 'https://via.placeholder.com/800x700.jpg',
   description:
     '자기 개발은 목표를 설정하고 달성하기 위한 여정입니다. 이 블로그 포스트에서는 일상 생활에 쉽게 통합할 수 있는 5가지 핵심 습관을 소개합니다. 첫 번째는 목표 설정과 시간 관리입니다. 이는 개인적 성취와 전문적 성장을 위한 기초를 마련합니다.\n두 번째 습관은 긍정적 사고를 통한 자기 격려입니다. 이는 도전을 극복하고 성공으로 나아가는 데 중요합니다. 세 번째는 건강 유지를 위한 일상적인 운동과 균형 잡힌 식단입니다. 건강한 몸은 능률적인 마음의 기초입니다. 네 번째는 지속적인 학습과 자기 계발입니다. ',
@@ -101,6 +102,7 @@ const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 export default function Challenge() {
   const router = useRouter();
   const id = typeof router.query.id === 'string' ? router.query.id : '';
+  const [summaryHeight, setSummaryHeight] = useState(84);
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
 
@@ -152,9 +154,10 @@ export default function Challenge() {
           startDate={challengeData.startDate}
           endDate={challengeData.endDate}
           condition={condition}
+          setSummaryHeight={setSummaryHeight}
         />
         <TabMenu
-          positionTop={90}
+          positionTop={summaryHeight}
           tabs={[
             { href: '#information', text: '정보' },
             { href: '#review', text: '후기' },
