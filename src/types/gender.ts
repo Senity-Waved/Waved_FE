@@ -3,4 +3,6 @@ export enum EGender {
   Female = 'female',
 }
 
-export type TGenderOrNull = EGender | null;
+type TGenderOrNull = EGender | null;
+
+export default TGenderOrNull;
