@@ -19,10 +19,15 @@ export default function ChallengeSummary({
 }: IChallengeSummary) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (ref.current && setSummaryHeight) {
-      setSummaryHeight(ref.current.offsetHeight);
-    }
-  }, [ref, setSummaryHeight]);
+    const updateHeight = () => {
+      if (ref.current && setSummaryHeight) {
+        setSummaryHeight(ref.current.offsetHeight);
+      }
+    };
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, [setSummaryHeight]);
   return (
     <SChallengeSummary ref={ref}>
       <STitle>{groupTitle}</STitle>
