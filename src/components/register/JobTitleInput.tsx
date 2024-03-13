@@ -50,7 +50,7 @@ export default function JobTitleInput({
           active={currentJobTitle === JOBTITLE.IOS}
           onClick={() => updateData({ jobTitle: JOBTITLE.IOS })}
         >
-          IOS
+          iOS
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
