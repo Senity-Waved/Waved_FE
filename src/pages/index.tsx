@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
-// import ChallengeCardWide from '@/components/home/ChallengeCardWide';
+import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
@@ -38,11 +38,11 @@ export default function Home({
                 priority
               />
             </STitleLink>
-            {/* <SListScrollX>
+            <SListScrollX>
               {getMyProcessingChallenges.map((challenge) => (
-                <ChallengeCardWide key={uuidv4()} {...challenge} />
+                <ChallengeCardWide key={challenge.groupId} {...challenge} />
               ))}
-            </SListScrollX> */}
+            </SListScrollX>
           </SSection>
         )}
         <SSection>
@@ -136,7 +136,7 @@ const STitleLink = styled(Link)`
 const SListScrollX = styled.ul`
   width: 100%;
   overflow-x: auto;
-  padding: 0 1.25rem;
+  padding: 0 1.25rem 1.125rem;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;

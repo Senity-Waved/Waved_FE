@@ -1,34 +1,40 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface IChallengeCardWide {
-  challengeId: number;
-  title: string;
-  thumbnail: string;
-}
+import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 
 export default function ChallengeCardWide({
-  challengeId,
+  groupId,
+  groupTitle,
+  startDate,
   thumbnail,
-  title,
-}: IChallengeCardWide) {
+}: IMyProcessingChallenge) {
+  const caculateProcessDay = (startDateStr: string) => {
+    const processStartDate = new Date(startDateStr);
+    const today = new Date();
+
+    const diffInMs = today.getTime() - processStartDate.getTime();
+    const day = Math.round(diffInMs / (1000 * 60 * 60 * 24)) + 1;
+
+    const dayStr = `${day}일차`;
+    return dayStr;
+  };
+
   return (
     <SChallengeCardWide>
-      <Link href={`/challenge/${challengeId}`}>
-        <SImage>
+      <Link href={`/challenge/${groupId}`}>
+        <SThumbnail>
           <Image
+            alt={`${groupTitle} 대표 이미지`}
             src={thumbnail}
-            alt={title || ''}
-            width={226}
-            height={108}
+            width={260}
+            height={126}
+            style={{ objectFit: 'cover' }}
             priority
           />
-        </SImage>
-        <STitle>
-          <h3>{title}</h3>
-          <span>10일 차</span>
-        </STitle>
+          <SProcessingDay>{caculateProcessDay(startDate)}</SProcessingDay>
+        </SThumbnail>
+        <STitle>{groupTitle}</STitle>
       </Link>
     </SChallengeCardWide>
   );
@@ -36,44 +42,49 @@ export default function ChallengeCardWide({
 
 const SChallengeCardWide = styled.li`
   display: inline-block;
-  width: 226px;
+  width: 260px;
   &:not(:last-child) {
     margin-right: 0.75rem;
   }
 `;
 
-const SImage = styled.div`
+const SThumbnail = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 0.5rem;
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
-  img {
-    object-fit: cover;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
   }
 `;
 
-const STitle = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+const SProcessingDay = styled.span`
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  color: ${({ theme }) => theme.color.gray_f9};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
+  line-height: 16px;
+  z-index: 1;
+`;
+
+const STitle = styled.h3`
   padding: 0 0.25rem;
+  margin-top: 0.5rem;
   line-height: 22px;
-  h3 {
-    flex: 1;
-    max-width: 176px;
-    color: ${({ theme }) => theme.color.gray_3c};
-    font-size: ${({ theme }) => theme.fontSize.body2};
-    font-weight: ${({ theme }) => theme.fontWeight.body2};
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  span {
-    flex-shrink: 0;
-    color: ${({ theme }) => theme.color.gray_83};
-    font-size: ${({ theme }) => theme.fontSize.caption1};
-    font-weight: ${({ theme }) => theme.fontWeight.caption1};
-  }
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
 `;

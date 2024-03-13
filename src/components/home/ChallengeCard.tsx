@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
-import VERIFICATION_TYPE from '@/constants/verficationType';
+import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
 
 export default function ChallengeCard({
@@ -14,15 +14,14 @@ export default function ChallengeCard({
   startDate,
   isFree,
 }: IRecruitingChallenge) {
-  const caculateRecruitDDay = (processStartDate: string) => {
-    const recruitEndDate = new Date(processStartDate);
-    recruitEndDate.setDate(recruitEndDate.getDate() - 1);
-    const currentDate = new Date();
+  const caculateRecruitDDay = (startDateStr: string) => {
+    const processStartDate = new Date(startDateStr);
+    const today = new Date();
 
-    const diffInMs = recruitEndDate.getTime() - currentDate.getTime();
-    const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInMs = processStartDate.getTime() - today.getTime();
+    const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24)) - 1;
 
-    const dDayStr = dDay > 0 ? `D+${dDay}` : `D-${Math.abs(dDay)}`;
+    const dDayStr = `모집 마감일 D-${dDay}`;
     return dDayStr;
   };
 
@@ -39,9 +38,7 @@ export default function ChallengeCard({
             priority
           />
           <SParticipant>{participantCount}</SParticipant>
-          <SRecruitDDay>
-            {`모집 마감일 ${caculateRecruitDDay(startDate)}`}
-          </SRecruitDDay>
+          <SRecruitDDay>{caculateRecruitDDay(startDate)}</SRecruitDDay>
         </SThumbnail>
         <STitle>{groupTitle}</STitle>
         <SChips>
@@ -74,6 +71,19 @@ const SThumbnail = styled.div`
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
+  }
 `;
 
 const SParticipant = styled.span`
@@ -124,6 +134,7 @@ const STitle = styled.div`
 const SChips = styled.dl`
   display: flex;
   gap: 0.25rem;
+  padding: 0 0.25rem;
   dd {
     display: inline-block;
     height: 20px;
