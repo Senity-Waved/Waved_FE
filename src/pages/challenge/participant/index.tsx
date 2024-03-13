@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
+import { RecoilEnv, useRecoilValue } from 'recoil';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
@@ -11,6 +11,8 @@ import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function ChallengeParticipant() {
   const router = useRouter();
