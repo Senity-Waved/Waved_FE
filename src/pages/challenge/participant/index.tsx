@@ -18,7 +18,7 @@ export default function ChallengeParticipant() {
   const router = useRouter();
   const [selectedPayment, setSelectedPayment] = useState('');
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
-  const selectedChallenge =
+  const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
   const [challengeData, setChallengeData] = useState<ISelectedChallenge>({
     challengeGroupId: '',
@@ -39,9 +39,9 @@ export default function ChallengeParticipant() {
   );
 
   useEffect(() => {
-    setChallengeData(selectedChallenge);
+    setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
-  }, [challengeData.isFree, selectedChallenge]);
+  }, [challengeData.isFree, recoilChallengeData]);
 
   const getButtonStyleType = ():
     | 'primary'
