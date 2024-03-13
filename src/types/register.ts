@@ -1,7 +1,7 @@
 import TGenderOrNull from './gender';
 
 interface IRegisterState {
-  termAgreement: boolean;
+  termAgreement?: boolean;
   birthYear: string;
   gender: TGenderOrNull;
   nickname: string;

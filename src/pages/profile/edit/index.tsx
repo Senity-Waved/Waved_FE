@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import NicknameInput from '@/components/register/NicknameInput';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
