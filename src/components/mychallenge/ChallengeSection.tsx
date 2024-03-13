@@ -5,19 +5,21 @@ import ChallengeItem, {
 import challengeSectionText from '@/constants/challengeSectionText';
 
 interface IChallengeSection {
-  status: '진행중' | '대기중' | '진행완료';
+  status: '진행 중' | '대기 중' | '진행 완료';
+  scrollId: 'processing' | 'pending' | 'completed';
   // challenges: IChallengeItem [];
 }
 
 export default function ChallengeSection({
   status,
+  scrollId,
   // challenges,
 }: IChallengeSection) {
   const mainText = challengeSectionText[status].emoji + status;
   const { subText } = challengeSectionText[status];
 
   return (
-    <SWrapper>
+    <SWrapper id={scrollId}>
       <div>
         <SStatus>{mainText}</SStatus>
         <SSubText>{subText}</SSubText>
@@ -40,6 +42,7 @@ export default function ChallengeSection({
 const SWrapper = styled.section`
   background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 1rem 1.25rem 2rem 1.25rem;
+  scroll-margin-top: 56px;
 `;
 
 const SStatus = styled.h2`
@@ -51,7 +54,7 @@ const SStatus = styled.h2`
 
 const SSubText = styled.p`
   font-size: 0.875rem;
-  line-height: 1.25rem;
+  line-height: 1.4;
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_99};
 `;
