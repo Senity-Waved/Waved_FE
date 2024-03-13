@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
@@ -8,18 +9,29 @@ import DepositGuide from '@/components/challenge/participant/DepositGuide';
 import paymentMethods from '@/constants/payment';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import changePriceFormat from '@/utils/changePriceFormat';
+import ASelectedChallenge from '@/atoms/selectedChallenge';
+import ISelectedChallenge from '@/types/selectedChallenge';
 
 export default function ChallengeParticipant() {
   const router = useRouter();
   const [selectedPayment, setSelectedPayment] = useState('');
-  const challengeData = {
-    title: '기술면접 챌린지 1기',
-    participantCount: 23,
-    startDate: '03월 04일 (월)',
-    endDate: '03월 15일 (금)',
-    isFree: true,
-  };
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
+  const selectedChallenge =
+    useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
+  const [challengeData, setChallengeData] = useState<ISelectedChallenge>({
+    challengeGroupId: '',
+    groupTitle: '',
+    startDate: '',
+    endDate: '',
+    condition: 'recruiting',
+    participantCount: 0,
+    isFree: false,
+  });
+
+  useEffect(() => {
+    setChallengeData(selectedChallenge);
+  }, [selectedChallenge]);
+
   const filteredDepositAmounts = challengeData.isFree
     ? depositAmounts
     : depositAmounts.filter((amount) => amount !== 0);
@@ -60,12 +72,13 @@ export default function ChallengeParticipant() {
     >
       <SChallengeParticipantWrapper>
         <ChallengeSummary
-          title={challengeData.title}
+          groupTitle={challengeData.groupTitle}
           participantCount={challengeData.participantCount}
           startDate={challengeData.startDate}
           endDate={challengeData.endDate}
-          condition="recruiting"
+          condition={challengeData.condition}
         />
+
         <DepositGuide />
         <SDepositSettingWrapper>
           <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
