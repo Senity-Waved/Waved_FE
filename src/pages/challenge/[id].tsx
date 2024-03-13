@@ -15,6 +15,8 @@ import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
+import ISnackBarState from '@/types/snackbar';
+import SnackBar from '@/components/common/SnackBar';
 
 interface IChallengeReview {
   reviewId: number;
@@ -103,6 +105,10 @@ export default function Challenge() {
   const router = useRouter();
   const id = typeof router.query.id === 'string' ? router.query.id : '';
   const [summaryHeight, setSummaryHeight] = useState(84);
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+  });
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
 
@@ -123,7 +129,7 @@ export default function Challenge() {
 
   return (
     <SLayoutWrapper>
-      <ChallengeHeader />
+      <ChallengeHeader setSnackBarState={setSnackBarState} />
       <main>
         <SThumbnail id="information">
           <Image
@@ -241,6 +247,13 @@ export default function Challenge() {
             },
           ]}
         />
+        {snackBarState.open && (
+          <SnackBar
+            text={snackBarState.text}
+            type={snackBarState.type}
+            isBottomFixedBtn
+          />
+        )}
       </main>
     </SLayoutWrapper>
   );
