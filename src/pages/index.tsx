@@ -50,11 +50,11 @@ export default function Home({
           <STitle>
             <h2>✅ 모집 중인 챌린지</h2>
           </STitle>
-          <SListGrid>
+          <SList>
             {getRecrutingChallenges.map((challenge) => (
               <ChallengeCard key={uuidv4()} {...challenge} />
             ))}
-          </SListGrid>
+          </SList>
         </SSection>
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
@@ -63,7 +63,7 @@ export default function Home({
   );
 }
 
-export async function getStaticProps(): Promise<{
+export async function getServerSideProps(): Promise<{
   props: { getRecrutingChallenges: IRecrutingChallenge[] };
 }> {
   try {
@@ -152,11 +152,7 @@ const STitle = styled.div`
   }
 `;
 
-const SListGrid = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(164px, 1fr));
-  grid-row-gap: 1rem;
-  grid-column-gap: 0.5rem;
+const SList = styled.ul`
   width: 100%;
   padding: 0 1.25rem;
 `;
