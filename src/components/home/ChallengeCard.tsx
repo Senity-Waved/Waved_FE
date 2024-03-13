@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import IRecrutingChallenge from '@/types/recrutingChallenge';
+import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verficationType';
 
 export default function ChallengeCard({
@@ -12,7 +12,7 @@ export default function ChallengeCard({
   participantCount,
   startDate,
   isFree,
-}: IRecrutingChallenge) {
+}: IRecruitingChallenge) {
   return (
     <SChallengeCard>
       <Link href={`/challenge/${challengeGroupId}`}>

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import IChallengeList from '@/types/recrutingChallenge';
+import IChallengeList from '@/types/recruitingChallenge';
 
 export default function handler(
   req: NextApiRequest,

@@ -1,4 +1,4 @@
-interface IRecrutingChallenge {
+interface IRecruitingChallenge {
   challengeGroupId: number;
   groupTitle: string;
   thumbnail: string;
@@ -8,4 +8,4 @@ interface IRecrutingChallenge {
   startDate: string;
 }
 
-export default IRecrutingChallenge;
+export default IRecruitingChallenge;

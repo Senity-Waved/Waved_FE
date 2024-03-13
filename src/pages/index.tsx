@@ -9,13 +9,13 @@ import TopBanner from '@/components/home/TopBanner';
 // import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
-import IRecrutingChallenge from '@/types/recrutingChallenge';
+import IRecruitingChallenge from '@/types/recruitingChallenge';
 import ChallengeCard from '@/components/home/ChallengeCard';
 
 export default function Home({
-  getRecrutingChallenges,
+  getRecruitingChallenges,
 }: {
-  getRecrutingChallenges: IRecrutingChallenge[];
+  getRecruitingChallenges: IRecruitingChallenge[];
 }) {
   const isLogined = true; // 로그인된 유저 테스트용 변수
   return (
@@ -51,7 +51,7 @@ export default function Home({
             <h2>✅ 모집 중인 챌린지</h2>
           </STitle>
           <SList>
-            {getRecrutingChallenges.map((challenge) => (
+            {getRecruitingChallenges.map((challenge) => (
               <ChallengeCard key={uuidv4()} {...challenge} />
             ))}
           </SList>
@@ -64,23 +64,23 @@ export default function Home({
 }
 
 export async function getServerSideProps(): Promise<{
-  props: { getRecrutingChallenges: IRecrutingChallenge[] };
+  props: { getRecruitingChallenges: IRecruitingChallenge[] };
 }> {
   try {
-    const response = await axios.get<IRecrutingChallenge[]>(
-      'http://localhost:3000/api/recrutingChallenge',
+    const response = await axios.get<IRecruitingChallenge[]>(
+      'http://localhost:3000/api/recruitingChallenge',
     );
     const { data } = response;
     return {
       props: {
-        getRecrutingChallenges: data,
+        getRecruitingChallenges: data,
       },
     };
   } catch (error) {
-    console.error('recrutingChallege API GET 실패', error);
+    console.error('recruitingChallege API GET 실패', error);
     return {
       props: {
-        getRecrutingChallenges: [],
+        getRecruitingChallenges: [],
       },
     };
   }
