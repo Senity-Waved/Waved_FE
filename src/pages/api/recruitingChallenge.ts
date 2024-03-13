@@ -13,7 +13,7 @@ export default function handler(
       verificationType: 'TEXT',
       isFree: false,
       participantCount: 23,
-      startDate: '2024-03-25',
+      startDate: '2024-03-14',
     },
     {
       challengeGroupId: 3,
@@ -22,7 +22,7 @@ export default function handler(
       verificationType: 'LINK',
       isFree: false,
       participantCount: 83,
-      startDate: '2024-03-25',
+      startDate: '2024-03-15',
     },
     {
       challengeGroupId: 3,
@@ -31,7 +31,7 @@ export default function handler(
       verificationType: 'GITHUB',
       isFree: false,
       participantCount: 323,
-      startDate: '2024-03-25',
+      startDate: '2024-03-16',
     },
     {
       challengeGroupId: 3,

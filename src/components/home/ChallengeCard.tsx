@@ -14,6 +14,18 @@ export default function ChallengeCard({
   startDate,
   isFree,
 }: IRecruitingChallenge) {
+  const caculateRecruitDDay = (processStartDate: string) => {
+    const recruitEndDate = new Date(processStartDate);
+    recruitEndDate.setDate(recruitEndDate.getDate() - 1);
+    const currentDate = new Date();
+
+    const diffInMs = recruitEndDate.getTime() - currentDate.getTime();
+    const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24));
+
+    const dDayStr = dDay > 0 ? `D+${dDay}` : `D-${Math.abs(dDay)}`;
+    return dDayStr;
+  };
+
   return (
     <SChallengeCard>
       <Link href={`/challenge/${challengeGroupId}`}>
@@ -27,7 +39,9 @@ export default function ChallengeCard({
             priority
           />
           <SParticipant>{participantCount}</SParticipant>
-          <SRecruitDDay>{`모집 마감일 ${startDate}`}</SRecruitDDay>
+          <SRecruitDDay>
+            {`모집 마감일 ${caculateRecruitDDay(startDate)}`}
+          </SRecruitDDay>
         </SThumbnail>
         <STitle>{groupTitle}</STitle>
         <SChips>
