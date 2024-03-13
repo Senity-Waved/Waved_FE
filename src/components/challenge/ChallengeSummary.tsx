@@ -8,8 +8,10 @@ interface IChallengeSummary
     'groupTitle' | 'startDate' | 'endDate' | 'condition' | 'participantCount'
   > {
   setSummaryHeight?: (height: number) => void;
+  className: string;
 }
 export default function ChallengeSummary({
+  className,
   groupTitle,
   participantCount,
   startDate,
@@ -29,10 +31,10 @@ export default function ChallengeSummary({
     return () => window.removeEventListener('resize', updateHeight);
   }, [setSummaryHeight]);
   return (
-    <SChallengeSummary ref={ref}>
+    <SChallengeSummary className={className} ref={ref}>
       <STitle>{groupTitle}</STitle>
       <SStatus condition={condition}>
-        {condition === 'closed' && '마감'}
+        {condition === 'closed' && '종료'}
         {condition === 'recruiting' && '모집중'}
         {condition === 'processing' && '진행중'}
       </SStatus>
@@ -57,6 +59,9 @@ const SChallengeSummary = styled.div`
   padding: 1rem 1.25rem;
   color: ${({ theme }) => theme.color.gray_3c};
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
+  &.description {
+    border-bottom: 6px solid ${({ theme }) => theme.color.gray_ec};
+  }
 `;
 
 const STitle = styled.h2`

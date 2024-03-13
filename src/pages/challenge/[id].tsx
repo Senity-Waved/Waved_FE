@@ -131,6 +131,7 @@ export default function Challenge() {
             src={challengeData.thumbnail}
             fill
             sizes={`${screenSize.max}px`}
+            style={{ objectFit: 'cover' }}
             priority
           />
           <SChips>
@@ -149,6 +150,7 @@ export default function Challenge() {
           </SChips>
         </SThumbnail>
         <ChallengeSummary
+          className="description"
           groupTitle={challengeData.title}
           participantCount={challengeData.participantCount}
           startDate={challengeData.startDate}
@@ -165,7 +167,7 @@ export default function Challenge() {
           ]}
         />
         <SSection>
-          <SSectionTitle>{challengeData.title}</SSectionTitle>
+          <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
           <SSectionContext>
             {challengeData.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
@@ -246,12 +248,9 @@ export default function Challenge() {
 
 const SThumbnail = styled.div`
   position: relative;
-  line-height: 0;
   width: 100%;
   height: 246px;
-  img {
-    object-fit: cover;
-  }
+  line-height: 0;
   &::after {
     content: '';
     position: absolute;
@@ -261,8 +260,8 @@ const SThumbnail = styled.div`
     bottom: 0;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(0, 0, 0, 0.3) 100%
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 70%
     );
   }
 `;
@@ -324,6 +323,7 @@ const SSectionTitle = styled.h3`
     }
   }
 `;
+
 const SSectionContext = styled.div`
   padding: 1rem 1.25rem 0;
   font-size: ${({ theme }) => theme.fontSize.body2};
@@ -369,11 +369,10 @@ const SSectionScrollX = styled.div`
   padding: 1rem 1.25rem;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  /* 스크롤바 미노출 */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome , Safari , Opera */
+    display: none;
   }
 `;
 
