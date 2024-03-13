@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import styled from '@emotion/styled';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
@@ -11,10 +10,13 @@ import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import ChallengeCard from '@/components/home/ChallengeCard';
+import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 
 export default function Home({
+  getMyProcessingChallenges,
   getRecruitingChallenges,
 }: {
+  getMyProcessingChallenges: IMyProcessingChallenge[];
   getRecruitingChallenges: IRecruitingChallenge[];
 }) {
   const isLogined = true; // 로그인된 유저 테스트용 변수
@@ -36,21 +38,18 @@ export default function Home({
                 priority
               />
             </STitleLink>
-            <SListScrollX>
-              {/* {challenges.map((challenge) => (
-                // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
-                // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
-                // 하단 map들도 같은 목업 데이터를 사용하고 있어 동일 이슈 => uuid를 이용해 임시 대처 진행
+            {/* <SListScrollX>
+              {getMyProcessingChallenges.map((challenge) => (
                 <ChallengeCardWide key={uuidv4()} {...challenge} />
-              ))} */}
-            </SListScrollX>
+              ))}
+            </SListScrollX> */}
           </SSection>
         )}
         <SSection>
           <STitle>✅ 모집 중인 챌린지</STitle>
           <SList>
             {getRecruitingChallenges.map((challenge) => (
-              <ChallengeCard key={uuidv4()} {...challenge} />
+              <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
             ))}
           </SList>
         </SSection>
@@ -62,26 +61,44 @@ export default function Home({
 }
 
 export async function getServerSideProps(): Promise<{
-  props: { getRecruitingChallenges: IRecruitingChallenge[] };
+  props: {
+    getMyProcessingChallenges: IMyProcessingChallenge[];
+    getRecruitingChallenges: IRecruitingChallenge[];
+  };
 }> {
-  try {
-    const response = await axios.get<IRecruitingChallenge[]>(
-      'http://localhost:3000/api/recruitingChallenge',
-    );
-    const { data } = response;
-    return {
-      props: {
-        getRecruitingChallenges: data,
-      },
-    };
-  } catch (error) {
-    console.error('recruitingChallege API GET 실패', error);
-    return {
-      props: {
-        getRecruitingChallenges: [],
-      },
-    };
+  async function fetchMyProcessingChallenges() {
+    try {
+      const response = await axios.get<IMyProcessingChallenge[]>(
+        'http://localhost:3000/api/myProcessingChallenge',
+      );
+      return response.data;
+    } catch (error) {
+      console.error('myProcessingChallenge API GET 실패', error);
+      return [];
+    }
   }
+  async function fetchRecruitingChallenges() {
+    try {
+      const response = await axios.get<IRecruitingChallenge[]>(
+        'http://localhost:3000/api/recruitingChallenge',
+      );
+      return response.data;
+    } catch (error) {
+      console.error('recruitingChallenge API GET 실패', error);
+      return [];
+    }
+  }
+  const [myProcessingChallenges, recruitingChallenges] = await Promise.all([
+    fetchMyProcessingChallenges(),
+    fetchRecruitingChallenges(),
+  ]);
+
+  return {
+    props: {
+      getMyProcessingChallenges: myProcessingChallenges,
+      getRecruitingChallenges: recruitingChallenges,
+    },
+  };
 }
 
 const SHomeWrapper = styled(SLayoutWrapper)`
