@@ -2,19 +2,19 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface IStamp {
-  results: (boolean | null)[];
+  results: number[];
 }
 
 export default function Stamp({ results }: IStamp) {
   return (
     <SStampWrapper>
-      {results.map((result) => (
-        <SStampItem>
+      {results.map((result, index) => (
+        <SStampItem key={index}>
           <Image
             src={
-              result === true
+              result === 2
                 ? '/icons/icon-stamp-good.svg'
-                : result === false
+                : result === 1
                   ? '/icons/icon-stamp-bad.svg'
                   : '/icons/icon-stamp-default.svg'
             }
@@ -30,8 +30,17 @@ export default function Stamp({ results }: IStamp) {
 
 const SStampWrapper = styled.ul`
   display: flex;
-  width: 100%;
-  padding: 0 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 9px;
+  max-width: 309px;
+  padding: 0.75rem;
+  margin: 1rem auto;
+  border-radius: 16px;
+  background-color: ${({ theme }) => theme.color.gray_f9};
 `;
 
-const SStampItem = styled.li``;
+const SStampItem = styled.li`
+  width: 33px;
+  height: 33px;
+`;
