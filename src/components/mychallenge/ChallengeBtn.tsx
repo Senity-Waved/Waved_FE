@@ -6,7 +6,7 @@ interface IBtn {
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
-  // challengeId: string;
+  challengeId: string;
   // verificationType: string;
 }
 
@@ -15,6 +15,7 @@ export default function ChallengeBtn({
   dday,
   isAbled,
   isAuto,
+  challengeId,
 }: IBtn) {
   const preventLink = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isAbled) {
@@ -55,7 +56,13 @@ export default function ChallengeBtn({
           <SLink href="#">
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          <SLink href="#">
+          <SLink
+            href={{
+              pathname: `/mychallenge/review`,
+              query: { challengeId },
+            }}
+            as="mychallenge/review"
+          >
             <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
               후기작성
             </SBtn>

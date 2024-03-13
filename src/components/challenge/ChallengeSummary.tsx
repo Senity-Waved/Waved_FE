@@ -1,25 +1,19 @@
 import styled from '@emotion/styled';
-
-type TCondition = 'closed' | 'recruiting' | 'processing';
-
-interface IChallengeSummary {
-  title: string;
-  participantCount: number;
-  startDate: string;
-  endDate: string;
-  condition: TCondition;
-}
+import ISelectedChallenge from '@/types/selectedChallenge';
 
 export default function ChallengeSummary({
-  title,
+  groupTitle,
   participantCount,
   startDate,
   endDate,
   condition,
-}: IChallengeSummary) {
+}: Pick<
+  ISelectedChallenge,
+  'groupTitle' | 'startDate' | 'endDate' | 'condition' | 'participantCount'
+>) {
   return (
     <SChallengeSummary>
-      <STitle>{title}</STitle>
+      <STitle>{groupTitle}</STitle>
       <SStatus condition={condition}>
         {condition === 'closed' && '마감'}
         {condition === 'recruiting' && '모집중'}
@@ -57,13 +51,13 @@ const SChallengeSummary = styled.div`
 `;
 
 const STitle = styled.h2`
+  min-height: 28px;
+  line-height: 28px;
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
 `;
 
-const SStatus = styled.span<{
-  condition: TCondition;
-}>`
+const SStatus = styled.span<Pick<ISelectedChallenge, 'condition'>>`
   justify-self: end;
   height: 20px;
   line-height: 20px;

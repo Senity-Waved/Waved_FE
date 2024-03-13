@@ -2,11 +2,43 @@ import styled from '@emotion/styled';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Btn from '@/components/common/Btn';
 import PreviewSlider from '@/components/onboarding/PreviewSlider';
 import { SLayoutWrapper } from '@/components/common/Layout';
+import SnackBar from '@/components/common/SnackBar';
+import ISnackBarState from '@/types/snackbar';
 
 export default function OnBoarding() {
+  const { query } = useRouter();
+  const router = useRouter();
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+    type: 'correct',
+  });
+
+  useEffect(() => {
+    const handleRouting = (
+      snackBarText: string,
+      snackBarType: 'correct' | 'warning' = 'correct',
+    ): void => {
+      setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
+      router
+        .replace('/onboarding', undefined, { shallow: true })
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 URL 변경 실패', error),
+        );
+    };
+
+    if (query.logout) {
+      handleRouting('로그아웃이 완료되었습니다.');
+    } else if (query.withdrawal) {
+      handleRouting('계정을 탈퇴하셨습니다');
+    }
+  }, [query, router]);
+
   return (
     <SOnBoardingWrapper>
       <Head>
@@ -76,6 +108,13 @@ export default function OnBoarding() {
           </SServicePolicyLink>
           에 동의하게 됩니다.
         </SServiceRegisterText>
+        {snackBarState.open && (
+          <SnackBar
+            text={snackBarState.text}
+            type={snackBarState.type}
+            noFooter
+          />
+        )}
       </main>
     </SOnBoardingWrapper>
   );

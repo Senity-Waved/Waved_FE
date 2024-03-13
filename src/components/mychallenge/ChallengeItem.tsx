@@ -32,7 +32,7 @@ export default function ChallengeItem({ status }: IChallengeItem) {
         </div>
       </SInfoWrapper>
       {status === '진행 중' && <ChallengeProgress />}
-      <ChallengeBtn challengeStatus={status} isAbled />
+      <ChallengeBtn challengeStatus={status} challengeId="8" isAbled />
       <SDetailBtn>
         <Image
           src="/icons/icon-left-arrow.svg"

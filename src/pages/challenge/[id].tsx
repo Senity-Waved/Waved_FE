@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
+import { useSetRecoilState } from 'recoil';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -11,6 +12,8 @@ import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
+import ISelectedChallenge from '@/types/selectedChallenge';
+import ASelectedChallenge from '@/atoms/selectedChallenge';
 
 interface IChallengeReview {
   reviewId: number;
@@ -44,7 +47,7 @@ const challengeData: IChallenge = {
   participantCount: 23,
   startDate: '03월 04일 (월)',
   endDate: '03월 15일 (금)',
-  isFree: true,
+  isFree: false,
   reviewCount: 4,
   reviews: [
     {
@@ -93,9 +96,29 @@ const challengeData: IChallenge = {
   ],
 };
 
+const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
+
 export default function Challenge() {
   const router = useRouter();
   const id = typeof router.query.id === 'string' ? router.query.id : '';
+  const selectedChallenge =
+    useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
+
+  const goToParticipant = () => {
+    selectedChallenge({
+      challengeGroupId: id,
+      groupTitle: challengeData.title,
+      startDate: challengeData.startDate,
+      endDate: challengeData.endDate,
+      condition,
+      participantCount: challengeData.participantCount,
+      isFree: challengeData.isFree,
+    });
+    router.push('/challenge/participant').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
+  };
+
   return (
     <SLayoutWrapper>
       <ChallengeHeader />
@@ -124,11 +147,11 @@ export default function Challenge() {
           </SChips>
         </SThumbnail>
         <ChallengeSummary
-          title={challengeData.title}
+          groupTitle={challengeData.title}
           participantCount={challengeData.participantCount}
           startDate={challengeData.startDate}
           endDate={challengeData.endDate}
-          condition="recruiting"
+          condition={condition}
         />
         <TabMenu
           positionTop={90}
@@ -206,9 +229,10 @@ export default function Challenge() {
         <BottomFixedBtn
           btns={[
             {
-              text: '화면 하단 고정 버튼',
+              text: '신청하기',
               styleType: 'primary',
               size: 'large',
+              onClick: goToParticipant,
             },
           ]}
         />

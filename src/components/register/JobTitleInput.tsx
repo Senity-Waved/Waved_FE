@@ -1,79 +1,82 @@
 import styled from '@emotion/styled';
 import JOBTITLE from '@/constants/jobTitle';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 
 interface IJobTitleInput {
   jobTitle: string;
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  updateData: (newData: Partial<IRegisterState>) => void;
+  value?: string;
 }
 
 export default function JobTitleInput({
   jobTitle: currentJobTitle,
-  updateRegisterData,
+  updateData,
+  value,
 }: IJobTitleInput) {
   return (
     <SJobTitleInputWrapper>
       <SJobTitleChipWrapper>
         <SJobTitleChip
+          value={value}
           type="button"
           active={currentJobTitle === JOBTITLE.FRONT}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.FRONT })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.FRONT })}
         >
           프론트엔드
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.BACK}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.BACK })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.BACK })}
         >
           백엔드
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.FULL}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.FULL })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.FULL })}
         >
           풀 스택
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.ANDROID}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.ANDROID })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.ANDROID })}
         >
           안드로이드
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.IOS}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.IOS })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.IOS })}
         >
           IOS
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.DEV}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.DEV })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.DEV })}
         >
           데브옵스
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.BLOCKCHAIN}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.BLOCKCHAIN })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.BLOCKCHAIN })}
         >
           블록체인
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.MACINE}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.MACINE })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.MACINE })}
         >
           머신러닝
         </SJobTitleChip>
         <SJobTitleChip
           type="button"
           active={currentJobTitle === JOBTITLE.ETC}
-          onClick={() => updateRegisterData({ jobTitle: JOBTITLE.ETC })}
+          onClick={() => updateData({ jobTitle: JOBTITLE.ETC })}
         >
           기타
         </SJobTitleChip>

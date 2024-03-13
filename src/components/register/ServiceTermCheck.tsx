@@ -2,22 +2,20 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IRegisterState } from '@/types/register';
+import IRegisterState from '@/types/register';
 
 interface IServiceTermCheck {
-  updateRegisterData: (newData: Partial<IRegisterState>) => void;
+  updateData: (newData: Partial<IRegisterState>) => void;
 }
 
-export default function ServiceTermCheck({
-  updateRegisterData,
-}: IServiceTermCheck) {
+export default function ServiceTermCheck({ updateData }: IServiceTermCheck) {
   const [checkList, setCheckList] = useState<string[]>([]);
 
   useEffect(() => {
     if (checkList.length === 3) {
-      updateRegisterData({ termAgreement: true });
+      updateData({ termAgreement: true });
     } else {
-      updateRegisterData({ termAgreement: false });
+      updateData({ termAgreement: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkList.length]);
