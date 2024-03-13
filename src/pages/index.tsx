@@ -47,9 +47,7 @@ export default function Home({
           </SSection>
         )}
         <SSection>
-          <STitle>
-            <h2>✅ 모집 중인 챌린지</h2>
-          </STitle>
+          <STitle>✅ 모집 중인 챌린지</STitle>
           <SList>
             {getRecruitingChallenges.map((challenge) => (
               <ChallengeCard key={uuidv4()} {...challenge} />
@@ -91,16 +89,15 @@ const SHomeWrapper = styled(SLayoutWrapper)`
 `;
 
 const SSection = styled.section`
-  position: relative;
   &:last-of-type {
-    margin-bottom: 4rem;
+    margin-bottom: 2.25rem;
   }
   &:not(:last-of-type)::after {
     content: '';
-    position: absolute;
     display: inline-block;
     width: 100%;
     height: 6px;
+    margin: 1rem 0;
     background-color: ${({ theme }) => theme.color.gray_ec};
   }
 `;
@@ -132,24 +129,14 @@ const SListScrollX = styled.ul`
   }
 `;
 
-const STitle = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const STitle = styled.h2`
   width: calc(100% - 2.5rem);
-  min-height: 44px;
-  margin: 1.5rem 1.25rem;
+  height: 60px;
+  margin: 0 1.25rem;
   color: ${({ theme }) => theme.color.gray_3c};
-  h2 {
-    line-height: 24px;
-    font-size: ${({ theme }) => theme.fontSize.subtitle1};
-    font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-  }
-  p {
-    line-height: 20px;
-    font-size: ${({ theme }) => theme.fontSize.body4};
-    font-weight: ${({ theme }) => theme.fontWeight.body4};
-  }
+  line-height: 60px;
+  font-size: ${({ theme }) => theme.fontSize.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
 `;
 
 const SList = styled.ul`
