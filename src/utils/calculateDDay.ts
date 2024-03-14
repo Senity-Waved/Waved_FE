@@ -6,5 +6,5 @@ export default function calculateDDay(date: string): number {
   const timeDiff = targetDate.getTime() - today.getTime();
   const daysDiff = Math.ceil(timeDiff / ONE_DAY);
 
-  return daysDiff;
+  return Math.abs(daysDiff);
 }

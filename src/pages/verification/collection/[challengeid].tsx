@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
-import { useState } from 'react';
 import parseDate from '@/utils/parseDate';
 import ONE_DAY from '@/constants/day';
 import IVerificationInfo from '@/types/verification';
@@ -146,8 +146,8 @@ export default function VeirificationCollection() {
         <SDateBtn direction="next" onClick={getNextDay} disabled={isToday} />
       </SDateWrapper>
       <VerificationList
-        verificationType="photo"
-        verifications={data2.verifications}
+        verificationType="link"
+        verifications={data.verifications}
         isToday={isToday}
         question={data.question}
       />
