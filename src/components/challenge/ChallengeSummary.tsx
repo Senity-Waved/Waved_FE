@@ -8,7 +8,7 @@ interface IChallengeSummary
     'groupTitle' | 'startDate' | 'endDate' | 'condition' | 'participantCount'
   > {
   setSummaryHeight?: (height: number) => void;
-  className: string;
+  className?: string;
 }
 export default function ChallengeSummary({
   className,
