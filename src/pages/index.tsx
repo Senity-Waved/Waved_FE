@@ -9,8 +9,8 @@ import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
-import ChallengeCard from '@/components/home/ChallengeCard';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
+import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 
 export default function Home({
   getMyProcessingChallenges,
@@ -45,14 +45,9 @@ export default function Home({
             </SListScrollX>
           </SSection>
         )}
-        <SSection>
-          <STitle>✅ 모집 중인 챌린지</STitle>
-          <SList>
-            {getRecruitingChallenges.map((challenge) => (
-              <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
-            ))}
-          </SList>
-        </SSection>
+        <RecruitingChallenge
+          getRecruitingChallenges={getRecruitingChallenges}
+        />
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />
@@ -92,7 +87,6 @@ export async function getServerSideProps(): Promise<{
     fetchMyProcessingChallenges(),
     fetchRecruitingChallenges(),
   ]);
-
   return {
     props: {
       getMyProcessingChallenges: myProcessingChallenges,
@@ -106,10 +100,7 @@ const SHomeWrapper = styled(SLayoutWrapper)`
 `;
 
 const SSection = styled.section`
-  &:last-of-type {
-    margin-bottom: 2.25rem;
-  }
-  &:not(:last-of-type)::after {
+  &::after {
     content: '';
     display: inline-block;
     width: 100%;
@@ -144,19 +135,4 @@ const SListScrollX = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const STitle = styled.h2`
-  width: calc(100% - 2.5rem);
-  height: 60px;
-  margin: 0 1.25rem;
-  color: ${({ theme }) => theme.color.gray_3c};
-  line-height: 60px;
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-`;
-
-const SList = styled.ul`
-  width: 100%;
-  padding: 0 1.25rem;
 `;

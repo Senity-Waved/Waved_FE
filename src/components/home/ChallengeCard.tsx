@@ -21,7 +21,7 @@ export default function ChallengeCard({
     const diffInMs = processStartDate.getTime() - today.getTime();
     const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24)) - 1;
 
-    const dDayStr = `모집 마감일 D-${dDay}`;
+    const dDayStr = `모집 마감일 D-${dDay === 0 ? 'DAY' : dDay}`;
     return dDayStr;
   };
 
@@ -143,7 +143,7 @@ const SChips = styled.dl`
     border-radius: 10px;
     line-height: 20px;
     color: ${({ theme }) => theme.color.gray_3c};
-    font-size: ${({ theme }) => theme.fontSize.caption3};
-    font-weight: ${({ theme }) => theme.fontWeight.caption3};
+    font-size: ${({ theme }) => theme.fontSize.caption2};
+    font-weight: ${({ theme }) => theme.fontWeight.caption2};
   }
 `;
