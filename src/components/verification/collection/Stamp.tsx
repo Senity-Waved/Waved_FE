@@ -1,23 +1,39 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
+import calculateDDay from '@/utils/calculateDDay';
 
 interface IStamp {
   results: number[];
+  startDate: string;
 }
 
-export default function Stamp({ results }: IStamp) {
+export default function Stamp({ results, startDate }: IStamp) {
+  const diff = calculateDDay(startDate);
+  const resultStamps = results.map((value, index) => {
+    if (index <= diff - 1 && value === 0) {
+      return 1;
+    }
+    return value;
+  });
+
+  const getResultStamp = (result: number) => {
+    switch (result) {
+      case 2:
+        return '/icons/icon-stamp-good.svg';
+      case 1:
+        return '/icons/icon-stamp-bad.svg';
+      default:
+        return '/icons/icon-stamp-default.svg';
+    }
+  };
+
   return (
     <SStampWrapper>
-      {results.map((result, index) => (
-        <SStampItem key={index}>
+      {resultStamps.map((result, index) => (
+        <SStampItem key={uuidv4()}>
           <Image
-            src={
-              result === 2
-                ? '/icons/icon-stamp-good.svg'
-                : result === 1
-                  ? '/icons/icon-stamp-bad.svg'
-                  : '/icons/icon-stamp-default.svg'
-            }
+            src={getResultStamp(result)}
             alt={`stamp-${result}`}
             width={33}
             height={33}

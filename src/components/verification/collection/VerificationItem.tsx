@@ -1,17 +1,8 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import { useState } from 'react';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
-export interface IVerificationInfo {
-  verificationId: number;
-  authorId: number;
-  authorName: string;
-  content: string;
-  liked: boolean;
-  likeCount: number;
-  time: number; //timestamp
-  link?: string;
-}
+import IVerificationInfo from '@/types/verification';
 
 interface IVerificationItem extends IVerificationInfo {
   selectedId: number;
@@ -36,11 +27,19 @@ export default function VerificationItem({
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    isLiked ? setIsLiked(false) : setIsLiked(true);
+    if (isLiked) {
+      setIsLiked(false);
+    } else {
+      setIsLiked(true);
+    }
   };
 
   const toggleContent = () => {
-    isSelected ? setSelectedId(0) : setSelectedId(verificationId);
+    if (isSelected) {
+      setSelectedId(0);
+    } else {
+      setSelectedId(verificationId);
+    }
   };
 
   const clickLink = (event: React.MouseEvent<HTMLElement>) =>
@@ -80,6 +79,7 @@ const SAuthor = styled.h3`
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
+  line-height: 1.5625rem;
   margin-bottom: 0.5rem;
 `;
 
@@ -147,11 +147,10 @@ export const SMineLabel = styled.span`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  padding: 0 0.5rem;
+  padding: 0.25rem 0.5rem;
   color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.caption2};
-  line-height: 1.375rem;
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.color.gray_3c};
+  background-color: ${({ theme }) => theme.color.gray_52};
 `;

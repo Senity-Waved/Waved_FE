@@ -1,15 +1,18 @@
+import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import VerificationItem, { IVerificationInfo } from './VerificationItem';
-import { useState } from 'react';
+import IVerificationInfo from '@/types/verification';
+import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
 
 interface IVerificationList {
+  verificationType: string;
   verifications: IVerificationInfo[];
   isToday: boolean;
   question?: string;
 }
 
 export default function VerificationList({
+  verificationType,
   verifications,
   question,
   isToday,
@@ -17,15 +20,37 @@ export default function VerificationList({
   const myId = 1;
   const [sort, setSort] = useState<'time' | 'likeCount'>('likeCount');
   const [selectedId, setSelectedId] = useState<number>(0);
+  const [sortedVerifications, setSortedVerifications] = useState<
+    IVerificationInfo[]
+  >([]);
+
   const [myVerification] = verifications.filter(
     (verification) => verification.authorId === myId,
   );
+  const allVerification = verifications.filter(
+    (verification) => verification.authorId !== myId,
+  );
+  const sortVerifications = useCallback(() => {
+    const sorted = allVerification.sort((veri1, veri2) => {
+      if (sort === 'time') {
+        const time1 = new Date(veri1.time);
+        const time2 = new Date(veri2.time);
+        return time2.getTime() - time1.getTime();
+      }
+      // sort === likeCount
+      return veri2.likeCount - veri1.likeCount;
+    });
+    setSortedVerifications(sorted);
+  }, [sort, allVerification]);
 
-  const type = 'photo';
+  useEffect(() => {
+    sortVerifications();
+  }, [sortVerifications]);
 
   return (
     <SWrapper>
       <SSortBtnWrapper>
+        {question && <SQuestion>Q. {question}</SQuestion>}
         <SSortBtn isActive={sort === 'time'} onClick={() => setSort('time')}>
           • 최신순
         </SSortBtn>
@@ -38,11 +63,15 @@ export default function VerificationList({
       </SSortBtnWrapper>
       <SList>
         {myVerification ? (
-          <VerificationItem
-            {...myVerification}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-          />
+          verificationType === 'photo' ? (
+            <VerificationPhotoItem {...myVerification} />
+          ) : (
+            <VerificationItem
+              {...myVerification}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+          )
         ) : (
           isToday && (
             <SEmptyMyVerifiaction>
@@ -50,28 +79,19 @@ export default function VerificationList({
             </SEmptyMyVerifiaction>
           )
         )}
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        <VerificationPhotoItem />
-        {/* {verifications
-          .filter((verification) => verification.authorId !== myId)
-          .map((verification) => {
-            const { verificationId } = verification;
-            return (
-              <VerificationItem
-                key={verificationId}
-                {...verification}
-                selectedId={selectedId}
-                setSelectedId={setSelectedId}
-              />
-            );
-          })
-          .sort((veri1, veri2) => veri2.props[sort] - veri1.props[sort])} */}
+        {sortedVerifications.map((verification) => {
+          const { verificationId } = verification;
+          return verificationType === 'photo' ? (
+            <VerificationPhotoItem key={verificationId} {...verification} />
+          ) : (
+            <VerificationItem
+              key={verificationId}
+              {...verification}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+            />
+          );
+        })}
       </SList>
     </SWrapper>
   );
@@ -103,8 +123,9 @@ const SList = styled.ul`
 
 const SQuestion = styled.p`
   color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.body4};
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  font-size: ${({ theme }) => theme.fontSize.body1};
+  font-weight: ${({ theme }) => theme.fontWeight.body1};
+  padding: 1rem 0.25rem 1.5rem 0.25rem;
 `;
 
 const SEmptyMyVerifiaction = styled.p`
