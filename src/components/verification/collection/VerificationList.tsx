@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import IVerificationInfo from '@/types/verification';
 import VerificationItem from './VerificationItem';
@@ -27,11 +27,15 @@ export default function VerificationList({
   const [myVerification] = verifications.filter(
     (verification) => verification.authorId === myId,
   );
-  const allVerification = verifications.filter(
-    (verification) => verification.authorId !== myId,
-  );
-  const sortVerifications = useCallback(() => {
-    const sorted = allVerification.sort((veri1, veri2) => {
+
+  const allVerification = useMemo(() => {
+    return verifications.filter(
+      (verification) => verification.authorId !== myId,
+    );
+  }, [verifications, myId]);
+
+  useEffect(() => {
+    const sorted = [...allVerification].sort((veri1, veri2) => {
       if (sort === 'time') {
         const time1 = new Date(veri1.time);
         const time2 = new Date(veri2.time);
@@ -42,10 +46,6 @@ export default function VerificationList({
     });
     setSortedVerifications(sorted);
   }, [sort, allVerification]);
-
-  useEffect(() => {
-    sortVerifications();
-  }, [sortVerifications]);
 
   return (
     <SWrapper>
