@@ -17,6 +17,7 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
+import ScrollXBox from '@/components/common/ScrollXBox';
 
 interface IChallengeReview {
   reviewId: number;
@@ -206,18 +207,20 @@ export default function Challenge() {
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
-          <SSectionScrollX>
-            {challengeData.verificationExample.map((url) => (
-              <Image
-                key={uuidv4()}
-                src={url}
-                width={150}
-                height={218}
-                priority
-                alt="인증 예시"
-              />
-            ))}
-          </SSectionScrollX>
+          <ScrollXBox>
+            <SVerificationExample>
+              {challengeData.verificationExample.map((url) => (
+                <Image
+                  key={uuidv4()}
+                  src={url}
+                  width={150}
+                  height={218}
+                  priority
+                  alt="인증 예시"
+                />
+              ))}
+            </SVerificationExample>
+          </ScrollXBox>
         </SSection>
         <SLinkItem href="/">
           <h3>주의사항</h3>
@@ -373,19 +376,17 @@ const SMoreBtn = styled.button`
   }
 `;
 
-const SSectionScrollX = styled.div`
-  display: flex;
-  gap: 0.625rem;
-  width: 100%;
+const SVerificationExample = styled.div`
   height: 254px;
-  overflow-x: auto;
   padding: 1rem 1.25rem;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  img {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 0.625rem;
+    }
+    &:last-child {
+      margin-right: 1.25rem;
+    }
   }
 `;
 

@@ -11,6 +11,7 @@ import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
+import ScrollXBox from '@/components/common/ScrollXBox';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -85,23 +86,25 @@ export default function ChallengeParticipant() {
         <DepositGuide />
         <SDepositSettingWrapper>
           <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
-          <SDepositBtnWrapper>
-            {filteredDepositAmounts.map((amount) => (
-              <li key={amount}>
-                <SDepositBtn
-                  isSelectedDeposit={amount === deposit}
-                  value={amount}
-                  type="button"
-                  onClick={() => setDeposit(amount)}
-                >
-                  <p>
-                    {changePriceFormat(amount)}
-                    <span>원</span>
-                  </p>
-                </SDepositBtn>
-              </li>
-            ))}
-          </SDepositBtnWrapper>
+          <ScrollXBox>
+            <SDepositBtnWrapper>
+              {filteredDepositAmounts.map((amount) => (
+                <li key={amount}>
+                  <SDepositBtn
+                    isSelectedDeposit={amount === deposit}
+                    value={amount}
+                    type="button"
+                    onClick={() => setDeposit(amount)}
+                  >
+                    <p>
+                      {changePriceFormat(amount)}
+                      <span>원</span>
+                    </p>
+                  </SDepositBtn>
+                </li>
+              ))}
+            </SDepositBtnWrapper>
+          </ScrollXBox>
         </SDepositSettingWrapper>
         <DepositRefundGuide />
         <SPaymentMethodWrapper>
@@ -172,15 +175,15 @@ const SDepositAmout = styled.p`
 `;
 
 const SDepositBtnWrapper = styled.ul`
-  display: flex;
-  overflow-x: auto;
   margin: 1.5rem 0 2.5rem 1.25rem;
-  gap: 0.75rem;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  li {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 0.75rem;
+    }
+    &:last-child {
+      margin-right: 1.25rem;
+    }
   }
 `;
 
