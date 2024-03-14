@@ -43,6 +43,9 @@ export default function ChallengeCardWide({
 const SChallengeCardWide = styled.li`
   display: inline-block;
   width: 260px;
+  &:last-child {
+    margin-right: 1.25rem;
+  }
   &:not(:last-child) {
     margin-right: 0.75rem;
   }
