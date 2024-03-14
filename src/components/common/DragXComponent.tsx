@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState, useMemo } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const throttle = <T extends any[]>(callback: (...args: T) => void) => {
   let isThrottling = false;
   return (...args: T) => {
     if (isThrottling) return;
-    callback(...args);
     isThrottling = true;
     setTimeout(() => {
+      callback(...args);
       isThrottling = false;
     }, 50);
   };
@@ -23,26 +23,34 @@ export default function DragXComponent({
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
 
-  const onDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onDragStart = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!ref.current) return;
     setIsDragging(true);
     setStartX(e.pageX + ref.current.scrollLeft);
-  };
-  const onDragEnd = () => {
+  }, []);
+
+  const onDragEnd = useCallback(() => {
     setIsDragging(false);
-  };
-  const onDragMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !ref.current) return;
-    const { scrollWidth, clientWidth, scrollLeft } = ref.current;
-    ref.current.scrollLeft = startX - e.pageX;
-    if (scrollLeft === 0) {
-      setStartX(e.pageX);
-    } else if (scrollWidth <= clientWidth + scrollLeft) {
-      setStartX(e.pageX + scrollLeft);
-    }
-  };
-  const onThrottleDragMove = throttle(onDragMove);
+  }, []);
+
+  const onDragMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!isDragging || !ref.current) return;
+      const { scrollWidth, clientWidth, scrollLeft } = ref.current;
+      ref.current.scrollLeft = startX - e.pageX;
+      if (scrollLeft === 0) {
+        setStartX(e.pageX);
+      } else if (scrollWidth <= clientWidth + scrollLeft) {
+        setStartX(e.pageX + scrollLeft);
+      }
+    },
+    [isDragging, startX],
+  );
+
+  const onThrottleDragMove = useMemo(() => {
+    return throttle(onDragMove);
+  }, [onDragMove]);
 
   return (
     <SScrollXLayout
