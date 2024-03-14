@@ -47,7 +47,7 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
       if (section) observer.observe(section);
     });
     return () => observer.disconnect();
-  }, [tabs]);
+  }, [tabs, positionTop]);
 
   return (
     <STabMenu positionTop={positionTop}>

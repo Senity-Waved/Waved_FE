@@ -64,6 +64,7 @@ const SHeaderCenter = styled.div`
   margin: 0 auto;
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
+  white-space: nowrap;
 `;
 
 const SHeaderRightChild = styled.div`
