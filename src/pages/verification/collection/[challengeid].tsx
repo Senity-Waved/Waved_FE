@@ -20,8 +20,8 @@ const data: IVerificationCollection = {
   challengeTitle: '기술 면접 챌린지 1기',
   results: [1, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   question: '기술 면접 문제 내용입니다.',
-  startDate: '2024-03-10',
-  endDate: '2024-03-24',
+  startDate: '2024-03-10T00:00:00+09:00',
+  endDate: '2024-03-24T00:00:00+09:00',
   verifications: [
     {
       verificationId: 1,
@@ -117,7 +117,7 @@ export default function VeirificationCollection() {
   const [todayYear, todayMonth, todayDay] = parseDate(today);
   const [date, setDate] = useState<number>(today);
   const [year, month, day] = parseDate(date);
-
+  console.log(today, parseDate(today));
   const isToday = parseDate(today).join('-') === `${year}-${month}-${day}`;
 
   const getNextDay = () => setDate(date + ONE_DAY);
@@ -125,7 +125,7 @@ export default function VeirificationCollection() {
 
   return (
     <Layout
-      headerText={data.challengeTitle}
+      headerText={data2.challengeTitle}
       title={'인증내역-' + data.challengeTitle}
       description="챌린지의 인증내역을 확인하는 페이지입니다."
       noFooter
