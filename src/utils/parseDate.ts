@@ -2,10 +2,11 @@ export default function parseDate(
   date: string | number,
 ): [string, string, string] {
   if (typeof date === 'string') {
-    const dateParts = date.split('-');
-    const year = dateParts[0];
-    const month = dateParts[1];
-    const day = dateParts[2];
+    const stringDate = date.indexOf('T') !== -1 ? date.split('T')[0] : date;
+    const splitDate = stringDate.split('-');
+    const year = splitDate[0];
+    const month = splitDate[1];
+    const day = splitDate[2];
 
     return [year, month, day];
   } else if (typeof date === 'number') {
@@ -19,21 +20,3 @@ export default function parseDate(
     throw new Error('Unsupported date format');
   }
 }
-
-// 사용 예시1
-const date = '2024-04-01';
-const parsedDate = parseDate(date);
-
-const [year, month, day] = parsedDate;
-console.log('년도:', year);
-console.log('월:', month);
-console.log('일:', day);
-
-// 사용 예시2
-const today = new Date().getTime();
-const parsedDate2 = parseDate(today);
-
-const [year2, month2, day2] = parsedDate;
-console.log('년도:', year2);
-console.log('월:', month2);
-console.log('일:', day2);
