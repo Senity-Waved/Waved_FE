@@ -39,7 +39,7 @@ export default function VerificationPhotoItem({
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae src={content} alt="이미지" fill />
+        <SImgae src={content} alt="이미지" fill sizes="100%" priority />
         <SShadow />
         {myId === authorId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
@@ -51,7 +51,7 @@ export default function VerificationPhotoItem({
         <Portal>
           <SModalWrapper>
             <SPhotoModal>
-              <SImgae src={content} alt="이미지" fill />
+              <SImgae src={content} alt="이미지" fill sizes="100%" />
               <SCloseBtn type="button" onClick={closeModal} />
             </SPhotoModal>
           </SModalWrapper>
