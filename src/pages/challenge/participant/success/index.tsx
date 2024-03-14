@@ -109,6 +109,7 @@ const SGuideTextWrapper = styled.div`
   & p:first-of-type {
     font-size: ${({ theme }) => theme.fontSize.subtitle1};
     font-weight: ${({ theme }) => theme.fontWeight.subtitl1};
+    margin-bottom: 0.5rem;
   }
 
   & p:last-of-type {

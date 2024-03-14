@@ -51,7 +51,7 @@ export default function Modal({
               text: btnText,
               styleType: 'primary',
               size: 'small',
-              onClick: onClick,
+              onClick,
             },
           ]}
         />
@@ -89,7 +89,7 @@ const SModalMainText = styled.h2<{ marginBottom: boolean }>`
   line-height: 1.4;
   color: ${({ theme }) => theme.color.gray_3c};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-  margin-bottom: ${({ marginBottom }) => (marginBottom ? '.25rem' : '1.5rem')};
+  margin-bottom: ${({ marginBottom }) => (marginBottom ? '.5rem' : '1.5rem')};
 `;
 
 const SModalSubText = styled.p`

@@ -85,7 +85,7 @@ const SChallengeRequestSuccessText = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
   color: ${({ theme }) => theme.color.gray_3c};
   margin-top: 1rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 `;
 
 const SChallengeRequestSuccessBtnWrapper = styled.div`
