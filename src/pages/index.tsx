@@ -11,7 +11,6 @@ import HomeHeader from '@/components/home/HomeHeader';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
-import DragXComponent from '@/components/common/DragXComponent';
 
 export default function Home({
   getMyProcessingChallenges,
@@ -39,13 +38,11 @@ export default function Home({
                 priority
               />
             </STitleLink>
-            <DragXComponent>
-              <SListScrollX>
-                {getMyProcessingChallenges.map((challenge) => (
-                  <ChallengeCardWide key={challenge.groupId} {...challenge} />
-                ))}
-              </SListScrollX>
-            </DragXComponent>
+            <SListScrollX>
+              {getMyProcessingChallenges.map((challenge) => (
+                <ChallengeCardWide key={challenge.groupId} {...challenge} />
+              ))}
+            </SListScrollX>
           </SSection>
         )}
         <RecruitingChallenge
@@ -128,5 +125,14 @@ const STitleLink = styled(Link)`
 `;
 
 const SListScrollX = styled.ul`
-  margin: 0 1.25rem;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0 1.25rem 1.125rem;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
