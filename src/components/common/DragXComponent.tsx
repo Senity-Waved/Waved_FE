@@ -20,23 +20,26 @@ export default function DragXComponent({
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [, setIsDragging] = useState<boolean>(false);
+  const [isStart, setIsStart] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
 
   const onDragStart = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!ref.current) return;
-    setIsDragging(true);
+    setIsDragging(false);
+    setIsStart(true);
     setStartX(e.pageX + ref.current.scrollLeft);
   }, []);
 
   const onDragEnd = useCallback(() => {
-    setIsDragging(false);
+    setIsStart(false);
   }, []);
 
   const onDragMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isDragging || !ref.current) return;
+      if (!isStart || !ref.current) return;
+      setIsDragging(true);
       const { scrollWidth, clientWidth, scrollLeft } = ref.current;
       ref.current.scrollLeft = startX - e.pageX;
       if (scrollLeft === 0) {
@@ -45,7 +48,7 @@ export default function DragXComponent({
         setStartX(e.pageX + scrollLeft);
       }
     },
-    [isDragging, startX],
+    [isStart, startX],
   );
 
   const onThrottleDragMove = useMemo(() => {
@@ -56,7 +59,7 @@ export default function DragXComponent({
     <SScrollXLayout
       ref={ref}
       onMouseDown={onDragStart}
-      onMouseMove={isDragging ? onThrottleDragMove : undefined}
+      onMouseMove={isStart ? onThrottleDragMove : undefined}
       onMouseUp={onDragEnd}
       onMouseLeave={onDragEnd}
     >
