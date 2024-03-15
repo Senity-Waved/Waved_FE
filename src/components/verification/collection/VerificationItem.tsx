@@ -117,7 +117,7 @@ const SContent = styled.p<{ isSelected: boolean }>`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   margin-bottom: 1rem;
-  line-height: ${({ isSelected }) => (isSelected ? '1.7' : '1.4')};
+  line-height: ${({ isSelected }) => (isSelected ? '1.7' : '1.6')};
   transition: 0.2s ease-in;
   ${({ isSelected }) => isSelected || ellipsisStyle}
 `;

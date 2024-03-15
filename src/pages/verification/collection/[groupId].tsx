@@ -155,7 +155,7 @@ export default function VeirificationCollection() {
 }
 
 const SStampWrapper = styled.section`
-  padding: 1.5rem 1.25rem 0 1.25rem;
+  padding: 1rem 1.25rem 0 1.25rem;
 `;
 
 const STitle = styled.h2`

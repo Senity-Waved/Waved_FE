@@ -58,8 +58,8 @@ export default function VerificationPost() {
 
 const SQuestion = styled.p`
   font-size: 0.875rem;
-  line-height: 1.4;
+  line-height: 1.6;
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_52};
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 `;

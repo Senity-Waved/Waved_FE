@@ -125,6 +125,7 @@ const SQuestion = styled.p`
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.body1};
   font-weight: ${({ theme }) => theme.fontWeight.body1};
+  line-height: 1.5;
   padding: 1rem 0.25rem 1.5rem 0.25rem;
 `;
 
