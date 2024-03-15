@@ -1,36 +1,7 @@
-import { useState } from 'react';
-import { IAuth } from '../api/auth/session';
-
 export default function LoginTest() {
-  const [hasInfo, setHasInfo] = useState(false);
-
   const handleLogin = () => {
-    fetch('/api/auth/session', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data: IAuth) => {
-        console.log(data);
-        setHasInfo(data.hasInfo);
-      })
-      .catch((error) => console.error('Error:', error));
-  };
-
-  const handleReissue = () => {
-    fetch('/api/auth/reissue', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.error(error));
+    window.location.href =
+      'https://waved.azurewebsites.net/oauth2/authorization/google';
   };
 
   return (
@@ -38,10 +9,6 @@ export default function LoginTest() {
       <button type="button" onClick={handleLogin}>
         Login!!!
       </button>
-      <button type="button" onClick={handleReissue}>
-        액세스 토큰 재발급
-      </button>
-      <div>Has Info: {hasInfo ? 'Yes' : 'No'}</div>
     </div>
   );
 }
