@@ -1,48 +1,55 @@
 import styled from '@emotion/styled';
-import ChallengeItem, {
-  IChallengeItem,
-} from '@/components/mychallenge/ChallengeItem';
-import challengeSectionText from '@/constants/challengeSectionText';
+import ChallengeItem from '@/components/mychallenge/ChallengeItem';
+import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 
 interface IChallengeSection {
-  status: '진행 중' | '대기 중' | '진행 완료';
-  scrollId: 'processing' | 'pending' | 'completed';
-  // challenges: IChallengeItem [];
+  mainText: '🧑🏻‍💻 진행 중' | '📚 대기 중' | '🥳 진행 완료';
+  status: TMyChallengeStatus;
+  challenges: TMyChallengeInfo[];
 }
 
 export default function ChallengeSection({
   status,
-  scrollId,
-  // challenges,
+  mainText,
+  challenges,
 }: IChallengeSection) {
-  const mainText = challengeSectionText[status].emoji + status;
-  const { subText } = challengeSectionText[status];
-
   return (
-    <SWrapper id={scrollId}>
+    <SWrapper id={status}>
       <div>
         <SStatus>{mainText}</SStatus>
-        <SSubText>{subText}</SSubText>
       </div>
       <SChallengeList>
-        <li>
-          <ChallengeItem status={status} />
-        </li>
-        <li>
-          <ChallengeItem status={status} />
-        </li>
-        <li>
-          <ChallengeItem status={status} />
-        </li>
+        {challenges.map((challenge) => (
+          <ChallengeItem
+            key={challenge.myChallengeId}
+            status={status}
+            {...challenge}
+          />
+        ))}
       </SChallengeList>
     </SWrapper>
   );
 }
 
 const SWrapper = styled.section`
-  background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 1rem 1.25rem 2rem 1.25rem;
-  scroll-margin-top: 56px;
+  scroll-margin-top: 42px;
+  position: relative;
+
+  &:nth-child(2),
+  &:nth-child(3) {
+    padding-top: 1.875rem;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background-color: ${({ theme }) => theme.color.gray_ec};
+    }
+  }
 `;
 
 const SStatus = styled.h2`
