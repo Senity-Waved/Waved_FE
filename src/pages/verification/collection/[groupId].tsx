@@ -117,7 +117,6 @@ export default function VeirificationCollection() {
   const [todayYear, todayMonth, todayDay] = parseDate(today);
   const [date, setDate] = useState<number>(today);
   const [year, month, day] = parseDate(date);
-  console.log(today, parseDate(today));
   const isToday = parseDate(today).join('-') === `${year}-${month}-${day}`;
 
   const getNextDay = () => setDate(date + ONE_DAY);
@@ -138,7 +137,7 @@ export default function VeirificationCollection() {
         <SDateBtn
           direction="prev"
           onClick={getPreviousDay}
-          disabled={`${year}-${month}-${day}` === data.startDate}
+          disabled={`${year}-${month}-${day}` === data.startDate.split('T')[0]}
         />
         <SDate>
           {year}. {month}. {day}
@@ -160,9 +159,9 @@ const SStampWrapper = styled.section`
 `;
 
 const STitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
+  font-size: ${({ theme }) => theme.fontSize.headline2};
   line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
 `;
 
