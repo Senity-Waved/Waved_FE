@@ -104,7 +104,7 @@ const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
 export default function Challenge() {
   const router = useRouter();
-  const id = typeof router.query.id === 'string' ? router.query.id : '';
+  const id = router.query.challengeGroupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
