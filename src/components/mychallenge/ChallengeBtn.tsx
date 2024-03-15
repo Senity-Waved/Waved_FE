@@ -1,14 +1,11 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
+import calculateDDay from '@/utils/calculateDDay';
 
 type TBtn = Pick<
   TMyChallengeInfo,
-  | 'groupId'
-  | 'isReviewed'
-  | 'isTodayVerified'
-  | 'verificationType'
-  | 'startDate'
+  'groupId' | 'isReviewed' | 'isVerified' | 'verificationType' | 'startDate'
 > & {
   status: TMyChallengeStatus;
 };
@@ -16,14 +13,14 @@ type TBtn = Pick<
 export default function ChallengeBtn({
   groupId,
   isReviewed,
-  isTodayVerified,
+  isVerified,
   verificationType,
   startDate,
   status,
 }: TBtn) {
   const isAble = (() => {
     return status === 'progress'
-      ? verificationType === 'GITHUB' || !isTodayVerified
+      ? verificationType === 'GITHUB' || !isVerified
       : status === 'completed' && !isReviewed;
   })();
 
@@ -55,7 +52,9 @@ export default function ChallengeBtn({
     case 'waiting':
       return (
         <SBtnWrapper>
-          <SBtn styleType="gray">챌린지 시작하기까지 D-</SBtn>
+          <SBtn styleType="gray">
+            챌린지 시작하기까지 D-{calculateDDay(startDate)}
+          </SBtn>
         </SBtnWrapper>
       );
     case 'completed':
