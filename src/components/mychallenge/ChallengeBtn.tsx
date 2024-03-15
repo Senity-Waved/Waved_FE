@@ -34,7 +34,12 @@ export default function ChallengeBtn({
     case 'progress':
       return (
         <SBtnWrapper>
-          <SLink href="/verification/collection/1">
+          <SLink
+            href={{
+              pathname: `/verification/collection/${groupId}`,
+              query: { type: verificationType },
+            }}
+          >
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           <SLink
