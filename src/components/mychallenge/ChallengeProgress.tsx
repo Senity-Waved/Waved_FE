@@ -1,6 +1,11 @@
+import { TMyChallengeInfo } from '@/types/myChallenge';
 import styled from '@emotion/styled';
 
-export default function ChallengeProgress() {
+export default function ChallengeProgress({
+  successCount,
+  startDate,
+  endDate,
+}: Pick<TMyChallengeInfo, 'successCount' | 'startDate' | 'endDate'>) {
   const dealt = 80;
 
   return (

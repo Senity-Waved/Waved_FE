@@ -1,30 +1,40 @@
-import styled from '@emotion/styled';
 import Link from 'next/link';
+import styled from '@emotion/styled';
+import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 
-interface IBtn {
-  challengeStatus: '진행 중' | '대기 중' | '진행 완료';
-  dday?: number;
-  isAbled?: boolean;
-  isAuto?: boolean;
-  challengeId: string;
-  // verificationType: string;
-}
+type TBtn = Pick<
+  TMyChallengeInfo,
+  | 'groupId'
+  | 'isReviewed'
+  | 'isTodayVerified'
+  | 'verificationType'
+  | 'startDate'
+> & {
+  status: TMyChallengeStatus;
+};
 
 export default function ChallengeBtn({
-  challengeStatus,
-  dday,
-  isAbled,
-  isAuto,
-  challengeId,
-}: IBtn) {
-  const preventLink = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isAbled) {
+  groupId,
+  isReviewed,
+  isTodayVerified,
+  verificationType,
+  startDate,
+  status,
+}: TBtn) {
+  const isAble = (() => {
+    return status === 'progress'
+      ? verificationType === 'GITHUB' || !isTodayVerified
+      : status === 'completed' && !isReviewed;
+  })();
+
+  const preventLink = (e: React.MouseEvent<HTMLElement>) => {
+    if (!isAble) {
       e.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
     }
   };
 
-  switch (challengeStatus) {
-    case '진행 중':
+  switch (status) {
+    case 'progress':
       return (
         <SBtnWrapper>
           <SLink href="/verification/collection/1">
@@ -32,25 +42,23 @@ export default function ChallengeBtn({
           </SLink>
           <SLink
             href={{
-              pathname: '/verification/post/1',
-              query: { type: 'text' },
+              pathname: `/verification/post/${groupId}`,
+              query: { type: verificationType },
             }}
           >
-            <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
-              인증 하기
+            <SBtn styleType={isAble ? 'middle' : 'gray'} onClick={preventLink}>
+              {isAble ? '인증 하기' : '인증 완료'}
             </SBtn>
           </SLink>
         </SBtnWrapper>
       );
-    case '대기 중':
+    case 'waiting':
       return (
         <SBtnWrapper>
-          <SBtn as="div" styleType="gray">
-            챌린지 시작하기까지 D-{dday}
-          </SBtn>
+          <SBtn styleType="gray">챌린지 시작하기까지 D-</SBtn>
         </SBtnWrapper>
       );
-    case '진행 완료':
+    case 'completed':
       return (
         <SBtnWrapper>
           <SLink href="#">
@@ -59,12 +67,15 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/mychallenge/review`,
-              query: { challengeId },
+              query: { groupId },
             }}
             as="mychallenge/review"
           >
-            <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
-              후기작성
+            <SBtn
+              styleType={isAble ? 'border' : 'bordergray'}
+              onClick={preventLink}
+            >
+              {isAble ? '후기 작성' : '작성 완료'}
             </SBtn>
           </SLink>
         </SBtnWrapper>
@@ -83,13 +94,22 @@ const SLink = styled(Link)`
   width: 100%;
 `;
 
-const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
+const SBtn = styled.div<{
+  styleType: 'light' | 'gray' | 'middle' | 'border' | 'bordergray';
+}>`
   width: 100%;
   height: 40px;
   line-height: 40px;
   text-align: center;
   border-radius: 8px;
-  border: none;
+  border: ${({ styleType, theme }) =>
+    ({
+      light: 'none',
+      middle: 'none',
+      gray: 'none',
+      border: '1px solid' + theme.color.normal,
+      bordergray: '1px solid' + theme.color.gray_99,
+    })[styleType]};
   font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.fontWeight.body3};
   transition: 0.2s ease-in;
@@ -98,15 +118,21 @@ const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
       light: theme.color.normal,
       middle: theme.color.white,
       gray: theme.color.gray_83,
+      border: theme.color.normal,
+      bordergray: theme.color.gray_99,
     })[styleType]};
   background-color: ${({ styleType, theme }) =>
     ({
       light: theme.color.light,
       middle: theme.color.normal,
       gray: theme.color.gray_ec,
+      border: theme.color.white,
+      bordergray: theme.color.white,
     })[styleType]};
   cursor: ${({ styleType }) =>
-    styleType === 'gray' ? 'not-allowed' : 'pointer'};
+    styleType === 'gray' || styleType === 'bordergray'
+      ? 'not-allowed'
+      : 'pointer'};
 
   &:hover,
   &:focus {
@@ -115,6 +141,8 @@ const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
         light: '#BBD3FF',
         middle: theme.color.dark,
         gray: theme.color.gray_ec,
+        border: theme.color.light,
+        bordergray: theme.color.white,
       })[styleType]};
 
     color: ${({ styleType, theme }) =>
@@ -122,6 +150,16 @@ const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
         light: theme.color.dark,
         middle: theme.color.white,
         gray: theme.color.gray_83,
+        border: theme.color.dark,
+        bordergray: theme.color.gray_99,
+      })[styleType]};
+    border: ${({ styleType, theme }) =>
+      ({
+        light: 'none',
+        middle: 'none',
+        gray: 'none',
+        border: '1px solid' + theme.color.dark,
+        bordergray: '1px solid' + theme.color.gray_99,
       })[styleType]};
   }
 `;
