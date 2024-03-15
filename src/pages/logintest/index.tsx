@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import { IAuth } from '../api/auth/session';
-import getCookieValue from '@/utils/cookie';
 
 export default function LoginTest() {
   const [hasInfo, setHasInfo] = useState(false);
-
-  console.log(getCookieValue('accessToken'));
 
   const handleLogin = () => {
     fetch('/api/auth/session', {
