@@ -5,8 +5,9 @@ export type TMyChallengeInfo = {
   startDate: string;
   endDate: string;
   successCount: number;
-  isReviewed: boolean | null;
-  isTodayVerified: boolean | null;
+  isReviewed?: boolean | null;
+  isVerified?: boolean | null;
+  isGithubConnected?: boolean;
   verificationType: 'TEXT' | 'GITHUB' | 'PHOTO' | 'LINK';
   deposit: number;
 };
