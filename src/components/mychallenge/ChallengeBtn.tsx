@@ -20,7 +20,7 @@ export default function ChallengeBtn({
 }: TBtn) {
   const isAble = (() => {
     return status === 'progress'
-      ? verificationType === 'GITHUB' || !isVerified
+      ? !isVerified
       : status === 'completed' && !isReviewed;
   })();
 
@@ -42,16 +42,29 @@ export default function ChallengeBtn({
           >
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          <SLink
-            href={{
-              pathname: `/verification/post/${groupId}`,
-              query: { type: verificationType },
-            }}
-          >
-            <SBtn styleType={isAble ? 'middle' : 'gray'} onClick={preventLink}>
-              {isAble ? '인증 하기' : '인증 완료'}
+          {verificationType === 'GITHUB' ? (
+            <SBtn
+              as="button"
+              styleType="middle"
+              onClick={() => console.log('test')}
+            >
+              인증 하기
             </SBtn>
-          </SLink>
+          ) : (
+            <SLink
+              href={{
+                pathname: `/verification/post/${groupId}`,
+                query: { type: verificationType },
+              }}
+            >
+              <SBtn
+                styleType={isAble ? 'middle' : 'gray'}
+                onClick={preventLink}
+              >
+                {isAble ? '인증 하기' : '인증 완료'}
+              </SBtn>
+            </SLink>
+          )}
         </SBtnWrapper>
       );
     case 'waiting':
