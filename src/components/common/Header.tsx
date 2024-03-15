@@ -30,7 +30,7 @@ export default function Header({
           priority
         />
       </SBackBtn>
-      <SHeaderCenter>{headerText && <span>{headerText}</span>}</SHeaderCenter>
+      <SHeaderCenter>{headerText && <h2>{headerText}</h2>}</SHeaderCenter>
       <SHeaderRightChild onClick={rightOnClick}>
         <span>{rightText}</span>
       </SHeaderRightChild>
