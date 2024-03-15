@@ -18,7 +18,7 @@ export default function ChallengeItem({
   endDate,
   successCount,
   isReviewed,
-  isTodayVerified,
+  isVerified,
   verificationType,
   deposit,
 }: TMyChallengeItem) {
@@ -43,20 +43,18 @@ export default function ChallengeItem({
         <ChallengeProgress
           successCount={successCount}
           startDate={startDate}
-          endDate={endDate}
+          isVerified={isVerified}
         />
       )}
       <ChallengeBtn
         groupId={groupId}
         isReviewed={isReviewed}
-        isTodayVerified={isTodayVerified}
+        isVerified={isVerified}
         verificationType={verificationType}
         startDate={startDate}
         status={status}
       />
-      <Link href={'/challenge/' + groupId}>
-        <SDetailBtn />
-      </Link>
+      <SDetailBtn href={'/challenge/' + groupId} />
     </SWrapper>
   );
 }
@@ -72,7 +70,7 @@ const SWrapper = styled.li`
   border-radius: 8px;
 `;
 
-const SDetailBtn = styled.span`
+const SDetailBtn = styled(Link)`
   display: block;
   position: absolute;
   top: 1rem;
