@@ -1,11 +1,37 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
+import styled from '@emotion/styled';
 import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
-import ShareBtn from '@/components/challenge/ShareBtn';
+import ISnackBarState from '@/types/snackbar';
 
-export default function ChallengeHeader() {
+export default function ChallengeHeader({
+  setSnackBarState,
+}: {
+  setSnackBarState: (state: ISnackBarState) => void;
+}) {
   const router = useRouter();
+  const copyUrl = () => {
+    const currentUrl = window.location.href.split('#')[0];
+    navigator.clipboard.writeText(currentUrl).then(
+      () => {
+        console.log('URL 복사 성공');
+        setSnackBarState({
+          open: true,
+          text: '링크가 복사되었습니다.',
+        });
+        setTimeout(() => {
+          setSnackBarState({
+            open: false,
+            text: '',
+          });
+        }, 3500);
+      },
+      (error) => {
+        console.error('URL 복사 실패', error);
+      },
+    );
+  };
   return (
     <>
       <Head>
@@ -31,8 +57,22 @@ export default function ChallengeHeader() {
             priority
           />
         </SBackBtn>
-        <ShareBtn />
+        <SShareBtn
+          type="button"
+          onClick={copyUrl}
+          aria-label="현재 페이지 URL 복사하기"
+        />
       </SHeaderWrapper>
     </>
   );
 }
+
+const SShareBtn = styled.button`
+  position: absolute;
+  right: 0;
+  margin-right: 1.25rem;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url('/icons/icon-share.svg') no-repeat center;
+`;

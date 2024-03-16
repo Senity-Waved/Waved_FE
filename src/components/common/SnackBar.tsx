@@ -5,11 +5,21 @@ interface ISnackBar {
   text: string;
   type?: 'correct' | 'warning';
   noFooter?: boolean;
+  isBottomFixedBtn?: boolean;
 }
 
-export default function SnackBar({ type, text, noFooter }: ISnackBar) {
+export default function SnackBar({
+  type,
+  text,
+  noFooter,
+  isBottomFixedBtn,
+}: ISnackBar) {
   return (
-    <SSnackBar type={type} noFooter={noFooter}>
+    <SSnackBar
+      type={type}
+      noFooter={noFooter}
+      isBottomFixedBtn={isBottomFixedBtn}
+    >
       {text}
     </SSnackBar>
   );
@@ -39,7 +49,11 @@ const fadeOut = keyframes`
 
 const SSnackBar = styled.p<Partial<ISnackBar>>`
   position: fixed;
-  bottom: ${({ noFooter }) => (noFooter ? '30px' : '107px')};
+  bottom: ${({ noFooter, isBottomFixedBtn }) => {
+    if (noFooter) return '30px';
+    if (isBottomFixedBtn) return '114px';
+    return '107px';
+  }};
   width: calc(100% - 2.5rem);
   max-width: calc(430px - 2.5rem);
   margin: 0 1.25rem;

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import WriteLayout from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
-import PhotoInput from '@/components/verification/PhotoInput';
+import PhotoInput from '@/components/verification/post/PhotoInput';
 import TextArea from '@/components/common/TextArea';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';

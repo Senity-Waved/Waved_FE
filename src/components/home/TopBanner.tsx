@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
+import screenSize from '@/constants/screenSize';
 
 interface IBannerImages {
   src: string;
@@ -18,15 +19,15 @@ export default function TopBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bannerImages] = useState<IBannerImages[]>([
     {
-      src: 'https://via.placeholder.com/375x200.jpg?text=image1',
+      src: 'https://via.placeholder.com/700x800.jpg',
       alt: '배너이미지1',
     },
     {
-      src: 'https://via.placeholder.com/375x200.jpg?text=image2',
+      src: 'https://via.placeholder.com/430x500.jpg',
       alt: '배너이미지2',
     },
     {
-      src: 'https://via.placeholder.com/375x200.jpg?text=image3',
+      src: 'https://via.placeholder.com/600x600.jpg',
       alt: '배너이미지3',
     },
   ]);
@@ -51,8 +52,9 @@ export default function TopBanner() {
             <Image
               src={image.src}
               alt={image.alt}
-              width={375}
-              height={200}
+              fill
+              sizes={`${screenSize.max}px`}
+              style={{ objectFit: 'cover' }}
               priority
             />
           </SSlides>
@@ -77,10 +79,9 @@ const SSlider = styled(Slider)`
 `;
 
 const SSlides = styled.div`
-  img {
-    width: 100%;
-    height: auto;
-  }
+  position: relative;
+  width: 100%;
+  height: 230px;
 `;
 
 const SIndicators = styled.ul`

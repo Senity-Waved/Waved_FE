@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
+import { useState } from 'react';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -14,6 +15,9 @@ import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
+import ISnackBarState from '@/types/snackbar';
+import SnackBar from '@/components/common/SnackBar';
+import ScrollXBox from '@/components/common/ScrollXBox';
 
 interface IChallengeReview {
   reviewId: number;
@@ -40,7 +44,7 @@ interface IChallenge {
 
 const challengeData: IChallenge = {
   type: 'photo',
-  title: '기술 면접 챌린지 1기',
+  title: '프론트엔드 아티클 공유 챌린지 3기',
   thumbnail: 'https://via.placeholder.com/800x700.jpg',
   description:
     '자기 개발은 목표를 설정하고 달성하기 위한 여정입니다. 이 블로그 포스트에서는 일상 생활에 쉽게 통합할 수 있는 5가지 핵심 습관을 소개합니다. 첫 번째는 목표 설정과 시간 관리입니다. 이는 개인적 성취와 전문적 성장을 위한 기초를 마련합니다.\n두 번째 습관은 긍정적 사고를 통한 자기 격려입니다. 이는 도전을 극복하고 성공으로 나아가는 데 중요합니다. 세 번째는 건강 유지를 위한 일상적인 운동과 균형 잡힌 식단입니다. 건강한 몸은 능률적인 마음의 기초입니다. 네 번째는 지속적인 학습과 자기 계발입니다. ',
@@ -100,7 +104,12 @@ const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
 export default function Challenge() {
   const router = useRouter();
-  const id = typeof router.query.id === 'string' ? router.query.id : '';
+  const id = router.query.challengeGroupId as string;
+  const [summaryHeight, setSummaryHeight] = useState(84);
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+  });
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
 
@@ -121,7 +130,7 @@ export default function Challenge() {
 
   return (
     <SLayoutWrapper>
-      <ChallengeHeader />
+      <ChallengeHeader setSnackBarState={setSnackBarState} />
       <main>
         <SThumbnail id="information">
           <Image
@@ -129,6 +138,7 @@ export default function Challenge() {
             src={challengeData.thumbnail}
             fill
             sizes={`${screenSize.max}px`}
+            style={{ objectFit: 'cover' }}
             priority
           />
           <SChips>
@@ -147,14 +157,16 @@ export default function Challenge() {
           </SChips>
         </SThumbnail>
         <ChallengeSummary
+          className="description"
           groupTitle={challengeData.title}
           participantCount={challengeData.participantCount}
           startDate={challengeData.startDate}
           endDate={challengeData.endDate}
           condition={condition}
+          setSummaryHeight={setSummaryHeight}
         />
         <TabMenu
-          positionTop={90}
+          positionTop={summaryHeight}
           tabs={[
             { href: '#information', text: '정보' },
             { href: '#review', text: '후기' },
@@ -162,7 +174,7 @@ export default function Challenge() {
           ]}
         />
         <SSection>
-          <SSectionTitle>{challengeData.title}</SSectionTitle>
+          <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
           <SSectionContext>
             {challengeData.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
@@ -195,18 +207,20 @@ export default function Challenge() {
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
-          <SSectionScrollX>
-            {challengeData.verificationExample.map((url) => (
-              <Image
-                key={uuidv4()}
-                src={url}
-                width={150}
-                height={218}
-                priority
-                alt="인증 예시"
-              />
-            ))}
-          </SSectionScrollX>
+          <ScrollXBox>
+            <SVerificationExample>
+              {challengeData.verificationExample.map((url) => (
+                <Image
+                  key={uuidv4()}
+                  src={url}
+                  width={150}
+                  height={218}
+                  priority
+                  alt="인증 예시"
+                />
+              ))}
+            </SVerificationExample>
+          </ScrollXBox>
         </SSection>
         <SLinkItem href="/">
           <h3>주의사항</h3>
@@ -236,6 +250,13 @@ export default function Challenge() {
             },
           ]}
         />
+        {snackBarState.open && (
+          <SnackBar
+            text={snackBarState.text}
+            type={snackBarState.type}
+            isBottomFixedBtn
+          />
+        )}
       </main>
     </SLayoutWrapper>
   );
@@ -243,12 +264,9 @@ export default function Challenge() {
 
 const SThumbnail = styled.div`
   position: relative;
-  line-height: 0;
   width: 100%;
   height: 246px;
-  img {
-    object-fit: cover;
-  }
+  line-height: 0;
   &::after {
     content: '';
     position: absolute;
@@ -258,8 +276,8 @@ const SThumbnail = styled.div`
     bottom: 0;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(0, 0, 0, 0.3) 100%
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 70%
     );
   }
 `;
@@ -321,6 +339,7 @@ const SSectionTitle = styled.h3`
     }
   }
 `;
+
 const SSectionContext = styled.div`
   padding: 1rem 1.25rem 0;
   font-size: ${({ theme }) => theme.fontSize.body2};
@@ -357,20 +376,17 @@ const SMoreBtn = styled.button`
   }
 `;
 
-const SSectionScrollX = styled.div`
-  display: flex;
-  gap: 0.625rem;
-  width: 100%;
+const SVerificationExample = styled.div`
   height: 254px;
-  overflow-x: auto;
   padding: 1rem 1.25rem;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  /* 스크롤바 미노출 */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome , Safari , Opera */
+  img {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 0.625rem;
+    }
+    &:last-child {
+      margin-right: 1.25rem;
+    }
   }
 `;
 
