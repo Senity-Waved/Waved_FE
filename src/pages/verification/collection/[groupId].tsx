@@ -125,7 +125,7 @@ export default function VeirificationCollection() {
   return (
     <Layout
       headerText={data2.challengeTitle}
-      title={'인증내역-' + data.challengeTitle}
+      title={`인증내역-${data.challengeTitle}`}
       description="챌린지의 인증내역을 확인하는 페이지입니다."
       noFooter
     >
