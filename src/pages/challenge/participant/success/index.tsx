@@ -26,7 +26,9 @@ export default function ParticipantSuccess() {
     participantCount: 0,
     isFree: false,
   });
-  const paidDeposit = changePriceFormat(Number(query.deposit));
+  const paidDeposit = query.deposit
+    ? changePriceFormat(Number(query.deposit))
+    : 0;
 
   useEffect(() => {
     setChallengeData(recoilChallengeData);
