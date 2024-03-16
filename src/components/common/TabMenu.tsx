@@ -36,7 +36,9 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
         });
       },
       {
-        rootMargin: '0px 0px -70% 0px',
+        root: document.querySelector('main'),
+        rootMargin: `${positionTop + 48}px 0px 0px 0px`,
+        threshold: 0.5,
       },
     );
     tabs.forEach((tab) => {
@@ -45,7 +47,7 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
       if (section) observer.observe(section);
     });
     return () => observer.disconnect();
-  }, [tabs]);
+  }, [tabs, positionTop]);
 
   return (
     <STabMenu positionTop={positionTop}>

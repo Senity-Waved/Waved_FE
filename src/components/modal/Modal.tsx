@@ -59,7 +59,8 @@ export default function Modal({
     </SModalWrapper>
   );
 }
-const SModalWrapper = styled.div`
+
+export const SModalWrapper = styled.div`
   z-index: 20;
   position: fixed;
   top: 0;
