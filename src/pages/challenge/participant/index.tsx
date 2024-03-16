@@ -175,16 +175,9 @@ const SDepositAmout = styled.p`
 `;
 
 const SDepositBtnWrapper = styled.ul`
+  display: flex;
   margin: 1.5rem 0 2.5rem 1.25rem;
-  li {
-    display: inline-block;
-    &:not(:last-child) {
-      margin-right: 0.75rem;
-    }
-    &:last-child {
-      margin-right: 1.25rem;
-    }
-  }
+  gap: 0.75rem;
 `;
 
 const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
