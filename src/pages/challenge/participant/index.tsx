@@ -184,7 +184,6 @@ const SDepositAmout = styled.p`
 const SDepositBtnWrapper = styled.ul`
   display: flex;
   margin: 1.5rem 0 2.5rem 1.25rem;
-  gap: 0.75rem;
 `;
 
 const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
@@ -200,6 +199,8 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
     isSelectedDeposit ? theme.color.gray_ec : theme.color.gray_83};
   background-color: ${({ theme, isSelectedDeposit }) =>
     isSelectedDeposit ? theme.color.normal : theme.color.gray_ec};
+
+  margin-right: 0.75rem;
 
   > p {
     width: 100%;

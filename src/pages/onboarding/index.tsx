@@ -103,11 +103,10 @@ export default function OnBoarding() {
         <SNonMemberLink href="/">먼저 둘러볼게요</SNonMemberLink>
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
-          <SServicePolicyLink href="/">
-            개인정보 처리방침 &nbsp;
-          </SServicePolicyLink>
-          및<SServicePolicyLink href="/">&nbsp;이용약관</SServicePolicyLink>에
-          동의하게 됩니다.
+          <SServicePolicyLink href="/">개인정보 처리방침</SServicePolicyLink>
+          &nbsp;및 &nbsp;
+          <SServicePolicyLink href="/">이용약관</SServicePolicyLink>에 동의하게
+          됩니다.
         </SServiceRegisterText>
         {snackBarState.open && (
           <SnackBar
