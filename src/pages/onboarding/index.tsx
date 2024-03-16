@@ -104,9 +104,10 @@ export default function OnBoarding() {
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
           <SServicePolicyLink href="/">
-            개인정보 처리방침 및 이용약관
+            개인정보 처리방침 &nbsp;
           </SServicePolicyLink>
-          에 동의하게 됩니다.
+          및<SServicePolicyLink href="/">&nbsp;이용약관</SServicePolicyLink>에
+          동의하게 됩니다.
         </SServiceRegisterText>
         {snackBarState.open && (
           <SnackBar
@@ -166,8 +167,9 @@ const SNonMemberLink = styled(Link)`
   line-height: 1.4;
   font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.fontWeight.regular};
-  color: ${({ theme }) => theme.color.gray_99};
-  margin: 0 auto 1.625rem auto;
+  color: ${({ theme }) => theme.color.gray_3c};
+  border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
+  margin: 0 auto 2rem auto;
 `;
 
 const SServiceRegisterText = styled.p`
