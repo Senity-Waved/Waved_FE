@@ -63,9 +63,19 @@ export default function ChallengeParticipant() {
 
   const goToSuccess = () => {
     console.log('챌린지 신청 성공');
-    router.push('/challenge/participant/success').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    router
+      .push(
+        {
+          pathname: '/challenge/participant/success',
+          query: {
+            deposit,
+          },
+        },
+        'challnege/participant/success',
+      )
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   return (
