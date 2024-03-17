@@ -20,7 +20,7 @@ const progressData: TMyChallengeInfo[] = [
     endDate: '2024-03-24',
     successCount: 2,
     isReviewed: null,
-    isVerified: true,
+    isVerified: false,
     verificationType: 'TEXT',
     deposit: 10000,
   },
@@ -168,14 +168,12 @@ export default function MyChallenge() {
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
-      <Link href="/">
-        <SLinkToHome>챌린지 둘러보기</SLinkToHome>
-      </Link>
+      <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
     </Layout>
   );
 }
 
-const SLinkToHome = styled.span`
+const SLinkToHome = styled(Link)`
   font-size: ${({ theme }) => theme.fontSize.body2};
   line-height: 1.5rem;
   font-weight: ${({ theme }) => theme.fontWeight.body2};
@@ -184,4 +182,5 @@ const SLinkToHome = styled.span`
   text-align: center;
   margin-bottom: 2rem;
   text-decoration: underline;
+  text-underline-offset: 2px;
 `;
