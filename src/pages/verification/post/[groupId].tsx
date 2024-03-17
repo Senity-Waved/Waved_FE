@@ -8,9 +8,12 @@ import PhotoInput from '@/components/verification/post/PhotoInput';
 import TextArea from '@/components/common/TextArea';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
+import LinkInput from '@/components/verification/post/LinkInput';
 
 export default function VerificationPost() {
-  //const { type } = useRouter().query;
+  const router = useRouter();
+  const { type } = router.query;
+  const { groupId } = router.query;
   const { placeholder } = writeLayoutText['링크인증'];
   const [text, setText] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
@@ -36,9 +39,19 @@ export default function VerificationPost() {
         file={file}
         onClick={openModal}
       >
-        {/* <SQuestion>Q.출제된문제내용</SQuestion> */}
-        {/* <TextArea placeholder={placeholder} setText={setText} /> */}
-        <PhotoInput setFile={setFile} />
+        {type === 'TEXT' && (
+          <>
+            <SQuestion>Q.출제된문제내용</SQuestion>
+            <TextArea placeholder={placeholder} setText={setText} />
+          </>
+        )}
+        {type === 'PHOTO' && <PhotoInput setFile={setFile} />}
+        {type === 'LINK' && (
+          <>
+            <LinkInput />
+            <TextArea placeholder={placeholder} setText={setText} />
+          </>
+        )}
       </WriteLayout>
       {isModalOpen && (
         <Portal>
@@ -57,9 +70,12 @@ export default function VerificationPost() {
 }
 
 const SQuestion = styled.p`
-  font-size: 0.875rem;
-  line-height: 1.6;
+  color: ${({ theme }) => theme.color.normal};
+  font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_52};
-  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.color.light};
+  border-radius: 12px;
+  margin-bottom: 1rem;
 `;
