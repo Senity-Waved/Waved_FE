@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/common/Layout';
-import Btn from '@/components/common/Btn';
+import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 
@@ -61,6 +61,7 @@ export default function MyGithub() {
   return (
     <Layout
       noFooter
+      withBottomFixedBtn
       headerText="깃허브 연동 관리"
       title="깃허브 연동 관리"
       description="깃허브 아이디와 토큰을 입력하여, 깃허브 연동을 할 수 있는 페이지입니다. 연동 혹은 해지가 가능합니다."
@@ -108,25 +109,23 @@ export default function MyGithub() {
               }
             />
           </div>
-          <SMyGithubBtnWrapper>
-            <Btn
-              btns={[
-                {
-                  text: isGithubLinked ? '해지하기' : '연동하기',
-                  styleType: 'primary',
-                  size: 'large',
-                  type: isGithubLinked ? 'button' : 'submit',
-                  onClick: isGithubLinked ? openModal : undefined,
-                },
-              ]}
-            />
-          </SMyGithubBtnWrapper>
         </SGithubForm>
         <SGithubGuideBtnWrapper>
           <SGithubGuideLink href="/">
             <span>토큰 가져오는 방법</span>
           </SGithubGuideLink>
         </SGithubGuideBtnWrapper>
+        <BottomFixedBtn
+          btns={[
+            {
+              text: isGithubLinked ? '해지하기' : '연동하기',
+              styleType: 'primary',
+              size: 'large',
+              type: isGithubLinked ? 'button' : 'submit',
+              onClick: isGithubLinked ? openModal : undefined,
+            },
+          ]}
+        />
       </SMyGithubWrapper>
       {isModalOpen && (
         <Portal>
@@ -228,10 +227,4 @@ const SGithubGuideLink = styled(Link)`
   & span {
     border-bottom: 1px solid ${({ theme }) => theme.color.gray_99};
   }
-`;
-const SMyGithubBtnWrapper = styled.div`
-  margin: 0 1.25rem 0.625rem 1.25rem;
-  width: calc(100% - 40px);
-  position: absolute;
-  bottom: 3.125rem;
 `;
