@@ -6,6 +6,7 @@ import VerificationList from '@/components/verification/collection/VerificationL
 import parseDate from '@/utils/parseDate';
 import ONE_DAY from '@/constants/day';
 import IVerificationInfo from '@/types/verification';
+import { useRouter } from 'next/router';
 
 interface IVerificationCollection {
   challengeTitle: string;
@@ -113,11 +114,18 @@ const data2: IVerificationCollection = {
   ],
 };
 export default function VeirificationCollection() {
+  const router = useRouter();
+  const { groupId } = router.query;
+  const { type } = router.query;
+
+  console.log(groupId, type);
+
   const today = new Date().getTime();
   const [todayYear, todayMonth, todayDay] = parseDate(today);
   const [date, setDate] = useState<number>(today);
   const [year, month, day] = parseDate(date);
   const isToday = parseDate(today).join('-') === `${year}-${month}-${day}`;
+  const isStartday = `${year}-${month}-${day}` === data.startDate.split('T')[0];
 
   const getNextDay = () => setDate(date + ONE_DAY);
   const getPreviousDay = () => setDate(date - ONE_DAY);
@@ -137,7 +145,7 @@ export default function VeirificationCollection() {
         <SDateBtn
           direction="prev"
           onClick={getPreviousDay}
-          disabled={`${year}-${month}-${day}` === data.startDate.split('T')[0]}
+          disabled={isStartday}
         />
         <SDate>
           {year}. {month}. {day}
