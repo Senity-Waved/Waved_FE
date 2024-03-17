@@ -60,7 +60,7 @@ export const SBackBtn = styled.button`
   margin-right: ${({ theme }) => theme.spacing.xs};
 `;
 
-const SHeaderCenter = styled.div`
+export const SHeaderCenter = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
