@@ -254,7 +254,7 @@ export default function Challenge() {
           <SnackBar
             text={snackBarState.text}
             type={snackBarState.type}
-            isBottomFixedBtn
+            withBottomFixedBtn
           />
         )}
       </main>
