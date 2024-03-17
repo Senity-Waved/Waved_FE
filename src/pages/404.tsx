@@ -13,7 +13,7 @@ export default function Custom404() {
     >
       <SCustom404>
         <Image
-          src="icons/icon-404-error.svg"
+          src="/icons/icon-404-error.svg"
           alt="404 에러"
           width={170}
           height={76}
