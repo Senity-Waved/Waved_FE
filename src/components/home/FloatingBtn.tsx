@@ -21,6 +21,7 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
 const SFloatingBtn = styled(Link)`
   position: absolute;
   bottom: 112px;
+  z-index: 10;
   display: flex;
   align-items: center;
   gap: 0.5rem;

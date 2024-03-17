@@ -1,44 +1,53 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface IChallengeCard {
-  challengeId: number;
-  title: string;
-  thumbnail: string;
-  isFree: boolean;
-}
+import IRecruitingChallenge from '@/types/recruitingChallenge';
+import VERIFICATION_TYPE from '@/constants/verificationType';
+import screenSize from '@/constants/screenSize';
 
 export default function ChallengeCard({
-  challengeId,
+  challengeGroupId,
+  groupTitle,
   thumbnail,
-  title,
+  verificationType,
+  participantCount,
+  startDate,
   isFree,
-}: IChallengeCard) {
+}: IRecruitingChallenge) {
+  const caculateRecruitDDay = (startDateStr: string) => {
+    const processStartDate = new Date(startDateStr);
+    const today = new Date();
+
+    const diffInMs = processStartDate.getTime() - today.getTime();
+    const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24)) - 1;
+
+    const dDayStr = `모집 마감일 D-${dDay === 0 ? 'DAY' : dDay}`;
+    return dDayStr;
+  };
+
   return (
     <SChallengeCard>
-      <Link href={`/challenge/${challengeId}`}>
-        <SImage>
+      <Link href={`/challenge/${challengeGroupId}`}>
+        <SThumbnail>
           <Image
-            src={thumbnail || ''}
-            alt={title || ''}
+            alt={`${groupTitle} 대표 이미지`}
+            src={thumbnail}
             fill
-            sizes="50vw"
+            sizes={`${screenSize.max}px`}
+            style={{ objectFit: 'cover' }}
             priority
           />
-          <SParticipant>2</SParticipant>
-        </SImage>
-        <STitle>
-          <h3>{title}</h3>
-          <span>D-5</span>
-        </STitle>
+          <SParticipant>{participantCount}</SParticipant>
+          <SRecruitDDay>{caculateRecruitDDay(startDate)}</SRecruitDDay>
+        </SThumbnail>
+        <STitle>{groupTitle}</STitle>
         <SChips>
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
           <dd>매일</dd>
           <dt className="a11yHidden">챌린지 진행 기한</dt>
           <dd>2주</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
-          <dd>사진</dd>
+          <dd>{VERIFICATION_TYPE[verificationType]}</dd>
           {isFree && (
             <>
               <dt className="a11yHidden">챌린지 예치금 유무</dt>
@@ -51,18 +60,29 @@ export default function ChallengeCard({
   );
 }
 
-const SChallengeCard = styled.li``;
+const SChallengeCard = styled.li`
+  margin-bottom: 2rem;
+`;
 
-const SImage = styled.div`
+const SThumbnail = styled.div`
   position: relative;
   width: 100%;
-  padding-bottom: 100%;
-  margin-bottom: 0.5rem;
+  height: 167px;
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
-  img {
-    object-fit: cover;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
   }
 `;
 
@@ -81,6 +101,7 @@ const SParticipant = styled.span`
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
   line-height: 20px;
+  z-index: 1;
   &::before {
     content: '';
     display: inline-block;
@@ -90,29 +111,30 @@ const SParticipant = styled.span`
   }
 `;
 
+const SRecruitDDay = styled.span`
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+  color: ${({ theme }) => theme.color.gray_f9};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
+  line-height: 16px;
+  z-index: 1;
+`;
+
 const STitle = styled.div`
-  display: flex;
-  justify-content: space-around;
   padding: 0 0.25rem;
+  margin: 0.375rem 0;
   line-height: 22px;
-  h3 {
-    flex: 1;
-    color: ${({ theme }) => theme.color.gray_3c};
-    font-size: ${({ theme }) => theme.fontSize.body2};
-    font-weight: ${({ theme }) => theme.fontWeight.body2};
-  }
-  span {
-    flex-shrink: 0;
-    color: ${({ theme }) => theme.color.gray_83};
-    font-size: ${({ theme }) => theme.fontSize.caption1};
-    font-weight: ${({ theme }) => theme.fontWeight.caption1};
-  }
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
 `;
 
 const SChips = styled.dl`
   display: flex;
   gap: 0.25rem;
-  margin-top: 0.25rem;
+  padding: 0 0.25rem;
   dd {
     display: inline-block;
     height: 20px;
