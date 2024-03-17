@@ -77,8 +77,8 @@ const SWrapper = styled.li<{ isSelected: boolean }>`
 
 const SAuthor = styled.h3`
   color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.body2};
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   line-height: 1.5625rem;
   margin-bottom: 0.5rem;
 `;
@@ -108,7 +108,6 @@ const ellipsisStyle = css`
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  word-break: keep-all;
 `;
 
 const SContent = styled.p<{ isSelected: boolean }>`
@@ -117,7 +116,7 @@ const SContent = styled.p<{ isSelected: boolean }>`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   margin-bottom: 1rem;
-  line-height: ${({ isSelected }) => (isSelected ? '1.7' : '1.6')};
+  line-height: 1.7;
   transition: 0.2s ease-in;
   ${({ isSelected }) => isSelected || ellipsisStyle}
 `;

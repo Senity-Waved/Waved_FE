@@ -36,8 +36,8 @@ const SWrapper = styled.section`
   scroll-margin-top: 42px;
   position: relative;
 
-  &:nth-child(2),
-  &:nth-child(3) {
+  &:nth-of-type(2),
+  &:nth-of-type(3) {
     padding-top: 1.875rem;
     &::before {
       content: '';

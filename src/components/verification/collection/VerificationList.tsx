@@ -49,8 +49,8 @@ export default function VerificationList({
 
   return (
     <SWrapper>
+      {question && <SQuestion>Q. {question}</SQuestion>}
       <SSortBtnWrapper>
-        {question && <SQuestion>Q. {question}</SQuestion>}
         <SSortBtn isActive={sort === 'time'} onClick={() => setSort('time')}>
           • 최신순
         </SSortBtn>
@@ -98,7 +98,7 @@ export default function VerificationList({
 }
 
 const SWrapper = styled.div`
-  padding: 0.5rem 1.25rem;
+  padding: 1rem 1.25rem;
 `;
 
 const SSortBtnWrapper = styled.div`
@@ -122,11 +122,14 @@ const SList = styled.ul`
 `;
 
 const SQuestion = styled.p`
-  color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.body1};
-  font-weight: ${({ theme }) => theme.fontWeight.body1};
-  line-height: 1.5;
-  padding: 1rem 0.25rem 1.5rem 0.25rem;
+  color: ${({ theme }) => theme.color.normal};
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  line-height: 1.6;
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.color.light};
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
 `;
 
 const SEmptyMyVerifiaction = styled.p`
