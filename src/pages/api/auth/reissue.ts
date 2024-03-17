@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { serialize, parse } from 'cookie';
-import { IAuth } from './session';
+import IAuth from '@/types/auth';
 
 export default async function Reissue(
   req: NextApiRequest,

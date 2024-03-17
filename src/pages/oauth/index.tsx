@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function OauthTest() {
   const [accessToken, setAccessToken] = useState<string | null>('');
@@ -7,6 +8,7 @@ export default function OauthTest() {
   const [hasInfo, setHasInfo] = useState<boolean | null>(null);
 
   const router = useRouter();
+
   useEffect(() => {
     const url = window.location.search;
     const urlParams = new URLSearchParams(url);
@@ -30,16 +32,28 @@ export default function OauthTest() {
   }, []);
 
   useEffect(() => {
-    if (accessToken && refreshToken && !hasInfo) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-
-      router.push('/register').catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+    if (accessToken && refreshToken) {
+      axios
+        .post('/api/auth/session', {
+          accessToken,
+          refreshToken,
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.error('서버에 토큰 전달 실패', error);
+        });
     }
-  }, [accessToken, hasInfo, refreshToken, router]);
+  }, [accessToken, refreshToken]);
 
-  console.log(accessToken, refreshToken, hasInfo);
+  useEffect(() => {
+    if (accessToken && typeof hasInfo === 'boolean') {
+      router
+        .push(hasInfo ? '/' : '/register')
+        .catch((error) => console.error(error));
+    }
+  }, [hasInfo, router, accessToken]);
+
   return <div>oauth</div>;
 }
