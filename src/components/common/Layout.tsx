@@ -55,17 +55,12 @@ export default function Layout({
 }
 
 export const SLayoutWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   width: ${screenSize.max}px;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  @supports (-webkit-touch-callout: none) {
-    height: -webkit-fill-available;
-  }
   ${media.mobileMax} {
     width: 100vw;
   }

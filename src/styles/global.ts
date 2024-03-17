@@ -172,10 +172,8 @@ const global = css`
   }
 
   main {
-    flex: 1;
     position: relative;
-    height: 100%;
-    overflow-y: auto;
+    margin: 3.5rem 0 5.6875rem;
   }
 
   a {

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import screenSize from '@/constants/screenSize';
 
 interface IHeader {
   headerText?: string;
@@ -40,14 +41,16 @@ export default function Header({
 
 export const SHeaderWrapper = styled.header`
   z-index: 10;
-  flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  top: 0;
   width: 100%;
+  max-width: ${screenSize.max}px;
   height: 56px;
   line-height: 56px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 export const SBackBtn = styled.button`
