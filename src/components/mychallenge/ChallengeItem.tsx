@@ -6,9 +6,9 @@ import parseDate from '@/utils/parseDate';
 import changePriceFormat from '@/utils/changePriceFormat';
 import Link from 'next/link';
 
-type TMyChallengeItem = Omit<TMyChallengeInfo, 'myChallengeId'> & {
+interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
   status: TMyChallengeStatus;
-};
+}
 
 export default function ChallengeItem({
   status,

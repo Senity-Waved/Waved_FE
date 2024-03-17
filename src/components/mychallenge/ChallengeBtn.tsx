@@ -3,12 +3,13 @@ import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
 
-type TBtn = Pick<
-  TMyChallengeInfo,
-  'groupId' | 'isReviewed' | 'isVerified' | 'verificationType' | 'startDate'
-> & {
+interface TBtn
+  extends Pick<
+    TMyChallengeInfo,
+    'groupId' | 'isReviewed' | 'isVerified' | 'verificationType' | 'startDate'
+  > {
   status: TMyChallengeStatus;
-};
+}
 
 export default function ChallengeBtn({
   groupId,
@@ -127,7 +128,7 @@ const SBtn = styled.div<{
       border: '1px solid' + theme.color.normal,
       bordergray: '1px solid' + theme.color.gray_99,
     })[styleType]};
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.body3};
   font-weight: ${({ theme }) => theme.fontWeight.body3};
   transition: 0.2s ease-in;
   color: ${({ styleType, theme }) =>
