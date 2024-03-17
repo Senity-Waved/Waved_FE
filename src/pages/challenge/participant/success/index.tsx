@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import { SBottomFixedBtn } from '@/components/common/BottomFixedBtn';
 
 export default function ParticipantSuccess() {
   const challengeData = {
@@ -28,34 +29,32 @@ export default function ParticipantSuccess() {
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
-        <div>
-          <SParticipantSuccessGuideWrapper>
-            <Image
-              src="/icons/icon-done.svg"
-              width={88}
-              height={88}
-              priority
-              alt="확인 완료 아이콘"
-            />
-            <SGuideTextWrapper>
-              <p>신청완료</p>
-              <p>WAVED와 함께 훌륭한 개발자로 도약하세요!</p>
-            </SGuideTextWrapper>
-          </SParticipantSuccessGuideWrapper>
-          <SParticipantSuccessInfoWrapper>
-            <ChallengeSummary
-              groupTitle={challengeData.title}
-              participantCount={challengeData.participantCount}
-              startDate={challengeData.startDate}
-              endDate={challengeData.endDate}
-              condition="recruiting"
-            />
-            <SPayDepositWrapper>
-              <p>예치금</p>
-              <p>5,000원</p>
-            </SPayDepositWrapper>
-          </SParticipantSuccessInfoWrapper>
-        </div>
+        <SParticipantSuccessGuideWrapper>
+          <Image
+            src="/icons/icon-done.svg"
+            width={88}
+            height={88}
+            priority
+            alt="확인 완료 아이콘"
+          />
+          <SGuideTextWrapper>
+            <p>신청완료</p>
+            <p>WAVED와 함께 훌륭한 개발자로 도약하세요!</p>
+          </SGuideTextWrapper>
+        </SParticipantSuccessGuideWrapper>
+        <SParticipantSuccessInfoWrapper>
+          <ChallengeSummary
+            groupTitle={challengeData.title}
+            participantCount={challengeData.participantCount}
+            startDate={challengeData.startDate}
+            endDate={challengeData.endDate}
+            condition="recruiting"
+          />
+          <SPayDepositWrapper>
+            <p>예치금</p>
+            <p>5,000원</p>
+          </SPayDepositWrapper>
+        </SParticipantSuccessInfoWrapper>
         <SParticipantSuccessBtnWrapper>
           <Link href="/mychallenge">
             <Btn
@@ -79,13 +78,7 @@ const SParticipantSuccessWrapper = styled(SLayoutWrapper)`
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-
-    & + div {
-      flex: 1;
-      display: flex;
-      flex-flow: column nowrap;
-      justify-content: center;
-    }
+    padding-bottom: 7.125rem;
   }
 `;
 
@@ -144,7 +137,8 @@ const SPayDepositWrapper = styled.div`
   }
 `;
 
-const SParticipantSuccessBtnWrapper = styled.div`
-  width: calc(100% - 40px);
-  margin: 0 1.25rem 3.125rem 1.25rem;
+const SParticipantSuccessBtnWrapper = styled(SBottomFixedBtn)`
+  a {
+    width: 100%;
+  }
 `;

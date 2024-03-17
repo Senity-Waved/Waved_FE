@@ -34,7 +34,7 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
   );
 }
 
-const SBottomFixedBtn = styled(SBtnWrapper)`
+export const SBottomFixedBtn = styled(SBtnWrapper)`
   z-index: 10;
   position: fixed;
   bottom: 0;
