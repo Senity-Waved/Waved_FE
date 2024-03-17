@@ -267,6 +267,7 @@ const SThumbnail = styled.div`
   width: 100%;
   height: 246px;
   line-height: 0;
+  scroll-margin-top: 56px;
   &::after {
     content: '';
     position: absolute;
@@ -306,7 +307,7 @@ const SSection = styled.section`
   position: relative;
   padding: 1.5rem 0;
   color: ${({ theme }) => theme.color.gray_3c};
-  scroll-margin-top: 134px;
+  scroll-margin-top: 182px;
   &:last-of-type {
     padding-bottom: 0;
   }
