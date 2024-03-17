@@ -129,7 +129,7 @@ export default function Challenge() {
   };
 
   return (
-    <SLayoutWrapper>
+    <SLayoutWrapper withBottomFixedBtn>
       <ChallengeHeader setSnackBarState={setSnackBarState} />
       <main>
         <SThumbnail id="information">

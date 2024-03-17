@@ -13,6 +13,7 @@ interface ILayout {
   description?: string;
   noFooter?: boolean;
   noHeader?: boolean;
+  withBottomFixedBtn?: boolean;
   rightOnClick?: () => void;
 }
 
@@ -24,10 +25,15 @@ export default function Layout({
   description,
   noFooter,
   noHeader,
+  withBottomFixedBtn,
   rightOnClick,
 }: ILayout) {
   return (
-    <SLayoutWrapper>
+    <SLayoutWrapper
+      noHeader={noHeader}
+      noFooter={noFooter}
+      withBottomFixedBtn={withBottomFixedBtn}
+    >
       <Head>
         <title>{title ? `WAVED | ${title}` : 'WAVED'}</title>
         <meta
@@ -54,14 +60,26 @@ export default function Layout({
   );
 }
 
-export const SLayoutWrapper = styled.div`
+export const SLayoutWrapper = styled.div<{
+  noHeader?: boolean;
+  noFooter?: boolean;
+  withBottomFixedBtn?: boolean;
+}>`
   width: ${screenSize.max}px;
   height: auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   ${media.mobileMax} {
     width: 100vw;
+  }
+  main {
+    margin-top: ${({ noHeader }) => (noHeader ? '0' : '3.5rem')};
+    margin-bottom: ${({ noFooter, withBottomFixedBtn }) => {
+      if (withBottomFixedBtn) return '7.125rem';
+      if (noFooter) return '0';
+      return '5.6875rem';
+    }};
   }
 `;

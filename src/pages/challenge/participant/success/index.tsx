@@ -16,7 +16,7 @@ export default function ParticipantSuccess() {
   };
 
   return (
-    <SParticipantSuccessWrapper>
+    <SParticipantSuccessWrapper noHeader noFooter>
       <Head>
         <title>WAVED | 챌린지 신청</title>
         <meta name="description" content="챌린지 신청 완료" />

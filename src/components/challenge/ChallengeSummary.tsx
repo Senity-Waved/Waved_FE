@@ -48,7 +48,7 @@ export default function ChallengeSummary({
 
 const SChallengeSummary = styled.div`
   position: sticky;
-  top: 0;
+  top: 3.5rem;
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
   display: grid;

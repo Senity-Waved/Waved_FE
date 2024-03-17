@@ -173,7 +173,8 @@ const global = css`
 
   main {
     position: relative;
-    margin: 3.5rem 0 5.6875rem;
+    display: inline-block;
+    width: 100%;
   }
 
   a {
