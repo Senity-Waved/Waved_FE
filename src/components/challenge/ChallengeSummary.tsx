@@ -32,16 +32,20 @@ export default function ChallengeSummary({
   }, [setSummaryHeight]);
   return (
     <SChallengeSummary className={className} ref={ref}>
-      <STitle>{groupTitle}</STitle>
-      <SStatus condition={condition}>
-        {condition === 'closed' && '종료'}
-        {condition === 'recruiting' && '모집중'}
-        {condition === 'processing' && '진행중'}
-      </SStatus>
-      <SDate>
-        {startDate} ~ {endDate}
-      </SDate>
-      <SParticipant>{participantCount}명</SParticipant>
+      <SColumn>
+        <STitle>{groupTitle}</STitle>
+        <SStatus condition={condition}>
+          {condition === 'closed' && '종료'}
+          {condition === 'recruiting' && '모집중'}
+          {condition === 'processing' && '진행중'}
+        </SStatus>
+      </SColumn>
+      <SColumn>
+        <SDate>
+          {startDate} ~ {endDate}
+        </SDate>
+        <SParticipant>{participantCount}명</SParticipant>
+      </SColumn>
     </SChallengeSummary>
   );
 }
@@ -51,16 +55,21 @@ const SChallengeSummary = styled.div`
   top: 3.5rem;
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
-  display: grid;
-  grid-template-columns: 1fr 80px;
-  grid-template-rows: 1fr 20px;
-  align-items: center;
-  gap: 0.25rem;
   padding: 1rem 1.25rem;
   color: ${({ theme }) => theme.color.gray_3c};
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
   &.description {
     border-bottom: 6px solid ${({ theme }) => theme.color.gray_ec};
+  }
+`;
+
+const SColumn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem;
+  & + & {
+    margin-top: 0.25rem;
   }
 `;
 
@@ -73,6 +82,7 @@ const STitle = styled.h2`
 
 const SStatus = styled.span<Pick<ISelectedChallenge, 'condition'>>`
   justify-self: end;
+  flex-shrink: 0;
   height: 20px;
   line-height: 20px;
   padding: 0 8px;
@@ -102,6 +112,7 @@ const SDate = styled.p`
 
 const SParticipant = styled.span`
   justify-self: end;
+  flex-shrink: 0;
   background: url('/icons/icon-participant-black.svg') no-repeat 0;
   padding: 0 0.375rem 0 1.5rem;
   font-size: ${({ theme }) => theme.fontSize.caption1};
