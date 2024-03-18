@@ -4,12 +4,17 @@ import Image from 'next/image';
 import emptyText from '@/constants/emptyText';
 
 interface IEmptyView {
-  pageType: '마이챌린지' | '챌린지후기' | '내후기' | '예치금내역';
+  pageType:
+    | '모집챌린지'
+    | '마이챌린지'
+    | '챌린지후기'
+    | '내후기'
+    | '예치금내역';
 }
 
 export default function EmptyView({ pageType }: IEmptyView) {
-  const mainText = emptyText[pageType][0];
-  const subText = emptyText[pageType][1];
+  const { mainText } = emptyText[pageType];
+  const { subText } = emptyText[pageType];
 
   return (
     <SEmptyWrapper pageType={pageType}>
