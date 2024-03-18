@@ -130,6 +130,7 @@ const SOnBoardingWrapper = styled(SLayoutWrapper)`
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
+    margin: 0;
   }
 `;
 

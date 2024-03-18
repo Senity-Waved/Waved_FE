@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import { SBtn, SBtnWrapper } from '@/components/common/Btn';
+import screenSize from '@/constants/screenSize';
 
 interface IBtn {
   type?: 'button' | 'submit';
@@ -33,10 +34,13 @@ export default function BottomFixedBtn({ btns }: IBottomFixedBtn) {
   );
 }
 
-const SBottomFixedBtn = styled(SBtnWrapper)`
+export const SBottomFixedBtn = styled(SBtnWrapper)`
   z-index: 10;
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  width: 100%;
+  max-width: ${screenSize.max}px;
+  height: 114px;
   padding: 1rem 1.25rem 3.125rem;
   background-color: ${({ theme }) => theme.color.white};
 `;

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { SLayoutWrapper } from '@/components/common/Layout';
-import Btn from '@/components/common/Btn';
+import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 
 export default function ChallengeRequestSuccess() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function ChallengeRequestSuccess() {
   };
 
   return (
-    <SChallengeRequestSuccessWrapper>
+    <SChallengeRequestSuccessWrapper noHeader noFooter withBottomFixedBtn>
       <Head>
         <title>WAVED | 챌린지 요청</title>
         <meta name="description" content="챌린지 요청 완료" />
@@ -43,23 +43,23 @@ export default function ChallengeRequestSuccess() {
             </p>
           </div>
         </SChallengeRequestSuccessBox>
-        <SChallengeRequestSuccessBtnWrapper onClick={goToHome}>
-          <Btn
-            btns={[
-              {
-                text: '확인',
-                styleType: 'primary',
-                size: 'large',
-              },
-            ]}
-          />
-        </SChallengeRequestSuccessBtnWrapper>
+        <BottomFixedBtn
+          btns={[
+            {
+              text: '확인',
+              styleType: 'primary',
+              size: 'large',
+              onClick: goToHome,
+            },
+          ]}
+        />
       </main>
     </SChallengeRequestSuccessWrapper>
   );
 }
 
 const SChallengeRequestSuccessWrapper = styled(SLayoutWrapper)`
+  display: flex;
   & main {
     display: flex;
     justify-content: space-between;
@@ -86,9 +86,4 @@ const SChallengeRequestSuccessText = styled.h2`
   color: ${({ theme }) => theme.color.gray_3c};
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-`;
-
-const SChallengeRequestSuccessBtnWrapper = styled.div`
-  width: calc(100% - 40px);
-  margin: 0 1.25rem 50px 1.25rem;
 `;

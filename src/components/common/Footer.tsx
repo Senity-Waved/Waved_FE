@@ -10,6 +10,7 @@ import {
   profileNormal,
   profileFilled,
 } from '../../../public/icons';
+import screenSize from '@/constants/screenSize';
 
 export default function Footer() {
   const router = useRouter();
@@ -62,17 +63,20 @@ export default function Footer() {
 
 const SFooterWrapper = styled.nav`
   z-index: 10;
-  flex-shrink: 0;
-  width: 100%;
-  height: 91px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   gap: 3.5rem;
   font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  border-top: 1px solid #dee1e5;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: ${screenSize.max}px;
+  height: 91px;
   padding: 0.625rem 1.25rem 2.375rem 1.25rem;
+  background-color: ${({ theme }) => theme.color.white};
+  border-top: 1px solid #dee1e5;
 `;
 
 const SFooterNavLink = styled(Link)`

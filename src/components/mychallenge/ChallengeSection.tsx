@@ -42,7 +42,7 @@ export default function ChallengeSection({
 const SWrapper = styled.section`
   background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 1rem 1.25rem 2rem 1.25rem;
-  scroll-margin-top: 56px;
+  scroll-margin-top: 112px;
 `;
 
 const SStatus = styled.h2`

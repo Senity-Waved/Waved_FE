@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { SLayoutWrapper } from '@/components/common/Layout';
-import Btn from '@/components/common/Btn';
+import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 
 export default function RegisterSuccess() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function RegisterSuccess() {
   };
 
   return (
-    <SRegisterSuccessWrapper>
+    <SRegisterSuccessWrapper noHeader noFooter withBottomFixedBtn>
       <Head>
         <title>WAVED | 회원가입</title>
         <meta name="description" content="회원가입 완료" />
@@ -39,23 +39,23 @@ export default function RegisterSuccess() {
             <p>함께 챌린지를 시작해볼까요?</p>
           </div>
         </SRegisterSuccessBox>
-        <SRegisterSuccessBtnWrapper onClick={goToHome}>
-          <Btn
-            btns={[
-              {
-                text: '시작하기',
-                styleType: 'primary',
-                size: 'large',
-              },
-            ]}
-          />
-        </SRegisterSuccessBtnWrapper>
+        <BottomFixedBtn
+          btns={[
+            {
+              text: '시작하기',
+              styleType: 'primary',
+              size: 'large',
+              onClick: goToHome,
+            },
+          ]}
+        />
       </main>
     </SRegisterSuccessWrapper>
   );
 }
 
 const SRegisterSuccessWrapper = styled(SLayoutWrapper)`
+  display: flex;
   & main {
     display: flex;
     justify-content: space-between;
@@ -82,9 +82,4 @@ const SSuccessText = styled.h2`
   color: ${({ theme }) => theme.color.gray_3c};
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-`;
-
-const SRegisterSuccessBtnWrapper = styled.div`
-  width: calc(100% - 40px);
-  margin: 0 1.25rem 50px 1.25rem;
 `;
