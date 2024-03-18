@@ -34,6 +34,10 @@ const onResponse = (res: AxiosResponse): AxiosResponse => {
   return res;
 };
 
+const onErrorRequest = (err: AxiosError | Error): Promise<AxiosError> => {
+  return Promise.reject(err);
+};
+
 const onResponseError = async (error: AxiosError) => {
   if (
     error.response &&
@@ -52,4 +56,4 @@ const onResponseError = async (error: AxiosError) => {
   return Promise.reject(error);
 };
 
-export { onRequest, onResponse, onResponseError };
+export { onRequest, onErrorRequest, onResponse, onResponseError };
