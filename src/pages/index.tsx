@@ -2,6 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
@@ -70,6 +72,20 @@ const filteredChallenge = {
 };
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const { redirected } = router.query;
+
+    if (redirected) {
+      alert('로그인이 필요한 페이지입니다.');
+
+      router
+        .replace('/', undefined, { shallow: true })
+        .catch((error) => console.error(error));
+    }
+  }, [router, router.query]);
+
   const user = true; // 로그인된 유저 테스트용 변수
   return (
     <SHomeWrapper>
