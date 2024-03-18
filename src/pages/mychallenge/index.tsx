@@ -177,10 +177,10 @@ export default function MyChallenge() {
         )}
       </div>
       {isEmptyData === 0 && <ChallengeEmptyView />}
+      <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
-      <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
     </Layout>
   );
 }

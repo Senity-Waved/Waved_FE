@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import IVerificationInfo from '@/types/verification';
+import IVerificationInfo, { TVerificationType } from '@/types/verification';
 import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
 
 interface IVerificationList {
-  verificationType: string;
+  verificationType: TVerificationType;
   verifications: IVerificationInfo[];
   isToday: boolean;
   question?: string;

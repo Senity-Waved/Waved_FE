@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
 import parseDate from '@/utils/parseDate';
 import ONE_DAY from '@/constants/day';
-import IVerificationInfo from '@/types/verification';
+import IVerificationInfo, { TVerificationType } from '@/types/verification';
 import { useRouter } from 'next/router';
+import ISnackBarState from '@/types/snackbar';
+import SnackBar from '@/components/common/SnackBar';
 
 interface IVerificationCollection {
   challengeTitle: string;
@@ -115,10 +117,13 @@ const data2: IVerificationCollection = {
 };
 export default function VeirificationCollection() {
   const router = useRouter();
-  const { groupId } = router.query;
-  const { type } = router.query;
-
-  console.log(groupId, type);
+  const { query } = useRouter();
+  const groupId = query.groupId;
+  const type = query.type as TVerificationType;
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+  });
 
   const today = new Date().getTime();
   const [todayYear, todayMonth, todayDay] = parseDate(today);
@@ -130,9 +135,38 @@ export default function VeirificationCollection() {
   const getNextDay = () => setDate(date + ONE_DAY);
   const getPreviousDay = () => setDate(date - ONE_DAY);
 
+  useEffect(() => {
+    const handleRouting = (
+      snackBarText: string,
+      snackBarType: 'correct' | 'warning' = 'correct',
+    ): void => {
+      setSnackBarState({
+        open: true,
+        text: snackBarText,
+        type: snackBarType,
+      });
+      router
+        .replace(`/verification/collection/${groupId}`, undefined, {
+          shallow: true,
+        })
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
+        );
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    };
+    if (query.submitVerification) {
+      handleRouting('인증 제출이 완료되었습니다.');
+    }
+  }, [query, router, groupId]);
+
   return (
     <Layout
-      headerText={data2.challengeTitle}
+      headerText={data.challengeTitle}
       title={`인증내역-${data.challengeTitle}`}
       description="챌린지의 인증내역을 확인하는 페이지입니다."
       noFooter
@@ -141,23 +175,40 @@ export default function VeirificationCollection() {
         <STitle>📌 내 인증 현황 </STitle>
         <Stamp results={data.results} startDate={data.startDate} />
       </SStampWrapper>
-      <SDateWrapper>
-        <SDateBtn
-          direction="prev"
-          onClick={getPreviousDay}
-          disabled={isStartday}
+      {type !== 'GITHUB' && (
+        <>
+          <SDateWrapper>
+            <SDateBtn
+              direction="prev"
+              onClick={getPreviousDay}
+              disabled={isStartday}
+            />
+            <SDate>
+              {year}. {month}. {day}
+            </SDate>
+            <SDateBtn
+              direction="next"
+              onClick={getNextDay}
+              disabled={isToday}
+            />
+          </SDateWrapper>
+          <VerificationList
+            verificationType={type}
+            verifications={
+              type === 'PICTURE' ? data2.verifications : data.verifications
+            }
+            isToday={isToday}
+            question={data.question}
+          />
+        </>
+      )}
+      {snackBarState.open && (
+        <SnackBar
+          text={snackBarState.text}
+          type={snackBarState.type}
+          noFooter
         />
-        <SDate>
-          {year}. {month}. {day}
-        </SDate>
-        <SDateBtn direction="next" onClick={getNextDay} disabled={isToday} />
-      </SDateWrapper>
-      <VerificationList
-        verificationType="link"
-        verifications={data.verifications}
-        isToday={isToday}
-        question={data.question}
-      />
+      )}
     </Layout>
   );
 }
