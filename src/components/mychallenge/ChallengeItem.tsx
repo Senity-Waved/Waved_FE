@@ -1,10 +1,10 @@
+import Link from 'next/link';
 import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import ChallengeProgress from '@/components/mychallenge/ChallengeProgress';
 import ChallengeBtn from '@/components/mychallenge/ChallengeBtn';
 import parseDate from '@/utils/parseDate';
 import changePriceFormat from '@/utils/changePriceFormat';
-import Link from 'next/link';
 
 interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
   status: TMyChallengeStatus;
@@ -54,7 +54,7 @@ export default function ChallengeItem({
         startDate={startDate}
         status={status}
       />
-      <SDetailBtn href={'/challenge/' + groupId} />
+      <SDetailBtn href={`/challenge/${groupId}`} />
     </SWrapper>
   );
 }

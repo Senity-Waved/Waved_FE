@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import { TMyChallengeInfo } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
-import styled from '@emotion/styled';
 
 export default function ChallengeProgress({
   successCount,

@@ -62,23 +62,26 @@ export default function VerificationList({
         </SSortBtn>
       </SSortBtnWrapper>
       <SList>
-        {myVerification ? (
-          verificationType === 'PICTURE' ? (
-            <VerificationPhotoItem {...myVerification} />
+        {
+          // eslint-disable-next-line no-nested-ternary
+          myVerification ? (
+            verificationType === 'PICTURE' ? (
+              <VerificationPhotoItem {...myVerification} />
+            ) : (
+              <VerificationItem
+                {...myVerification}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
+            )
           ) : (
-            <VerificationItem
-              {...myVerification}
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-            />
+            isToday && (
+              <SEmptyMyVerifiaction>
+                오늘의 인증을 진행해주세요!
+              </SEmptyMyVerifiaction>
+            )
           )
-        ) : (
-          isToday && (
-            <SEmptyMyVerifiaction>
-              오늘의 인증을 진행해주세요!
-            </SEmptyMyVerifiaction>
-          )
-        )}
+        }
         {sortedVerifications.map((verification) => {
           const { verificationId } = verification;
           return verificationType === 'PICTURE' ? (

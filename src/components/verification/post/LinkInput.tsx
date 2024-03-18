@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import regex from '@/constants/regex';
+
 interface ILinkInput {
   isLinkValid: boolean | undefined;
   setIsLinkValid: React.Dispatch<React.SetStateAction<boolean | undefined>>;
@@ -51,6 +51,7 @@ const SInput = styled.input<{ isLinkValid: boolean | undefined }>`
   border: none;
   border-bottom: 1px solid
     ${({ theme, isLinkValid }) =>
+      // eslint-disable-next-line no-nested-ternary
       isLinkValid === undefined
         ? theme.color.gray_ec
         : isLinkValid

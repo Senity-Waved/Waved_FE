@@ -59,13 +59,6 @@ const SStatus = styled.h2`
   color: ${({ theme }) => theme.color.gray_3c};
 `;
 
-const SSubText = styled.p`
-  font-size: 0.875rem;
-  line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_99};
-`;
-
 const SChallengeList = styled.ul`
   display: flex;
   flex-direction: column;

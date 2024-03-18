@@ -13,13 +13,10 @@ import screenSize from '@/constants/screenSize';
 import IVerificationInfo from '@/types/verification';
 
 export default function VerificationPhotoItem({
-  verificationId,
   authorId,
-  authorName,
   content,
   liked,
   likeCount,
-  time,
 }: IVerificationInfo) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLiked, setIsLiked] = useState<boolean>(liked);

@@ -5,7 +5,7 @@ export interface IVerificationInfo {
   content: string;
   liked: boolean;
   likeCount: number;
-  time: string; //timestamp
+  time: string; // zonedDateTime
   link?: string;
 }
 

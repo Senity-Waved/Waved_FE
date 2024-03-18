@@ -125,8 +125,8 @@ const SBtn = styled.div<{
       light: 'none',
       middle: 'none',
       gray: 'none',
-      border: '1px solid' + theme.color.normal,
-      bordergray: '1px solid' + theme.color.gray_99,
+      border: `1px solid ${theme.color.normal}`,
+      bordergray: `1px solid ${theme.color.gray_99}`,
     })[styleType]};
   font-size: ${({ theme }) => theme.fontSize.body3};
   font-weight: ${({ theme }) => theme.fontWeight.body3};
@@ -176,8 +176,8 @@ const SBtn = styled.div<{
         light: 'none',
         middle: 'none',
         gray: 'none',
-        border: '1px solid' + theme.color.dark,
-        bordergray: '1px solid' + theme.color.gray_99,
+        border: `1px solid ${theme.color.dark}`,
+        bordergray: `1px solid ${theme.color.gray_99}`,
       })[styleType]};
   }
 `;

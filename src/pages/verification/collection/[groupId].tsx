@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import ISnackBarState from '@/types/snackbar';
+import IVerificationInfo, { TVerificationType } from '@/types/verification';
+import ONE_DAY from '@/constants/day';
 import Layout from '@/components/common/Layout';
 import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
-import parseDate from '@/utils/parseDate';
-import ONE_DAY from '@/constants/day';
-import IVerificationInfo, { TVerificationType } from '@/types/verification';
-import { useRouter } from 'next/router';
-import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
+import parseDate from '@/utils/parseDate';
 
 interface IVerificationCollection {
   challengeTitle: string;
@@ -118,7 +118,7 @@ const data2: IVerificationCollection = {
 export default function VeirificationCollection() {
   const router = useRouter();
   const { query } = useRouter();
-  const groupId = query.groupId;
+  const groupId = query.groupId as string;
   const type = query.type as TVerificationType;
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -126,7 +126,6 @@ export default function VeirificationCollection() {
   });
 
   const today = new Date().getTime();
-  const [todayYear, todayMonth, todayDay] = parseDate(today);
   const [date, setDate] = useState<number>(today);
   const [year, month, day] = parseDate(date);
   const isToday = parseDate(today).join('-') === `${year}-${month}-${day}`;

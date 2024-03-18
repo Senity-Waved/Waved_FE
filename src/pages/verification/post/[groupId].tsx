@@ -23,7 +23,7 @@ export default function VerificationPost() {
   } else {
     verificationType = 'TEXT';
   }
-  const { groupId } = router.query;
+  const groupId = router.query.groupId as string;
   const pageType = VERIFICATION_TYPE[verificationType];
   const { placeholder } = writeLayoutText[pageType];
   const [text, setText] = useState<string>('');
@@ -39,11 +39,11 @@ export default function VerificationPost() {
   const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (verificationType === 'LINK') {
-      console.log('link: ' + link + ',text: ' + text);
+      console.log(`link: ${link} , text: ${text}`);
     } else if (verificationType === 'PICTURE') {
-      console.log('file: ' + file);
+      console.log(`file: ${file}`);
     } else if (verificationType === 'TEXT') {
-      console.log('text: ' + text);
+      console.log(`text: ${text}`);
     }
     router
       .replace({

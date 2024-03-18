@@ -16,7 +16,6 @@ export default function VerificationItem({
   content,
   liked,
   likeCount,
-  time,
   link,
   selectedId,
   setSelectedId,

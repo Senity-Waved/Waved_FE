@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import Btn from './Btn';
 import writeLayoutText from '@/constants/writeLayoutText';
-import regex from '@/constants/regex';
 
 export type TPageType =
   | '후기작성'
