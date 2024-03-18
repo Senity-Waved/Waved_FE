@@ -1,3 +1,5 @@
+import { TVerificationType } from './verification';
+
 export type TMyChallengeInfo = {
   myChallengeId: number;
   groupId: number;
@@ -8,7 +10,7 @@ export type TMyChallengeInfo = {
   isReviewed?: boolean | null;
   isVerified?: boolean | null;
   isGithubConnected?: boolean;
-  verificationType: 'TEXT' | 'GITHUB' | 'PHOTO' | 'LINK';
+  verificationType: TVerificationType;
   deposit: number;
 };
 

@@ -48,6 +48,18 @@ const progressData: TMyChallengeInfo[] = [
     verificationType: 'PHOTO',
     deposit: 5000,
   },
+  {
+    myChallengeId: 6,
+    groupId: 6,
+    groupTitle: '프론트엔드 아티클 공유 챌린지 1기',
+    startDate: '2024-03-05',
+    endDate: '2024-03-18',
+    successCount: 12,
+    isReviewed: null,
+    isVerified: false,
+    verificationType: 'LINK',
+    deposit: 5000,
+  },
 ];
 
 const waitingData: TMyChallengeInfo[] = [
