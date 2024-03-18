@@ -1,4 +1,4 @@
-interface IVerificationInfo {
+export interface IVerificationInfo {
   verificationId: number;
   authorId: number;
   authorName: string;
@@ -8,5 +8,7 @@ interface IVerificationInfo {
   time: string; //timestamp
   link?: string;
 }
+
+export type TVerificationType = 'TEXT' | 'GITHUB' | 'PHOTO' | 'LINK';
 
 export default IVerificationInfo;
