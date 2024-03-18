@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 
 export default function OauthTest() {
   const [accessToken, setAccessToken] = useState<string | null>('');
   const [refreshToken, setRefreshToken] = useState<string | null>('');
   const [hasInfo, setHasInfo] = useState<boolean | null>(null);
+  const [isTokenPosted, setIsTokenPosted] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -39,7 +41,10 @@ export default function OauthTest() {
           refreshToken,
         })
         .then((res) => {
-          console.log(res.data);
+          if (res.status === 200) {
+            setIsTokenPosted(true);
+            console.log(res.data);
+          }
         })
         .catch((error) => {
           console.error('서버에 토큰 전달 실패', error);
@@ -48,12 +53,17 @@ export default function OauthTest() {
   }, [accessToken, refreshToken]);
 
   useEffect(() => {
-    if (accessToken && typeof hasInfo === 'boolean') {
+    const cookieAccessToken = getCookie('accessToken');
+
+    if (
+      (isTokenPosted && typeof hasInfo === 'boolean') ||
+      (cookieAccessToken && typeof hasInfo === 'boolean')
+    ) {
       router
         .push(hasInfo ? '/' : '/register')
         .catch((error) => console.error(error));
     }
-  }, [hasInfo, router, accessToken]);
+  }, [hasInfo, router, accessToken, isTokenPosted]);
 
   return <div>oauth</div>;
 }
