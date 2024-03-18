@@ -8,7 +8,7 @@ export default function ChallengeProgress({
   isVerified,
 }: Pick<TMyChallengeInfo, 'successCount' | 'startDate' | 'isVerified'>) {
   const failCount =
-    calculateDDay(startDate) - successCount + (isVerified ? 1 : 0) + 1;
+    calculateDDay(startDate) - successCount + (isVerified ? 1 : 0);
   const dealt = (() => {
     const percent = (100 / 14) * successCount;
     return Math.round(percent);
