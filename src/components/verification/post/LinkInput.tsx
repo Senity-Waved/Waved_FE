@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import regex from '@/constants/regex';
 interface ILinkInput {
-  isLinkValid: boolean;
-  setIsLinkValid: React.Dispatch<React.SetStateAction<boolean>>;
+  isLinkValid: boolean | undefined;
+  setIsLinkValid: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   setLink: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -51,7 +51,11 @@ const SInput = styled.input<{ isLinkValid: boolean | undefined }>`
   border: none;
   border-bottom: 1px solid
     ${({ theme, isLinkValid }) =>
-      isLinkValid ? theme.color.gray_ec : theme.color.error};
+      isLinkValid === undefined
+        ? theme.color.gray_ec
+        : isLinkValid
+          ? theme.color.gray_de
+          : theme.color.error};
   background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 0 0.125rem 0.125rem 0.125rem;
 

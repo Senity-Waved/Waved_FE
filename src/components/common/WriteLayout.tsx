@@ -15,7 +15,7 @@ interface IWriteLayout {
   pageType: TPageType;
   text?: string;
   file?: File | null;
-  isLinkValid?: boolean;
+  isLinkValid?: boolean | undefined;
   children: React.ReactNode;
   handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onClick?: () => void;
@@ -40,7 +40,12 @@ export default function WriteLayout({
       case '사진인증':
         return file !== null;
       case '링크인증':
-        return text !== undefined && isLinkValid !== undefined && isLinkValid;
+        return (
+          text !== undefined &&
+          text.length >= 10 &&
+          isLinkValid !== undefined &&
+          isLinkValid
+        );
       default:
         return text !== undefined && text.length >= 10;
     }
