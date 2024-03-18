@@ -40,22 +40,25 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    axios
-      .post(
-        '/api/auth/logout',
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then((res) => {
-        console.log(res.data);
-        logoutApi()
-          .then((response) => {
-            console.log(response);
+    logoutApi()
+      .then((response) => {
+        console.log('백엔드 서버에서 로그아웃 처리 성공:', response);
 
+        // 백엔드 로그아웃 성공 후 클라이언트 측 로그아웃 처리
+        axios
+          .post(
+            '/api/auth/logout',
+            {},
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+          .then((res) => {
+            console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
+
+            // 로그아웃 처리 후 리다이렉션
             router
               .push({
                 pathname: '/onboarding',
@@ -65,20 +68,18 @@ export default function Profile() {
                     : { withdrawal: true },
               })
               .catch((error) => {
-                console.error(
-                  modalState === 'logout'
-                    ? '로그아웃 리다이렉션 실패'
-                    : '회원 탈퇴 리다이렉션 실패',
-                  error,
-                );
+                console.error('리다이렉션 실패:', error);
               });
           })
-          .catch((error) =>
-            console.error('백엔드 서버 로그아웃 처리중 오류 발생', error),
-          );
+          .catch((error) => {
+            console.error(
+              '클라이언트 측에서 로그아웃 처리 중 오류 발생:',
+              error,
+            );
+          });
       })
       .catch((error) => {
-        console.error('클라이언트 로그아웃 처리중 오류 발생', error);
+        console.error('백엔드 서버 로그아웃 처리 중 오류 발생:', error);
       });
   };
 
