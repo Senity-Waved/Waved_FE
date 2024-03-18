@@ -17,8 +17,11 @@ const onRequest = (
   console.log(`🛫 [API - REQUEST] ${method?.toUpperCase()} ${url}`);
 
   const accessToken = getCookie('accessToken');
-  // eslint-disable-next-line no-param-reassign
-  config.headers.Authorization = `Bearer ${accessToken}`;
+
+  if (accessToken) {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
   return config;
 };
