@@ -71,14 +71,14 @@ const SRegisterSuccessBox = styled.div`
   flex-flow: column nowrap;
   justify-content: center;
   text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.body2};
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_83};
 `;
 
 const SSuccessText = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
   margin-top: 1rem;
   margin-bottom: 0.5rem;

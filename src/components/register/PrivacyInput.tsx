@@ -65,15 +65,7 @@ export default function PrivacyInput({
   );
 }
 
-const SPrivacyInputWrapper = styled.div`
-  ::before {
-    content: '';
-    position: absolute;
-    width: 90%;
-    margin: 0 20px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};
-  }
-`;
+const SPrivacyInputWrapper = styled.div``;
 
 const SBirthYearWrapper = styled.div`
   display: flex;
@@ -87,7 +79,6 @@ const SBirthYearWrapper = styled.div`
     font-size: ${({ theme }) => theme.fontSize.body4};
     font-weight: ${({ theme }) => theme.fontWeight.body4};
     margin-bottom: 1rem;
-    margin-top: 0.625rem;
   }
 
   & select::-ms-expand {

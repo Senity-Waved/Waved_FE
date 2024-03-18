@@ -8,7 +8,11 @@ interface IFloatingBtn {
 export default function FloatingBtn({ type }: IFloatingBtn) {
   const renderButtonContent = () => {
     if (type === 'challengeRequest') {
-      return <SChallengeRequest href="/request">챌린지 요청</SChallengeRequest>;
+      return (
+        <SChallengeRequest href="/challenge/request">
+          챌린지 요청
+        </SChallengeRequest>
+      );
     }
     if (type === 'register') {
       return <SRegister href="/register">회원가입 및 로그인</SRegister>;

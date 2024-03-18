@@ -63,9 +63,16 @@ export default function ChallengeParticipant() {
 
   const goToSuccess = () => {
     console.log('챌린지 신청 성공');
-    router.push('/challenge/participant/success').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    router
+      .push({
+        pathname: '/challenge/participant/success',
+        query: {
+          deposit,
+        },
+      })
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   return (
@@ -175,16 +182,8 @@ const SDepositAmout = styled.p`
 `;
 
 const SDepositBtnWrapper = styled.ul`
+  display: flex;
   margin: 1.5rem 0 2.5rem 1.25rem;
-  li {
-    display: inline-block;
-    &:not(:last-child) {
-      margin-right: 0.75rem;
-    }
-    &:last-child {
-      margin-right: 1.25rem;
-    }
-  }
 `;
 
 const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
@@ -200,6 +199,8 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
     isSelectedDeposit ? theme.color.gray_ec : theme.color.gray_83};
   background-color: ${({ theme, isSelectedDeposit }) =>
     isSelectedDeposit ? theme.color.normal : theme.color.gray_ec};
+
+  margin-right: 0.75rem;
 
   > p {
     width: 100%;
