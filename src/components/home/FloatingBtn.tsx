@@ -11,7 +11,7 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
     if (type === 'challengeRequest') {
       return (
         <SFloatingBtnWrapper>
-          <SChallengeRequest href="/request">챌린지 요청</SChallengeRequest>
+          <SChallengeRequest href="/challenge/request">챌린지 요청</SChallengeRequest>
         </SFloatingBtnWrapper>
       );
     }

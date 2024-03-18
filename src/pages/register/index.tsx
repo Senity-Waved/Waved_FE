@@ -237,7 +237,7 @@ const SRegisterStepGuide = styled.div<{ step: number }>`
     line-height: 1.4;
     height: ${({ step }) => (step === 3 || step === 4 ? '28px' : '56px')};
     margin-bottom: ${({ step }) =>
-      step === 3 || step === 4 ? '.5rem' : '1rem'};
+      step === 3 || step === 4 ? '.5rem' : '1.5rem'};
     margin-top: 2rem;
     margin-left: 1.25rem;
     font-size: ${({ theme }) => theme.fontSize.headline2};
