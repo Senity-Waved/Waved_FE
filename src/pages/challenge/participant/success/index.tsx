@@ -63,7 +63,7 @@ export default function ParticipantSuccess() {
         </SParticipantSuccessGuideWrapper>
         <SParticipantSuccessInfoWrapper>
           <ChallengeSummary
-            groupTitle={challengeData.grouptitle}
+            groupTitle={challengeData.groupTitle}
             participantCount={challengeData.participantCount}
             startDate={challengeData.startDate}
             endDate={challengeData.endDate}
