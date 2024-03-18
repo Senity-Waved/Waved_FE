@@ -14,8 +14,6 @@ export default function ChallengeProgress({
     return Math.round(percent);
   })();
 
-  console.log(calculateDDay(startDate), isVerified ? 1 : 0);
-
   return (
     <SWrapper>
       <SProgressWrapper>
