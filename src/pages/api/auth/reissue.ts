@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import { serialize, parse } from 'cookie';
+import { getCookie, setCookie } from 'cookies-next';
 import IAuth from '@/types/auth';
 
 export default async function Reissue(
@@ -9,9 +9,7 @@ export default async function Reissue(
 ) {
   if (req.method === 'POST') {
     try {
-      const cookies = req.headers.cookie;
-      const parsedCookies = cookies ? parse(cookies) : {};
-      const { refreshToken } = parsedCookies;
+      const refreshToken = getCookie('refreshToken', { req, res });
 
       if (!refreshToken) {
         return res.status(401).json({ message: 'No refresh token provided' });
@@ -26,14 +24,14 @@ export default async function Reissue(
 
       const { accessToken } = response.data;
 
-      res.setHeader('Set-Cookie', [
-        serialize('accessToken', accessToken, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7,
-          httpOnly: false,
-          secure: process.env.NODE_ENV === 'development',
-        }),
-      ]);
+      setCookie('accessToken', accessToken, {
+        req,
+        res,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'development',
+      });
 
       res.status(200).json({ message: 'Token refreshed successfully' });
     } catch (error) {

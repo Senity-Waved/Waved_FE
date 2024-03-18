@@ -1,29 +1,31 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { serialize } from 'cookie';
+import { setCookie } from 'cookies-next';
 import IAuth from '@/types/auth';
 
 export default function Session(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      console.log(req.body);
       const { accessToken, refreshToken } = req.body as IAuth;
 
-      res.setHeader('Set-Cookie', [
-        serialize('accessToken', accessToken, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7,
-          httpOnly: false,
-          secure: false,
-          sameSite: 'strict',
-        }),
-        serialize('refreshToken', refreshToken, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7,
-          httpOnly: true,
-          secure: false,
-          sameSite: 'strict',
-        }),
-      ]);
+      setCookie('accessToken', accessToken, {
+        req,
+        res,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: false,
+        secure: false,
+        sameSite: 'strict',
+      });
+
+      setCookie('refreshToken', refreshToken, {
+        req,
+        res,
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+      });
 
       res.status(200).json({ message: '서버에 토큰 전달 성공' });
     } catch (error) {
