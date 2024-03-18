@@ -41,7 +41,7 @@ export default function VerificationPost() {
     if (verificationType === 'LINK') {
       console.log(`link: ${link} , text: ${text}`);
     } else if (verificationType === 'PICTURE') {
-      console.log(`file: ${file}`);
+      console.log(file);
     } else if (verificationType === 'TEXT') {
       console.log(`text: ${text}`);
     }

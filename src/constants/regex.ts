@@ -1,6 +1,5 @@
-/* eslint-disable no-useless-escape */
 const regex = {
-  url: /^(https?|ftp):\/\/[^\s\/$.?#].[^\s]*$/,
+  url: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
 };
 
 export default regex;
