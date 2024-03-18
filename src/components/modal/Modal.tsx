@@ -7,7 +7,7 @@ interface IModal {
   subText?: string;
   image?: string;
   btnText: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   onClose: () => void;
 }
 
@@ -51,7 +51,7 @@ export default function Modal({
               text: btnText,
               styleType: 'primary',
               size: 'small',
-              onClick,
+              onClick: onClick,
             },
           ]}
         />

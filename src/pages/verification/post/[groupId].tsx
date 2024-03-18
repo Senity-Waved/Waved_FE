@@ -14,7 +14,6 @@ import { TVerificationType } from '@/types/verification';
 
 export default function VerificationPost() {
   const router = useRouter();
-  // const verificationType = router.query.type as TVerificationType;
   let verificationType: TVerificationType;
   if (
     typeof router.query.type === 'string' &&
@@ -30,13 +29,33 @@ export default function VerificationPost() {
   const [text, setText] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [link, setLink] = useState<string>('');
-  const [isLinkValid, setIsLinkaValid] = useState<boolean>(false);
+  const [isLinkValid, setIsLinkaValid] = useState<boolean | undefined>(
+    undefined,
+  );
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handleSubmit = () => {
-    console.log('test');
+  const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (verificationType === 'LINK') {
+      console.log('link: ' + link + ',text: ' + text);
+    } else if (verificationType === 'PICTURE') {
+      console.log('file: ' + file);
+    } else if (verificationType === 'TEXT') {
+      console.log('text: ' + text);
+    }
+    router
+      .replace({
+        pathname: `/verification/collection/${groupId}`,
+        query: {
+          type: verificationType,
+          submitVerification: true,
+        },
+      })
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   return (
@@ -48,7 +67,6 @@ export default function VerificationPost() {
     >
       <WriteLayout
         pageType={pageType as TPageType}
-        handleSubmit={handleSubmit}
         text={text}
         file={file}
         isLinkValid={isLinkValid}
