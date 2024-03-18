@@ -78,7 +78,7 @@ const STab = styled.li<{ isActive: boolean }>`
 
 const STabMenu = styled.ul<{ positionTop?: number }>`
   position: sticky;
-  top: ${({ positionTop }) => `calc(${positionTop}px + 56px)`};
+  top: ${({ positionTop }) => `calc(${positionTop}px + 55px)`};
   display: flex;
   width: 100%;
   height: 48px;
