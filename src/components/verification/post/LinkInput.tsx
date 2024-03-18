@@ -1,17 +1,44 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import regex from '@/constants/regex';
+interface ILinkInput {
+  isLinkValid: boolean;
+  setIsLinkValid: React.Dispatch<React.SetStateAction<boolean>>;
+  setLink: React.Dispatch<React.SetStateAction<string>>;
+}
 
-interface ILinkInput {}
-export default function LinkInput() {
-  const [isLinkValid, setIsLinkaValid] = useState<boolean | undefined>(true);
+export default function LinkInput({
+  isLinkValid,
+  setIsLinkValid,
+  setLink,
+}: ILinkInput) {
+  const checkLinkValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLink(e.target.value);
+    setIsLinkValid(regex.url.test(e.target.value));
+  };
   return (
     <>
       <SSubTitle>1. 인증 링크</SSubTitle>
-      <SInput type="text" placeholder="http://" isLinkValid={isLinkValid} />
+      <SInputWrapper>
+        <SInput
+          type="text"
+          placeholder="http://"
+          isLinkValid={isLinkValid}
+          onChange={checkLinkValidation}
+        />
+        {isLinkValid === false && (
+          <SErrorMsg>링크 입력 형식에 맞지 않습니다</SErrorMsg>
+        )}
+      </SInputWrapper>
       <SSubTitle>2. 인증 내용</SSubTitle>
     </>
   );
 }
+
+const SInputWrapper = styled.div`
+  margin-bottom: 1.875rem;
+  position: relative;
+`;
 
 const SInput = styled.input<{ isLinkValid: boolean | undefined }>`
   color: ${({ theme }) => theme.color.gray_3c};
@@ -27,7 +54,6 @@ const SInput = styled.input<{ isLinkValid: boolean | undefined }>`
       isLinkValid ? theme.color.gray_ec : theme.color.error};
   background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 0 0.125rem 0.125rem 0.125rem;
-  margin-bottom: 1.875rem;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.gray_de};
@@ -47,4 +73,14 @@ const SSubTitle = styled.h3`
   &:nth-of-type(2) {
     margin-bottom: 1rem;
   }
+`;
+
+const SErrorMsg = styled.span`
+  color: ${({ theme }) => theme.color.error};
+  font-size: ${({ theme }) => theme.fontSize.caption2};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
+  position: absolute;
+  left: 0.125rem;
+  bottom: -0.125rem;
+  transform: translateY(100%);
 `;

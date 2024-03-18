@@ -4,16 +4,18 @@ import Btn from './Btn';
 import writeLayoutText from '@/constants/writeLayoutText';
 import regex from '@/constants/regex';
 
+export type TPageType =
+  | '후기작성'
+  | '후기수정'
+  | '챌린지요청'
+  | '링크인증'
+  | '글인증'
+  | '사진인증';
 interface IWriteLayout {
-  pageType:
-    | '후기작성'
-    | '후기수정'
-    | '챌린지요청'
-    | '글인증'
-    | '링크인증'
-    | '사진인증';
+  pageType: TPageType;
   text?: string;
   file?: File | null;
+  isLinkValid?: boolean;
   children: React.ReactNode;
   handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onClick?: () => void;
@@ -24,6 +26,7 @@ export default function WriteLayout({
   children,
   text,
   file,
+  isLinkValid,
   handleSubmit,
   onClick,
 }: IWriteLayout) {
@@ -37,11 +40,11 @@ export default function WriteLayout({
       case '사진인증':
         return file !== null;
       case '링크인증':
-        return text !== undefined && regex.url.test(text);
+        return text !== undefined && isLinkValid !== undefined && isLinkValid;
       default:
         return text !== undefined && text.length >= 10;
     }
-  }, [text, file, pageType]);
+  }, [text, file, isLinkValid, pageType]);
 
   useEffect(() => {
     const isActive = checkValidation();

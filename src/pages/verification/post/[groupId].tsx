@@ -2,21 +2,35 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
-import WriteLayout from '@/components/common/WriteLayout';
+import WriteLayout, { TPageType } from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
 import PhotoInput from '@/components/verification/post/PhotoInput';
 import TextArea from '@/components/common/TextArea';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 import LinkInput from '@/components/verification/post/LinkInput';
+import VERIFICATION_TYPE from '@/constants/verificationType';
+import { TVerificationType } from '@/types/verification';
 
 export default function VerificationPost() {
   const router = useRouter();
-  const { type } = router.query;
+  // const verificationType = router.query.type as TVerificationType;
+  let verificationType: TVerificationType;
+  if (
+    typeof router.query.type === 'string' &&
+    ['TEXT', 'PHOTO', 'LINK'].includes(router.query.type)
+  ) {
+    verificationType = router.query.type as TVerificationType;
+  } else {
+    verificationType = 'TEXT';
+  }
   const { groupId } = router.query;
-  const { placeholder } = writeLayoutText['링크인증'];
+  const pageType = VERIFICATION_TYPE[verificationType];
+  const { placeholder } = writeLayoutText[pageType];
   const [text, setText] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
+  const [link, setLink] = useState<string>('');
+  const [isLinkValid, setIsLinkaValid] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
@@ -33,22 +47,27 @@ export default function VerificationPost() {
       noFooter
     >
       <WriteLayout
-        pageType="사진인증"
+        pageType={pageType as TPageType}
         handleSubmit={handleSubmit}
         text={text}
         file={file}
+        isLinkValid={isLinkValid}
         onClick={openModal}
       >
-        {type === 'TEXT' && (
+        {verificationType === 'TEXT' && (
           <>
             <SQuestion>Q.출제된문제내용</SQuestion>
             <TextArea placeholder={placeholder} setText={setText} />
           </>
         )}
-        {type === 'PHOTO' && <PhotoInput setFile={setFile} />}
-        {type === 'LINK' && (
+        {verificationType === 'PHOTO' && <PhotoInput setFile={setFile} />}
+        {verificationType === 'LINK' && (
           <>
-            <LinkInput />
+            <LinkInput
+              isLinkValid={isLinkValid}
+              setIsLinkValid={setIsLinkaValid}
+              setLink={setLink}
+            />
             <TextArea placeholder={placeholder} setText={setText} />
           </>
         )}
