@@ -72,7 +72,7 @@ export default function ChallengeBtn({
       return (
         <SBtnWrapper>
           <SBtn styleType="gray">
-            챌린지 시작하기까지 D-{calculateDDay(startDate)}
+            챌린지 시작하기까지 D-{calculateDDay(startDate) - 1}
           </SBtn>
         </SBtnWrapper>
       );
