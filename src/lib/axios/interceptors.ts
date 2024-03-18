@@ -39,14 +39,29 @@ const onErrorRequest = (err: AxiosError | Error): Promise<AxiosError> => {
 };
 
 const onResponseError = async (error: AxiosError) => {
+  console.error(error);
   if (
     error.response &&
     error.response.status === 401 &&
-    error.response.data === '만료된 JWT 토큰입니다.'
+    error.response.data === '만료된 JWT 토큰입니다.' &&
+    error.config
   ) {
     try {
-      await axios.post<IAuthResponse>('/api/auth/reissue');
-      return await Promise.reject(error);
+      const { data } = await axios.post<IAuthResponse>(
+        '/api/auth/reissue',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      // eslint-disable-next-line no-param-reassign
+      error.config.headers.Authorization = `Bearer ${data.accessToken}`;
+
+      console.log(data.message);
+      return await axios(error.config);
     } catch (reissueError) {
       console.error('액세스 토큰 재발급 실패', reissueError);
       return Promise.reject(reissueError);

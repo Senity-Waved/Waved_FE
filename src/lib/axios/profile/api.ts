@@ -1,8 +1,8 @@
 import IRegisterState from '@/types/register';
 import axiosInstance from '../instance';
 
-const registerApi = (data: IRegisterState) => {
-  return axiosInstance.patch('/api/v1/members/edit', data);
+const registerApi = (registerData: IRegisterState) => {
+  return axiosInstance.patch('/api/v1/members/edit', registerData);
 };
 
 const logoutApi = () => {

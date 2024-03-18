@@ -27,7 +27,7 @@ export default function Register() {
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
 
   const submitMebmerInfo = async () => {
-    if (step === 4 && registerData.jobTitle)
+    if (step === 4 && registerData.jobTitle) {
       try {
         const response = await registerApi(registerData);
         console.log('회원가입 완료 | ', response.data);
@@ -39,6 +39,7 @@ export default function Register() {
       } catch (error) {
         console.error('회원가입 실패:', error);
       }
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
