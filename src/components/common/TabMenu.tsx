@@ -36,8 +36,8 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
         });
       },
       {
-        root: document.querySelector('main'),
-        rootMargin: `${positionTop + 48}px 0px 0px 0px`,
+        root: null,
+        rootMargin: `${positionTop + 102}px 0px 0px 0px`,
         threshold: 0.5,
       },
     );
@@ -77,11 +77,11 @@ const STab = styled.li<{ isActive: boolean }>`
 `;
 
 const STabMenu = styled.ul<{ positionTop?: number }>`
+  position: sticky;
+  top: ${({ positionTop }) => `calc(${positionTop}px + 55px)`};
   display: flex;
   width: 100%;
   height: 48px;
-  position: sticky;
-  top: ${({ positionTop }) => `${positionTop}px`};
   background-color: ${({ theme }) => theme.color.white};
   z-index: 5;
 `;

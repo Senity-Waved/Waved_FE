@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import screenSize from '@/constants/screenSize';
 
 interface IFloatingBtn {
   type: 'challengeRequest' | 'register';
@@ -8,21 +9,35 @@ interface IFloatingBtn {
 export default function FloatingBtn({ type }: IFloatingBtn) {
   const renderButtonContent = () => {
     if (type === 'challengeRequest') {
-      return <SChallengeRequest href="/request">챌린지 요청</SChallengeRequest>;
+      return (
+        <SFloatingBtnWrapper>
+          <SChallengeRequest href="/challenge/request">챌린지 요청</SChallengeRequest>
+        </SFloatingBtnWrapper>
+      );
     }
     if (type === 'register') {
-      return <SRegister href="/register">회원가입 및 로그인</SRegister>;
+      return (
+        <SFloatingBtnWrapper>
+          <SRegister href="/register">회원가입 및 로그인</SRegister>
+        </SFloatingBtnWrapper>
+      );
     }
     return null;
   };
   return renderButtonContent();
 }
 
-const SFloatingBtn = styled(Link)`
-  position: absolute;
+const SFloatingBtnWrapper = styled.div`
+  position: fixed;
   bottom: 112px;
   z-index: 10;
   display: flex;
+  width: 100%;
+  max-width: ${screenSize.max}px;
+`;
+
+const SFloatingBtn = styled(Link)`
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background-color: ${({ theme }) => theme.color.normal};
@@ -35,7 +50,7 @@ const SFloatingBtn = styled(Link)`
 `;
 
 const SChallengeRequest = styled(SFloatingBtn)`
-  right: 20px;
+  margin: 0 1.25rem 0 auto;
   padding: 0.625rem 1.25rem;
   &::before {
     content: '';
@@ -47,7 +62,6 @@ const SChallengeRequest = styled(SFloatingBtn)`
 `;
 
 const SRegister = styled(SFloatingBtn)`
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
   padding: 0.75rem 1.5rem;
 `;
