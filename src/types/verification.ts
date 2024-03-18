@@ -9,6 +9,6 @@ export interface IVerificationInfo {
   link?: string;
 }
 
-export type TVerificationType = 'TEXT' | 'GITHUB' | 'PHOTO' | 'LINK';
+export type TVerificationType = 'TEXT' | 'GITHUB' | 'PICTURE' | 'LINK';
 
 export default IVerificationInfo;

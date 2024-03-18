@@ -18,7 +18,7 @@ export default function VerificationPost() {
   let verificationType: TVerificationType;
   if (
     typeof router.query.type === 'string' &&
-    ['TEXT', 'PHOTO', 'LINK'].includes(router.query.type)
+    ['TEXT', 'PICTURE', 'LINK'].includes(router.query.type)
   ) {
     verificationType = router.query.type as TVerificationType;
   } else {
@@ -60,7 +60,7 @@ export default function VerificationPost() {
             <TextArea placeholder={placeholder} setText={setText} />
           </>
         )}
-        {verificationType === 'PHOTO' && <PhotoInput setFile={setFile} />}
+        {verificationType === 'PICTURE' && <PhotoInput setFile={setFile} />}
         {verificationType === 'LINK' && (
           <>
             <LinkInput

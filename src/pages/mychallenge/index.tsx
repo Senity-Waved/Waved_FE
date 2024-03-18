@@ -45,7 +45,7 @@ const progressData: TMyChallengeInfo[] = [
     successCount: 5,
     isReviewed: null,
     isVerified: false,
-    verificationType: 'PHOTO',
+    verificationType: 'PICTURE',
     deposit: 5000,
   },
   {
@@ -99,7 +99,7 @@ const completedData: TMyChallengeInfo[] = [
     successCount: 13,
     isReviewed: false,
     isVerified: null,
-    verificationType: 'PHOTO',
+    verificationType: 'PICTURE',
     deposit: 10000,
   },
 ];

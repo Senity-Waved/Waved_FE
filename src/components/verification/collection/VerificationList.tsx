@@ -63,7 +63,7 @@ export default function VerificationList({
       </SSortBtnWrapper>
       <SList>
         {myVerification ? (
-          verificationType === 'photo' ? (
+          verificationType === 'PICTURE' ? (
             <VerificationPhotoItem {...myVerification} />
           ) : (
             <VerificationItem
@@ -81,7 +81,7 @@ export default function VerificationList({
         )}
         {sortedVerifications.map((verification) => {
           const { verificationId } = verification;
-          return verificationType === 'photo' ? (
+          return verificationType === 'PICTURE' ? (
             <VerificationPhotoItem key={verificationId} {...verification} />
           ) : (
             <VerificationItem
