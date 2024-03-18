@@ -14,7 +14,7 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           path: '/',
           maxAge: 60 * 60 * 24 * 7,
           httpOnly: false,
-          secure: false,
+          secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
         });
 
@@ -24,7 +24,7 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           path: '/',
           maxAge: 60 * 60 * 24 * 7,
           httpOnly: true,
-          secure: false,
+          secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
         });
 
