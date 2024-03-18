@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
-import IAuth from '@/types/auth';
 
 export default async function Reissue(
   req: NextApiRequest,
@@ -12,28 +11,38 @@ export default async function Reissue(
       const refreshToken = getCookie('refreshToken', { req, res });
 
       if (!refreshToken) {
-        return res.status(401).json({ message: 'No refresh token provided' });
+        return res
+          .status(401)
+          .json({ message: '리프레시 토큰이 존재하지 않습니다.' });
       }
 
-      const response = await axios.post<IAuth>(
-        'http://localhost:3000/api/test/reissue',
+      const response = await axios.post<string>(
+        'https://waved.azurewebsites.net/api/v1/members/reissue',
+        {},
         {
-          refreshToken,
+          headers: { Authorization: `Bearer ${refreshToken}` },
         },
       );
 
-      const { accessToken } = response.data;
+      if (response.data) {
+        const accessToken = response.data;
 
-      setCookie('accessToken', accessToken, {
-        req,
-        res,
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-        httpOnly: false,
-        secure: process.env.NODE_ENV === 'development',
-      });
+        setCookie('accessToken', accessToken, {
+          req,
+          res,
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7,
+          httpOnly: false,
+          secure: process.env.NODE_ENV === 'production',
+        });
 
-      res.status(200).json({ message: 'Token refreshed successfully' });
+        res.status(200).json({
+          message: '액세스 토큰 재발급 성공',
+          accessToken,
+        });
+      } else {
+        res.status(401).json({ message: '액세스 토큰 재발급 실패' });
+      }
     } catch (error) {
       console.error('Error refreshing tokens:', error);
       res.status(500).json({ message: 'Failed to refresh token' });
