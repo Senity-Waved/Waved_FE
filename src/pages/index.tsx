@@ -27,11 +27,16 @@ export default function Home({
   getRecruitingChallenges: IRecruitingChallenge[];
 }) {
   const router = useRouter();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
     type: 'warning',
   });
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -57,7 +62,7 @@ export default function Home({
 
   const isLogined = getCookie('accessToken');
 
-  return (
+  return isLoaded ? (
     <SHomeWrapper>
       <HomeHeader />
       <main>
@@ -94,6 +99,8 @@ export default function Home({
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />
     </SHomeWrapper>
+  ) : (
+    <div>로딩중...</div>
   );
 }
 
