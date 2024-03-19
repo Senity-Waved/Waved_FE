@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Layout from '@/components/common/Layout';
 import JOBTITLE from '@/constants/jobTitle';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
@@ -11,6 +12,7 @@ import profileSnackBarText from '@/constants/profileSnackBarText';
 import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 import ISnackBarState from '@/types/snackbar';
+import { logoutApi } from '@/lib/axios/profile/api';
 
 export default function Profile() {
   const router = useRouter();
@@ -34,19 +36,50 @@ export default function Profile() {
   });
 
   const clickModalBtn = () => {
-    router
-      .push({
-        pathname: '/onboarding',
-        query:
-          modalState === 'logout' ? { logout: true } : { withdrawal: true },
+    handleLogout();
+  };
+
+  const handleLogout = () => {
+    logoutApi()
+      .then((response) => {
+        console.log('백엔드 서버에서 로그아웃 처리 성공:', response);
+
+        // 백엔드 로그아웃 성공 후 클라이언트 측 로그아웃 처리
+        axios
+          .post(
+            '/api/auth/logout',
+            {},
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+          .then((res) => {
+            console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
+
+            // 로그아웃 처리 후 리다이렉션
+            router
+              .push({
+                pathname: '/onboarding',
+                query:
+                  modalState === 'logout'
+                    ? { logout: true }
+                    : { withdrawal: true },
+              })
+              .catch((error) => {
+                console.error('리다이렉션 실패:', error);
+              });
+          })
+          .catch((error) => {
+            console.error(
+              '클라이언트 측에서 로그아웃 처리 중 오류 발생:',
+              error,
+            );
+          });
       })
-      .catch((error: Error) => {
-        console.error(
-          modalState === 'logout'
-            ? '로그아웃에 실패하였습니다.'
-            : '회원 탈퇴에 실패하였습니다.',
-          error,
-        );
+      .catch((error) => {
+        console.error('백엔드 서버 로그아웃 처리 중 오류 발생:', error);
       });
   };
 
