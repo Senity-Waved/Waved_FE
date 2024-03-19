@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
+import { GetServerSidePropsContext } from 'next';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
@@ -55,6 +56,7 @@ export default function Home({
   }, [router, router.query]);
 
   const isLogined = getCookie('accessToken');
+
   return (
     <SHomeWrapper>
       <HomeHeader />
@@ -95,12 +97,15 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps(): Promise<{
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<{
   props: {
     getMyProcessingChallenges: IMyProcessingChallenge[];
     getRecruitingChallenges: IRecruitingChallenge[];
   };
 }> {
+  const cookieToken = getCookie('accessToken', context);
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
@@ -112,11 +117,18 @@ export async function getServerSideProps(): Promise<{
       return [];
     }
   }
+  // eslint-disable-next-line consistent-return
   async function fetchRecruitingChallenges() {
     try {
       const response = await axios.get<IRecruitingChallenge[]>(
-        'http://localhost:3000/api/recruitingChallenge',
+        'https://waved.azurewebsites.net/api/v1/challenges/waiting',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
       );
+      console.error('recruitingChallenge API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('recruitingChallenge API GET 실패', error);
