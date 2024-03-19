@@ -65,5 +65,5 @@ export default function OauthTest() {
     }
   }, [hasInfo, router, accessToken, isTokenPosted]);
 
-  return <div>oauth</div>;
+  return <div>로그인 처리중입니다.</div>;
 }
