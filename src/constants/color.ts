@@ -3,7 +3,7 @@ const color = {
   LIGHT: '#E9F1FF',
   MIDDLE: '#508DFF',
   DARK: '#1A50B5',
-  POSITIVE: '##1FAD3B',
+  POSITIVE: '#1FAD3B',
   ERROR: '#E50C19',
   BLACK: '#000000',
   WHITE: '#FFFFFF',

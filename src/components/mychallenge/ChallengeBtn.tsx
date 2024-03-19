@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 
 interface IBtn {
-  challengeStatus: '진행중' | '대기중' | '진행완료';
+  challengeStatus: '진행 중' | '대기 중' | '진행 완료';
   dday?: number;
   isAbled?: boolean;
   isAuto?: boolean;
@@ -24,32 +24,25 @@ export default function ChallengeBtn({
   };
 
   switch (challengeStatus) {
-    case '진행중':
+    case '진행 중':
       return (
         <SBtnWrapper>
-          <SLink href="#">
-            <SBtn styleType="light">인증내역</SBtn>
+          <SLink href="/verification/collection/1">
+            <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          {isAuto ? (
-            <SBtn styleType="gray">자동인증</SBtn>
-          ) : (
-            <SLink
-              href={{
-                pathname: '/verification/post/1',
-                query: { type: 'text' },
-              }}
-            >
-              <SBtn
-                styleType={isAbled ? 'middle' : 'gray'}
-                onClick={preventLink}
-              >
-                인증하기
-              </SBtn>
-            </SLink>
-          )}
+          <SLink
+            href={{
+              pathname: '/verification/post/1',
+              query: { type: 'text' },
+            }}
+          >
+            <SBtn styleType={isAbled ? 'middle' : 'gray'} onClick={preventLink}>
+              인증 하기
+            </SBtn>
+          </SLink>
         </SBtnWrapper>
       );
-    case '대기중':
+    case '대기 중':
       return (
         <SBtnWrapper>
           <SBtn as="div" styleType="gray">
@@ -57,11 +50,11 @@ export default function ChallengeBtn({
           </SBtn>
         </SBtnWrapper>
       );
-    case '진행완료':
+    case '진행 완료':
       return (
         <SBtnWrapper>
           <SLink href="#">
-            <SBtn styleType="light">인증내역</SBtn>
+            <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           <SLink
             href={{
@@ -109,7 +102,7 @@ const SBtn = styled.button<{ styleType: 'light' | 'gray' | 'middle' }>`
   background-color: ${({ styleType, theme }) =>
     ({
       light: theme.color.light,
-      middle: theme.color.middle,
+      middle: theme.color.normal,
       gray: theme.color.gray_ec,
     })[styleType]};
   cursor: ${({ styleType }) =>

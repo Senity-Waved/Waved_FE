@@ -172,10 +172,9 @@ const global = css`
   }
 
   main {
-    flex: 1;
     position: relative;
-    height: 100%;
-    overflow-y: auto;
+    display: inline-block;
+    width: 100%;
   }
 
   a {

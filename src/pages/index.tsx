@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
@@ -15,6 +16,10 @@ import IChallengeList from '@/types/challengeList';
 import HOME_SECTION_TITLE from '@/constants/homeSectionTitle';
 import SnackBar from '@/components/common/SnackBar';
 import ISnackBarState from '@/types/snackbar';
+import IRecruitingChallenge from '@/types/recruitingChallenge';
+import IMyProcessingChallenge from '@/types/myProcessingChallenge';
+import RecruitingChallenge from '@/components/home/RecruitingChallenge';
+import ScrollXBox from '@/components/common/ScrollXBox';
 
 const challengeData: IChallengeList[] = [
   {
@@ -73,7 +78,13 @@ const filteredChallenge = {
   life: challengeData.filter((challenge) => challenge.challengeType === 'life'),
 };
 
-export default function Home() {
+export default function Home({
+  getMyProcessingChallenges,
+  getRecruitingChallenges,
+}: {
+  getMyProcessingChallenges: IMyProcessingChallenge[];
+  getRecruitingChallenges: IRecruitingChallenge[];
+}) {
   const router = useRouter();
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -96,55 +107,85 @@ export default function Home() {
     }
   }, [router, router.query]);
 
-  const user = true; // 로그인된 유저 테스트용 변수
+  const isLogined = true; // 로그인된 유저 테스트용 변수
   return (
     <SHomeWrapper>
       <HomeHeader />
       <main>
         <TopBanner />
-        <SSection>
-          <STitleLink href="/mychallenge">
-            <h2>진행 중인 챌린지</h2>
-            <Image
-              src="/icons/icon-left-arrow.svg"
-              alt="마이 챌린지로 가기"
-              width={24}
-              height={24}
-              priority
-            />
-          </STitleLink>
-          <SListScrollX>
-            {challengeData.map((challenge) => (
-              // 현재 key 속성 누락 콘솔 경고 발생 : Warning: Each child in a list should have a unique "key" prop.
-              // 추후 challenge_id 값 받아와 key로 설정해 문제 해결 예정
-              // 하단 map들도 같은 목업 데이터를 사용하고 있어 동일 이슈 => uuid를 이용해 임시 대처 진행
-              <ChallengeCardWide key={uuidv4()} {...challenge} />
-            ))}
-          </SListScrollX>
-        </SSection>
-        <RecrutingList
-          title={HOME_SECTION_TITLE.SKILL.main}
-          subtitle={HOME_SECTION_TITLE.SKILL.sub}
-          challenges={filteredChallenge.skill}
-        />
-        <RecrutingList
-          title={HOME_SECTION_TITLE.STUDY.main}
-          subtitle={HOME_SECTION_TITLE.STUDY.sub}
-          challenges={filteredChallenge.study}
-        />
-        <RecrutingList
-          title={HOME_SECTION_TITLE.LIFE.main}
-          subtitle={HOME_SECTION_TITLE.LIFE.sub}
-          challenges={filteredChallenge.life}
+        {isLogined && (
+          <SSection>
+            <STitleLink href="/mychallenge">
+              <h2>👨‍💻 진행 중인 챌린지</h2>
+              <Image
+                src="/icons/icon-left-arrow.svg"
+                alt="마이 챌린지로 가기"
+                width={24}
+                height={24}
+                style={{ transform: 'rotate(180deg)' }}
+                priority
+              />
+            </STitleLink>
+            <ScrollXBox>
+              <SListScrollX>
+                {getMyProcessingChallenges.map((challenge) => (
+                  <ChallengeCardWide key={challenge.groupId} {...challenge} />
+                ))}
+              </SListScrollX>
+            </ScrollXBox>
+          </SSection>
+        )}
+        <RecruitingChallenge
+          getRecruitingChallenges={getRecruitingChallenges}
         />
         {snackBarState.open && (
           <SnackBar text={snackBarState.text} type={snackBarState.type} />
         )}
       </main>
-      <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
+      <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />
     </SHomeWrapper>
   );
+}
+
+export async function getServerSideProps(): Promise<{
+  props: {
+    getMyProcessingChallenges: IMyProcessingChallenge[];
+    getRecruitingChallenges: IRecruitingChallenge[];
+  };
+}> {
+  async function fetchMyProcessingChallenges() {
+    try {
+      const response = await axios.get<IMyProcessingChallenge[]>(
+        'http://localhost:3000/api/myProcessingChallenge',
+      );
+      return response.data;
+    } catch (error) {
+      console.error('myProcessingChallenge API GET 실패', error);
+      return [];
+    }
+  }
+  async function fetchRecruitingChallenges() {
+    try {
+      const response = await axios.get<IRecruitingChallenge[]>(
+        'http://localhost:3000/api/recruitingChallenge',
+      );
+      return response.data;
+    } catch (error) {
+      console.error('recruitingChallenge API GET 실패', error);
+      return [];
+    }
+  }
+  const [myProcessingChallenges, recruitingChallenges] = await Promise.all([
+    fetchMyProcessingChallenges(),
+    fetchRecruitingChallenges(),
+  ]);
+  return {
+    props: {
+      getMyProcessingChallenges: myProcessingChallenges,
+      getRecruitingChallenges: recruitingChallenges,
+    },
+  };
 }
 
 const SHomeWrapper = styled(SLayoutWrapper)`

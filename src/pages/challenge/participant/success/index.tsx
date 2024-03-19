@@ -2,21 +2,41 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Btn from '@/components/common/Btn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import { SBottomFixedBtn } from '@/components/common/BottomFixedBtn';
+import ASelectedChallenge from '@/atoms/selectedChallenge';
+import ISelectedChallenge from '@/types/selectedChallenge';
+import changePriceFormat from '@/utils/changePriceFormat';
 
 export default function ParticipantSuccess() {
-  const challengeData = {
-    title: '기술면접 챌린지 1기',
-    participantCount: 23,
-    startDate: '03월 04일 (월)',
-    endDate: '03월 15일 (금)',
-    isFree: true,
-  };
+  const router = useRouter();
+  const { query } = router;
+  const recoilChallengeData =
+    useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
+  const [challengeData, setChallengeData] = useState<ISelectedChallenge>({
+    challengeGroupId: '',
+    groupTitle: '',
+    startDate: '',
+    endDate: '',
+    condition: 'recruiting',
+    participantCount: 0,
+    isFree: false,
+  });
+  const paidDeposit = query.deposit
+    ? changePriceFormat(Number(query.deposit))
+    : 0;
+
+  useEffect(() => {
+    setChallengeData(recoilChallengeData);
+  }, [recoilChallengeData]);
 
   return (
-    <SParticipantSuccessWrapper>
+    <SParticipantSuccessWrapper noHeader noFooter>
       <Head>
         <title>WAVED | 챌린지 신청</title>
         <meta name="description" content="챌린지 신청 완료" />
@@ -28,34 +48,32 @@ export default function ParticipantSuccess() {
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
-        <div>
-          <SParticipantSuccessGuideWrapper>
-            <Image
-              src="/icons/icon-done.svg"
-              width={88}
-              height={88}
-              priority
-              alt="확인 완료 아이콘"
-            />
-            <SGuideTextWrapper>
-              <p>신청완료</p>
-              <p>WAVED와 함께 훌륭한 개발자로 도약하세요!</p>
-            </SGuideTextWrapper>
-          </SParticipantSuccessGuideWrapper>
-          <SParticipantSuccessInfoWrapper>
-            <ChallengeSummary
-              groupTitle={challengeData.title}
-              participantCount={challengeData.participantCount}
-              startDate={challengeData.startDate}
-              endDate={challengeData.endDate}
-              condition="recruiting"
-            />
-            <SPayDepositWrapper>
-              <p>예치금</p>
-              <p>5,000원</p>
-            </SPayDepositWrapper>
-          </SParticipantSuccessInfoWrapper>
-        </div>
+        <SParticipantSuccessGuideWrapper>
+          <Image
+            src="/icons/icon-done.svg"
+            width={88}
+            height={88}
+            priority
+            alt="확인 완료 아이콘"
+          />
+          <SGuideTextWrapper>
+            <p>신청완료</p>
+            <p>WAVED와 함께 훌륭한 개발자로 도약하세요!</p>
+          </SGuideTextWrapper>
+        </SParticipantSuccessGuideWrapper>
+        <SParticipantSuccessInfoWrapper>
+          <ChallengeSummary
+            groupTitle={challengeData.groupTitle}
+            participantCount={challengeData.participantCount}
+            startDate={challengeData.startDate}
+            endDate={challengeData.endDate}
+            condition="recruiting"
+          />
+          <SPayDepositWrapper>
+            <p>예치금</p>
+            <p>{paidDeposit}원</p>
+          </SPayDepositWrapper>
+        </SParticipantSuccessInfoWrapper>
         <SParticipantSuccessBtnWrapper>
           <Link href="/mychallenge">
             <Btn
@@ -79,13 +97,7 @@ const SParticipantSuccessWrapper = styled(SLayoutWrapper)`
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-
-    & + div {
-      flex: 1;
-      display: flex;
-      flex-flow: column nowrap;
-      justify-content: center;
-    }
+    padding-bottom: 7.125rem;
   }
 `;
 
@@ -144,7 +156,8 @@ const SPayDepositWrapper = styled.div`
   }
 `;
 
-const SParticipantSuccessBtnWrapper = styled.div`
-  width: calc(100% - 40px);
-  margin: 0 1.25rem 3.125rem 1.25rem;
+const SParticipantSuccessBtnWrapper = styled(SBottomFixedBtn)`
+  a {
+    width: 100%;
+  }
 `;

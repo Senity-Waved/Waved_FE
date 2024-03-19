@@ -23,9 +23,10 @@ export default function HomeHeader() {
           <h1 className="a11yHidden">WAVED</h1>
           <Image
             alt="WAVED 로고"
-            src="https://via.placeholder.com/100x30.jpg"
-            width={100}
-            height={30}
+            src="/icons/icon-waved-logo.svg"
+            width={96}
+            height={36}
+            quality={100}
           />
         </SLogo>
         <SAlarm type="button" />
@@ -48,5 +49,5 @@ const SAlarm = styled.button`
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url('/icons/icon-alarm-active.svg') no-repeat center;
+  background: url('/icons/icon-notification.svg') no-repeat center;
 `;

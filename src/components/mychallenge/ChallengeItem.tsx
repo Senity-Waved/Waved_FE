@@ -6,7 +6,7 @@ import ChallengeBtn from '@/components/mychallenge/ChallengeBtn';
 export interface IChallengeItem {
   // challengeId: number;
   // title: string;
-  status: '진행중' | '대기중' | '진행완료';
+  status: '진행 중' | '대기 중' | '진행 완료';
   // startDate: number;
   // endDate: number;
   // certificationType: '글' | '링크' | '사진' | '자동';
@@ -31,7 +31,7 @@ export default function ChallengeItem({ status }: IChallengeItem) {
           </SDeposit>
         </div>
       </SInfoWrapper>
-      {status === '진행중' && <ChallengeProgress />}
+      {status === '진행 중' && <ChallengeProgress />}
       <ChallengeBtn challengeStatus={status} challengeId="8" isAbled />
       <SDetailBtn>
         <Image

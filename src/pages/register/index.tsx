@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Header from '@/components/common/Header';
+import { SHeaderCenter, SHeaderWrapper } from '@/components/common/Header';
 import Btn from '@/components/common/Btn';
 import ServiceTermCheck from '@/components/register/ServiceTermCheck';
 import PrivacyInput from '@/components/register/PrivacyInput';
@@ -110,15 +110,17 @@ export default function Register() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
-      <Header headerText="회원가입" />
-      <SRegisterBackBtn onClick={goToPreviousStep}>
-        <Image
-          src="/icons/icon-left-arrow.svg"
-          width={24}
-          height={24}
-          alt="뒤로가기 버튼"
-        />
-      </SRegisterBackBtn>
+      <SHeaderWrapper>
+        <SHeaderCenter>회원가입</SHeaderCenter>
+        <SRegisterBackBtn onClick={goToPreviousStep}>
+          <Image
+            src="/icons/icon-left-arrow.svg"
+            width={24}
+            height={24}
+            alt="뒤로가기 버튼"
+          />
+        </SRegisterBackBtn>
+      </SHeaderWrapper>
       <main>
         <h2 className="a11yHidden">회원가입</h2>
         <SRegisterStepGuide step={step}>
@@ -248,7 +250,7 @@ const SRegisterStepGuide = styled.div<{ step: number }>`
     line-height: 1.4;
     height: ${({ step }) => (step === 3 || step === 4 ? '28px' : '56px')};
     margin-bottom: ${({ step }) =>
-      step === 3 || step === 4 ? '.5rem' : '1rem'};
+      step === 3 || step === 4 ? '.5rem' : '1.5rem'};
     margin-top: 2rem;
     margin-left: 1.25rem;
     font-size: ${({ theme }) => theme.fontSize.headline2};

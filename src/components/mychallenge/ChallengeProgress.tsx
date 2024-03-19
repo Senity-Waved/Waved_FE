@@ -78,7 +78,7 @@ const SDealt = styled.div<{ dealt: number }>`
   width: ${({ dealt }) => `${dealt}%`};
   height: 100%;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.color.middle};
+  background-color: ${({ theme }) => theme.color.normal};
   z-index: 1;
 `;
 

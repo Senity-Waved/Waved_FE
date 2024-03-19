@@ -11,6 +11,7 @@ import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
+import ScrollXBox from '@/components/common/ScrollXBox';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -62,29 +63,37 @@ export default function ChallengeParticipant() {
 
   const goToSuccess = () => {
     console.log('챌린지 신청 성공');
-    router.push('/challenge/participant/success').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    router
+      .push({
+        pathname: '/challenge/participant/success',
+        query: {
+          deposit,
+        },
+      })
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   return (
     <Layout
       noFooter
+      withBottomFixedBtn
       title="챌린지 신청"
       description="선택한 챌린지의 예치금을 설정하고, 결제를 하는 페이지입니다. 결제를 한 뒤 신청하기 버튼을 누르면 챌린지 신청이 완료됩니다."
     >
-      <SChallengeParticipantWrapper>
-        <ChallengeSummary
-          groupTitle={challengeData.groupTitle}
-          participantCount={challengeData.participantCount}
-          startDate={challengeData.startDate}
-          endDate={challengeData.endDate}
-          condition={challengeData.condition}
-        />
+      <ChallengeSummary
+        groupTitle={challengeData.groupTitle}
+        participantCount={challengeData.participantCount}
+        startDate={challengeData.startDate}
+        endDate={challengeData.endDate}
+        condition={challengeData.condition}
+      />
 
-        <DepositGuide />
-        <SDepositSettingWrapper>
-          <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
+      <DepositGuide />
+      <SDepositSettingWrapper>
+        <SDepositAmout>{changePriceFormat(deposit)}원</SDepositAmout>
+        <ScrollXBox>
           <SDepositBtnWrapper>
             {filteredDepositAmounts.map((amount) => (
               <li key={amount}>
@@ -102,56 +111,52 @@ export default function ChallengeParticipant() {
               </li>
             ))}
           </SDepositBtnWrapper>
-        </SDepositSettingWrapper>
-        <DepositRefundGuide />
-        <SPaymentMethodWrapper>
-          <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
-          {deposit !== 0 ? (
-            <SpaymentMethodItemWrapper>
-              <SPaymentMethodItem
-                type="button"
-                isSelectedPayment={
-                  selectedPayment === paymentMethods.CREDITCARD
-                }
-                onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
-              >
-                <p>신용카드</p>
-              </SPaymentMethodItem>
-              <SPaymentMethodItem
-                type="button"
-                isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
-                onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
-              >
-                <p>가상계좌</p>
-              </SPaymentMethodItem>
-              <SPaymentMethodItem
-                type="button"
-                isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
-                onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
-              >
-                <p>카카오페이</p>
-              </SPaymentMethodItem>
-            </SpaymentMethodItemWrapper>
-          ) : (
-            <SNotPaymentGuide>0원은 결제 수단이 없습니다.</SNotPaymentGuide>
-          )}
-        </SPaymentMethodWrapper>
-        <BottomFixedBtn
-          btns={[
-            {
-              text: '신청하기',
-              styleType: buttonStyleType,
-              size: 'large',
-              onClick: goToSuccess,
-            },
-          ]}
-        />
-      </SChallengeParticipantWrapper>
+        </ScrollXBox>
+      </SDepositSettingWrapper>
+      <DepositRefundGuide />
+      <SPaymentMethodWrapper>
+        <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
+        {deposit !== 0 ? (
+          <SpaymentMethodItemWrapper>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.CREDITCARD}
+              onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
+            >
+              <p>신용카드</p>
+            </SPaymentMethodItem>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
+              onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
+            >
+              <p>가상계좌</p>
+            </SPaymentMethodItem>
+            <SPaymentMethodItem
+              type="button"
+              isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
+              onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
+            >
+              <p>카카오페이</p>
+            </SPaymentMethodItem>
+          </SpaymentMethodItemWrapper>
+        ) : (
+          <SNotPaymentGuide>0원은 결제 수단이 없습니다.</SNotPaymentGuide>
+        )}
+      </SPaymentMethodWrapper>
+      <BottomFixedBtn
+        btns={[
+          {
+            text: '신청하기',
+            styleType: buttonStyleType,
+            size: 'large',
+            onClick: goToSuccess,
+          },
+        ]}
+      />
     </Layout>
   );
 }
-
-const SChallengeParticipantWrapper = styled.div``;
 
 const SDepositSettingWrapper = styled.section`
   border-bottom: 6px solid ${({ theme }) => theme.color.gray_ec};
@@ -173,15 +178,7 @@ const SDepositAmout = styled.p`
 
 const SDepositBtnWrapper = styled.ul`
   display: flex;
-  overflow-x: auto;
   margin: 1.5rem 0 2.5rem 1.25rem;
-  gap: 0.75rem;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
@@ -197,6 +194,8 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
     isSelectedDeposit ? theme.color.gray_ec : theme.color.gray_83};
   background-color: ${({ theme, isSelectedDeposit }) =>
     isSelectedDeposit ? theme.color.normal : theme.color.gray_ec};
+
+  margin-right: 0.75rem;
 
   > p {
     width: 100%;
