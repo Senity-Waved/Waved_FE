@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import Layout from '@/components/common/Layout';
 import JOBTITLE from '@/constants/jobTitle';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
@@ -21,7 +22,9 @@ export default function Profile() {
   const [modalState, setModalState] = useState<string>('');
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-  const isLogined = true;
+
+  const cookieToken = getCookie('accessToken');
+  const isLogined = !!cookieToken;
 
   const profileInfo = {
     nickName: '웨이브드',
@@ -68,7 +71,7 @@ export default function Profile() {
                     : { withdrawal: true },
               })
               .catch((error) => {
-                console.error('리다이렉션 실패:', error);
+                console.error('로그아웃 후 온보딩 리디렉션 실패:', error);
               });
           })
           .catch((error) => {

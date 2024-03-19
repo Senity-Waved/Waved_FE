@@ -11,14 +11,16 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
     if (type === 'challengeRequest') {
       return (
         <SFloatingBtnWrapper>
-          <SChallengeRequest href="/challenge/request">챌린지 요청</SChallengeRequest>
+          <SChallengeRequest href="/challenge/request">
+            챌린지 요청
+          </SChallengeRequest>
         </SFloatingBtnWrapper>
       );
     }
     if (type === 'register') {
       return (
         <SFloatingBtnWrapper>
-          <SRegister href="/register">회원가입 및 로그인</SRegister>
+          <SRegister href="/onboarding">회원가입 및 로그인</SRegister>
         </SFloatingBtnWrapper>
       );
     }
