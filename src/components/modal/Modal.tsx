@@ -51,7 +51,7 @@ export default function Modal({
               text: btnText,
               styleType: 'primary',
               size: 'small',
-              onClick: onClick,
+              onClick,
             },
           ]}
         />
