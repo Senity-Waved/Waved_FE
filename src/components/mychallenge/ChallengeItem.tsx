@@ -104,7 +104,7 @@ const SInfoWrapper = styled.div`
 const SDuration = styled.p``;
 
 const SDeposit = styled.p`
-  span {
+  span:nth-of-type(1) {
     padding-right: 0.5rem;
   }
 `;
