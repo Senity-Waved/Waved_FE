@@ -1,6 +1,7 @@
 export default function LoginTest() {
   const handleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_SEVER_URL}/oauth2/authorization/google`;
+    window.location.href =
+      'https://waved.azurewebsites.net/oauth2/authorization/google';
   };
 
   return (

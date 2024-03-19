@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
@@ -13,6 +13,8 @@ import HomeHeader from '@/components/home/HomeHeader';
 import RecrutingList from '@/components/home/RecrutingList';
 import IChallengeList from '@/types/challengeList';
 import HOME_SECTION_TITLE from '@/constants/homeSectionTitle';
+import SnackBar from '@/components/common/SnackBar';
+import ISnackBarState from '@/types/snackbar';
 
 const challengeData: IChallengeList[] = [
   {
@@ -73,13 +75,21 @@ const filteredChallenge = {
 
 export default function Home() {
   const router = useRouter();
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+    type: 'warning',
+  });
 
   useEffect(() => {
     const { redirected } = router.query;
 
     if (redirected) {
-      alert('로그인이 필요한 페이지입니다.');
-
+      setSnackBarState({
+        open: true,
+        text: '로그인이 필요한 페이지입니다.',
+        type: 'warning',
+      });
       router
         .replace('/', undefined, { shallow: true })
         .catch((error) => console.error(error));
@@ -127,6 +137,9 @@ export default function Home() {
           subtitle={HOME_SECTION_TITLE.LIFE.sub}
           challenges={filteredChallenge.life}
         />
+        {snackBarState.open && (
+          <SnackBar text={snackBarState.text} type={snackBarState.type} />
+        )}
       </main>
       <FloatingBtn type={user ? 'challengeRequest' : 'register'} />
       <Footer />
