@@ -44,6 +44,12 @@ export default function Home({
 
         await router.replace('/', undefined, { shallow: true });
       }
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
     };
     handleRedirect().catch((error) => console.error(error));
   }, [router, router.query]);
