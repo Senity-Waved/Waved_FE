@@ -39,6 +39,11 @@ export default function OnBoarding() {
     }
   }, [query, router]);
 
+  const handleLogin = () => {
+    window.location.href =
+      'https://waved.azurewebsites.net/oauth2/authorization/google';
+  };
+
   return (
     <SOnBoardingWrapper>
       <Head>
@@ -96,6 +101,7 @@ export default function OnBoarding() {
                 text: '구글로 계속하기',
                 styleType: 'white_line',
                 size: 'large',
+                onClick: handleLogin,
               },
             ]}
           />
