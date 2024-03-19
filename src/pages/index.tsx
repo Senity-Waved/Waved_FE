@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
 import styled from '@emotion/styled';
-import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
@@ -11,72 +10,12 @@ import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
-import RecrutingList from '@/components/home/RecrutingList';
-import IChallengeList from '@/types/challengeList';
-import HOME_SECTION_TITLE from '@/constants/homeSectionTitle';
 import SnackBar from '@/components/common/SnackBar';
 import ISnackBarState from '@/types/snackbar';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-
-const challengeData: IChallengeList[] = [
-  {
-    challengeId: 34525,
-    title: '프론트엔드 기술 면접 1기',
-    thumbnail: 'https://via.placeholder.com/400x600.jpg',
-    challengeType: 'frontend',
-    isFree: false,
-  },
-  {
-    challengeId: 583545,
-    title: '백엔드 기술 면접 1기',
-    thumbnail: 'https://via.placeholder.com/400x600.jpg',
-    challengeType: 'backend',
-    isFree: false,
-  },
-  {
-    challengeId: 17858,
-    title: '블로그 포스팅',
-    thumbnail: 'https://via.placeholder.com/300x800.jpg',
-    challengeType: 'study',
-    isFree: false,
-  },
-  {
-    challengeId: 7563,
-    title: '깃허브 1일 1커밋',
-    thumbnail: 'https://via.placeholder.com/800x500.jpg',
-    challengeType: 'study',
-    isFree: false,
-  },
-  {
-    challengeId: 9764353,
-    title: '핸드폰 하루 6시간',
-    thumbnail: 'https://via.placeholder.com/400x600.jpg',
-    challengeType: 'life',
-    isFree: true,
-  },
-  {
-    challengeId: 47423,
-    title: '미라클 모닝',
-    thumbnail: 'https://via.placeholder.com/400x600.jpg',
-    challengeType: 'life',
-    isFree: true,
-  },
-];
-
-const filteredChallenge = {
-  skill: challengeData.filter(
-    (challenge) =>
-      challenge.challengeType === 'frontend' ||
-      challenge.challengeType === 'backend',
-  ),
-  study: challengeData.filter(
-    (challenge) => challenge.challengeType === 'study',
-  ),
-  life: challengeData.filter((challenge) => challenge.challengeType === 'life'),
-};
 
 export default function Home({
   getMyProcessingChallenges,
