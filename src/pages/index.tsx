@@ -4,6 +4,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
@@ -32,21 +33,22 @@ export default function Home({
   });
 
   useEffect(() => {
-    const { redirected } = router.query;
+    const handleRedirect = async () => {
+      const { redirected } = router.query;
+      if (redirected) {
+        setSnackBarState({
+          open: true,
+          text: '로그인이 필요한 페이지입니다.',
+          type: 'warning',
+        });
 
-    if (redirected) {
-      setSnackBarState({
-        open: true,
-        text: '로그인이 필요한 페이지입니다.',
-        type: 'warning',
-      });
-      router
-        .replace('/', undefined, { shallow: true })
-        .catch((error) => console.error(error));
-    }
+        await router.replace('/', undefined, { shallow: true });
+      }
+    };
+    handleRedirect().catch((error) => console.error(error));
   }, [router, router.query]);
 
-  const isLogined = true; // 로그인된 유저 테스트용 변수
+  const isLogined = getCookie('accessToken');
   return (
     <SHomeWrapper>
       <HomeHeader />
@@ -132,8 +134,13 @@ const SHomeWrapper = styled(SLayoutWrapper)`
 `;
 
 const SSection = styled.section`
-  &:last-of-type {
-    padding-bottom: 5rem;
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 6px;
+    margin: 1rem 0;
+    background-color: ${({ theme }) => theme.color.gray_ec};
   }
 `;
 
@@ -142,30 +149,15 @@ const STitleLink = styled(Link)`
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 2.5rem);
-  height: 44px;
-  margin: 0.75rem 1.25rem;
+  height: 60px;
+  margin: 0 1.25rem;
   color: ${({ theme }) => theme.color.gray_3c};
   h2 {
     font-size: ${({ theme }) => theme.fontSize.subtitle1};
     font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
   }
-  img {
-    transform: rotate(180deg);
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-  }
 `;
 
 const SListScrollX = styled.ul`
-  width: 100%;
-  overflow-x: auto;
-  padding: 0 1.25rem;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  margin: 0 1.25rem;
 `;
