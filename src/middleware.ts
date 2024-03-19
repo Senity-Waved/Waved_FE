@@ -9,10 +9,7 @@ export default function middleware(request: NextRequest) {
     '/mychallenge',
     '/challenge/request',
     '/verification',
-    '/profile/edit',
-    '/profile/mydeposit',
-    '/profile/mygithub',
-    '/profile/myreview',
+    '/profile/',
     '/register',
   ];
 
