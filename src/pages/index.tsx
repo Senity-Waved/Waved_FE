@@ -2,12 +2,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import axios from 'axios';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
 import ChallengeCardWide from '@/components/home/ChallengeCardWide';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
+import SnackBar from '@/components/common/SnackBar';
+import ISnackBarState from '@/types/snackbar';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
@@ -20,7 +25,36 @@ export default function Home({
   getMyProcessingChallenges: IMyProcessingChallenge[];
   getRecruitingChallenges: IRecruitingChallenge[];
 }) {
-  const isLogined = true; // 로그인된 유저 테스트용 변수
+  const router = useRouter();
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+    type: 'warning',
+  });
+
+  useEffect(() => {
+    const handleRedirect = async () => {
+      const { redirected } = router.query;
+      if (redirected) {
+        setSnackBarState({
+          open: true,
+          text: '로그인이 필요한 페이지입니다.',
+          type: 'warning',
+        });
+
+        await router.replace('/', undefined, { shallow: true });
+      }
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    };
+    handleRedirect().catch((error) => console.error(error));
+  }, [router, router.query]);
+
+  const isLogined = getCookie('accessToken');
   return (
     <SHomeWrapper>
       <HomeHeader />
@@ -51,6 +85,9 @@ export default function Home({
         <RecruitingChallenge
           getRecruitingChallenges={getRecruitingChallenges}
         />
+        {snackBarState.open && (
+          <SnackBar text={snackBarState.text} type={snackBarState.type} />
+        )}
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />

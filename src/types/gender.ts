@@ -1,6 +1,6 @@
 export enum EGender {
-  Male = 'male',
-  Female = 'female',
+  Male = 'MALE',
+  Female = 'FEMALE',
 }
 
 type TGenderOrNull = EGender | null;

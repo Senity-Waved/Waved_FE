@@ -11,6 +11,7 @@ import NicknameInput from '@/components/register/NicknameInput';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import IRegisterState from '@/types/register';
 import { SLayoutWrapper } from '@/components/common/Layout';
+import { registerApi } from '@/lib/axios/profile/api';
 
 export default function Register() {
   const router = useRouter();
@@ -25,13 +26,25 @@ export default function Register() {
 
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
 
-  const handleForSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitMebmerInfo = async () => {
+    if (step === 4 && registerData.jobTitle) {
+      try {
+        const response = await registerApi(registerData);
+        console.log('회원가입 완료 | ', response.data);
+        router
+          .push('/register/success')
+          .catch((error) =>
+            console.error('회원가입 후 페이지 이동 실패', error),
+          );
+      } catch (error) {
+        console.error('회원가입 실패:', error);
+      }
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step === 4 && registerData.jobTitle)
-      console.log(`회원가입 완료: ${JSON.stringify(registerData)}`);
-    router.push('/register/success').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    submitMebmerInfo().catch((error) => console.error(error));
   };
 
   const updateRegisterData = (newData: Partial<IRegisterState>) => {
@@ -127,7 +140,7 @@ export default function Register() {
           {step === 3 && <h3>닉네임을 입력해주세요.</h3>}
           {step === 4 && <h3>해당하는 직군을 선택해주세요.</h3>}
         </SRegisterStepGuide>
-        <form method="post" onSubmit={handleForSubmit} name="registerForm">
+        <form method="post" onSubmit={handleSubmit} name="registerForm">
           {step === 1 && <ServiceTermCheck updateData={updateRegisterData} />}
           {step === 2 && (
             <PrivacyInput

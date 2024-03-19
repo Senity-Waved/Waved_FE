@@ -20,7 +20,7 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
     if (type === 'register') {
       return (
         <SFloatingBtnWrapper>
-          <SRegister href="/register">회원가입 및 로그인</SRegister>
+          <SRegister href="/onboarding">회원가입 및 로그인</SRegister>
         </SFloatingBtnWrapper>
       );
     }
