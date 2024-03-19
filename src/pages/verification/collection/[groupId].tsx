@@ -9,6 +9,7 @@ import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
 import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
+import { GetServerSidePropsContext } from 'next';
 
 interface IVerificationCollection {
   challengeTitle: string;
@@ -115,11 +116,16 @@ const data2: IVerificationCollection = {
     },
   ],
 };
-export default function VeirificationCollection() {
+
+export default function VeirificationCollection({
+  groupId,
+  type,
+}: {
+  groupId: string;
+  type: TVerificationType;
+}) {
   const router = useRouter();
   const { query } = useRouter();
-  const groupId = query.groupId as string;
-  const type = query.type as TVerificationType;
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
@@ -211,6 +217,22 @@ export default function VeirificationCollection() {
     </Layout>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const { groupId, type } = context.query as {
+    groupId: string;
+    type: TVerificationType;
+  };
+
+  return {
+    props: {
+      groupId,
+      type,
+    },
+  };
+};
 
 const SStampWrapper = styled.section`
   padding: 1rem 1.25rem 0 1.25rem;
