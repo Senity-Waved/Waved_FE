@@ -2,8 +2,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
-export default function OauthTest() {
+export default function Oauth() {
   const [accessToken, setAccessToken] = useState<string | null>('');
   const [refreshToken, setRefreshToken] = useState<string | null>('');
   const [hasInfo, setHasInfo] = useState<boolean | null>(null);
@@ -65,5 +66,5 @@ export default function OauthTest() {
     }
   }, [hasInfo, router, accessToken, isTokenPosted]);
 
-  return <div>로그인 처리중입니다.</div>;
+  return <LoadingSpinner />;
 }
