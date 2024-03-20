@@ -1,4 +1,12 @@
-const writeLayoutText = {
+interface IWriteLayoutText {
+  [key: string]: {
+    btnText: string;
+    mainText: string;
+    placeholder: string;
+  };
+}
+
+const writeLayoutText: IWriteLayoutText = {
   후기작성: {
     btnText: '작성완료',
     mainText: '챌린지 후기를 작성해주세요',
@@ -19,7 +27,7 @@ const writeLayoutText = {
   링크인증: {
     btnText: '제출하기',
     mainText: '챌린지 인증 링크를 입력해주세요.',
-    placeholder: 'http://',
+    placeholder: '내용을 작성해주세요. (최소 10자 이상)',
   },
   글인증: {
     btnText: '제출하기',

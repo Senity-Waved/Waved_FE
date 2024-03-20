@@ -1,72 +1,89 @@
+import Link from 'next/link';
 import styled from '@emotion/styled';
-import Image from 'next/image';
+import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import ChallengeProgress from '@/components/mychallenge/ChallengeProgress';
 import ChallengeBtn from '@/components/mychallenge/ChallengeBtn';
+import parseDate from '@/utils/parseDate';
+import changePriceFormat from '@/utils/changePriceFormat';
 
-export interface IChallengeItem {
-  // challengeId: number;
-  // title: string;
-  status: '진행 중' | '대기 중' | '진행 완료';
-  // startDate: number;
-  // endDate: number;
-  // certificationType: '글' | '링크' | '사진' | '자동';
-  // successCount?: number;
-  // failCount?: number;
-  // totalCount?: number;
-  // deposit: number;
-  // isTodayCertification?: boolean;
-  // isReviewd?: boolean;
+interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
+  status: TMyChallengeStatus;
 }
 
-export default function ChallengeItem({ status }: IChallengeItem) {
+export default function ChallengeItem({
+  status,
+  groupId,
+  groupTitle,
+  startDate,
+  endDate,
+  successCount,
+  isReviewed,
+  isVerified,
+  verificationType,
+  deposit,
+}: TMyChallengeItem) {
+  const startdate = parseDate(startDate);
+  const enddate = parseDate(endDate);
+
   return (
     <SWrapper>
       <SInfoWrapper>
-        <h3>챌린지명</h3>
+        <h3>{groupTitle}</h3>
         <div>
-          <SDuration>02/19~03/04, 주 3일</SDuration>
+          <SDuration>
+            {startdate[1]}/{startdate[2]}~{enddate[1]}/{enddate[2]}, 매일
+          </SDuration>
           <SDeposit>
             <span>예치금</span>
-            <span>10,000원</span>
+            <span>{changePriceFormat(deposit)}원</span>
           </SDeposit>
         </div>
       </SInfoWrapper>
-      {status === '진행 중' && <ChallengeProgress />}
-      <ChallengeBtn challengeStatus={status} challengeId="8" isAbled />
-      <SDetailBtn>
-        <Image
-          src="/icons/icon-left-arrow.svg"
-          alt="뒤로가기 아이콘"
-          width={24}
-          height={24}
+      {status === 'progress' && (
+        <ChallengeProgress
+          successCount={successCount}
+          startDate={startDate}
+          isVerified={isVerified}
         />
-      </SDetailBtn>
+      )}
+      <ChallengeBtn
+        groupId={groupId}
+        isReviewed={isReviewed}
+        isVerified={isVerified}
+        verificationType={verificationType}
+        startDate={startDate}
+        status={status}
+      />
+      <SDetailBtn href={`/challenge/${groupId}`} />
     </SWrapper>
   );
 }
 
-const SWrapper = styled.div`
+const SWrapper = styled.li`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   position: relative;
   padding: 1rem;
   background-color: ${({ theme }) => theme.color.white};
-  box-shadow: 0 3px 8px 2px rgba(35, 62, 112, 0.05);
+  box-shadow: 0px 2px 15px 0 rgba(35, 62, 112, 0.15);
   border-radius: 8px;
 `;
 
-const SDetailBtn = styled.button`
+const SDetailBtn = styled(Link)`
+  display: block;
   position: absolute;
   top: 1rem;
   right: 1rem;
+  width: 24px;
   height: 24px;
+  background: url('/icons/icon-left-arrow.svg') no-repeat center;
   transform: rotate(180deg);
 `;
 
 const SInfoWrapper = styled.div`
   h3 {
-    font-size: 1rem;
+    font-size: ${({ theme }) => theme.fontSize.body2};
     line-height: 1.5rem;
     font-weight: ${({ theme }) => theme.fontWeight.body2};
     color: ${({ theme }) => theme.color.gray_3c};
@@ -78,7 +95,7 @@ const SInfoWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    font-size: 0.75rem;
+    font-size: ${({ theme }) => theme.fontSize.caption2};
     font-weight: ${({ theme }) => theme.fontWeight.caption2};
     color: ${({ theme }) => theme.color.gray_3c};
   }
@@ -87,7 +104,7 @@ const SInfoWrapper = styled.div`
 const SDuration = styled.p``;
 
 const SDeposit = styled.p`
-  span {
+  span:nth-of-type(1) {
     padding-right: 0.5rem;
   }
 `;

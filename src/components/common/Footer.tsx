@@ -42,7 +42,7 @@ export default function Footer() {
             height={24}
             blurDataURL="/icons/icon-mychallenge-normal"
           />
-          <p>마이 챌린지</p>
+          <p>마이챌린지</p>
         </SFooterNavItem>
       </SFooterNavLink>
       <SFooterNavLink href="/profile">

@@ -372,7 +372,7 @@ const SProfileActiveMenuWrapper = styled(SPropfileBaseMenuWrapper)`
     color: ${({ theme, isLogined }) =>
       isLogined ? theme.color.gray_3c : theme.color.gray_bf};
     cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
-    pointer-events: none;
+    pointer-events: ${({ isLogined }) => (isLogined ? 'auto' : 'none')};
   }
 `;
 
@@ -406,7 +406,7 @@ const SLogoutBtnWrapper = styled.li<{ isLogined: boolean }>`
     color: ${({ theme, isLogined }) =>
       isLogined ? theme.color.gray_3c : theme.color.gray_bf};
     cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
-    pointer-events: none;
+    pointer-events: ${({ isLogined }) => (isLogined ? 'auto' : 'none')};
   }
 
   &::after {

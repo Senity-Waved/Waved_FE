@@ -38,21 +38,18 @@ const SEmptyWrapper = styled.div<IEmptyView>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
   ${({ pageType }) => (pageType === '마이챌린지' ? '' : centerStyle)}
 `;
 
 const SEmptyMainText = styled.h2`
-  font-size: 1.125rem;
-  line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-  color: ${({ theme }) => theme.color.gray_99};
-  margin-bottom: 0.25rem;
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
+  color: ${({ theme }) => theme.color.gray_bf};
 `;
 
 const SEmptySubText = styled.p`
-  font-size: 0.875rem;
-  line-height: 1.4;
+  font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_99};
+  color: ${({ theme }) => theme.color.gray_bf};
 `;

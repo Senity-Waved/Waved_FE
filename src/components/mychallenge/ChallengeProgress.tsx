@@ -1,7 +1,18 @@
 import styled from '@emotion/styled';
+import { TMyChallengeInfo } from '@/types/myChallenge';
+import calculateDDay from '@/utils/calculateDDay';
 
-export default function ChallengeProgress() {
-  const dealt = 80;
+export default function ChallengeProgress({
+  successCount,
+  startDate,
+  isVerified,
+}: Pick<TMyChallengeInfo, 'successCount' | 'startDate' | 'isVerified'>) {
+  const failCount =
+    Math.abs(calculateDDay(startDate)) - successCount + (isVerified ? 1 : 0);
+  const dealt = (() => {
+    const percent = (100 / 14) * successCount;
+    return Math.round(percent);
+  })();
 
   return (
     <SWrapper>
@@ -17,15 +28,15 @@ export default function ChallengeProgress() {
       <SCountList>
         <li>
           <SResult>인증 성공</SResult>
-          <SCount>1회</SCount>
+          <SCount>{successCount}회</SCount>
         </li>
         <li>
           <SResult>인증 실패</SResult>
-          <SCount>1회</SCount>
+          <SCount>{failCount}회</SCount>
         </li>
         <li>
           <SResult>남은 인증</SResult>
-          <SCount>1회</SCount>
+          <SCount>{14 - failCount - successCount}회</SCount>
         </li>
       </SCountList>
     </SWrapper>

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import IVerificationInfo from '@/types/verification';
+import IVerificationInfo, { TVerificationType } from '@/types/verification';
 import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
 
 interface IVerificationList {
-  verificationType: string;
+  verificationType: TVerificationType;
   verifications: IVerificationInfo[];
   isToday: boolean;
   question?: string;
@@ -49,8 +49,8 @@ export default function VerificationList({
 
   return (
     <SWrapper>
+      {question && <SQuestion>Q. {question}</SQuestion>}
       <SSortBtnWrapper>
-        {question && <SQuestion>Q. {question}</SQuestion>}
         <SSortBtn isActive={sort === 'time'} onClick={() => setSort('time')}>
           • 최신순
         </SSortBtn>
@@ -62,26 +62,29 @@ export default function VerificationList({
         </SSortBtn>
       </SSortBtnWrapper>
       <SList>
-        {myVerification ? (
-          verificationType === 'photo' ? (
-            <VerificationPhotoItem {...myVerification} />
+        {
+          // eslint-disable-next-line no-nested-ternary
+          myVerification ? (
+            verificationType === 'PICTURE' ? (
+              <VerificationPhotoItem {...myVerification} />
+            ) : (
+              <VerificationItem
+                {...myVerification}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+              />
+            )
           ) : (
-            <VerificationItem
-              {...myVerification}
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-            />
+            isToday && (
+              <SEmptyMyVerifiaction>
+                오늘의 인증을 진행해주세요!
+              </SEmptyMyVerifiaction>
+            )
           )
-        ) : (
-          isToday && (
-            <SEmptyMyVerifiaction>
-              오늘의 인증을 진행해주세요!
-            </SEmptyMyVerifiaction>
-          )
-        )}
+        }
         {sortedVerifications.map((verification) => {
           const { verificationId } = verification;
-          return verificationType === 'photo' ? (
+          return verificationType === 'PICTURE' ? (
             <VerificationPhotoItem key={verificationId} {...verification} />
           ) : (
             <VerificationItem
@@ -98,7 +101,7 @@ export default function VerificationList({
 }
 
 const SWrapper = styled.div`
-  padding: 0.5rem 1.25rem;
+  padding: 1rem 1.25rem;
 `;
 
 const SSortBtnWrapper = styled.div`
@@ -122,10 +125,14 @@ const SList = styled.ul`
 `;
 
 const SQuestion = styled.p`
-  color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.body1};
-  font-weight: ${({ theme }) => theme.fontWeight.body1};
-  padding: 1rem 0.25rem 1.5rem 0.25rem;
+  color: ${({ theme }) => theme.color.normal};
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  line-height: 1.6;
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.color.light};
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
 `;
 
 const SEmptyMyVerifiaction = styled.p`
