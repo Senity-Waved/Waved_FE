@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { GetServerSidePropsContext } from 'next';
 import styled from '@emotion/styled';
 import ISnackBarState from '@/types/snackbar';
 import IVerificationInfo, { TVerificationType } from '@/types/verification';
@@ -9,7 +10,6 @@ import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
 import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
-import { GetServerSidePropsContext } from 'next';
 
 interface IVerificationCollection {
   challengeTitle: string;
