@@ -20,9 +20,9 @@ export default function ChallengeBtn({
   status,
 }: TBtn) {
   const isAble = (() => {
-    return status === 'progress'
+    return status === 'PROGRESS'
       ? !isVerified
-      : status === 'completed' && !isReviewed;
+      : status === 'COMPLETED' && !isReviewed;
   })();
 
   const preventLink = (e: React.MouseEvent<HTMLElement>) => {
@@ -32,7 +32,7 @@ export default function ChallengeBtn({
   };
 
   switch (status) {
-    case 'progress':
+    case 'PROGRESS':
       return (
         <SBtnWrapper>
           <SLink
@@ -68,7 +68,7 @@ export default function ChallengeBtn({
           )}
         </SBtnWrapper>
       );
-    case 'waiting':
+    case 'WAITING':
       return (
         <SBtnWrapper>
           <SBtn styleType="gray">
@@ -76,7 +76,7 @@ export default function ChallengeBtn({
           </SBtn>
         </SBtnWrapper>
       );
-    case 'completed':
+    case 'COMPLETED':
       return (
         <SBtnWrapper>
           <SLink href="#">
