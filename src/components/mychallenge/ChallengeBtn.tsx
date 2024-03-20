@@ -4,9 +4,9 @@ import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
 
 interface TBtn
-  extends Pick<
+  extends Omit<
     TMyChallengeInfo,
-    'groupId' | 'isReviewed' | 'isVerified' | 'verificationType' | 'startDate'
+    'myChallengeId' | 'groupTitle' | 'endDate' | 'successCount' | 'deposit'
   > {
   status: TMyChallengeStatus;
 }
@@ -15,6 +15,8 @@ export default function ChallengeBtn({
   groupId,
   isReviewed,
   isVerified,
+  isSuccessed,
+  isRefunded,
   verificationType,
   startDate,
   status,
@@ -89,12 +91,16 @@ export default function ChallengeBtn({
             }}
             as="mychallenge/review"
           >
-            <SBtn
-              styleType={isAble ? 'border' : 'bordergray'}
-              onClick={preventLink}
-            >
-              {isAble ? '후기 작성' : '작성 완료'}
-            </SBtn>
+            {isSuccessed && !isRefunded ? (
+              <SBtn styleType="middle">환급 신청</SBtn>
+            ) : (
+              <SBtn
+                styleType={isAble ? 'border' : 'bordergray'}
+                onClick={preventLink}
+              >
+                {isAble ? '후기 작성' : '작성 완료'}
+              </SBtn>
+            )}
           </SLink>
         </SBtnWrapper>
       );

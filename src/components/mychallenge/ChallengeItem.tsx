@@ -57,6 +57,8 @@ export default function ChallengeItem({
         groupId={groupId}
         isReviewed={isReviewed}
         isVerified={isVerified}
+        isSuccessed={isSuccessed}
+        isRefunded={isRefunded}
         verificationType={verificationType}
         startDate={startDate}
         status={status}
