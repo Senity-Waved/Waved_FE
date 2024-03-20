@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
 
-interface TBtn
+interface IBtn
   extends Omit<
     TMyChallengeInfo,
     'myChallengeId' | 'groupTitle' | 'endDate' | 'successCount' | 'deposit'
@@ -20,7 +20,7 @@ export default function ChallengeBtn({
   verificationType,
   startDate,
   status,
-}: TBtn) {
+}: IBtn) {
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -49,7 +49,7 @@ export default function ChallengeBtn({
             <SBtn
               as="button"
               styleType="middle"
-              onClick={() => console.log('test')}
+              onClick={() => console.log('제출확인 모달 오픈')}
             >
               인증 하기
             </SBtn>
@@ -84,24 +84,30 @@ export default function ChallengeBtn({
           <SLink href="#">
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          <SLink
-            href={{
-              pathname: `/mychallenge/review`,
-              query: { groupId },
-            }}
-            as="mychallenge/review"
-          >
-            {isSuccessed && !isRefunded ? (
-              <SBtn styleType="middle">환급 신청</SBtn>
-            ) : (
+          {isSuccessed && !isRefunded ? (
+            <SBtn
+              as="button"
+              styleType="middle"
+              onClick={() => console.log('환급신청완료 모달 오픈')}
+            >
+              환급 신청
+            </SBtn>
+          ) : (
+            <SLink
+              href={{
+                pathname: `/mychallenge/review`,
+                query: { groupId },
+              }}
+              as="mychallenge/review"
+            >
               <SBtn
                 styleType={isAble ? 'border' : 'bordergray'}
                 onClick={preventLink}
               >
                 {isAble ? '후기 작성' : '작성 완료'}
               </SBtn>
-            )}
-          </SLink>
+            </SLink>
+          )}
         </SBtnWrapper>
       );
     default:
