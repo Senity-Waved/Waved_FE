@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { GetServerSidePropsContext } from 'next';
 import styled from '@emotion/styled';
+import ISnackBarState from '@/types/snackbar';
+import IVerificationInfo, { TVerificationType } from '@/types/verification';
+import ONE_DAY from '@/constants/day';
 import Layout from '@/components/common/Layout';
 import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
+import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
-import ONE_DAY from '@/constants/day';
-import IVerificationInfo from '@/types/verification';
 
 interface IVerificationCollection {
   challengeTitle: string;
@@ -112,20 +116,71 @@ const data2: IVerificationCollection = {
     },
   ],
 };
-export default function VeirificationCollection() {
+
+export default function VeirificationCollection({
+  groupId,
+  type,
+}: {
+  groupId: string;
+  type: TVerificationType;
+}) {
+  const router = useRouter();
+  const { query } = useRouter();
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+  });
+
   const today = new Date().getTime();
-  const [todayYear, todayMonth, todayDay] = parseDate(today);
   const [date, setDate] = useState<number>(today);
   const [year, month, day] = parseDate(date);
-  console.log(today, parseDate(today));
   const isToday = parseDate(today).join('-') === `${year}-${month}-${day}`;
+  const isStartday = `${year}-${month}-${day}` === data.startDate.split('T')[0];
 
   const getNextDay = () => setDate(date + ONE_DAY);
   const getPreviousDay = () => setDate(date - ONE_DAY);
 
+  useEffect(() => {
+    const handleRouting = (
+      snackBarText: string,
+      snackBarType: 'correct' | 'warning' = 'correct',
+    ): void => {
+      setSnackBarState({
+        open: true,
+        text: snackBarText,
+        type: snackBarType,
+      });
+      router
+        .replace(
+          {
+            pathname: `/verification/collection/${groupId}`,
+            query: {
+              type,
+            },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
+        );
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    };
+    if (query.submitVerification) {
+      handleRouting('인증 제출이 완료되었습니다.');
+    }
+  }, [query, router, groupId]);
+
   return (
     <Layout
-      headerText={data2.challengeTitle}
+      headerText={data.challengeTitle}
       title={`인증내역-${data.challengeTitle}`}
       description="챌린지의 인증내역을 확인하는 페이지입니다."
       noFooter
@@ -134,35 +189,68 @@ export default function VeirificationCollection() {
         <STitle>📌 내 인증 현황 </STitle>
         <Stamp results={data.results} startDate={data.startDate} />
       </SStampWrapper>
-      <SDateWrapper>
-        <SDateBtn
-          direction="prev"
-          onClick={getPreviousDay}
-          disabled={`${year}-${month}-${day}` === data.startDate}
+      {type !== 'GITHUB' && (
+        <>
+          <SDateWrapper>
+            <SDateBtn
+              direction="prev"
+              onClick={getPreviousDay}
+              disabled={isStartday}
+            />
+            <SDate>
+              {year}. {month}. {day}
+            </SDate>
+            <SDateBtn
+              direction="next"
+              onClick={getNextDay}
+              disabled={isToday}
+            />
+          </SDateWrapper>
+          <VerificationList
+            verificationType={type}
+            verifications={
+              type === 'PICTURE' ? data2.verifications : data.verifications
+            }
+            isToday={isToday}
+            question={data.question}
+          />
+        </>
+      )}
+      {snackBarState.open && (
+        <SnackBar
+          text={snackBarState.text}
+          type={snackBarState.type}
+          noFooter
         />
-        <SDate>
-          {year}. {month}. {day}
-        </SDate>
-        <SDateBtn direction="next" onClick={getNextDay} disabled={isToday} />
-      </SDateWrapper>
-      <VerificationList
-        verificationType="link"
-        verifications={data.verifications}
-        isToday={isToday}
-        question={data.question}
-      />
+      )}
     </Layout>
   );
 }
 
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const { groupId, type } = context.query as {
+    groupId: string;
+    type: TVerificationType;
+  };
+
+  return {
+    props: {
+      groupId,
+      type,
+    },
+  };
+};
+
 const SStampWrapper = styled.section`
-  padding: 1.5rem 1.25rem 0 1.25rem;
+  padding: 1rem 1.25rem 0 1.25rem;
 `;
 
 const STitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
+  font-size: ${({ theme }) => theme.fontSize.headline2};
   line-height: 1.4;
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
 `;
 

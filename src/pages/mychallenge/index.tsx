@@ -1,12 +1,108 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
+import ISnackBarState from '@/types/snackbar';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
-import ISnackBarState from '@/types/snackbar';
-import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import SnackBar from '@/components/common/SnackBar';
+import { TMyChallengeInfo } from '@/types/myChallenge';
+
+const progressData: TMyChallengeInfo[] = [
+  {
+    myChallengeId: 3,
+    groupId: 3,
+    groupTitle: '백엔드 기술면접 챌린지 2기',
+    startDate: '2024-03-11T00:00:00+09:00',
+    endDate: '2024-03-24T00:00:00+09:00',
+    successCount: 2,
+    isReviewed: null,
+    isVerified: false,
+    verificationType: 'TEXT',
+    deposit: 10000,
+  },
+  {
+    myChallengeId: 4,
+    groupId: 4,
+    groupTitle: '1일 1커밋 챌린지 1기',
+    startDate: '2024-03-11T00:00:00+09:00',
+    endDate: '2024-03-24T00:00:00+09:00',
+    successCount: 5,
+    isReviewed: null,
+    isVerified: true,
+    verificationType: 'GITHUB',
+    deposit: 0,
+  },
+  {
+    myChallengeId: 5,
+    groupId: 5,
+    groupTitle: '스크린타임 4시간 챌린지 2기',
+    startDate: '2024-03-10T00:00:00+09:00',
+    endDate: '2024-03-23T00:00:00+09:00',
+    successCount: 5,
+    isReviewed: null,
+    isVerified: false,
+    verificationType: 'PICTURE',
+    deposit: 5000,
+  },
+  {
+    myChallengeId: 6,
+    groupId: 6,
+    groupTitle: '프론트엔드 아티클 공유 챌린지 1기',
+    startDate: '2024-03-05T00:00:00+09:00',
+    endDate: '2024-03-18T00:00:00+09:00',
+    successCount: 12,
+    isReviewed: null,
+    isVerified: false,
+    verificationType: 'LINK',
+    deposit: 5000,
+  },
+];
+
+const waitingData: TMyChallengeInfo[] = [
+  {
+    myChallengeId: 12,
+    groupId: 12,
+    groupTitle: '백엔드 기술면접 챌린지 3기',
+    startDate: '2024-03-25T00:00:00+09:00',
+    endDate: '2024-04-07T00:00:00+09:00',
+    successCount: 0,
+    isReviewed: null,
+    isVerified: null,
+    verificationType: 'TEXT',
+    deposit: 10000,
+  },
+];
+
+const completedData: TMyChallengeInfo[] = [
+  {
+    myChallengeId: 1,
+    groupId: 1,
+    groupTitle: '백엔드 기술면접 챌린지 1기',
+    startDate: '2024-03-01T00:00:00+09:00',
+    endDate: '2024-04-14T00:00:00+09:00',
+    successCount: 14,
+    isReviewed: true,
+    isVerified: null,
+    verificationType: 'TEXT',
+    deposit: 20000,
+  },
+  {
+    myChallengeId: 2,
+    groupId: 2,
+    groupTitle: '스크린타임 4시간 챌린지 1기',
+    startDate: '2024-03-01T00:00:00+09:00',
+    endDate: '2024-03-14T00:00:00+09:00',
+    successCount: 13,
+    isReviewed: false,
+    isVerified: null,
+    verificationType: 'PICTURE',
+    deposit: 10000,
+  },
+];
 
 export default function MyChallenge() {
   const router = useRouter();
@@ -41,6 +137,8 @@ export default function MyChallenge() {
       handleRouting(REVIEW_SNACKBAR_TEXT.POST);
     }
   }, [query, router]);
+  const isEmptyData =
+    progressData.length + waitingData.length + completedData.length;
   return (
     <Layout
       headerText="MY 챌린지"
@@ -49,19 +147,55 @@ export default function MyChallenge() {
     >
       <TabMenu
         tabs={[
-          { href: '#processing', text: '진행 중' },
-          { href: '#pending', text: '대기 중' },
+          { href: '#progress', text: '진행 중' },
+          { href: '#waiting', text: '대기 중' },
           { href: '#completed', text: '진행 완료' },
         ]}
       />
-      {/* data.length == 0 일때 EmptyView + 챌린지탐색 */}
-      <ChallengeEmptyView />
-      <ChallengeSection status="진행 중" scrollId="processing" />
-      <ChallengeSection status="대기 중" scrollId="pending" />
-      <ChallengeSection status="진행 완료" scrollId="completed" />
+
+      <div>
+        {progressData.length !== 0 && (
+          <ChallengeSection
+            mainText="🧑🏻‍💻 진행 중"
+            status="progress"
+            challenges={progressData}
+          />
+        )}
+        {waitingData.length !== 0 && (
+          <ChallengeSection
+            mainText="📚 대기 중"
+            status="waiting"
+            challenges={waitingData}
+          />
+        )}
+        {completedData.length !== 0 && (
+          <ChallengeSection
+            mainText="🥳 진행 완료"
+            status="completed"
+            challenges={completedData}
+          />
+        )}
+      </div>
+      {isEmptyData === 0 && <ChallengeEmptyView />}
+      {progressData.length + waitingData.length === 0 &&
+        completedData.length !== 0 && (
+          <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
+        )}
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
     </Layout>
   );
 }
+
+const SLinkToHome = styled(Link)`
+  font-size: ${({ theme }) => theme.fontSize.body2};
+  line-height: 1.5rem;
+  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  color: ${({ theme }) => theme.color.gray_3c};
+  display: block;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+`;

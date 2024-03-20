@@ -30,7 +30,7 @@ export default function Stamp({ results, startDate }: IStamp) {
 
   return (
     <SStampWrapper>
-      {resultStamps.map((result, index) => (
+      {resultStamps.map((result) => (
         <SStampItem key={uuidv4()}>
           <Image
             src={getResultStamp(result)}

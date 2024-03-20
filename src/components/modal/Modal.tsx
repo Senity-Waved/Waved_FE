@@ -7,7 +7,7 @@ interface IModal {
   subText?: string;
   image?: string;
   btnText: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   onClose: () => void;
 }
 
@@ -85,18 +85,18 @@ const SModalContent = styled.div`
 `;
 
 const SModalMainText = styled.h2<{ marginBottom: boolean }>`
-  font-size: 1.125rem;
+  font-size: ${({ theme }) => theme.fontSize.headline2};
   line-height: 1.4;
   color: ${({ theme }) => theme.color.gray_3c};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
   margin-bottom: ${({ marginBottom }) => (marginBottom ? '.5rem' : '1.5rem')};
 `;
 
 const SModalSubText = styled.p`
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSize.body4};
   line-height: 1.4;
   color: ${({ theme }) => theme.color.gray_70};
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   margin-bottom: 1.5rem;
   text-align: center;
 `;
