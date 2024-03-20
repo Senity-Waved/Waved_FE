@@ -7,7 +7,7 @@ import {
 } from './interceptors';
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: 'https://waved.azurewebsites.net',
+  baseURL: 'http://127.0.0.1:9000',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
