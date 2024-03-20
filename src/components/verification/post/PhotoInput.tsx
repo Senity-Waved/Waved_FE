@@ -7,7 +7,6 @@ interface IPhotoInput {
 }
 
 export default function PhotoInput({ setFile }: IPhotoInput) {
-  // const [photo, setPhoto] = useState<File>();
   const [photoPreview, setPhotoPreview] = useState('');
 
   const uploadPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {

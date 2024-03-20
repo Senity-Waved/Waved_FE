@@ -79,7 +79,7 @@ export default function WriteLayout({
 const SWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.gray_f9};
   padding: 1.5rem 1.25rem;
-  height: 100%;
+  height: calc(100vh - 56px);
 `;
 
 const SMainText = styled.h2`
