@@ -151,9 +151,18 @@ export default function VeirificationCollection({
         type: snackBarType,
       });
       router
-        .replace(`/verification/collection/${groupId}`, undefined, {
-          shallow: true,
-        })
+        .replace(
+          {
+            pathname: `/verification/collection/${groupId}`,
+            query: {
+              type,
+            },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
         .catch((error: Error) =>
           console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
         );
