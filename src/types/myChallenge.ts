@@ -1,19 +1,19 @@
 import { TVerificationType } from './verification';
 
 export type TMyChallengeInfo = {
-  myChallengeId: number;
-  groupId: number;
-  groupTitle: string;
-  startDate: string;
+  challengeGroupId: number;
   endDate: string;
-  successCount: number;
+  groupTitle: string;
+  isGithubConnected?: boolean;
   isReviewed?: boolean | null;
   isVerified?: boolean | null;
-  isRefunded?: boolean | null;
-  isSuccessed?: boolean | null;
-  isGithubConnected?: boolean;
-  verificationType: TVerificationType;
-  deposit: number;
+  myChallengeId: number;
+  startDate: string;
+  successCount: number;
+  isRefunded?: boolean | null; //환급여부
+  isSuccessed?: boolean | null; //최종달성여부
+  verificationType: TVerificationType; //챌린지 인증타입
+  deposit: number; //예치금
 };
 
 export type TMyChallengeStatus = 'PROGRESS' | 'WAITING' | 'COMPLETED';
