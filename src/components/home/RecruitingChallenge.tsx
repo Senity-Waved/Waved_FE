@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import ChallengeCard from '@/components/home/ChallengeCard';
+import EmptyView from '@/components/common/EmptyView';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 
 export default function RecruitingChallenge({
@@ -10,16 +11,27 @@ export default function RecruitingChallenge({
   return (
     <SSection>
       <STitle>✅ 모집 중인 챌린지</STitle>
-      <SList>
-        {getRecruitingChallenges.map((challenge) => (
-          <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
-        ))}
-      </SList>
+      {getRecruitingChallenges.length > 0 ? (
+        <SList>
+          {getRecruitingChallenges.map((challenge) => (
+            <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
+          ))}
+        </SList>
+      ) : (
+        <SEmptyViewWrapper>
+          <EmptyView pageType="모집챌린지" />
+        </SEmptyViewWrapper>
+      )}
     </SSection>
   );
 }
 
 const SSection = styled.section``;
+
+const SEmptyViewWrapper = styled.div`
+  position: relative;
+  height: 340px;
+`;
 
 const STitle = styled.h2`
   width: calc(100% - 2.5rem);

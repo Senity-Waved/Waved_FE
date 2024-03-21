@@ -24,6 +24,7 @@ export default function Custom404() {
             alt="404 에러"
             width={170}
             height={76}
+            priority
           />
           <SMainText>해당 페이지를 찾을 수 없습니다.</SMainText>
           <SSubText>
