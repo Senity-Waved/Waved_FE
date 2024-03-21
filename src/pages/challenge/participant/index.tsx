@@ -59,6 +59,10 @@ export default function ChallengeParticipant() {
     if (!challengeData.isFree && deposit !== 0) {
       return 'primary';
     }
+
+    if (challengeData.isFree && deposit !== 0) {
+      return 'primary';
+    }
     return 'disabled';
   };
 
