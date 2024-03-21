@@ -4,12 +4,48 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import screenSize from '@/constants/screenSize';
 
-interface IBannerImages {
-  src: string;
-  alt: string;
+interface IBannerItem {
+  image: {
+    src: string;
+    alt: string;
+  };
+  link?: {
+    href: string;
+    text: string;
+  };
 }
+
+const bannerItems: IBannerItem[] = [
+  {
+    image: {
+      src: '/images/image-waved-banner1.png',
+      alt: '2주동안 매일 웨이브드와 함께 챌린지를 완주해 보아요!',
+    },
+    link: {
+      href: '#',
+      text: '더 알아보기',
+    },
+  },
+  {
+    image: {
+      src: '/images/image-waved-banner2.png',
+      alt: '깃허브 연동하고 1일 1커밋 챌린지 시작하세요!',
+    },
+    link: {
+      href: '/profile',
+      text: '지금 연동하기',
+    },
+  },
+  {
+    image: {
+      src: '/images/image-waved-banner3.png',
+      alt: '예치금 환불 안내. 챌린지 당성률 80%를 이루고 예치금을 환불받으세요.',
+    },
+  },
+];
 
 function CustomDots(dots: React.ReactNode) {
   return <SIndicators>{dots}</SIndicators>;
@@ -17,21 +53,6 @@ function CustomDots(dots: React.ReactNode) {
 
 export default function TopBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [bannerImages] = useState<IBannerImages[]>([
-    {
-      src: 'https://via.placeholder.com/700x800.jpg',
-      alt: '배너이미지1',
-    },
-    {
-      src: 'https://via.placeholder.com/430x500.jpg',
-      alt: '배너이미지2',
-    },
-    {
-      src: 'https://via.placeholder.com/600x600.jpg',
-      alt: '배너이미지3',
-    },
-  ]);
-
   const settings = {
     dots: true,
     arrows: false,
@@ -47,20 +68,21 @@ export default function TopBanner() {
   return (
     <STopBanner>
       <SSlider {...settings}>
-        {bannerImages.map((image) => (
-          <SSlides key={image.alt}>
+        {bannerItems.map((item) => (
+          <SSlides key={item.image.alt}>
             <Image
-              src={image.src}
-              alt={image.alt}
+              src={item.image.src}
+              alt={item.image.alt}
               fill
               sizes={`${screenSize.max}px`}
               style={{ objectFit: 'cover' }}
               priority
             />
+            {item.link && <SLink href={item.link.href}>{item.link.text}</SLink>}
           </SSlides>
         ))}
       </SSlider>
-      <SPagination>{`${currentIndex + 1} / ${bannerImages.length}`}</SPagination>
+      <SPagination>{`${currentIndex + 1} / ${bannerItems.length}`}</SPagination>
     </STopBanner>
   );
 }
@@ -82,6 +104,20 @@ const SSlides = styled.div`
   position: relative;
   width: 100%;
   height: 230px;
+`;
+
+const SLink = styled(Link)`
+  position: absolute;
+  bottom: 50px;
+  left: 20px;
+  display: inline-block;
+  padding: 0 0.5rem;
+  background-color: ${({ theme }) => theme.color.gray_3c};
+  border-radius: 0.375rem;
+  line-height: 30px;
+  color: ${({ theme }) => theme.color.gray_de};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;
 
 const SIndicators = styled.ul`
