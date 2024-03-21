@@ -220,7 +220,7 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  const challengeGroupId = context.query.groupId as string;
+  const { challengeGroupId } = context.params as { challengeGroupId: string };
   try {
     const response = await axios.get<IChallengeGroup>(
       `http://localhost:9000/api/v1/challengeGroups/info/${challengeGroupId}`,
@@ -230,6 +230,7 @@ export async function getServerSideProps(
         },
       },
     );
+    console.log('myProcessingChallenge API GET 성공', response.data);
     return {
       props: {
         getChallengeGroup: response.data,

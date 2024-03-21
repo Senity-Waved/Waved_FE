@@ -123,6 +123,7 @@ export async function getServerSideProps(
           },
         },
       );
+      console.log('myProcessingChallenge API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('myProcessingChallenge API GET 실패', error);
@@ -134,7 +135,7 @@ export async function getServerSideProps(
       const response = await axios.get<IRecruitingChallenge[]>(
         'http://localhost:9000/api/v1/challenges/waiting',
       );
-      console.error('recruitingChallenge API GET 성공', response.data);
+      console.log('recruitingChallenge API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('recruitingChallenge API GET 실패', error);
