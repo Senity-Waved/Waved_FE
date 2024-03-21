@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { GetServerSidePropsContext } from 'next';
+import { getCookie } from 'cookies-next';
+import axios from 'axios';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
 import { TMyChallengeInfo } from '@/types/myChallenge';
@@ -11,8 +14,6 @@ import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
-import { GetServerSidePropsContext } from 'next';
-import { getMyChallengeApi } from '@/lib/axios/mychallenge/api';
 
 const progressData: TMyChallengeInfo[] = [
   {
@@ -129,7 +130,17 @@ const completedData: TMyChallengeInfo[] = [
   },
 ];
 
-export default function MyChallenge() {
+interface IMyChallenges {
+  getMyProgressChallenges: TMyChallengeInfo[];
+  getMyWaitingChallenges: TMyChallengeInfo[];
+  getMyCompletedChallenges: TMyChallengeInfo[];
+}
+
+export default function MyChallenge({
+  getMyProgressChallenges,
+  getMyWaitingChallenges,
+  getMyCompletedChallenges,
+}: IMyChallenges) {
   const router = useRouter();
   const { query } = router;
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
@@ -137,11 +148,11 @@ export default function MyChallenge() {
     text: '',
   });
 
-  const res = getMyChallengeApi('WAITING');
-  res.then((data) => {
-    console.log(data);
-  });
-
+  console.log(
+    getMyProgressChallenges,
+    getMyWaitingChallenges,
+    getMyCompletedChallenges,
+  );
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
@@ -221,11 +232,66 @@ export default function MyChallenge() {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const res = await getMyChallengeApi('PROGRESS');
-
+  const cookieToken = getCookie('accessToken', context);
+  async function fetchMyProgressChallenges() {
+    try {
+      const response = await axios.get<TMyChallengeInfo[]>(
+        'http://localhost:9000/api/v1/myChallenges?status=PROGRESS',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error('myProgressChallenge API 실패', error);
+      return [];
+    }
+  }
+  async function fetchMyWaitingChallenges() {
+    try {
+      const response = await axios.get<TMyChallengeInfo[]>(
+        'http://localhost:9000/api/v1/myChallenges?status=WAITING',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error('myWaitingChallenge API 실패', error);
+      return [];
+    }
+  }
+  async function fetchMyCompletedChallenges() {
+    try {
+      const response = await axios.get<TMyChallengeInfo[]>(
+        'http://localhost:9000/api/v1/myChallenges?status=COMPLETED',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error('myCompletedChallenge API 실패', error);
+      return [];
+    }
+  }
+  const [myProgressChallenges, myWaitingChallenges, myCompletedChallenges] =
+    await Promise.all([
+      fetchMyProgressChallenges(),
+      fetchMyWaitingChallenges(),
+      fetchMyCompletedChallenges(),
+    ]);
   return {
     props: {
-      res,
+      getMyProgressChallenges: myProgressChallenges,
+      getMyWaitingChallenges: myWaitingChallenges,
+      getMyCompletedChallenges: myCompletedChallenges,
     },
   };
 }
