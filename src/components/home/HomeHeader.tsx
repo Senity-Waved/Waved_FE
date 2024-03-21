@@ -29,7 +29,6 @@ export default function HomeHeader() {
             quality={100}
           />
         </SLogo>
-        <SAlarm type="button" />
       </SHeader>
     </>
   );
@@ -43,11 +42,4 @@ const SHeader = styled(SHeaderWrapper)`
 const SLogo = styled.div`
   height: 30px;
   line-height: 0;
-`;
-
-const SAlarm = styled.button`
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: url('/icons/icon-notification.svg') no-repeat center;
 `;
