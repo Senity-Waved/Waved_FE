@@ -5,13 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
 import { useState } from 'react';
+import { GetServerSidePropsContext } from 'next';
+import { getCookie } from 'cookies-next';
+import axios from 'axios';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
-import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
+// import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
-import EmptyView from '@/components/common/EmptyView';
+// import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
@@ -19,90 +22,34 @@ import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
 import ScrollXBox from '@/components/common/ScrollXBox';
 
-interface IChallengeReview {
-  reviewId: number;
-  author: string;
-  jobTitle?: string;
-  createdDate: string;
-  context: string;
-}
+// interface IChallengeReview {
+//   reviewId: number;
+//   author: string;
+//   jobTitle?: string;
+//   createdDate: string;
+//   context: string;
+// }
 
-interface IChallenge {
-  type: 'write' | 'photo' | 'link' | 'github';
-  title: string;
-  thumbnail: string;
-  description: string;
+interface IChallengeGroup {
+  groupTitle: string;
   participantCount: number;
   startDate: string;
   endDate: string;
+  verficationType: 'TEXT' | 'LINK' | 'PICTURE' | 'PHOTO';
+  // thumbnail: string;
+  description: string;
+  verificationDescription: string;
+  // verificationExample: string[];
   isFree: boolean;
-  reviewCount: number;
-  reviews: IChallengeReview[];
-  verificationMethod: string;
-  verificationExample: string[];
 }
-
-const challengeData: IChallenge = {
-  type: 'photo',
-  title: '프론트엔드 아티클 공유 챌린지 3기',
-  thumbnail: 'https://via.placeholder.com/800x700.jpg',
-  description:
-    '자기 개발은 목표를 설정하고 달성하기 위한 여정입니다. 이 블로그 포스트에서는 일상 생활에 쉽게 통합할 수 있는 5가지 핵심 습관을 소개합니다. 첫 번째는 목표 설정과 시간 관리입니다. 이는 개인적 성취와 전문적 성장을 위한 기초를 마련합니다.\n두 번째 습관은 긍정적 사고를 통한 자기 격려입니다. 이는 도전을 극복하고 성공으로 나아가는 데 중요합니다. 세 번째는 건강 유지를 위한 일상적인 운동과 균형 잡힌 식단입니다. 건강한 몸은 능률적인 마음의 기초입니다. 네 번째는 지속적인 학습과 자기 계발입니다. ',
-  participantCount: 23,
-  startDate: '03월 04일 (월)',
-  endDate: '03월 15일 (금)',
-  isFree: false,
-  reviewCount: 4,
-  reviews: [
-    {
-      reviewId: 325544,
-      author: '서퍼dfk34s',
-      createdDate: '2024년 12월 31일',
-      context:
-        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-    },
-    {
-      reviewId: 5462,
-      author: '서퍼dfk34s',
-      createdDate: '2024년 12월 31일',
-      context:
-        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-    },
-    {
-      reviewId: 865877,
-      author: '서퍼dfk34s',
-      createdDate: '2024년 12월 31일',
-      context:
-        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-    },
-    {
-      reviewId: 3464364,
-      author: '서퍼dfk34s',
-      createdDate: '2024년 12월 31일',
-      context:
-        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-    },
-    {
-      reviewId: 8535435,
-      author: '닉네임은최대열글자로',
-      jobTitle: '프론트엔드',
-      createdDate: '2023년 01월 01일',
-      context:
-        '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요. 피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요. 피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요. 피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-    },
-  ],
-  verificationMethod:
-    '자기 개발은 목표를 설정하고 달성하기 위한 여정입니다. 이 블로그 포스트에서는 일상 생활에 쉽게 통합할 수 있는 5가지 핵심 습관을 소개합니다. 첫 번째는 목표 설정과 시간 관리입니다. 이는 개인적 성취와 전문적 성장을 위한 기초를 마련합니다.\n두 번째 습관은 긍정적 사고를 통한 자기 격려입니다. 이는 도전을 극복하고 성공으로 나아가는 데 중요합니다. 세 번째는 건강 유지를 위한 일상적인 운동과 균형 잡힌 식단입니다. 건강한 몸은 능률적인 마음의 기초입니다. 네 번째는 지속적인 학습과 자기 계발입니다. ',
-  verificationExample: [
-    'https://via.placeholder.com/150x218.jpg',
-    'https://via.placeholder.com/150x218.jpg',
-    'https://via.placeholder.com/150x218.jpg',
-  ],
-};
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
-export default function Challenge() {
+export default function Challenge({
+  getChallengeGroup,
+}: {
+  getChallengeGroup: IChallengeGroup;
+}) {
   const router = useRouter();
   const id = router.query.challengeGroupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
@@ -116,12 +63,12 @@ export default function Challenge() {
   const goToParticipant = () => {
     selectedChallenge({
       challengeGroupId: id,
-      groupTitle: challengeData.title,
-      startDate: challengeData.startDate,
-      endDate: challengeData.endDate,
+      groupTitle: getChallengeGroup.groupTitle,
+      startDate: getChallengeGroup.startDate,
+      endDate: getChallengeGroup.endDate,
       condition,
-      participantCount: challengeData.participantCount,
-      isFree: challengeData.isFree,
+      participantCount: getChallengeGroup.participantCount,
+      isFree: getChallengeGroup.isFree,
     });
     router.push('/challenge/participant').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
@@ -135,7 +82,8 @@ export default function Challenge() {
         <SThumbnail id="information">
           <Image
             alt={`${id} 대표 이미지`}
-            src={challengeData.thumbnail}
+            // src={getChallengeGroup.thumbnail}
+            src="https://via.placeholder.com/700x800.jpg"
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -148,7 +96,7 @@ export default function Challenge() {
             <dd>2주</dd>
             <dt className="a11yHidden">챌린지 인증 방식</dt>
             <dd>사진인증</dd>
-            {challengeData.isFree && (
+            {getChallengeGroup.isFree && (
               <>
                 <dt className="a11yHidden">챌린지 예치금 유무</dt>
                 <dd>무료</dd>
@@ -158,10 +106,10 @@ export default function Challenge() {
         </SThumbnail>
         <ChallengeSummary
           className="description"
-          groupTitle={challengeData.title}
-          participantCount={challengeData.participantCount}
-          startDate={challengeData.startDate}
-          endDate={challengeData.endDate}
+          groupTitle={getChallengeGroup.groupTitle}
+          participantCount={getChallengeGroup.participantCount}
+          startDate={getChallengeGroup.startDate}
+          endDate={getChallengeGroup.endDate}
           condition={condition}
           setSummaryHeight={setSummaryHeight}
         />
@@ -176,14 +124,14 @@ export default function Challenge() {
         <SSection>
           <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
           <SSectionContext>
-            {challengeData.description.split('\n').map((line) => (
+            {getChallengeGroup.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {challengeData.reviewCount === 0 ? (
+          {/* {getChallengeGroup.reviewCount === 0 ? (
             <SEmptyViewWrapper>
               <EmptyView pageType="챌린지후기" />
             </SEmptyViewWrapper>
@@ -197,19 +145,19 @@ export default function Challenge() {
               </ul>
               <SMoreBtn type="button">더보기</SMoreBtn>
             </>
-          )}
+          )} */}
         </SSection>
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
           <SSectionContext>
-            {challengeData.description.split('\n').map((line) => (
+            {getChallengeGroup.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
           <ScrollXBox>
             <SVerificationExample>
-              {challengeData.verificationExample.map((url) => (
+              {/* {getChallengeGroup.verificationExample.map((url) => (
                 <Image
                   key={uuidv4()}
                   src={url}
@@ -218,7 +166,7 @@ export default function Challenge() {
                   priority
                   alt="인증 예시"
                 />
-              ))}
+              ))} */}
             </SVerificationExample>
           </ScrollXBox>
         </SSection>
@@ -260,6 +208,49 @@ export default function Challenge() {
       </main>
     </SLayoutWrapper>
   );
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<{
+  props: {
+    getChallengeGroup: IChallengeGroup[];
+  };
+}> {
+  const cookieToken = getCookie('accessToken', context);
+  const challengeGroupId =
+    context.params && (context.params.challengeGroupId as string);
+  try {
+    const response = await axios.get<IChallengeGroup[]>(
+      `http://localhost:9000/api/v1/challengeGroups/${challengeGroupId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${cookieToken}`,
+        },
+      },
+    );
+    return {
+      props: {
+        getChallengeGroup: response.data,
+      },
+    };
+  } catch (error) {
+    console.error('myProcessingChallenge API GET 실패', error);
+    return {
+      props: {
+        getChallengeGroup: {
+          groupTitle: 'Error',
+          participantCount: 0,
+          startDate: '2099-99-99',
+          endDate: '2099-99-99',
+          verficationType: 'TEXT',
+          description: '챌린지 정보를 불러오는 데 실패했습니다.',
+          verificationDescription: '',
+          isFree: false,
+        },
+      },
+    };
+  }
 }
 
 const SThumbnail = styled.div`
@@ -348,34 +339,34 @@ const SSectionContext = styled.div`
   line-height: 1.8;
 `;
 
-const SEmptyViewWrapper = styled.div`
-  position: relative;
-  height: 340px;
-`;
+// const SEmptyViewWrapper = styled.div`
+//   position: relative;
+//   height: 340px;
+// `;
 
-const SMoreBtn = styled.button`
-  position: relative;
-  display: block;
-  margin: 0 auto;
-  padding: 0 1.75rem 0 0.5rem;
-  border-radius: 12px;
-  line-height: 24px;
-  background-color: ${({ theme }) => theme.color.light};
-  color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.caption1};
-  font-weight: ${({ theme }) => theme.fontWeight.caption1};
-  &::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    right: 14px;
-    width: 6px;
-    height: 6px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
-    border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
-    transform: rotate(45deg);
-  }
-`;
+// const SMoreBtn = styled.button`
+//   position: relative;
+//   display: block;
+//   margin: 0 auto;
+//   padding: 0 1.75rem 0 0.5rem;
+//   border-radius: 12px;
+//   line-height: 24px;
+//   background-color: ${({ theme }) => theme.color.light};
+//   color: ${({ theme }) => theme.color.gray_3c};
+//   font-size: ${({ theme }) => theme.fontSize.caption1};
+//   font-weight: ${({ theme }) => theme.fontWeight.caption1};
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 6px;
+//     right: 14px;
+//     width: 6px;
+//     height: 6px;
+//     border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
+//     border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
+//     transform: rotate(45deg);
+//   }
+// `;
 
 const SVerificationExample = styled.div`
   height: 254px;
