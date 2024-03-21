@@ -220,10 +220,10 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  const challengeGroupId = context.params?.challengeGroupId as string;
+  const challengeGroupId = context.query.groupId as string;
   try {
     const response = await axios.get<IChallengeGroup>(
-      `http://localhost:9000/api/v1/challengeGroups/${challengeGroupId}`,
+      `http://localhost:9000/api/v1/challengeGroups/info/${challengeGroupId}`,
       {
         headers: {
           Authorization: `Bearer ${cookieToken}`,
