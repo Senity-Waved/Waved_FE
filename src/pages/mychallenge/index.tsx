@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
+import { TMyChallengeInfo } from '@/types/myChallenge';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
-import { TMyChallengeInfo } from '@/types/myChallenge';
+import Modal from '@/components/modal/Modal';
 
 const progressData: TMyChallengeInfo[] = [
   {
@@ -83,10 +84,12 @@ const completedData: TMyChallengeInfo[] = [
     groupId: 1,
     groupTitle: '백엔드 기술면접 챌린지 1기',
     startDate: '2024-03-01T00:00:00+09:00',
-    endDate: '2024-04-14T00:00:00+09:00',
+    endDate: '2024-03-14T00:00:00+09:00',
     successCount: 14,
-    isReviewed: true,
+    isReviewed: false,
     isVerified: null,
+    isSuccessed: true,
+    isRefunded: false,
     verificationType: 'TEXT',
     deposit: 20000,
   },
@@ -99,6 +102,22 @@ const completedData: TMyChallengeInfo[] = [
     successCount: 13,
     isReviewed: false,
     isVerified: null,
+    isSuccessed: false,
+    isRefunded: false,
+    verificationType: 'PICTURE',
+    deposit: 10000,
+  },
+  {
+    myChallengeId: 15,
+    groupId: 15,
+    groupTitle: '테스트 챌린지 1기',
+    startDate: '2024-01-01T00:00:00+09:00',
+    endDate: '2024-01-14T00:00:00+09:00',
+    successCount: 13,
+    isReviewed: true,
+    isVerified: null,
+    isSuccessed: true,
+    isRefunded: true,
     verificationType: 'PICTURE',
     deposit: 10000,
   },
@@ -147,9 +166,9 @@ export default function MyChallenge() {
     >
       <TabMenu
         tabs={[
-          { href: '#progress', text: '진행 중' },
-          { href: '#waiting', text: '대기 중' },
-          { href: '#completed', text: '진행 완료' },
+          { href: '#PROGRESS', text: '진행 중' },
+          { href: '#WAITING', text: '대기 중' },
+          { href: '#COMPLETED', text: '진행 완료' },
         ]}
       />
 
@@ -157,21 +176,21 @@ export default function MyChallenge() {
         {progressData.length !== 0 && (
           <ChallengeSection
             mainText="🧑🏻‍💻 진행 중"
-            status="progress"
+            status="PROGRESS"
             challenges={progressData}
           />
         )}
         {waitingData.length !== 0 && (
           <ChallengeSection
             mainText="📚 대기 중"
-            status="waiting"
+            status="WAITING"
             challenges={waitingData}
           />
         )}
         {completedData.length !== 0 && (
           <ChallengeSection
             mainText="🥳 진행 완료"
-            status="completed"
+            status="COMPLETED"
             challenges={completedData}
           />
         )}
@@ -184,6 +203,7 @@ export default function MyChallenge() {
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
+      <Modal />
     </Layout>
   );
 }

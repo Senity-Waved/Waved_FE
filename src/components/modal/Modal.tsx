@@ -1,62 +1,58 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Btn from '../common/Btn';
+import useModal from '@/hooks/useModal';
+import Portal from './ModalPortal';
 
-interface IModal {
-  mainText: string;
-  subText?: string;
-  image?: string;
-  btnText: string;
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
-  onClose: () => void;
-}
+export default function Modal() {
+  const { modalData, closeModal } = useModal();
 
-export default function Modal({
-  mainText,
-  subText,
-  image,
-  btnText,
-  onClick,
-  onClose,
-}: IModal) {
   const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
-      onClose();
+      closeModal();
     }
   };
 
   return (
-    <SModalWrapper onClick={handleBackgroundClick}>
-      <SModalContent>
-        {image && (
-          <SModalImage
-            src={image}
-            alt="모달 이미지"
-            width={88}
-            height={88}
-            priority
-          />
-        )}
-        <SModalMainText marginBottom={!!subText}>{mainText}</SModalMainText>
-        {subText && <SModalSubText>{subText}</SModalSubText>}
-        <Btn
-          btns={[
-            {
-              text: '아니요',
-              styleType: 'gray',
-              size: 'small',
-              onClick: onClose,
-            },
-            {
-              text: btnText,
-              styleType: 'primary',
-              size: 'small',
-              onClick,
-            },
-          ]}
-        />
-      </SModalContent>
-    </SModalWrapper>
+    modalData.isOpen && (
+      <Portal>
+        <SModalWrapper onClick={handleBackgroundClick}>
+          <SModalContent>
+            {modalData.image && (
+              <SModalImage
+                src={modalData.image}
+                alt="모달 이미지"
+                width={88}
+                height={88}
+                priority
+              />
+            )}
+            <SModalMainText marginBottom={!!modalData.subText}>
+              {modalData.mainText}
+            </SModalMainText>
+            {modalData.subText && (
+              <SModalSubText>{modalData.subText}</SModalSubText>
+            )}
+            <Btn
+              btns={[
+                {
+                  text: modalData.cancelBtnText || '아니요',
+                  styleType: 'gray',
+                  size: 'small',
+                  onClick: closeModal,
+                },
+                {
+                  text: modalData.btnText,
+                  styleType: 'primary',
+                  size: 'small',
+                  onClick: modalData.onClick,
+                },
+              ]}
+            />
+          </SModalContent>
+        </SModalWrapper>
+      </Portal>
+    )
   );
 }
 
@@ -80,7 +76,7 @@ const SModalContent = styled.div`
   align-items: center;
   width: 19.5rem;
   background-color: ${({ theme }) => theme.color.white};
-  padding: 2rem 1rem 0.75rem 1rem;
+  padding: 2rem 1rem 1rem 1rem;
   border-radius: 8px;
 `;
 
