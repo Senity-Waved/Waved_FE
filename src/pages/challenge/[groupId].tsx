@@ -52,7 +52,7 @@ export default function Challenge({
   getChallengeGroup: IChallengeGroup;
 }) {
   const router = useRouter();
-  const id = router.query.challengeGroupId as string;
+  const groupId = router.query.groupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -63,7 +63,7 @@ export default function Challenge({
 
   const goToParticipant = () => {
     selectedChallenge({
-      challengeGroupId: id,
+      challengeGroupId: groupId,
       groupTitle: getChallengeGroup.groupTitle,
       startDate: getChallengeGroup.startDate,
       endDate: getChallengeGroup.endDate,
@@ -82,7 +82,7 @@ export default function Challenge({
       <main>
         <SThumbnail id="information">
           <Image
-            alt={`${id} 대표 이미지`}
+            alt={`${groupId}의 대표 이미지`}
             // src={getChallengeGroup.thumbnail}
             src="https://via.placeholder.com/700x800.jpg"
             fill
