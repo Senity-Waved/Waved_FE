@@ -21,6 +21,7 @@ import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
 import ScrollXBox from '@/components/common/ScrollXBox';
+import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 // interface IChallengeReview {
 //   reviewId: number;
@@ -36,7 +37,6 @@ interface IChallengeGroup {
   startDate: string;
   endDate: string;
   verficationType: 'TEXT' | 'LINK' | 'PICTURE' | 'PHOTO';
-  // thumbnail: string;
   description: string;
   verificationDescription: string;
   // verificationExample: string[];
@@ -82,8 +82,7 @@ export default function Challenge({
         <SThumbnail id="information">
           <Image
             alt={`${groupId}의 대표 이미지`}
-            // src={getChallengeGroup.thumbnail}
-            src="https://via.placeholder.com/700x800.jpg"
+            src={getChallengeThumbnailPath(getChallengeGroup.groupTitle)}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}

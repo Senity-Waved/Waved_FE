@@ -3,12 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import calculateDDay from '@/utils/calculateDDay';
+import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 export default function ChallengeCardWide({
   groupId,
   groupTitle,
   startDate,
-  // thumbnail,
 }: IMyProcessingChallenge) {
   const caculateProcessDay = (date: string) => {
     const dDay = Math.abs(calculateDDay(date)) + 2;
@@ -22,7 +22,7 @@ export default function ChallengeCardWide({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src="https://via.placeholder.com/700x800.jpg"
+            src={getChallengeThumbnailPath(groupTitle)}
             width={260}
             height={126}
             style={{ objectFit: 'cover' }}

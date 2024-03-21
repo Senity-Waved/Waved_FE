@@ -5,11 +5,11 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
 import calculateDDay from '@/utils/calculateDDay';
+import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 export default function ChallengeCard({
   challengeGroupId,
   groupTitle,
-  // thumbnail,
   verificationType,
   participantCount,
   startDate,
@@ -32,7 +32,7 @@ export default function ChallengeCard({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src="https://via.placeholder.com/700x800.jpg"
+            src={getChallengeThumbnailPath(groupTitle)}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
