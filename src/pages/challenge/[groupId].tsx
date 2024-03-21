@@ -6,8 +6,6 @@ import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
 import { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import { getCookie } from 'cookies-next';
-import axios from 'axios';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -20,9 +18,11 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
-
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
+import VERIFICATION_TYPE from '@/constants/verificationType';
+import { challengeGroupApi } from '@/lib/axios/challenge/api';
+import IChallengeGroup from '@/types/challengeGroup';
 
 // interface IChallengeReview {
 //   reviewId: number;
@@ -32,24 +32,12 @@ import VeirificationExample from '@/components/challenge/VerificationExample';
 //   context: string;
 // }
 
-interface IChallengeGroup {
-  groupTitle: string;
-  participantCount: number;
-  startDate: string;
-  endDate: string;
-  verficationType: 'TEXT' | 'LINK' | 'PICTURE' | 'PHOTO';
-  description: string;
-  verificationDescription: string;
-  // isFree: boolean;
-}
-
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
-const isFree = true; // api 필드 추가 이전 static 사용
 
 export default function Challenge({
-  getChallengeGroup,
+  challengeInfo,
 }: {
-  getChallengeGroup: IChallengeGroup;
+  challengeInfo: IChallengeGroup;
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
@@ -63,12 +51,12 @@ export default function Challenge({
   const goToParticipant = () => {
     selectedChallenge({
       challengeGroupId: groupId,
-      groupTitle: getChallengeGroup.groupTitle,
-      startDate: getChallengeGroup.startDate,
-      endDate: getChallengeGroup.endDate,
+      groupTitle: challengeInfo.groupTitle,
+      startDate: challengeInfo.startDate,
+      endDate: challengeInfo.endDate,
       condition,
-      participantCount: getChallengeGroup.participantCount,
-      isFree,
+      participantCount: challengeInfo.participantCount,
+      isFree: challengeInfo.isFree,
     });
     router.push('/challenge/participant').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
@@ -82,7 +70,7 @@ export default function Challenge({
         <SThumbnail id="information">
           <Image
             alt={`${groupId}의 대표 이미지`}
-            src={getChallengeThumbnailPath(getChallengeGroup.groupTitle)}
+            src={getChallengeThumbnailPath(challengeInfo.groupTitle)}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -94,8 +82,8 @@ export default function Challenge({
             <dt className="a11yHidden">챌린지 진행 기한</dt>
             <dd>2주</dd>
             <dt className="a11yHidden">챌린지 인증 방식</dt>
-            <dd>사진인증</dd>
-            {isFree && (
+            <dd>{VERIFICATION_TYPE[challengeInfo.verificationType]}</dd>
+            {challengeInfo.isFree && (
               <>
                 <dt className="a11yHidden">챌린지 예치금 유무</dt>
                 <dd>무료</dd>
@@ -105,10 +93,10 @@ export default function Challenge({
         </SThumbnail>
         <ChallengeSummary
           className="description"
-          groupTitle={getChallengeGroup.groupTitle}
-          participantCount={getChallengeGroup.participantCount}
-          startDate={getChallengeGroup.startDate}
-          endDate={getChallengeGroup.endDate}
+          groupTitle={challengeInfo.groupTitle}
+          participantCount={challengeInfo.participantCount}
+          startDate={challengeInfo.startDate}
+          endDate={challengeInfo.endDate}
           condition={condition}
           setSummaryHeight={setSummaryHeight}
         />
@@ -123,7 +111,7 @@ export default function Challenge({
         <SSection>
           <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
           <SSectionContext>
-            {getChallengeGroup.description.split('\n').map((line) => (
+            {challengeInfo.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
@@ -149,12 +137,12 @@ export default function Challenge({
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
           <SSectionContext>
-            {getChallengeGroup.description.split('\n').map((line) => (
+            {challengeInfo.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
-          <VeirificationExample title={getChallengeGroup.groupTitle} />
+          <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
         <SLinkItem href="/">
           <h3>주의사항</h3>
@@ -200,42 +188,38 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<{
   props: {
-    getChallengeGroup: IChallengeGroup;
+    challengeInfo: IChallengeGroup;
   };
 }> {
-  const cookieToken = getCookie('accessToken', context);
+  // const cookieToken = getCookie('accessToken', context);
   const { groupId } = context.params as { groupId: string };
-  try {
-    const response = await axios.get<IChallengeGroup>(
-      `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${cookieToken}`,
-        },
-      },
-    );
-    console.log('myProcessingChallenge API GET 성공');
-    return {
-      props: {
-        getChallengeGroup: response.data,
-      },
-    };
-  } catch (error) {
-    console.error('myProcessingChallenge API GET 실패', error);
-    return {
-      props: {
-        getChallengeGroup: {
-          groupTitle: '챌린지 정보를 불러오는 데 실패했습니다.',
-          participantCount: 0,
-          startDate: '2099-99-99',
-          endDate: '2099-99-99',
-          verficationType: 'TEXT',
-          description: '챌린지 정보를 불러오는 데 실패했습니다.',
-          verificationDescription: '',
-        },
-      },
-    };
+  async function fetchChallengeInfo() {
+    try {
+      const response = await challengeGroupApi(groupId);
+      console.log('challengeGroup API GET 성공');
+      return response.data;
+    } catch (error) {
+      console.error('challengeGroup API GET 실패', error);
+      return {
+        groupTitle: '챌린지 정보를 불러오는 데 실패했습니다.',
+        participantCount: 0,
+        startDate: '2099-99-99',
+        endDate: '2099-99-99',
+        verficationType: 'TEXT',
+        description: '챌린지 정보를 불러오는 데 실패했습니다.',
+        verificationDescription: '',
+        isFree: false,
+        isApplied: false,
+        mychallengeId: -1,
+      };
+    }
   }
+  const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
+  return {
+    props: {
+      challengeInfo,
+    },
+  };
 }
 
 const SThumbnail = styled.div`
