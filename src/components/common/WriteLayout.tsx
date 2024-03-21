@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import Btn from './Btn';
 import writeLayoutText from '@/constants/writeLayoutText';
+import useModal from '@/hooks/useModal';
 
 export type TPageType =
   | '후기작성'
@@ -17,7 +18,7 @@ interface IWriteLayout {
   isLinkValid?: boolean | undefined;
   children: React.ReactNode;
   handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export default function WriteLayout({
@@ -33,6 +34,7 @@ export default function WriteLayout({
   const { btnText } = writeLayoutText[pageType];
   const [isBtnActive, setIsBtnActive] = useState(false);
   const isVerificationPage = pageType.includes('인증');
+  const { openModal } = useModal();
 
   const checkValidation = useCallback(() => {
     switch (pageType) {
@@ -67,7 +69,18 @@ export default function WriteLayout({
               text: btnText,
               styleType: isBtnActive ? 'primary' : 'disabled',
               size: 'large',
-              onClick: isVerificationPage ? onClick : undefined,
+              onClick:
+                isVerificationPage && onClick !== undefined
+                  ? () =>
+                      openModal({
+                        image: '/icons/icon-exclamation-mark.svg',
+                        mainText: '인증을 제출 하시겠습니까?',
+                        subText:
+                          '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.',
+                        btnText: '제출하기',
+                        onClick,
+                      })
+                  : undefined,
             },
           ]}
         />

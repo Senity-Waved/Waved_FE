@@ -6,7 +6,7 @@ interface IBtn {
   text: string;
   styleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   size: 'large' | 'small';
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 interface IBtnWrapper {

@@ -18,6 +18,7 @@ export default function OnBoarding() {
     text: '',
     type: 'correct',
   });
+  console.log(query);
 
   useEffect(() => {
     const handleRouting = (

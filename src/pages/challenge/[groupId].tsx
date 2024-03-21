@@ -20,7 +20,9 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
-import ScrollXBox from '@/components/common/ScrollXBox';
+
+import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
+import VeirificationExample from '@/components/challenge/VerificationExample';
 
 // interface IChallengeReview {
 //   reviewId: number;
@@ -36,10 +38,8 @@ interface IChallengeGroup {
   startDate: string;
   endDate: string;
   verficationType: 'TEXT' | 'LINK' | 'PICTURE' | 'PHOTO';
-  // thumbnail: string;
   description: string;
   verificationDescription: string;
-  // verificationExample: string[];
   // isFree: boolean;
 }
 
@@ -52,7 +52,7 @@ export default function Challenge({
   getChallengeGroup: IChallengeGroup;
 }) {
   const router = useRouter();
-  const id = router.query.challengeGroupId as string;
+  const groupId = router.query.groupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -60,10 +60,9 @@ export default function Challenge({
   });
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
-
   const goToParticipant = () => {
     selectedChallenge({
-      challengeGroupId: id,
+      challengeGroupId: groupId,
       groupTitle: getChallengeGroup.groupTitle,
       startDate: getChallengeGroup.startDate,
       endDate: getChallengeGroup.endDate,
@@ -82,9 +81,8 @@ export default function Challenge({
       <main>
         <SThumbnail id="information">
           <Image
-            alt={`${id} 대표 이미지`}
-            // src={getChallengeGroup.thumbnail}
-            src="https://via.placeholder.com/700x800.jpg"
+            alt={`${groupId}의 대표 이미지`}
+            src={getChallengeThumbnailPath(getChallengeGroup.groupTitle)}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -156,21 +154,7 @@ export default function Challenge({
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
-          <ScrollXBox>
-            <SVerificationExample>
-              현재 예시 이미지 샘플 부재
-              {/* {getChallengeGroup.verificationExample.map((url) => (
-                <Image
-                  key={uuidv4()}
-                  src={url}
-                  width={150}
-                  height={218}
-                  priority
-                  alt="인증 예시"
-                />
-              ))} */}
-            </SVerificationExample>
-          </ScrollXBox>
+          <VeirificationExample title={getChallengeGroup.groupTitle} />
         </SSection>
         <SLinkItem href="/">
           <h3>주의사항</h3>
@@ -220,16 +204,17 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  const challengeGroupId = context.params?.challengeGroupId as string;
+  const { groupId } = context.params as { groupId: string };
   try {
     const response = await axios.get<IChallengeGroup>(
-      `http://localhost:9000/api/v1/challengeGroups/${challengeGroupId}`,
+      `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
       {
         headers: {
           Authorization: `Bearer ${cookieToken}`,
         },
       },
     );
+    console.log('myProcessingChallenge API GET 성공');
     return {
       props: {
         getChallengeGroup: response.data,
@@ -259,19 +244,6 @@ const SThumbnail = styled.div`
   height: 246px;
   line-height: 0;
   scroll-margin-top: 56px;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.3) 70%
-    );
-  }
 `;
 
 const SChips = styled.dl`
@@ -285,7 +257,7 @@ const SChips = styled.dl`
     display: inline-block;
     height: 24px;
     padding: 0 0.75rem;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
     line-height: 24px;
     color: ${({ theme }) => theme.color.gray_ec};
@@ -367,20 +339,6 @@ const SSectionContext = styled.div`
 //     transform: rotate(45deg);
 //   }
 // `;
-
-const SVerificationExample = styled.div`
-  height: 254px;
-  padding: 1rem 1.25rem;
-  img {
-    display: inline-block;
-    &:not(:last-child) {
-      margin-right: 0.625rem;
-    }
-    &:last-child {
-      margin-right: 1.25rem;
-    }
-  }
-`;
 
 const SLinkItem = styled(Link)`
   display: flex;

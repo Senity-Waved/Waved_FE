@@ -1,12 +1,14 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
+import useModal from '@/hooks/useModal';
 
-interface TBtn
-  extends Pick<
+interface IBtn
+  extends Omit<
     TMyChallengeInfo,
-    'groupId' | 'isReviewed' | 'isVerified' | 'verificationType' | 'startDate'
+    'myChallengeId' | 'groupTitle' | 'endDate' | 'successCount' | 'deposit'
   > {
   status: TMyChallengeStatus;
 }
@@ -15,14 +17,18 @@ export default function ChallengeBtn({
   groupId,
   isReviewed,
   isVerified,
+  isSuccessed,
+  isRefunded,
   verificationType,
   startDate,
   status,
-}: TBtn) {
+}: IBtn) {
+  const router = useRouter();
+  const { openModal, closeModal } = useModal();
   const isAble = (() => {
-    return status === 'progress'
+    return status === 'PROGRESS'
       ? !isVerified
-      : status === 'completed' && !isReviewed;
+      : status === 'COMPLETED' && !isReviewed;
   })();
 
   const preventLink = (e: React.MouseEvent<HTMLElement>) => {
@@ -31,8 +37,31 @@ export default function ChallengeBtn({
     }
   };
 
+  const getRefund = () => {
+    openModal({
+      image: '/icons/icon-done.svg',
+      mainText: '환급 신청이 완료되었습니다.',
+      subText: '참여한 챌린지가 어떠했는지 여러분의 소중한 후기를 남겨주세요.',
+      btnText: '후기 작성',
+      cancelBtnText: '나중에 하기',
+      onClick: () => {
+        router
+          .push({
+            pathname: `/mychallenge/review`,
+            query: {
+              challengeId: groupId,
+            },
+          })
+          .catch((error) => {
+            console.error('페이지 이동에 실패하였습니다.', error);
+          });
+        closeModal();
+      },
+    });
+  };
+
   switch (status) {
-    case 'progress':
+    case 'PROGRESS':
       return (
         <SBtnWrapper>
           <SLink
@@ -47,7 +76,19 @@ export default function ChallengeBtn({
             <SBtn
               as="button"
               styleType="middle"
-              onClick={() => console.log('test')}
+              onClick={() =>
+                openModal({
+                  image: '/icons/icon-exclamation-mark.svg',
+                  mainText: '인증을 제출 하시겠습니까?',
+                  subText:
+                    '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.',
+                  btnText: '제출하기',
+                  onClick: () => {
+                    console.log('인증제출하기');
+                    closeModal();
+                  },
+                })
+              }
             >
               인증 하기
             </SBtn>
@@ -68,7 +109,7 @@ export default function ChallengeBtn({
           )}
         </SBtnWrapper>
       );
-    case 'waiting':
+    case 'WAITING':
       return (
         <SBtnWrapper>
           <SBtn styleType="gray">
@@ -76,26 +117,32 @@ export default function ChallengeBtn({
           </SBtn>
         </SBtnWrapper>
       );
-    case 'completed':
+    case 'COMPLETED':
       return (
         <SBtnWrapper>
           <SLink href="#">
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          <SLink
-            href={{
-              pathname: `/mychallenge/review`,
-              query: { groupId },
-            }}
-            as="mychallenge/review"
-          >
-            <SBtn
-              styleType={isAble ? 'border' : 'bordergray'}
-              onClick={preventLink}
-            >
-              {isAble ? '후기 작성' : '작성 완료'}
+          {isSuccessed && !isRefunded ? (
+            <SBtn as="button" styleType="middle" onClick={getRefund}>
+              환급 신청
             </SBtn>
-          </SLink>
+          ) : (
+            <SLink
+              href={{
+                pathname: `/mychallenge/review`,
+                query: { challengeId: groupId },
+              }}
+              as="mychallenge/review"
+            >
+              <SBtn
+                styleType={isAble ? 'border' : 'bordergray'}
+                onClick={preventLink}
+              >
+                {isAble ? '후기 작성' : '작성 완료'}
+              </SBtn>
+            </SLink>
+          )}
         </SBtnWrapper>
       );
     default:

@@ -176,7 +176,7 @@ export default function VeirificationCollection({
     if (query.submitVerification) {
       handleRouting('인증 제출이 완료되었습니다.');
     }
-  }, [query, router, groupId]);
+  }, [query, router, groupId, type]);
 
   return (
     <Layout

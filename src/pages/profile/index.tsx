@@ -10,18 +10,15 @@ import JOBTITLE from '@/constants/jobTitle';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
 import SnackBar from '@/components/common/SnackBar';
 import profileSnackBarText from '@/constants/profileSnackBarText';
-import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 import ISnackBarState from '@/types/snackbar';
 import { logoutApi } from '@/lib/axios/profile/api';
+import useModal from '@/hooks/useModal';
 
 export default function Profile() {
   const router = useRouter();
   const { query } = useRouter();
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalState, setModalState] = useState<string>('');
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const { openModal, closeModal } = useModal();
 
   const cookieToken = getCookie('accessToken');
   const isLogined = !!cookieToken;
@@ -38,8 +35,15 @@ export default function Profile() {
     type: 'correct',
   });
 
-  const clickModalBtn = () => {
-    handleLogout();
+  const handleWithdrawal = () => {
+    router
+      .push({
+        pathname: '/onboarding',
+        query: { withdrawal: true },
+      })
+      .catch((error) => {
+        console.error('로그아웃 후 온보딩 리디렉션 실패:', error);
+      });
   };
 
   const handleLogout = () => {
@@ -65,10 +69,7 @@ export default function Profile() {
             router
               .push({
                 pathname: '/onboarding',
-                query:
-                  modalState === 'logout'
-                    ? { logout: true }
-                    : { withdrawal: true },
+                query: { logout: true },
               })
               .catch((error) => {
                 console.error('로그아웃 후 온보딩 리디렉션 실패:', error);
@@ -211,8 +212,16 @@ export default function Profile() {
               <button
                 type="button"
                 onClick={() => {
-                  openModal();
-                  setModalState('logout');
+                  openModal({
+                    image: '/icons/icon-exclamation-mark.svg',
+                    mainText: '로그아웃',
+                    subText: '로그아웃하시겠습니까?',
+                    btnText: '로그아웃',
+                    onClick: () => {
+                      handleLogout();
+                      closeModal();
+                    },
+                  });
                 }}
               >
                 로그아웃
@@ -290,8 +299,17 @@ export default function Profile() {
             <button
               type="button"
               onClick={() => {
-                openModal();
-                setModalState('withdrawal');
+                openModal({
+                  image: '/icons/icon-exclamation-mark.svg',
+                  mainText: '정말 계정을 탈퇴하시겠습니까?',
+                  subText:
+                    '탈퇴 이후에 예치금을 돌려받으실 수 없으며, 등록된 정보는 전부 삭제되어 재가입 후에도 확인하실 수 없습니다.',
+                  btnText: '네, 탈퇴할게요.',
+                  onClick: () => {
+                    handleWithdrawal();
+                    closeModal();
+                  },
+                });
               }}
             >
               회원 탈퇴
@@ -302,26 +320,7 @@ export default function Profile() {
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
-      {isModalOpen && (
-        <Portal>
-          <Modal
-            image="/icons/icon-exclamation-mark.svg"
-            mainText={
-              modalState === 'logout'
-                ? '로그아웃'
-                : '정말 계정을 탈퇴하시겠습니까?'
-            }
-            subText={
-              modalState === 'logout'
-                ? '로그아웃하시겠습니까?'
-                : '탈퇴 이후에 예치금을 돌려받으실 수 없으며, 등록된 정보는 전부 삭제되어 재가입 후에도 확인하실 수 없습니다.'
-            }
-            btnText={modalState === 'logout' ? '로그아웃' : '네, 탈퇴할게요.'}
-            onClick={clickModalBtn}
-            onClose={closeModal}
-          />
-        </Portal>
-      )}
+      <Modal />
     </Layout>
   );
 }

@@ -43,7 +43,9 @@ export default function ChallengeProgress({
   );
 }
 
-const SWrapper = styled.div``;
+const SWrapper = styled.div`
+  margin-bottom: 1rem;
+`;
 
 const SProgressWrapper = styled.div`
   padding-bottom: 1rem;

@@ -5,11 +5,11 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
 import calculateDDay from '@/utils/calculateDDay';
+import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 export default function ChallengeCard({
   challengeGroupId,
   groupTitle,
-  // thumbnail,
   verificationType,
   participantCount,
   startDate,
@@ -32,7 +32,7 @@ export default function ChallengeCard({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src="https://via.placeholder.com/700x800.jpg"
+            src={getChallengeThumbnailPath(groupTitle)}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -72,19 +72,6 @@ const SThumbnail = styled.div`
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 70%,
-      rgba(0, 0, 0, 0.9) 100%
-    );
-  }
 `;
 
 const SParticipant = styled.span`
@@ -116,7 +103,7 @@ const SRecruitDDay = styled.span`
   position: absolute;
   bottom: 0.5rem;
   right: 0.75rem;
-  color: ${({ theme }) => theme.color.gray_f9};
+  color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
   line-height: 16px;

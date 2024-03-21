@@ -9,9 +9,11 @@ export type TMyChallengeInfo = {
   successCount: number;
   isReviewed?: boolean | null;
   isVerified?: boolean | null;
+  isRefunded?: boolean | null;
+  isSuccessed?: boolean | null;
   isGithubConnected?: boolean;
   verificationType: TVerificationType;
   deposit: number;
 };
 
-export type TMyChallengeStatus = 'progress' | 'waiting' | 'completed';
+export type TMyChallengeStatus = 'PROGRESS' | 'WAITING' | 'COMPLETED';

@@ -5,6 +5,7 @@ import ChallengeProgress from '@/components/mychallenge/ChallengeProgress';
 import ChallengeBtn from '@/components/mychallenge/ChallengeBtn';
 import parseDate from '@/utils/parseDate';
 import changePriceFormat from '@/utils/changePriceFormat';
+import ChallengeLabel from './ChallengeLabel';
 
 interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
   status: TMyChallengeStatus;
@@ -19,27 +20,33 @@ export default function ChallengeItem({
   successCount,
   isReviewed,
   isVerified,
+  isSuccessed,
+  isRefunded,
   verificationType,
   deposit,
 }: TMyChallengeItem) {
-  const startdate = parseDate(startDate);
-  const enddate = parseDate(endDate);
+  const [startYY, startMM, startDD] = parseDate(startDate);
+  const [endYY, endMM, endDD] = parseDate(endDate);
 
   return (
     <SWrapper>
+      {status === 'COMPLETED' && (
+        <ChallengeLabel isSuccessed={isSuccessed} isRefunded={isRefunded} />
+      )}
       <SInfoWrapper>
         <h3>{groupTitle}</h3>
         <div>
           <SDuration>
-            {startdate[1]}/{startdate[2]}~{enddate[1]}/{enddate[2]}, 매일
+            {startYY}.{startMM}.{startDD}~{endYY}.{endMM}.{endDD}
           </SDuration>
           <SDeposit>
             <span>예치금</span>
             <span>{changePriceFormat(deposit)}원</span>
           </SDeposit>
         </div>
+        <SDetailBtn href={`/challenge/${groupId}`} />
       </SInfoWrapper>
-      {status === 'progress' && (
+      {status === 'PROGRESS' && (
         <ChallengeProgress
           successCount={successCount}
           startDate={startDate}
@@ -50,20 +57,17 @@ export default function ChallengeItem({
         groupId={groupId}
         isReviewed={isReviewed}
         isVerified={isVerified}
+        isSuccessed={isSuccessed}
+        isRefunded={isRefunded}
         verificationType={verificationType}
         startDate={startDate}
         status={status}
       />
-      <SDetailBtn href={`/challenge/${groupId}`} />
     </SWrapper>
   );
 }
 
 const SWrapper = styled.li`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: relative;
   padding: 1rem;
   background-color: ${({ theme }) => theme.color.white};
   box-shadow: 0px 2px 15px 0 rgba(35, 62, 112, 0.15);
@@ -73,8 +77,8 @@ const SWrapper = styled.li`
 const SDetailBtn = styled(Link)`
   display: block;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0;
+  right: 0;
   width: 24px;
   height: 24px;
   background: url('/icons/icon-left-arrow.svg') no-repeat center;
@@ -82,6 +86,9 @@ const SDetailBtn = styled(Link)`
 `;
 
 const SInfoWrapper = styled.div`
+  position: relative;
+  margin-bottom: 1rem;
+
   h3 {
     font-size: ${({ theme }) => theme.fontSize.body2};
     line-height: 1.5rem;

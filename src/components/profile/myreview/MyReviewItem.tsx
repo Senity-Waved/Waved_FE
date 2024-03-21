@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import IMyReview from '@/types/myReview';
-import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
+import useModal from '@/hooks/useModal';
 
 interface IMyReviewItem extends IMyReview {
   onDelete: () => void;
@@ -16,9 +15,7 @@ export default function MyReviewItem({
   context,
   onDelete,
 }: IMyReviewItem) {
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const openDeleteModal = () => setDeleteModalOpen(true);
-  const closeDeleteModal = () => setDeleteModalOpen(false);
+  const { openModal, closeModal } = useModal();
   return (
     <>
       <SMyReviewItem>
@@ -37,24 +34,23 @@ export default function MyReviewItem({
           >
             수정
           </SEditBtn>
-          <SDeleteBtn type="button" onClick={openDeleteModal}>
+          <SDeleteBtn
+            type="button"
+            onClick={() =>
+              openModal({
+                mainText: '남기신 후기를 삭제하시겠습니까?',
+                btnText: '삭제하기',
+                onClick: () => {
+                  onDelete();
+                  closeModal();
+                },
+              })
+            }
+          >
             삭제
           </SDeleteBtn>
         </SBtnWrapper>
       </SMyReviewItem>
-      {isDeleteModalOpen && (
-        <Portal>
-          <Modal
-            mainText="남기신 후기를 삭제하시겠습니까?"
-            btnText="삭제하기"
-            onClick={() => {
-              onDelete();
-              closeDeleteModal();
-            }}
-            onClose={closeDeleteModal}
-          />
-        </Portal>
-      )}
     </>
   );
 }
