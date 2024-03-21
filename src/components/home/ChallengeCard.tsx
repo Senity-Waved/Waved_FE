@@ -103,7 +103,7 @@ const SRecruitDDay = styled.span`
   position: absolute;
   bottom: 0.5rem;
   right: 0.75rem;
-  color: ${({ theme }) => theme.color.gray_f9};
+  color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
   line-height: 16px;
