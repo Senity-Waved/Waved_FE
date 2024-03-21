@@ -7,7 +7,7 @@ import axiosInstance from '../instance';
  * @returns resonse.data
  */
 const registerApi = (registerData: IRegisterState) => {
-  return axiosInstance.patch('/api/v1/members/edit', registerData);
+  return axiosInstance.patch('/members/edit', registerData);
 };
 
 /**
@@ -15,7 +15,7 @@ const registerApi = (registerData: IRegisterState) => {
  * @returns response.data
  */
 const logoutApi = () => {
-  return axiosInstance.post('/api/v1/members/logout');
+  return axiosInstance.post('/members/logout');
 };
 
 export { registerApi, logoutApi };

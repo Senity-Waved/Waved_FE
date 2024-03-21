@@ -23,7 +23,7 @@ const challengeGroupApplyApi = (
   challengeGroupApplyProps: IChallengeGroupApply,
 ) => {
   return axiosInstance.post(
-    `/api/v1/challengeGroups/${challengeGroupApplyProps.challengeGroupId}/apply?deposit=${challengeGroupApplyProps.deposit}`,
+    `/challengeGroups/${challengeGroupApplyProps.challengeGroupId}/apply?deposit=${challengeGroupApplyProps.deposit}`,
   );
 };
 
@@ -34,7 +34,7 @@ const challengeGroupApplyApi = (
  */
 const challengePaymentsApi = (paymentsCheck: IPayments) => {
   return axiosInstance.post(
-    `/api/v1/payments/${paymentsCheck.myChallengeId}`,
+    `/payments/${paymentsCheck.myChallengeId}`,
     paymentsCheck.paymentResult,
   );
 };
