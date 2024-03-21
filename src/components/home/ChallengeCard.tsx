@@ -9,7 +9,7 @@ import calculateDDay from '@/utils/calculateDDay';
 export default function ChallengeCard({
   challengeGroupId,
   groupTitle,
-  thumbnail,
+  // thumbnail,
   verificationType,
   participantCount,
   startDate,
@@ -32,7 +32,7 @@ export default function ChallengeCard({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={thumbnail}
+            src="https://via.placeholder.com/700x800.jpg"
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}

@@ -8,7 +8,7 @@ export default function ChallengeCardWide({
   groupId,
   groupTitle,
   startDate,
-  thumbnail,
+  // thumbnail,
 }: IMyProcessingChallenge) {
   const caculateProcessDay = (date: string) => {
     const dDay = Math.abs(calculateDDay(date)) + 2;
@@ -22,7 +22,7 @@ export default function ChallengeCardWide({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={thumbnail}
+            src="https://via.placeholder.com/700x800.jpg"
             width={260}
             height={126}
             style={{ objectFit: 'cover' }}
