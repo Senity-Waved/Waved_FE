@@ -10,9 +10,9 @@ import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
-// import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
+import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
-// import EmptyView from '@/components/common/EmptyView';
+import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
@@ -21,27 +21,31 @@ import SnackBar from '@/components/common/SnackBar';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
-import { challengeGroupApi } from '@/lib/axios/challenge/api';
+import { challengeGroupApi, reviewApi } from '@/lib/axios/challenge/api';
 import IChallengeGroup from '@/types/challengeGroup';
 
-// interface IChallengeReview {
-//   reviewId: number;
-//   author: string;
-//   jobTitle?: string;
-//   createdDate: string;
-//   context: string;
-// }
+export interface IChallengeReview {
+  reviewId: number;
+  author: string;
+  jobTitle?: string;
+  createdDate: string;
+  context: string;
+}
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
 export default function Challenge({
   challengeInfo,
+  reviews,
 }: {
   challengeInfo: IChallengeGroup;
+  reviews: IChallengeReview[];
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
+  // const [reviewItems, setReviewItems] = useState<IChallengeReview[]>([]);
+  // const [reviewPage, setReviewPage] = useState<number>(0);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
@@ -118,21 +122,21 @@ export default function Challenge({
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {/* {getChallengeGroup.reviewCount === 0 ? (
+          {reviews.length === 0 ? (
             <SEmptyViewWrapper>
               <EmptyView pageType="챌린지후기" />
             </SEmptyViewWrapper>
           ) : (
             <>
               <ul>
-                {challengeData.reviews.map((review) => {
+                {reviews.map((review) => {
                   const { reviewId, ...rest } = review;
                   return <ChallengeReviewItem key={reviewId} {...rest} />;
                 })}
               </ul>
               <SMoreBtn type="button">더보기</SMoreBtn>
             </>
-          )} */}
+          )}
         </SSection>
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
@@ -189,9 +193,9 @@ export async function getServerSideProps(
 ): Promise<{
   props: {
     challengeInfo: IChallengeGroup;
+    reviews: IChallengeReview[];
   };
 }> {
-  // const cookieToken = getCookie('accessToken', context);
   const { groupId } = context.params as { groupId: string };
   async function fetchChallengeInfo() {
     try {
@@ -210,14 +214,28 @@ export async function getServerSideProps(
         verificationDescription: '',
         isFree: false,
         isApplied: false,
+        challengeId: -1,
         mychallengeId: -1,
       };
     }
   }
   const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
+  const { challengeId } = challengeInfo;
+  async function fetchReviews() {
+    try {
+      const response = await reviewApi({ challengeId, page: 0 });
+      console.log('review API GET 성공', response.data.content);
+      return response.data.content;
+    } catch (error) {
+      console.error('review API GET 실패', error);
+      return [];
+    }
+  }
+  const reviews = (await fetchReviews()) || [];
   return {
     props: {
       challengeInfo,
+      reviews,
     },
   };
 }
@@ -295,34 +313,34 @@ const SSectionContext = styled.div`
   line-height: 1.8;
 `;
 
-// const SEmptyViewWrapper = styled.div`
-//   position: relative;
-//   height: 340px;
-// `;
+const SEmptyViewWrapper = styled.div`
+  position: relative;
+  height: 340px;
+`;
 
-// const SMoreBtn = styled.button`
-//   position: relative;
-//   display: block;
-//   margin: 0 auto;
-//   padding: 0 1.75rem 0 0.5rem;
-//   border-radius: 12px;
-//   line-height: 24px;
-//   background-color: ${({ theme }) => theme.color.light};
-//   color: ${({ theme }) => theme.color.gray_3c};
-//   font-size: ${({ theme }) => theme.fontSize.caption1};
-//   font-weight: ${({ theme }) => theme.fontWeight.caption1};
-//   &::after {
-//     content: '';
-//     position: absolute;
-//     top: 6px;
-//     right: 14px;
-//     width: 6px;
-//     height: 6px;
-//     border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
-//     border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
-//     transform: rotate(45deg);
-//   }
-// `;
+const SMoreBtn = styled.button`
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  padding: 0 1.75rem 0 0.5rem;
+  border-radius: 12px;
+  line-height: 24px;
+  background-color: ${({ theme }) => theme.color.light};
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
+  &::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 14px;
+    width: 6px;
+    height: 6px;
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
+    border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
+    transform: rotate(45deg);
+  }
+`;
 
 const SLinkItem = styled(Link)`
   display: flex;

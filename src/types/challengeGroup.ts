@@ -8,6 +8,7 @@ interface IChallengeGroup {
   verificationDescription: string;
   isFree: boolean;
   isApplied: boolean;
+  challengeId: number;
   mychallengeId: number;
 }
 
