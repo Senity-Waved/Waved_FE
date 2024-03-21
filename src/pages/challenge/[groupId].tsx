@@ -20,8 +20,9 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
-import ScrollXBox from '@/components/common/ScrollXBox';
+
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
+import VeirificationExample from '@/components/challenge/VerificationExample';
 
 // interface IChallengeReview {
 //   reviewId: number;
@@ -39,7 +40,6 @@ interface IChallengeGroup {
   verficationType: 'TEXT' | 'LINK' | 'PICTURE' | 'PHOTO';
   description: string;
   verificationDescription: string;
-  // verificationExample: string[];
   // isFree: boolean;
 }
 
@@ -154,21 +154,7 @@ export default function Challenge({
             ))}
           </SSectionContext>
           <SSectionTitle>예시</SSectionTitle>
-          <ScrollXBox>
-            <SVerificationExample>
-              현재 예시 이미지 샘플 부재
-              {/* {getChallengeGroup.verificationExample.map((url) => (
-                <Image
-                  key={uuidv4()}
-                  src={url}
-                  width={150}
-                  height={218}
-                  priority
-                  alt="인증 예시"
-                />
-              ))} */}
-            </SVerificationExample>
-          </ScrollXBox>
+          <VeirificationExample title={getChallengeGroup.groupTitle} />
         </SSection>
         <SLinkItem href="/">
           <h3>주의사항</h3>
@@ -353,20 +339,6 @@ const SSectionContext = styled.div`
 //     transform: rotate(45deg);
 //   }
 // `;
-
-const SVerificationExample = styled.div`
-  height: 254px;
-  padding: 1rem 1.25rem;
-  img {
-    display: inline-block;
-    &:not(:last-child) {
-      margin-right: 0.625rem;
-    }
-    &:last-child {
-      margin-right: 1.25rem;
-    }
-  }
-`;
 
 const SLinkItem = styled(Link)`
   display: flex;
