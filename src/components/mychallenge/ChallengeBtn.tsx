@@ -24,7 +24,7 @@ export default function ChallengeBtn({
   status,
 }: IBtn) {
   const router = useRouter();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -55,6 +55,7 @@ export default function ChallengeBtn({
           .catch((error) => {
             console.error('페이지 이동에 실패하였습니다.', error);
           });
+        closeModal();
       },
     });
   };
@@ -84,6 +85,7 @@ export default function ChallengeBtn({
                   btnText: '제출하기',
                   onClick: () => {
                     console.log('인증제출하기');
+                    closeModal();
                   },
                 })
               }
