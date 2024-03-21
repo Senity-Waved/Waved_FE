@@ -47,7 +47,6 @@ export default function Home({
           text: '로그인이 필요한 페이지입니다.',
           type: 'warning',
         });
-
         await router.replace('/', undefined, { shallow: true });
       }
       setTimeout(() => {
@@ -67,7 +66,7 @@ export default function Home({
       <HomeHeader />
       <main>
         <TopBanner />
-        {isLogined && (
+        {isLogined && getMyProcessingChallenges.length !== 0 && (
           <SSection>
             <STitleLink href="/mychallenge">
               <h2>👨‍💻 진행 중인 챌린지</h2>
@@ -116,7 +115,12 @@ export async function getServerSideProps(
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
-        'http://localhost:3000/api/myProcessingChallenge',
+        'http://localhost:9000/api/v1/myChallenges?status=PROGRESS',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
       );
       return response.data;
     } catch (error) {
@@ -124,16 +128,10 @@ export async function getServerSideProps(
       return [];
     }
   }
-  // eslint-disable-next-line consistent-return
   async function fetchRecruitingChallenges() {
     try {
       const response = await axios.get<IRecruitingChallenge[]>(
-        'https://waved.azurewebsites.net/api/v1/challenges/waiting',
-        {
-          headers: {
-            Authorization: `Bearer ${cookieToken}`,
-          },
-        },
+        'http://localhost:9000/api/v1/challenges/waiting',
       );
       console.error('recruitingChallenge API GET 성공', response.data);
       return response.data;
