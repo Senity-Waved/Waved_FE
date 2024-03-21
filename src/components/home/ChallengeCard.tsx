@@ -72,19 +72,6 @@ const SThumbnail = styled.div`
   line-height: 0;
   border-radius: 8px;
   overflow: hidden;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 70%,
-      rgba(0, 0, 0, 0.9) 100%
-    );
-  }
 `;
 
 const SParticipant = styled.span`

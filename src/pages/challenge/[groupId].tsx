@@ -260,19 +260,6 @@ const SThumbnail = styled.div`
   height: 246px;
   line-height: 0;
   scroll-margin-top: 56px;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.3) 70%
-    );
-  }
 `;
 
 const SChips = styled.dl`
