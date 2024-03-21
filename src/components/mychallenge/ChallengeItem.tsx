@@ -13,7 +13,7 @@ interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
 
 export default function ChallengeItem({
   status,
-  groupId,
+  challengeGroupId,
   groupTitle,
   startDate,
   endDate,
@@ -22,6 +22,7 @@ export default function ChallengeItem({
   isVerified,
   isSuccessed,
   isRefunded,
+  isGithubConnected,
   verificationType,
   deposit,
 }: TMyChallengeItem) {
@@ -44,7 +45,7 @@ export default function ChallengeItem({
             <span>{changePriceFormat(deposit)}원</span>
           </SDeposit>
         </div>
-        <SDetailBtn href={`/challenge/${groupId}`} />
+        <SDetailBtn href={`/challenge/${challengeGroupId}`} />
       </SInfoWrapper>
       {status === 'PROGRESS' && (
         <ChallengeProgress
@@ -54,11 +55,12 @@ export default function ChallengeItem({
         />
       )}
       <ChallengeBtn
-        groupId={groupId}
+        challengeGroupId={challengeGroupId}
         isReviewed={isReviewed}
         isVerified={isVerified}
         isSuccessed={isSuccessed}
         isRefunded={isRefunded}
+        isGithubConnected={isGithubConnected}
         verificationType={verificationType}
         startDate={startDate}
         status={status}

@@ -118,10 +118,10 @@ const data2: IVerificationCollection = {
 };
 
 export default function VeirificationCollection({
-  groupId,
+  challengeGroupId,
   type,
 }: {
-  groupId: string;
+  challengeGroupId: string;
   type: TVerificationType;
 }) {
   const router = useRouter();
@@ -140,6 +140,7 @@ export default function VeirificationCollection({
   const getNextDay = () => setDate(date + ONE_DAY);
   const getPreviousDay = () => setDate(date - ONE_DAY);
 
+  console.log(type, challengeGroupId);
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
@@ -153,7 +154,7 @@ export default function VeirificationCollection({
       router
         .replace(
           {
-            pathname: `/verification/collection/${groupId}`,
+            pathname: `/verification/collection/${challengeGroupId}`,
             query: {
               type,
             },
@@ -176,7 +177,7 @@ export default function VeirificationCollection({
     if (query.submitVerification) {
       handleRouting('인증 제출이 완료되었습니다.');
     }
-  }, [query, router, groupId, type]);
+  }, [query, router, challengeGroupId, type]);
 
   return (
     <Layout
@@ -230,14 +231,14 @@ export default function VeirificationCollection({
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  const { groupId, type } = context.query as {
-    groupId: string;
+  const { challengeGroupId, type } = context.query as {
+    challengeGroupId: string;
     type: TVerificationType;
   };
 
   return {
     props: {
-      groupId,
+      challengeGroupId,
       type,
     },
   };

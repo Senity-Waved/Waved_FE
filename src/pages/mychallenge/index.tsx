@@ -11,53 +11,59 @@ import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
+import { GetServerSidePropsContext } from 'next';
+import { getMyChallengeApi } from '@/lib/axios/mychallenge/api';
 
 const progressData: TMyChallengeInfo[] = [
   {
-    myChallengeId: 3,
-    groupId: 3,
+    myChallengeId: 16,
+    challengeGroupId: 27,
     groupTitle: '백엔드 기술면접 챌린지 2기',
     startDate: '2024-03-11T00:00:00+09:00',
     endDate: '2024-03-24T00:00:00+09:00',
     successCount: 2,
     isReviewed: null,
     isVerified: false,
+    isGithubConnected: false,
     verificationType: 'TEXT',
     deposit: 10000,
   },
   {
     myChallengeId: 4,
-    groupId: 4,
+    challengeGroupId: 4,
     groupTitle: '1일 1커밋 챌린지 1기',
     startDate: '2024-03-11T00:00:00+09:00',
     endDate: '2024-03-24T00:00:00+09:00',
     successCount: 5,
     isReviewed: null,
     isVerified: true,
+    isGithubConnected: false,
     verificationType: 'GITHUB',
     deposit: 0,
   },
   {
-    myChallengeId: 5,
-    groupId: 5,
+    myChallengeId: 17,
+    challengeGroupId: 36,
     groupTitle: '스크린타임 4시간 챌린지 2기',
     startDate: '2024-03-10T00:00:00+09:00',
     endDate: '2024-03-23T00:00:00+09:00',
     successCount: 5,
     isReviewed: null,
     isVerified: false,
+    isGithubConnected: false,
     verificationType: 'PICTURE',
     deposit: 5000,
   },
   {
-    myChallengeId: 6,
-    groupId: 6,
+    myChallengeId: 18,
+    challengeGroupId: 30,
     groupTitle: '프론트엔드 아티클 공유 챌린지 1기',
     startDate: '2024-03-05T00:00:00+09:00',
     endDate: '2024-03-18T00:00:00+09:00',
     successCount: 12,
     isReviewed: null,
     isVerified: false,
+    isGithubConnected: false,
     verificationType: 'LINK',
     deposit: 5000,
   },
@@ -66,7 +72,7 @@ const progressData: TMyChallengeInfo[] = [
 const waitingData: TMyChallengeInfo[] = [
   {
     myChallengeId: 12,
-    groupId: 12,
+    challengeGroupId: 12,
     groupTitle: '백엔드 기술면접 챌린지 3기',
     startDate: '2024-03-25T00:00:00+09:00',
     endDate: '2024-04-07T00:00:00+09:00',
@@ -81,7 +87,7 @@ const waitingData: TMyChallengeInfo[] = [
 const completedData: TMyChallengeInfo[] = [
   {
     myChallengeId: 1,
-    groupId: 1,
+    challengeGroupId: 1,
     groupTitle: '백엔드 기술면접 챌린지 1기',
     startDate: '2024-03-01T00:00:00+09:00',
     endDate: '2024-03-14T00:00:00+09:00',
@@ -95,7 +101,7 @@ const completedData: TMyChallengeInfo[] = [
   },
   {
     myChallengeId: 2,
-    groupId: 2,
+    challengeGroupId: 2,
     groupTitle: '스크린타임 4시간 챌린지 1기',
     startDate: '2024-03-01T00:00:00+09:00',
     endDate: '2024-03-14T00:00:00+09:00',
@@ -109,7 +115,7 @@ const completedData: TMyChallengeInfo[] = [
   },
   {
     myChallengeId: 15,
-    groupId: 15,
+    challengeGroupId: 15,
     groupTitle: '테스트 챌린지 1기',
     startDate: '2024-01-01T00:00:00+09:00',
     endDate: '2024-01-14T00:00:00+09:00',
@@ -130,6 +136,12 @@ export default function MyChallenge() {
     open: false,
     text: '',
   });
+
+  const res = getMyChallengeApi('WAITING');
+  res.then((data) => {
+    console.log(data);
+  });
+
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
@@ -206,6 +218,16 @@ export default function MyChallenge() {
       <Modal />
     </Layout>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const res = await getMyChallengeApi('PROGRESS');
+
+  return {
+    props: {
+      res,
+    },
+  };
 }
 
 const SLinkToHome = styled(Link)`

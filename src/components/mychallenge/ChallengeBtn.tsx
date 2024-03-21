@@ -14,7 +14,7 @@ interface IBtn
 }
 
 export default function ChallengeBtn({
-  groupId,
+  challengeGroupId,
   isReviewed,
   isVerified,
   isSuccessed,
@@ -56,7 +56,7 @@ export default function ChallengeBtn({
           .push({
             pathname: `/mychallenge/review`,
             query: {
-              challengeId: groupId,
+              challengeId: challengeGroupId,
             },
           })
           .catch((error) => {
@@ -73,7 +73,7 @@ export default function ChallengeBtn({
         <SBtnWrapper>
           <SLink
             href={{
-              pathname: `/verification/collection/${groupId}`,
+              pathname: `/verification/collection/${challengeGroupId}`,
               query: { type: verificationType },
             }}
           >
@@ -107,7 +107,7 @@ export default function ChallengeBtn({
           ) : (
             <SLink
               href={{
-                pathname: `/verification/post/${groupId}`,
+                pathname: `/verification/post/${challengeGroupId}`,
                 query: { type: verificationType },
               }}
             >
@@ -143,7 +143,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/mychallenge/review`,
-                query: { challengeId: groupId },
+                query: { challengeId: challengeGroupId },
               }}
               as="mychallenge/review"
             >
