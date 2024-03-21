@@ -18,6 +18,7 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function Home({
   getMyProcessingChallenges,
@@ -99,7 +100,7 @@ export default function Home({
       <Footer />
     </SHomeWrapper>
   ) : (
-    <div>로딩중...</div>
+    <LoadingSpinner />
   );
 }
 
