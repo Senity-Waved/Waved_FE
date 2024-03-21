@@ -60,7 +60,6 @@ export default function Challenge({
   });
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
-
   const goToParticipant = () => {
     selectedChallenge({
       challengeGroupId: groupId,
@@ -273,7 +272,7 @@ const SChips = styled.dl`
     display: inline-block;
     height: 24px;
     padding: 0 0.75rem;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
     line-height: 24px;
     color: ${({ theme }) => theme.color.gray_ec};
