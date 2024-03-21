@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
+import { GetServerSidePropsContext } from 'next';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
@@ -17,6 +18,7 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function Home({
   getMyProcessingChallenges,
@@ -26,11 +28,16 @@ export default function Home({
   getRecruitingChallenges: IRecruitingChallenge[];
 }) {
   const router = useRouter();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
     type: 'warning',
   });
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -41,7 +48,6 @@ export default function Home({
           text: '로그인이 필요한 페이지입니다.',
           type: 'warning',
         });
-
         await router.replace('/', undefined, { shallow: true });
       }
       setTimeout(() => {
@@ -55,12 +61,13 @@ export default function Home({
   }, [router, router.query]);
 
   const isLogined = getCookie('accessToken');
-  return (
+
+  return isLoaded ? (
     <SHomeWrapper>
       <HomeHeader />
       <main>
         <TopBanner />
-        {isLogined && (
+        {isLogined && getMyProcessingChallenges.length !== 0 && (
           <SSection>
             <STitleLink href="/mychallenge">
               <h2>👨‍💻 진행 중인 챌린지</h2>
@@ -92,19 +99,29 @@ export default function Home({
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />
     </SHomeWrapper>
+  ) : (
+    <LoadingSpinner />
   );
 }
 
-export async function getServerSideProps(): Promise<{
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<{
   props: {
     getMyProcessingChallenges: IMyProcessingChallenge[];
     getRecruitingChallenges: IRecruitingChallenge[];
   };
 }> {
+  const cookieToken = getCookie('accessToken', context);
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
-        'http://localhost:3000/api/myProcessingChallenge',
+        'http://localhost:9000/api/v1/myChallenges?status=PROGRESS',
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
       );
       return response.data;
     } catch (error) {
@@ -115,8 +132,9 @@ export async function getServerSideProps(): Promise<{
   async function fetchRecruitingChallenges() {
     try {
       const response = await axios.get<IRecruitingChallenge[]>(
-        'http://localhost:3000/api/recruitingChallenge',
+        'http://localhost:9000/api/v1/challenges/waiting',
       );
+      console.error('recruitingChallenge API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('recruitingChallenge API GET 실패', error);

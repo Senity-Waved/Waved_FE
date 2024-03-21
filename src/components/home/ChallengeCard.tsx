@@ -4,24 +4,25 @@ import Link from 'next/link';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function ChallengeCard({
   challengeGroupId,
   groupTitle,
-  thumbnail,
+  // thumbnail,
   verificationType,
   participantCount,
   startDate,
   isFree,
 }: IRecruitingChallenge) {
-  const caculateRecruitDDay = (startDateStr: string) => {
-    const processStartDate = new Date(startDateStr);
-    const today = new Date();
-
-    const diffInMs = processStartDate.getTime() - today.getTime();
-    const dDay = Math.round(diffInMs / (1000 * 60 * 60 * 24)) - 1;
-
-    const dDayStr = `모집 마감일 D-${dDay === 0 ? 'DAY' : dDay}`;
+  const caculateRecruitDDay = (date: string) => {
+    const dDay = calculateDDay(date) - 1;
+    let dDayStr;
+    if (dDay < 0) {
+      dDayStr = '모집 마감';
+    } else {
+      dDayStr = `모집 마감일 D-${dDay === 0 ? 'DAY' : dDay}`;
+    }
     return dDayStr;
   };
 
@@ -31,7 +32,7 @@ export default function ChallengeCard({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={thumbnail}
+            src="https://via.placeholder.com/700x800.jpg"
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}

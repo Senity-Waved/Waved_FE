@@ -2,22 +2,18 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function ChallengeCardWide({
   groupId,
   groupTitle,
   startDate,
-  thumbnail,
+  // thumbnail,
 }: IMyProcessingChallenge) {
-  const caculateProcessDay = (startDateStr: string) => {
-    const processStartDate = new Date(startDateStr);
-    const today = new Date();
-
-    const diffInMs = today.getTime() - processStartDate.getTime();
-    const day = Math.round(diffInMs / (1000 * 60 * 60 * 24)) + 1;
-
-    const dayStr = `${day}일차`;
-    return dayStr;
+  const caculateProcessDay = (date: string) => {
+    const dDay = Math.abs(calculateDDay(date)) + 2;
+    const dDayStr = `${dDay}일차`;
+    return dDayStr;
   };
 
   return (
@@ -26,7 +22,7 @@ export default function ChallengeCardWide({
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={thumbnail}
+            src="https://via.placeholder.com/700x800.jpg"
             width={260}
             height={126}
             style={{ objectFit: 'cover' }}
