@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { RecoilEnv, useRecoilValue } from 'recoil';
 import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
+import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
@@ -32,9 +32,10 @@ const makeMerchantUid = () => {
 };
 
 export default function ChallengeParticipant() {
-  // const router = useRouter();
-
+  const router = useRouter();
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
+  const [myChallengeId, setMyChallengeId] = useState(0);
+
   const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
   const [challengeData, setChallengeData] = useState<ISelectedChallenge>({
@@ -47,40 +48,13 @@ export default function ChallengeParticipant() {
     isFree: false,
   });
 
-  const [myChallengeId, setMyChallengeId] = useState(0);
-
-  const filteredDepositAmounts = challengeData.isFree
-    ? depositAmounts
-    : depositAmounts.filter((amount) => amount !== 0);
-
-  const [deposit, setDeposit] = useState<number>(
-    challengeData.isFree ? 0 : 5000,
-  );
-
+  // 리코일에서 챌린지 상세 정보 가져오기
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
   }, [challengeData.isFree, recoilChallengeData]);
 
-  const getButtonStyleType = ():
-    | 'primary'
-    | 'gray'
-    | 'white'
-    | 'white_line'
-    | 'disabled' => {
-    if (challengeData.isFree && deposit === 0) {
-      return 'primary';
-    }
-
-    if (!challengeData.isFree && deposit !== 0) {
-      return 'primary';
-    }
-
-    return 'disabled';
-  };
-
-  const buttonStyleType = getButtonStyleType();
-
+  // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     if (myChallengeId !== 0) {
       requestPay();
@@ -88,6 +62,21 @@ export default function ChallengeParticipant() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myChallengeId]);
+
+  const [deposit, setDeposit] = useState<number>(
+    challengeData.isFree ? 0 : 5000,
+  );
+
+  const filteredDepositAmounts = challengeData.isFree
+    ? depositAmounts
+    : depositAmounts.filter((amount) => amount !== 0);
+
+  const buttonStyleType = useCallback(() => {
+    return (challengeData.isFree && deposit >= 0) ||
+      (!challengeData.isFree && deposit > 0)
+      ? 'primary'
+      : 'disabled';
+  }, [challengeData.isFree, deposit]);
 
   function requestPay() {
     if (!window.IMP) return;
@@ -99,13 +88,13 @@ export default function ChallengeParticipant() {
       pg: 'kcp.IP05D',
       pay_method: 'card',
       merchant_uid: `IMP${makeMerchantUid()}`,
-      name: 'waved 챌린지',
+      name: challengeData.groupTitle,
       amount: deposit,
       buyer_email: 'waved222@google.com',
       buyer_name: '신짱구',
       buyer_addr: '서울특별시 광화문역',
       buyer_tel: '010-0000-0000',
-      m_redirect_url: 'http://localhost:3000/challenge/participant/success',
+      m_redirect_url: 'http://127.0.0.1:3000/challenge/participant/success',
     };
 
     IMP.request_pay(payData, callback);
@@ -119,43 +108,47 @@ export default function ChallengeParticipant() {
           myChallengeId,
         };
 
-        const paymentsResponse = challengePaymentsApi(paymentsProps);
-
-        console.log(paymentsResponse);
+        challengePaymentsApi(paymentsProps)
+          .then((res) => {
+            console.log(res);
+            router
+              .push({
+                pathname: '/challenge/participant/success',
+                query: {
+                  deposit,
+                },
+              })
+              .catch((error) => {
+                console.error('페이지 이동에 실패하였습니다.', error);
+              });
+          })
+          .catch((error) => console.error(error));
       } else {
         console.log(error_msg);
       }
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const paymentCheck = async () => {
+  // 챌린지 신청을 위한 myChallengeId 가져오기
+  const challengeApply = async () => {
     try {
-      const response = await challengeGroupApplyApi(deposit).catch((error) =>
-        console.error('challengeGroupAPI 실패', error),
-      );
+      const challengeGroupProps = {
+        challengeGroupId: challengeData.challengeGroupId,
+        deposit,
+      };
+      const response = await challengeGroupApplyApi(challengeGroupProps);
       if (response) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMyChallengeId(response.data);
         console.log('mychallengeId 전달받음.');
       }
     } catch (error) {
-      console.error(error);
+      console.error('challengeGroupApply API 실패', error);
     }
   };
 
   const goToSuccess = () => {
-    paymentCheck().catch((error) => console.error(error));
-    // router
-    //   .push({
-    //     pathname: '/challenge/participant/success',
-    //     query: {
-    //       deposit,
-    //     },
-    //   })
-    //   .catch((error) => {
-    //     console.error('페이지 이동에 실패하였습니다.', error);
-    //   });
+    challengeApply().catch((error) => console.error(error));
   };
 
   return (
@@ -201,7 +194,7 @@ export default function ChallengeParticipant() {
         btns={[
           {
             text: '신청하기',
-            styleType: buttonStyleType,
+            styleType: buttonStyleType(),
             size: 'large',
             onClick: goToSuccess,
           },
