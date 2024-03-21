@@ -218,17 +218,17 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  const { challengeGroupId } = context.params as { challengeGroupId: string };
+  const { groupId } = context.params as { groupId: string };
   try {
     const response = await axios.get<IChallengeGroup>(
-      `http://localhost:9000/api/v1/challengeGroups/info/${challengeGroupId}`,
+      `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
       {
         headers: {
           Authorization: `Bearer ${cookieToken}`,
         },
       },
     );
-    console.log('myProcessingChallenge API GET 성공', response.data);
+    console.log('myProcessingChallenge API GET 성공');
     return {
       props: {
         getChallengeGroup: response.data,
