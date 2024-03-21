@@ -20,7 +20,7 @@ RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 export default function ChallengeParticipant() {
   const router = useRouter();
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
-  const [myChallengeId, setMyChallengeId] = useState(0);
+  const [myChallengeId, setMyChallengeId] = useState<number>(0);
 
   const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
@@ -105,9 +105,10 @@ export default function ChallengeParticipant() {
       };
       const response = await challengeGroupApplyApi(challengeGroupProps);
       if (response) {
+        console.log(response.data);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMyChallengeId(response.data);
-        console.log('mychallengeId 전달받음.');
+        console.log('mychallengeId 전달받음. :', response.data);
       }
     } catch (error) {
       console.error('challengeGroupApply API 실패', error);
