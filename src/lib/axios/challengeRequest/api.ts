@@ -9,12 +9,29 @@ export interface IPayments {
   myChallengeId: number;
 }
 
-const challengeGroupApplyApi = (deposit: number) => {
+export interface IChallengeGroupApply {
+  challengeGroupId: string;
+  deposit: number;
+}
+
+/**
+ * 챌린지 그룹 신청 POST
+ * @param challengeGroupApplyProps - challengeGroupId, deposit
+ * @returns (성공) myChallengeId
+ */
+const challengeGroupApplyApi = (
+  challengeGroupApplyProps: IChallengeGroupApply,
+) => {
   return axiosInstance.post(
-    `/api/v1/challengeGroups/2/apply?deposit=${deposit}`,
+    `/api/v1/challengeGroups/${challengeGroupApplyProps.challengeGroupId}/apply?deposit=${challengeGroupApplyProps.deposit}`,
   );
 };
 
+/**
+ * 결제 후검증 POST
+ * @param paymentsCheck - (param) myChallengeId, (body) imp_uid, deposit
+ * @returns response.data
+ */
 const challengePaymentsApi = (paymentsCheck: IPayments) => {
   return axiosInstance.post(
     `/api/v1/payments/${paymentsCheck.myChallengeId}`,
