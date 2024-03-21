@@ -157,6 +157,7 @@ export default function Challenge({
           <SSectionTitle>예시</SSectionTitle>
           <ScrollXBox>
             <SVerificationExample>
+              현재 예시 이미지 샘플 부재
               {/* {getChallengeGroup.verificationExample.map((url) => (
                 <Image
                   key={uuidv4()}
@@ -214,14 +215,13 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<{
   props: {
-    getChallengeGroup: IChallengeGroup[];
+    getChallengeGroup: IChallengeGroup;
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  const challengeGroupId =
-    context.params && (context.params.challengeGroupId as string);
+  const challengeGroupId = context.params?.challengeGroupId as string;
   try {
-    const response = await axios.get<IChallengeGroup[]>(
+    const response = await axios.get<IChallengeGroup>(
       `http://localhost:9000/api/v1/challengeGroups/${challengeGroupId}`,
       {
         headers: {
@@ -239,7 +239,7 @@ export async function getServerSideProps(
     return {
       props: {
         getChallengeGroup: {
-          groupTitle: 'Error',
+          groupTitle: '챌린지 정보를 불러오는 데 실패했습니다.',
           participantCount: 0,
           startDate: '2099-99-99',
           endDate: '2099-99-99',
