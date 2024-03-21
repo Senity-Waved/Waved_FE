@@ -6,18 +6,17 @@ import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import DepositRefundGuide from '@/components/challenge/participant/DepositRefundGuide';
 import DepositGuide from '@/components/challenge/participant/DepositGuide';
-import paymentMethods from '@/constants/payment';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
+import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function ChallengeParticipant() {
   const router = useRouter();
-  const [selectedPayment, setSelectedPayment] = useState('');
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
@@ -39,10 +38,14 @@ export default function ChallengeParticipant() {
     challengeData.isFree ? 0 : 5000,
   );
 
+  const [myChallengeId, setMyChallengeId] = useState(0);
+
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
   }, [challengeData.isFree, recoilChallengeData]);
+
+  console.log('myChallengeI: ', myChallengeId);
 
   const getButtonStyleType = ():
     | 'primary'
@@ -53,7 +56,7 @@ export default function ChallengeParticipant() {
     if (challengeData.isFree && deposit === 0) {
       return 'primary';
     }
-    if (!challengeData.isFree && selectedPayment) {
+    if (!challengeData.isFree && deposit !== 0) {
       return 'primary';
     }
     return 'disabled';
@@ -61,19 +64,42 @@ export default function ChallengeParticipant() {
 
   const buttonStyleType = getButtonStyleType();
 
-  const goToSuccess = () => {
-    console.log('챌린지 신청 성공');
-    router
-      .push({
-        pathname: '/challenge/participant/success',
-        query: {
-          deposit,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+  const challengeGroupApply = async () => {
+    try {
+      const challengeGroupProps = {
+        challengeGroupId: challengeData.challengeGroupId,
+        deposit,
+      };
+      const response = await challengeGroupApplyApi(challengeGroupProps);
+      if (response) {
+        console.log('myChallengeId: ', response.data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setMyChallengeId(response.data);
+      }
+    } catch (error) {
+      console.error('challengeGroupApply API 실패', error);
+    }
   };
+
+  const goToSuccess = () => {
+    challengeGroupApply().catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    if (myChallengeId !== 0) {
+      router
+        .push({
+          pathname: '/challenge/participant/success',
+          query: {
+            deposit,
+          },
+        })
+        .catch((error) => {
+          console.error('페이지 이동에 실패하였습니다.', error);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myChallengeId]);
 
   return (
     <Layout
@@ -114,36 +140,6 @@ export default function ChallengeParticipant() {
         </ScrollXBox>
       </SDepositSettingWrapper>
       <DepositRefundGuide />
-      <SPaymentMethodWrapper>
-        <SPaymentMethodTitle>결제 수단</SPaymentMethodTitle>
-        {deposit !== 0 ? (
-          <SpaymentMethodItemWrapper>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.CREDITCARD}
-              onClick={() => setSelectedPayment(paymentMethods.CREDITCARD)}
-            >
-              <p>신용카드</p>
-            </SPaymentMethodItem>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.VIRTUAL}
-              onClick={() => setSelectedPayment(paymentMethods.VIRTUAL)}
-            >
-              <p>가상계좌</p>
-            </SPaymentMethodItem>
-            <SPaymentMethodItem
-              type="button"
-              isSelectedPayment={selectedPayment === paymentMethods.KAKAO}
-              onClick={() => setSelectedPayment(paymentMethods.KAKAO)}
-            >
-              <p>카카오페이</p>
-            </SPaymentMethodItem>
-          </SpaymentMethodItemWrapper>
-        ) : (
-          <SNotPaymentGuide>0원은 결제 수단이 없습니다.</SNotPaymentGuide>
-        )}
-      </SPaymentMethodWrapper>
       <BottomFixedBtn
         btns={[
           {
@@ -202,50 +198,4 @@ const SDepositBtn = styled.button<{ isSelectedDeposit: boolean }>`
     display: flex;
     flex-flow: row nowrap;
   }
-`;
-
-const SPaymentMethodWrapper = styled.section`
-  height: 114px;
-  margin: 0 1.25rem 1.5rem 1.25rem;
-`;
-const SPaymentMethodTitle = styled.p`
-  height: 74px;
-  line-height: 74px;
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
-`;
-
-const SpaymentMethodItemWrapper = styled.div`
-  height: 42px;
-  display: flex;
-  gap: 0.625rem;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-`;
-const SPaymentMethodItem = styled.button<{ isSelectedPayment: boolean }>`
-  padding: 0.625rem 0.375rem;
-  font-size: ${({ theme }) => theme.fontSize.body2};
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
-  color: ${({ theme, isSelectedPayment }) =>
-    isSelectedPayment ? theme.color.normal : theme.color.gray_99};
-  border: 1px solid
-    ${({ theme, isSelectedPayment }) =>
-      isSelectedPayment ? theme.color.normal : theme.color.gray_99};
-  border-radius: 8px;
-  width: 100%;
-
-  & p {
-    width: 94px;
-    height: 22px;
-    line-height: 22px;
-    margin: 0 auto;
-  }
-`;
-
-const SNotPaymentGuide = styled.p`
-  text-align: center;
-  color: ${({ theme }) => theme.color.gray_bf};
-  font-size: ${({ theme }) => theme.fontSize.subtitle1};
-  font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
 `;
