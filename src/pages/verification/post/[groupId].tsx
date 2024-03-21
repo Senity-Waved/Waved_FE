@@ -6,7 +6,6 @@ import WriteLayout, { TPageType } from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
 import PhotoInput from '@/components/verification/post/PhotoInput';
 import TextArea from '@/components/common/TextArea';
-import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 import LinkInput from '@/components/verification/post/LinkInput';
 import VERIFICATION_TYPE from '@/constants/verificationType';
@@ -87,9 +86,7 @@ export default function VerificationPost() {
           </>
         )}
       </WriteLayout>
-      <Portal>
-        <Modal />
-      </Portal>
+      <Modal />
     </Layout>
   );
 }

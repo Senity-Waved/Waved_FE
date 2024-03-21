@@ -4,13 +4,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
+import { TMyChallengeInfo } from '@/types/myChallenge';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
-import { TMyChallengeInfo } from '@/types/myChallenge';
-import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
 
 const progressData: TMyChallengeInfo[] = [
@@ -204,9 +203,7 @@ export default function MyChallenge() {
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
-      <Portal>
-        <Modal />
-      </Portal>
+      <Modal />
     </Layout>
   );
 }

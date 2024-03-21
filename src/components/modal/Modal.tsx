@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Btn from '../common/Btn';
 import useModal from '@/hooks/useModal';
+import Portal from './ModalPortal';
 
 export default function Modal() {
   const { modalData, closeModal } = useModal();
@@ -14,41 +15,43 @@ export default function Modal() {
 
   return (
     modalData.isOpen && (
-      <SModalWrapper onClick={handleBackgroundClick}>
-        <SModalContent>
-          {modalData.image && (
-            <SModalImage
-              src={modalData.image}
-              alt="모달 이미지"
-              width={88}
-              height={88}
-              priority
+      <Portal>
+        <SModalWrapper onClick={handleBackgroundClick}>
+          <SModalContent>
+            {modalData.image && (
+              <SModalImage
+                src={modalData.image}
+                alt="모달 이미지"
+                width={88}
+                height={88}
+                priority
+              />
+            )}
+            <SModalMainText marginBottom={!!modalData.subText}>
+              {modalData.mainText}
+            </SModalMainText>
+            {modalData.subText && (
+              <SModalSubText>{modalData.subText}</SModalSubText>
+            )}
+            <Btn
+              btns={[
+                {
+                  text: modalData.cancelBtnText || '아니요',
+                  styleType: 'gray',
+                  size: 'small',
+                  onClick: closeModal,
+                },
+                {
+                  text: modalData.btnText,
+                  styleType: 'primary',
+                  size: 'small',
+                  onClick: modalData.onClick,
+                },
+              ]}
             />
-          )}
-          <SModalMainText marginBottom={!!modalData.subText}>
-            {modalData.mainText}
-          </SModalMainText>
-          {modalData.subText && (
-            <SModalSubText>{modalData.subText}</SModalSubText>
-          )}
-          <Btn
-            btns={[
-              {
-                text: modalData.cancelBtnText || '아니요',
-                styleType: 'gray',
-                size: 'small',
-                onClick: closeModal,
-              },
-              {
-                text: modalData.btnText,
-                styleType: 'primary',
-                size: 'small',
-                onClick: modalData.onClick,
-              },
-            ]}
-          />
-        </SModalContent>
-      </SModalWrapper>
+          </SModalContent>
+        </SModalWrapper>
+      </Portal>
     )
   );
 }
