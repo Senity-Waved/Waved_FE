@@ -19,6 +19,7 @@ export default function ChallengeBtn({
   isVerified,
   isSuccessed,
   isRefunded,
+  isGithubConnected,
   verificationType,
   startDate,
   status,
@@ -37,7 +38,13 @@ export default function ChallengeBtn({
     }
   };
 
+  const postMyVerification = () => {};
+
+  const goToMyGithub = () => {
+    router.push(`/profile/mygithub`);
+  };
   const getRefund = () => {
+    // 결제취소로직
     openModal({
       image: '/icons/icon-done.svg',
       mainText: '환급 신청이 완료되었습니다.',
@@ -79,12 +86,17 @@ export default function ChallengeBtn({
               onClick={() =>
                 openModal({
                   image: '/icons/icon-exclamation-mark.svg',
-                  mainText: '인증을 제출 하시겠습니까?',
-                  subText:
-                    '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.',
-                  btnText: '제출하기',
+                  mainText: isGithubConnected
+                    ? '인증을 제출 하시겠습니까?'
+                    : '깃허브 아이디를 연동하시겠습니까?',
+                  subText: isGithubConnected
+                    ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
+                    : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
+                  btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
                   onClick: () => {
-                    console.log('인증제출하기');
+                    isGithubConnected
+                      ? postMyVerification()
+                      : router.push(`/profile/mygithub`);
                     closeModal();
                   },
                 })
