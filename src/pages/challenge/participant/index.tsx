@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { RecoilEnv, useRecoilValue } from 'recoil';
-import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -13,23 +11,10 @@ import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import {
-  IPayments,
-  challengeGroupApplyApi,
-  challengePaymentsApi,
-} from '@/lib/axios/challengeRequest/api';
+import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
+import requestPay from '@/lib/portone/requestPay';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
-
-const makeMerchantUid = () => {
-  const today = new Date();
-  const hours = today.getHours();
-  const minutes = today.getMinutes();
-  const seconds = today.getSeconds();
-  const milliseconds = today.getMilliseconds();
-
-  return hours + minutes + seconds + milliseconds;
-};
 
 export default function ChallengeParticipant() {
   const router = useRouter();
@@ -57,7 +42,22 @@ export default function ChallengeParticipant() {
   // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     if (myChallengeId !== 0) {
-      requestPay();
+      requestPay({
+        deposit,
+        myChallengeId,
+        onSuccess: () => {
+          router
+            .push({
+              pathname: '/challenge/participant/success',
+              query: { deposit },
+            })
+            .catch((error) => console.error(error));
+        },
+        onFailure: (error) => {
+          console.error('결제 오류: ', error);
+        },
+      });
+
       console.log('mychallengeId 바뀌고 나서 requestPay()실행');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,57 +77,6 @@ export default function ChallengeParticipant() {
       ? 'primary'
       : 'disabled';
   }, [challengeData.isFree, deposit]);
-
-  function requestPay() {
-    if (!window.IMP) return;
-    const { IMP } = window;
-    const IMP_UID = process.env.NEXT_PUBLIC_IMP_UID ?? '';
-    IMP.init(IMP_UID);
-
-    const payData: RequestPayParams = {
-      pg: 'kcp.IP05D',
-      pay_method: 'card',
-      merchant_uid: `IMP${makeMerchantUid()}`,
-      name: challengeData.groupTitle,
-      amount: deposit,
-      buyer_email: 'waved222@google.com',
-      buyer_name: '신짱구',
-      buyer_addr: '서울특별시 광화문역',
-      buyer_tel: '010-0000-0000',
-      m_redirect_url: 'http://127.0.0.1:3000/challenge/participant/success',
-    };
-
-    IMP.request_pay(payData, callback);
-
-    function callback(response: RequestPayResponse) {
-      const { success, imp_uid, error_msg } = response;
-
-      if (success && imp_uid) {
-        const paymentsProps: IPayments = {
-          paymentResult: { imp_uid, deposit },
-          myChallengeId,
-        };
-
-        challengePaymentsApi(paymentsProps)
-          .then((res) => {
-            console.log(res);
-            router
-              .push({
-                pathname: '/challenge/participant/success',
-                query: {
-                  deposit,
-                },
-              })
-              .catch((error) => {
-                console.error('페이지 이동에 실패하였습니다.', error);
-              });
-          })
-          .catch((error) => console.error(error));
-      } else {
-        console.log(error_msg);
-      }
-    }
-  }
 
   // 챌린지 신청을 위한 myChallengeId 가져오기
   const challengeApply = async () => {
