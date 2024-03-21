@@ -40,10 +40,11 @@ interface IChallengeGroup {
   description: string;
   verificationDescription: string;
   // verificationExample: string[];
-  isFree: boolean;
+  // isFree: boolean;
 }
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
+const isFree = true; // api 필드 추가 이전 static 사용
 
 export default function Challenge({
   getChallengeGroup,
@@ -68,7 +69,7 @@ export default function Challenge({
       endDate: getChallengeGroup.endDate,
       condition,
       participantCount: getChallengeGroup.participantCount,
-      isFree: getChallengeGroup.isFree,
+      isFree,
     });
     router.push('/challenge/participant').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
@@ -96,7 +97,7 @@ export default function Challenge({
             <dd>2주</dd>
             <dt className="a11yHidden">챌린지 인증 방식</dt>
             <dd>사진인증</dd>
-            {getChallengeGroup.isFree && (
+            {isFree && (
               <>
                 <dt className="a11yHidden">챌린지 예치금 유무</dt>
                 <dd>무료</dd>
@@ -246,7 +247,6 @@ export async function getServerSideProps(
           verficationType: 'TEXT',
           description: '챌린지 정보를 불러오는 데 실패했습니다.',
           verificationDescription: '',
-          isFree: false,
         },
       },
     };
