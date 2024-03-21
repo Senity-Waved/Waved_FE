@@ -32,9 +32,6 @@ export default function VerificationPost() {
   const [isLinkValid, setIsLinkaValid] = useState<boolean | undefined>(
     undefined,
   );
-  const [isModalOpen, setModalOpen] = useState(false);
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
 
   const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -70,7 +67,7 @@ export default function VerificationPost() {
         text={text}
         file={file}
         isLinkValid={isLinkValid}
-        onClick={openModal}
+        onClick={handleSubmit}
       >
         {verificationType === 'TEXT' && (
           <>
@@ -90,18 +87,9 @@ export default function VerificationPost() {
           </>
         )}
       </WriteLayout>
-      {isModalOpen && (
-        <Portal>
-          <Modal
-            image="/icons/icon-exclamation-mark.svg"
-            mainText="인증을 제출 하시겠습니까?"
-            subText="인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다."
-            btnText="제출하기"
-            onClick={handleSubmit}
-            onClose={closeModal}
-          />
-        </Portal>
-      )}
+      <Portal>
+        <Modal />
+      </Portal>
     </Layout>
   );
 }

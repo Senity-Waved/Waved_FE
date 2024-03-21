@@ -1,5 +1,5 @@
-import { TMyChallengeInfo } from '@/types/myChallenge';
 import styled from '@emotion/styled';
+import { TMyChallengeInfo } from '@/types/myChallenge';
 
 export default function ChallengeLabel({
   isSuccessed,
