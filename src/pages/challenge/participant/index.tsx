@@ -13,6 +13,7 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
 import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
 import requestPay from '@/lib/portone/requestPay';
+import { getProfileApi } from '@/lib/axios/profile/api';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -41,25 +42,42 @@ export default function ChallengeParticipant() {
 
   // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
-    if (myChallengeId !== 0) {
-      requestPay({
-        deposit,
-        myChallengeId,
-        onSuccess: () => {
-          router
-            .push({
-              pathname: '/challenge/participant/success',
-              query: { deposit },
-            })
-            .catch((error) => console.error(error));
-        },
-        onFailure: (error) => {
-          console.error('결제 오류: ', error);
-        },
-      });
+    const paymentRequest = async () => {
+      if (myChallengeId !== 0) {
+        try {
+          const { groupTitle } = challengeData;
+          const response = await getProfileApi();
+          const { nickname } = response.data;
 
-      console.log('mychallengeId 바뀌고 나서 requestPay()실행');
-    }
+          requestPay({
+            deposit,
+            myChallengeId,
+            groupTitle,
+            nickname,
+            onSuccess: () => {
+              router
+                .push({
+                  pathname: '/challenge/participant/success',
+                  query: { deposit },
+                })
+                .catch((error) => {
+                  console.error('챌린시 신청 성공 페이지 이동 실패', error);
+                });
+            },
+            onFailure: (error) => {
+              console.error('결제 오류: ', error);
+            },
+          });
+
+          console.log('mychallengeId 바뀌고 나서 requestPay() 실행');
+        } catch (error) {
+          console.error('getProfileAPI 실패', error);
+        }
+      }
+    };
+
+    paymentRequest().catch((error) => console.error(error));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myChallengeId]);
 

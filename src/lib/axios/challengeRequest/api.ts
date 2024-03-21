@@ -1,6 +1,6 @@
 import axiosInstance from '../instance';
 
-export interface IPaymentResult {
+interface IPaymentResult {
   imp_uid: string;
   deposit: number;
 }
@@ -9,7 +9,7 @@ export interface IPayments {
   myChallengeId: number;
 }
 
-export interface IChallengeGroupApply {
+interface IChallengeGroupApply {
   challengeGroupId: string;
   deposit: number;
 }

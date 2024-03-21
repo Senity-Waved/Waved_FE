@@ -1,5 +1,6 @@
 import IRegisterState from '@/types/register';
 import axiosInstance from '../instance';
+import IProfile from '@/types/profile';
 
 /**
  * 멤버 정보 수정 PATCH
@@ -18,4 +19,8 @@ const logoutApi = () => {
   return axiosInstance.post('/members/logout');
 };
 
-export { registerApi, logoutApi };
+const getProfileApi = () => {
+  return axiosInstance.get<IProfile>('/members/profile');
+};
+
+export { registerApi, logoutApi, getProfileApi };

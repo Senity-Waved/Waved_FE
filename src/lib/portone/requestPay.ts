@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { RequestPayParams, RequestPayResponse } from 'iamport-typings';
+import { RequestPayParams, RequestPayResponse } from '@/types/portone';
 import {
   IPayments,
   challengePaymentsApi,
@@ -8,6 +8,8 @@ import {
 interface IRequestPayArguments {
   deposit: number;
   myChallengeId: number;
+  groupTitle: string;
+  nickname: string;
   onSuccess: () => void;
   onFailure: (error: string) => void;
 }
@@ -25,6 +27,8 @@ const makeMerchantUid = () => {
 const requestPay = ({
   deposit,
   myChallengeId,
+  groupTitle,
+  nickname,
   onSuccess,
   onFailure,
 }: IRequestPayArguments) => {
@@ -37,12 +41,9 @@ const requestPay = ({
     pg: 'kcp.IP05D',
     pay_method: 'card',
     merchant_uid: `IMP${makeMerchantUid()}`,
-    name: '챌린지 결제',
+    name: groupTitle,
     amount: deposit,
-    buyer_email: 'example@google.com',
-    buyer_name: '신짱구',
-    buyer_addr: '서울특별시 광화문',
-    buyer_tel: '010-1234-5678',
+    buyer_name: nickname,
     m_redirect_url: '/challenge/participant/success',
   };
 
