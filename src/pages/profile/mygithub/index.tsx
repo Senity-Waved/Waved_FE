@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import Portal from '@/components/modal/ModalPortal';
 import Modal from '@/components/modal/Modal';
+import useModal from '@/hooks/useModal';
 
 interface IGithub {
   githubId: string;
@@ -14,9 +14,7 @@ interface IGithub {
 
 export default function MyGithub() {
   const router = useRouter();
-  const [isModalOpen, setModalOpen] = useState(false);
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const { openModal, closeModal } = useModal();
   const [githubData, setGithubData] = useState<IGithub>({
     githubId: 'hello_world',
     githubToken: '12345678',
@@ -122,23 +120,22 @@ export default function MyGithub() {
               styleType: 'primary',
               size: 'large',
               type: isGithubLinked ? 'button' : 'submit',
-              onClick: isGithubLinked ? openModal : undefined,
+              onClick: isGithubLinked
+                ? () =>
+                    openModal({
+                      image: '/icons/icon-exclamation-mark.svg',
+                      mainText: '정말 연동을 해지하시겠습니까?',
+                      subText:
+                        '연동을 해지하면, 현재 깃허브 챌린지를 참가하고 있을 경우 중도 포기로 간주됩니다.',
+                      btnText: '네, 해지할게요',
+                      onClick: clickModalBtn,
+                    })
+                : undefined,
             },
           ]}
         />
       </SMyGithubWrapper>
-      {isModalOpen && (
-        <Portal>
-          <Modal
-            image="/icons/icon-exclamation-mark.svg"
-            mainText="정말 연동을 해지하시겠습니까?"
-            subText="연동을 해지하면, 현재 깃허브 챌린지를 참가하고 있을 경우 중도 포기로 간주됩니다."
-            btnText="네, 해지할게요"
-            onClick={clickModalBtn}
-            onClose={closeModal}
-          />
-        </Portal>
-      )}
+      <Modal />
     </Layout>
   );
 }

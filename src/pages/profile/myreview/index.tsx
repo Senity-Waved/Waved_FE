@@ -8,6 +8,7 @@ import SnackBar from '@/components/common/SnackBar';
 import EmptyView from '@/components/common/EmptyView';
 import ISnackBarState from '@/types/snackbar';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
+import Modal from '@/components/modal/Modal';
 
 export default function MyReview({
   getMyReviews,
@@ -86,6 +87,7 @@ export default function MyReview({
           noFooter
         />
       )}
+      <Modal />
     </Layout>
   );
 }
