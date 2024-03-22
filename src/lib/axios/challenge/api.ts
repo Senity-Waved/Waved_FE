@@ -9,9 +9,7 @@ interface IReviewList {
 }
 
 const challengeGroupApi = (groupId: string) => {
-  return axiosInstance.get<IChallengeGroup>(
-    `/api/v1/challengeGroups/info/${groupId}`,
-  );
+  return axiosInstance.get<IChallengeGroup>(`/challengeGroups/info/${groupId}`);
 };
 
 const reviewApi = ({
@@ -22,7 +20,7 @@ const reviewApi = ({
   page: number;
 }) => {
   return axiosInstance.get<IReviewList>(
-    `/api/v1/challenges/${challengeId}/reviews?page=${page}&limit=5`,
+    `/challenges/${challengeId}/reviews?page=${page}&limit=5`,
   );
 };
 
