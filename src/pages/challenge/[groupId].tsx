@@ -194,16 +194,17 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
-  console.log('🍪🍪🍪🍪🍪🍪🍪', cookieToken);
+  console.log('🍪', cookieToken);
   const { groupId } = context.params as { groupId: string };
   async function fetchChallengeInfo() {
     try {
+      const headers = cookieToken
+        ? { Authorization: `Bearer ${cookieToken}` }
+        : {};
       const response = await axios.get<IChallengeGroup>(
         `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
         {
-          headers: {
-            Authorization: `Bearer ${cookieToken}`,
-          },
+          headers,
         },
       );
       console.log('challengeGroup API GET 성공');
@@ -226,7 +227,8 @@ export async function getServerSideProps(
     }
   }
   const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
-  const { challengeId } = challengeInfo;
+  const { challengeId, isApplied, myChallengeId } = challengeInfo;
+  console.log(isApplied, myChallengeId);
   async function fetchReviews() {
     await axios
       .get<IReviewList>(
