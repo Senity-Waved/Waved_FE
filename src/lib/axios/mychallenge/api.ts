@@ -8,7 +8,7 @@ export const fetchMyChallenges = async (
 ) => {
   try {
     const response = await axios.get<TMyChallengeInfo[]>(
-      `https://waved.azurewebsites.net/api/v1/myChallenges?status=${status}`,
+      `http://localhost:9000/api/v1/myChallenges?status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${cookieToken}`,
@@ -21,3 +21,5 @@ export const fetchMyChallenges = async (
     return [];
   }
 };
+
+export default fetchMyChallenges;
