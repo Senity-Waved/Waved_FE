@@ -29,10 +29,6 @@ export default function MyChallenge({
   const [progressData, setProgressData] = useState<TMyChallengeInfo[]>(
     getMyProgressChallenges,
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [waitingData, setWaitingData] = useState<TMyChallengeInfo[]>(
-    getMyWaitingChallenges,
-  );
   const [completedData, setCompletedData] = useState<TMyChallengeInfo[]>(
     getMyCompletedChallenges,
   );
@@ -43,11 +39,11 @@ export default function MyChallenge({
     text: '',
   });
 
-  // console.log(
-  //   getMyProgressChallenges,
-  //   getMyWaitingChallenges,
-  //   getMyCompletedChallenges,
-  // );
+  console.log(
+    getMyProgressChallenges,
+    getMyWaitingChallenges,
+    getMyCompletedChallenges,
+  );
 
   useEffect(() => {
     const handleRouting = (
@@ -76,7 +72,7 @@ export default function MyChallenge({
     }
   }, [query, router]);
   const isEmptyData =
-    progressData.length + waitingData.length + completedData.length;
+    progressData.length + getMyWaitingChallenges.length + completedData.length;
   return (
     <Layout
       headerText="MY 챌린지"
@@ -100,11 +96,11 @@ export default function MyChallenge({
             setData={setProgressData}
           />
         )}
-        {waitingData.length !== 0 && (
+        {getMyWaitingChallenges.length !== 0 && (
           <ChallengeSection
             mainText="📚 대기 중"
             status="WAITING"
-            challenges={waitingData}
+            challenges={getMyWaitingChallenges}
           />
         )}
         {completedData.length !== 0 && (
@@ -117,7 +113,7 @@ export default function MyChallenge({
         )}
       </div>
       {isEmptyData === 0 && <ChallengeEmptyView />}
-      {progressData.length + waitingData.length === 0 &&
+      {progressData.length + getMyWaitingChallenges.length === 0 &&
         completedData.length !== 0 && (
           <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
         )}
