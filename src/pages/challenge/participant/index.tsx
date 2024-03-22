@@ -61,7 +61,10 @@ export default function ChallengeParticipant() {
                   query: { deposit },
                 })
                 .catch((error) => {
-                  console.error('챌린시 신청 성공 페이지 이동 실패', error);
+                  console.error(
+                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
+                    error,
+                  );
                 });
             },
             onFailure: (error) => {
@@ -71,7 +74,7 @@ export default function ChallengeParticipant() {
 
           console.log('mychallengeId 바뀌고 나서 requestPay() 실행');
         } catch (error) {
-          console.error('getProfileAPI 실패', error);
+          console.error('챌린지 그룹 신청 실패', error);
         }
       } else if (myChallengeId !== 0 && challengeData.isFree && deposit === 0) {
         router
