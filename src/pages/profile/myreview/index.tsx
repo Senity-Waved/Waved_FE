@@ -96,9 +96,7 @@ export async function getStaticProps(): Promise<{
   props: { getMyReviews: IMyReview[] };
 }> {
   try {
-    const response = await axios.get<IMyReview[]>(
-      'http://localhost:3000/api/myReviews',
-    );
+    const response = await axios.get<IMyReview[]>('/api/myReviews');
     const { data } = response;
     return {
       props: {
