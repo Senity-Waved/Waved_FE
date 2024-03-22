@@ -17,15 +17,12 @@ import useModal from '@/hooks/useModal';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import IProfile from '@/types/profile';
 
-export interface IProfileProps {
-  profileInfo: IProfile;
-  isLogined: boolean;
-}
-
-export default function Profile({ profileInfo, isLogined }: IProfileProps) {
+export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
   const router = useRouter();
   const { query } = useRouter();
   const { openModal, closeModal } = useModal();
+
+  const isLogined = !!getCookie('accessToken');
 
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -341,7 +338,6 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
   const cookieToken = getCookie('accessToken', context);
-  const isLogined = !!cookieToken;
   let profileInfo = null;
 
   try {
@@ -360,7 +356,6 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: {
       profileInfo,
-      isLogined,
     },
   };
 };
