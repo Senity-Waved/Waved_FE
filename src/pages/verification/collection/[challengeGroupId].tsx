@@ -230,6 +230,7 @@ export default function VeirificationCollection({
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
+  // eslint-disable-next-line @typescript-eslint/require-await
 ) => {
   const { challengeGroupId, type } = context.query as {
     challengeGroupId: string;

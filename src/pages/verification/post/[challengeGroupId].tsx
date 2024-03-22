@@ -58,18 +58,6 @@ export default function VerificationPost() {
     }
   };
 
-  const getQuiz = async () => {
-    try {
-      const response = await getQuizApi(challengeGroupId);
-      if (response) {
-        setQuiz(response.data.question);
-      }
-    } catch (error) {
-      console.error('getQuiz API 실패', error);
-      setQuiz('문제를 불러오는데 실패했습니다.');
-    }
-  };
-
   const handleSubmit = () => {
     postMyVerification().catch((error) => console.error(error));
     router
@@ -87,7 +75,14 @@ export default function VerificationPost() {
 
   useEffect(() => {
     if (verificationType === 'TEXT' && challengeGroupId !== undefined)
-      getQuiz();
+      getQuizApi(challengeGroupId)
+        .then((data) => {
+          setQuiz(data.question);
+        })
+        .catch((error) => {
+          console.error('getQuiz API 실패', error);
+          setQuiz('문제를 불러오는데 실패했습니다.');
+        });
   }, [verificationType, challengeGroupId]);
 
   return (

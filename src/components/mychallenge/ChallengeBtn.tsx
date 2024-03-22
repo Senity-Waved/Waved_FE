@@ -49,9 +49,8 @@ export default function ChallengeBtn({
     try {
       const response = await postMyCommitVerifiactionApi(challengeGroupId);
       if (response) {
-        fetchMyChallenges(status, cookieToken).then((res) => {
-          if (setData !== undefined) setData(res);
-        });
+        const res = await fetchMyChallenges(status, cookieToken);
+        if (setData !== undefined) setData(res);
       }
     } catch (error) {
       console.error('커밋인증 실패', error);
@@ -60,9 +59,8 @@ export default function ChallengeBtn({
 
   const getRefund = async () => {
     // 결제취소로직
-    fetchMyChallenges(status, cookieToken).then((res) => {
-      if (setData !== undefined) setData(res);
-    });
+    const res = await fetchMyChallenges(status, cookieToken);
+    if (setData !== undefined) setData(res);
     openModal({
       image: '/icons/icon-done.svg',
       mainText: '환급 신청이 완료되었습니다.',
@@ -92,7 +90,7 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType, myChallengeId: myChallengeId },
+              query: { type: verificationType, myChallengeId },
             }}
           >
             <SBtn styleType="light">인증 내역</SBtn>
@@ -113,9 +111,14 @@ export default function ChallengeBtn({
                     : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
                   btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
                   onClick: () => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                     isGithubConnected
-                      ? postMyVerification()
-                      : router.push(`/profile/mygithub`);
+                      ? postMyVerification().catch((error) =>
+                          console.error(error),
+                        )
+                      : router
+                          .push(`/profile/mygithub`)
+                          .catch((error) => console.error(error));
                     closeModal();
                   },
                 })
@@ -127,7 +130,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/verification/post/${challengeGroupId}`,
-                query: { type: verificationType, myChallengeId: myChallengeId },
+                query: { type: verificationType, myChallengeId },
               }}
             >
               <SBtn
@@ -154,12 +157,13 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType, myChallengeId: myChallengeId },
+              query: { type: verificationType, myChallengeId },
             }}
           >
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           {isSuccessed && !isRefundRequested ? (
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <SBtn as="button" styleType="middle" onClick={getRefund}>
               환급 신청
             </SBtn>
