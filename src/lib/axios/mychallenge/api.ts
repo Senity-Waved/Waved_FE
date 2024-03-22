@@ -8,7 +8,7 @@ export const fetchMyChallenges = async (
 ) => {
   try {
     const response = await axios.get<TMyChallengeInfo[]>(
-      `http://localhost:9000/api/v1/myChallenges?status=${status}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${cookieToken}`,
