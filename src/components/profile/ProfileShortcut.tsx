@@ -2,19 +2,18 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { JOB_TITLE_KR } from '@/constants/jobTitle';
+import IProfile from '@/types/profile';
 
-interface IProfileShortcut {
+interface IProfileProps {
   isLogined: boolean;
-  profileInfo: {
-    nickName: string;
-    jobTitle: string;
-    githubId?: string;
-  };
+  profileInfo: IProfile;
 }
+
 export default function ProfileShortcut({
   isLogined,
   profileInfo,
-}: IProfileShortcut) {
+}: IProfileProps) {
   const router = useRouter();
 
   const goToGithub = () => {
@@ -29,7 +28,10 @@ export default function ProfileShortcut({
       <SProfileGreetingWrapper>
         {isLogined ? (
           <p>
-            <span>{profileInfo.nickName}</span>&nbsp;{profileInfo.jobTitle}
+            <span>{profileInfo.nickname}</span>
+            {profileInfo.jobTitle && (
+              <span>&nbsp;{JOB_TITLE_KR[profileInfo.jobTitle]}</span>
+            )}
           </p>
         ) : (
           <Link href="/onboarding">
@@ -98,7 +100,7 @@ const SProfileGreetingWrapper = styled.div`
     align-items: center;
   }
 
-  & span {
+  & span:first-of-type {
     color: ${({ theme }) => theme.color.normal};
   }
 `;
