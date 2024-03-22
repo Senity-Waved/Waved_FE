@@ -7,7 +7,7 @@ import IRegisterState from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import JOBTITLE from '@/constants/jobTitle';
+import { JOBTITLE } from '@/constants/jobTitle';
 
 export default function ProfileEdit() {
   const router = useRouter();

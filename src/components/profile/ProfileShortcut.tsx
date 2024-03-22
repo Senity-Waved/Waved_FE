@@ -2,19 +2,13 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { JOB_TITLE_KR } from '@/constants/jobTitle';
+import { IProfileProps } from '@/pages/profile';
 
-interface IProfileShortcut {
-  isLogined: boolean;
-  profileInfo: {
-    nickName: string;
-    jobTitle: string;
-    githubId?: string;
-  };
-}
 export default function ProfileShortcut({
   isLogined,
   profileInfo,
-}: IProfileShortcut) {
+}: IProfileProps) {
   const router = useRouter();
 
   const goToGithub = () => {
@@ -29,7 +23,10 @@ export default function ProfileShortcut({
       <SProfileGreetingWrapper>
         {isLogined ? (
           <p>
-            <span>{profileInfo.nickName}</span>&nbsp;{profileInfo.jobTitle}
+            <span>{profileInfo.nickname}</span>
+            {profileInfo.jobTitle && (
+              <span>&nbsp;{JOB_TITLE_KR[profileInfo.jobTitle]}</span>
+            )}
           </p>
         ) : (
           <Link href="/onboarding">
