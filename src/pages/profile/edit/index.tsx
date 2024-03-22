@@ -7,7 +7,7 @@ import IRegisterState from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import { getEditProfileApi } from '@/lib/axios/profile/api';
+import { editMemberApi, getEditProfileApi } from '@/lib/axios/profile/api';
 
 export default function ProfileEdit() {
   const router = useRouter();
@@ -32,21 +32,28 @@ export default function ProfileEdit() {
     fetchProfile().catch((error) => console.error(error));
   }, []);
 
-  console.log(editProfile);
+  const editProfileInfo = async () => {
+    try {
+      const response = await editMemberApi(editProfile);
+      console.log('프로필 수정 | ', response.data);
+      router
+        .push({
+          pathname: '/profile',
+          query: {
+            profileEdit: true,
+          },
+        })
+        .catch((error) => {
+          console.error('프로필 수정 후 페이지 이동 실패', error);
+        });
+    } catch (error) {
+      console.error('프로필 수정 실패', error);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`프로필 수정: ${JSON.stringify(editProfile)}`);
-    router
-      .push({
-        pathname: '/profile',
-        query: {
-          profileEdit: true,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+    editProfileInfo().catch((error) => console.error(error));
   };
 
   const updateProfileData = (newProfile: Partial<IRegisterState>) => {
