@@ -1,12 +1,11 @@
 import IChallengeGroup from '@/types/challengeGroup';
 import axiosInstance from '../instance';
-import { IChallengeReview } from '@/pages/challenge/[groupId]';
+import { TChallengeReview } from '@/types/review';
 
 interface IReviewList {
-  content: IChallengeReview[];
+  content: TChallengeReview[];
   totalPages: number;
   totalElements: number;
-  number: 0;
 }
 
 const challengeGroupApi = (groupId: string) => {

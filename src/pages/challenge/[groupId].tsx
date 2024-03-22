@@ -23,14 +23,7 @@ import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import { challengeGroupApi, reviewApi } from '@/lib/axios/challenge/api';
 import IChallengeGroup from '@/types/challengeGroup';
-
-export interface IChallengeReview {
-  reviewId: number;
-  author: string;
-  jobTitle?: string;
-  createdDate: string;
-  context: string;
-}
+import { TChallengeReview } from '@/types/review';
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
@@ -39,7 +32,7 @@ export default function Challenge({
   reviews,
 }: {
   challengeInfo: IChallengeGroup;
-  reviews: IChallengeReview[];
+  reviews: TChallengeReview[];
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
@@ -130,8 +123,7 @@ export default function Challenge({
             <>
               <ul>
                 {reviews.map((review) => {
-                  const { reviewId, ...rest } = review;
-                  return <ChallengeReviewItem key={reviewId} {...rest} />;
+                  return <ChallengeReviewItem key={uuidv4()} {...review} />;
                 })}
               </ul>
               <SMoreBtn type="button">더보기</SMoreBtn>
@@ -193,7 +185,7 @@ export async function getServerSideProps(
 ): Promise<{
   props: {
     challengeInfo: IChallengeGroup;
-    reviews: IChallengeReview[];
+    reviews: TChallengeReview[];
   };
 }> {
   const { groupId } = context.params as { groupId: string };
