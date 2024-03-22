@@ -43,7 +43,7 @@ export default function ChallengeParticipant() {
   // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     const paymentRequest = async () => {
-      if (myChallengeId !== 0) {
+      if (myChallengeId !== 0 && !challengeData.isFree && deposit !== 0) {
         try {
           const { groupTitle } = challengeData;
           const response = await getProfileApi();
@@ -73,6 +73,15 @@ export default function ChallengeParticipant() {
         } catch (error) {
           console.error('getProfileAPI 실패', error);
         }
+      } else if (myChallengeId !== 0 && challengeData.isFree && deposit === 0) {
+        router
+          .push({
+            pathname: '/challenge/participant/success',
+            query: { deposit },
+          })
+          .catch((error) => {
+            console.error('무료 챌린시 신청 성공 페이지 이동 실패', error);
+          });
       }
     };
 
