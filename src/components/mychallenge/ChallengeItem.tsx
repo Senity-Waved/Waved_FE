@@ -7,13 +7,15 @@ import parseDate from '@/utils/parseDate';
 import changePriceFormat from '@/utils/changePriceFormat';
 import ChallengeLabel from './ChallengeLabel';
 
-interface TMyChallengeItem extends Omit<TMyChallengeInfo, 'myChallengeId'> {
+interface TMyChallengeItem extends TMyChallengeInfo {
   status: TMyChallengeStatus;
+  setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
 
 export default function ChallengeItem({
   status,
-  groupId,
+  myChallengeId,
+  challengeGroupId,
   groupTitle,
   startDate,
   endDate,
@@ -21,9 +23,11 @@ export default function ChallengeItem({
   isReviewed,
   isVerified,
   isSuccessed,
-  isRefunded,
+  isRefundRequested,
+  isGithubConnected,
   verificationType,
   deposit,
+  setData,
 }: TMyChallengeItem) {
   const [startYY, startMM, startDD] = parseDate(startDate);
   const [endYY, endMM, endDD] = parseDate(endDate);
@@ -31,7 +35,10 @@ export default function ChallengeItem({
   return (
     <SWrapper>
       {status === 'COMPLETED' && (
-        <ChallengeLabel isSuccessed={isSuccessed} isRefunded={isRefunded} />
+        <ChallengeLabel
+          isSuccessed={isSuccessed}
+          isRefundRequested={isRefundRequested}
+        />
       )}
       <SInfoWrapper>
         <h3>{groupTitle}</h3>
@@ -41,10 +48,10 @@ export default function ChallengeItem({
           </SDuration>
           <SDeposit>
             <span>예치금</span>
-            <span>{changePriceFormat(deposit)}원</span>
+            <span>{changePriceFormat(5000)}원</span>
           </SDeposit>
         </div>
-        <SDetailBtn href={`/challenge/${groupId}`} />
+        <SDetailBtn href={`/challenge/${challengeGroupId}`} />
       </SInfoWrapper>
       {status === 'PROGRESS' && (
         <ChallengeProgress
@@ -54,14 +61,17 @@ export default function ChallengeItem({
         />
       )}
       <ChallengeBtn
-        groupId={groupId}
+        myChallengeId={myChallengeId}
+        challengeGroupId={challengeGroupId}
         isReviewed={isReviewed}
         isVerified={isVerified}
         isSuccessed={isSuccessed}
-        isRefunded={isRefunded}
+        isRefundRequested={isRefundRequested}
+        isGithubConnected={isGithubConnected}
         verificationType={verificationType}
         startDate={startDate}
         status={status}
+        setData={setData}
       />
     </SWrapper>
   );

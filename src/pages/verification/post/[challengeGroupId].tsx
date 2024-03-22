@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import WriteLayout, { TPageType } from '@/components/common/WriteLayout';
@@ -10,6 +10,10 @@ import Modal from '@/components/modal/Modal';
 import LinkInput from '@/components/verification/post/LinkInput';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import { TVerificationType } from '@/types/verification';
+import {
+  getQuizApi,
+  postMyVerificationApi,
+} from '@/lib/axios/verification/api';
 
 export default function VerificationPost() {
   const router = useRouter();
@@ -22,7 +26,7 @@ export default function VerificationPost() {
   } else {
     verificationType = 'TEXT';
   }
-  const groupId = router.query.groupId as string;
+  const challengeGroupId = router.query.challengeGroupId as string;
   const pageType = VERIFICATION_TYPE[verificationType];
   const { placeholder } = writeLayoutText[pageType];
   const [text, setText] = useState<string>('');
@@ -31,19 +35,34 @@ export default function VerificationPost() {
   const [isLinkValid, setIsLinkaValid] = useState<boolean | undefined>(
     undefined,
   );
+  const [quiz, setQuiz] = useState<string>('');
 
-  const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const postMyVerification = async () => {
+    const formData = new FormData();
     if (verificationType === 'LINK') {
-      console.log(`link: ${link} , text: ${text}`);
-    } else if (verificationType === 'PICTURE') {
-      console.log(file);
+      formData.append('content', text);
+      formData.append('link', link);
+    } else if (verificationType === 'PICTURE' && file) {
+      formData.append('imageUrl', file);
     } else if (verificationType === 'TEXT') {
-      console.log(`text: ${text}`);
+      formData.append('content', text);
     }
+
+    try {
+      const response = await postMyVerificationApi(challengeGroupId, formData);
+      if (response) {
+        console.log(response);
+      }
+    } catch (error) {
+      console.error('postMyVerification API 실패', error);
+    }
+  };
+
+  const handleSubmit = () => {
+    postMyVerification().catch((error) => console.error(error));
     router
       .replace({
-        pathname: `/verification/collection/${groupId}`,
+        pathname: `/verification/collection/${challengeGroupId}`,
         query: {
           type: verificationType,
           submitVerification: true,
@@ -53,6 +72,18 @@ export default function VerificationPost() {
         console.error('페이지 이동에 실패하였습니다.', error);
       });
   };
+
+  useEffect(() => {
+    if (verificationType === 'TEXT' && challengeGroupId !== undefined)
+      getQuizApi(challengeGroupId)
+        .then((data) => {
+          setQuiz(data.question);
+        })
+        .catch((error) => {
+          console.error('getQuiz API 실패', error);
+          setQuiz('문제를 불러오는데 실패했습니다.');
+        });
+  }, [verificationType, challengeGroupId]);
 
   return (
     <Layout
@@ -70,7 +101,7 @@ export default function VerificationPost() {
       >
         {verificationType === 'TEXT' && (
           <>
-            <SQuestion>Q.출제된문제내용</SQuestion>
+            <SQuestion>Q.{quiz}</SQuestion>
             <TextArea placeholder={placeholder} setText={setText} />
           </>
         )}

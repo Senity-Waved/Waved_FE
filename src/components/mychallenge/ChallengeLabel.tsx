@@ -3,11 +3,11 @@ import { TMyChallengeInfo } from '@/types/myChallenge';
 
 export default function ChallengeLabel({
   isSuccessed,
-  isRefunded,
-}: Pick<TMyChallengeInfo, 'isSuccessed' | 'isRefunded'>) {
+  isRefundRequested,
+}: Pick<TMyChallengeInfo, 'isSuccessed' | 'isRefundRequested'>) {
   const labelStatus = (() => {
     if (isSuccessed) {
-      return isRefunded ? '환급 완료' : '달성 완료';
+      return isRefundRequested ? '환급 완료' : '달성 완료';
     }
     return '달성 실패';
   })();
