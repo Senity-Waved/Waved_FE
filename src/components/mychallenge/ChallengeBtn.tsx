@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styled from '@emotion/styled';
-import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
-import calculateDDay from '@/utils/calculateDDay';
-import useModal from '@/hooks/useModal';
-import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
-import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
 import { getCookie } from 'cookies-next';
+import styled from '@emotion/styled';
+import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
+import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
+import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
+import useModal from '@/hooks/useModal';
+import calculateDDay from '@/utils/calculateDDay';
 
 interface IBtn
   extends Omit<
@@ -92,7 +92,7 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType },
+              query: { type: verificationType, myChallengeId: myChallengeId },
             }}
           >
             <SBtn styleType="light">인증 내역</SBtn>
@@ -127,7 +127,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/verification/post/${challengeGroupId}`,
-                query: { type: verificationType },
+                query: { type: verificationType, myChallengeId: myChallengeId },
               }}
             >
               <SBtn
@@ -151,7 +151,12 @@ export default function ChallengeBtn({
     case 'COMPLETED':
       return (
         <SBtnWrapper>
-          <SLink href="#">
+          <SLink
+            href={{
+              pathname: `/verification/collection/${challengeGroupId}`,
+              query: { type: verificationType, myChallengeId: myChallengeId },
+            }}
+          >
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           {isSuccessed && !isRefundRequested ? (
