@@ -9,7 +9,7 @@ interface IChallengeGroup {
   isFree: boolean;
   isApplied: boolean;
   challengeId: number;
-  mychallengeId: number;
+  myChallengeId: number;
 }
 
 export default IChallengeGroup;
