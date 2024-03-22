@@ -117,7 +117,7 @@ export async function getServerSideProps(
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
-        'http://127.0.0.1:9000/api/v1/myChallenges?status=PROGRESS',
+        `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=PROGRESS`,
         {
           headers: {
             Authorization: `Bearer ${cookieToken}`,
@@ -134,7 +134,7 @@ export async function getServerSideProps(
   async function fetchRecruitingChallenges() {
     try {
       const response = await axios.get<IRecruitingChallenge[]>(
-        'http://127.0.0.1:9000/api/v1/challenges/waiting',
+        `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/waiting`,
       );
       console.log('recruitingChallenge API GET 성공');
       return response.data;

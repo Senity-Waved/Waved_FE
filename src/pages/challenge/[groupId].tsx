@@ -202,7 +202,7 @@ export async function getServerSideProps(
         ? { Authorization: `Bearer ${cookieToken}` }
         : {};
       const response = await axios.get<IChallengeGroup>(
-        `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/challengeGroups/info/${groupId}`,
         {
           headers,
         },
@@ -232,7 +232,7 @@ export async function getServerSideProps(
   async function fetchReviews() {
     await axios
       .get<IReviewList>(
-        `http://localhost:9000/api/v1/challenges/${challengeId}/reviews?page=0&limit=5`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${challengeId}/reviews?page=0&limit=5`,
       )
       .then((response) => {
         console.log('review API GET 성공', response.data.content);

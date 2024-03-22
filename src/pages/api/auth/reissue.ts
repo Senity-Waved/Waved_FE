@@ -17,7 +17,7 @@ export default async function Reissue(
       }
 
       const response = await axios.post<string>(
-        'http://127.0.0.1:9000/api/v1/members/reissue',
+        `${process.env.NEXT_PUBLIC_BASE_URL}/members/reissue`,
         {},
         {
           headers: { Authorization: `Bearer ${refreshToken}` },
