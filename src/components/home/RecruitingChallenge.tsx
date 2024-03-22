@@ -4,16 +4,16 @@ import EmptyView from '@/components/common/EmptyView';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 
 export default function RecruitingChallenge({
-  getRecruitingChallenges,
+  recruitingChallenges,
 }: {
-  getRecruitingChallenges: IRecruitingChallenge[];
+  recruitingChallenges: IRecruitingChallenge[];
 }) {
   return (
     <SSection>
       <STitle>✅ 모집 중인 챌린지</STitle>
-      {getRecruitingChallenges.length > 0 ? (
+      {recruitingChallenges.length > 0 ? (
         <SList>
-          {getRecruitingChallenges.map((challenge) => (
+          {recruitingChallenges.map((challenge) => (
             <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
           ))}
         </SList>

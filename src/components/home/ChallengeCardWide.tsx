@@ -6,19 +6,19 @@ import calculateDDay from '@/utils/calculateDDay';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 export default function ChallengeCardWide({
-  groupId,
+  challengeGroupId,
   groupTitle,
   startDate,
 }: IMyProcessingChallenge) {
   const caculateProcessDay = (date: string) => {
-    const dDay = Math.abs(calculateDDay(date)) + 2;
+    const dDay = Math.abs(calculateDDay(date)) + 1;
     const dDayStr = `${dDay}일차`;
     return dDayStr;
   };
 
   return (
     <SChallengeCardWide>
-      <Link href={`/challenge/${groupId}`}>
+      <Link href={`/challenge/${challengeGroupId}`}>
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}

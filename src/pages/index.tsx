@@ -21,11 +21,11 @@ import ScrollXBox from '@/components/common/ScrollXBox';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function Home({
-  getMyProcessingChallenges,
-  getRecruitingChallenges,
+  myProcessingChallenges,
+  recruitingChallenges,
 }: {
-  getMyProcessingChallenges: IMyProcessingChallenge[];
-  getRecruitingChallenges: IRecruitingChallenge[];
+  myProcessingChallenges: IMyProcessingChallenge[];
+  recruitingChallenges: IRecruitingChallenge[];
 }) {
   const router = useRouter();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -67,7 +67,7 @@ export default function Home({
       <HomeHeader />
       <main>
         <TopBanner />
-        {isLogined && getMyProcessingChallenges.length !== 0 && (
+        {isLogined && myProcessingChallenges.length > 0 && (
           <SSection>
             <STitleLink href="/mychallenge">
               <h2>👨‍💻 진행 중인 챌린지</h2>
@@ -82,16 +82,17 @@ export default function Home({
             </STitleLink>
             <ScrollXBox>
               <SListScrollX>
-                {getMyProcessingChallenges.map((challenge) => (
-                  <ChallengeCardWide key={challenge.groupId} {...challenge} />
+                {myProcessingChallenges.map((challenge) => (
+                  <ChallengeCardWide
+                    key={challenge.challengeGroupId}
+                    {...challenge}
+                  />
                 ))}
               </SListScrollX>
             </ScrollXBox>
           </SSection>
         )}
-        <RecruitingChallenge
-          getRecruitingChallenges={getRecruitingChallenges}
-        />
+        <RecruitingChallenge recruitingChallenges={recruitingChallenges} />
         {snackBarState.open && (
           <SnackBar text={snackBarState.text} type={snackBarState.type} />
         )}
@@ -108,8 +109,8 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<{
   props: {
-    getMyProcessingChallenges: IMyProcessingChallenge[];
-    getRecruitingChallenges: IRecruitingChallenge[];
+    myProcessingChallenges: IMyProcessingChallenge[];
+    recruitingChallenges: IRecruitingChallenge[];
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
@@ -123,7 +124,7 @@ export async function getServerSideProps(
           },
         },
       );
-      console.log('myProcessingChallenge API GET 성공', response.data);
+      console.log('myProcessingChallenge API GET 성공');
       return response.data;
     } catch (error) {
       console.error('myProcessingChallenge API GET 실패', error);
@@ -135,21 +136,21 @@ export async function getServerSideProps(
       const response = await axios.get<IRecruitingChallenge[]>(
         'http://127.0.0.1:9000/api/v1/challenges/waiting',
       );
-      console.log('recruitingChallenge API GET 성공', response.data);
+      console.log('recruitingChallenge API GET 성공');
       return response.data;
     } catch (error) {
       console.error('recruitingChallenge API GET 실패', error);
       return [];
     }
   }
-  const [myProcessingChallenges, recruitingChallenges] = await Promise.all([
-    fetchMyProcessingChallenges(),
-    fetchRecruitingChallenges(),
-  ]);
+  const myProcessingChallenges = cookieToken
+    ? await fetchMyProcessingChallenges()
+    : [];
+  const recruitingChallenges = await fetchRecruitingChallenges();
   return {
     props: {
-      getMyProcessingChallenges: myProcessingChallenges,
-      getRecruitingChallenges: recruitingChallenges,
+      myProcessingChallenges,
+      recruitingChallenges,
     },
   };
 }
