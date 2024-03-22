@@ -10,7 +10,7 @@ export type TMyChallengeInfo = {
   myChallengeId: number;
   startDate: string;
   successCount: number;
-  isRefunded?: boolean | null; //환급여부
+  isRefundRequested?: boolean | null; //환급여부
   isSuccessed?: boolean | null; //최종달성여부
   verificationType: TVerificationType; //챌린지 인증타입
   deposit: number; //예치금

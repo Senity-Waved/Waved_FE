@@ -4,28 +4,35 @@ import styled from '@emotion/styled';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import calculateDDay from '@/utils/calculateDDay';
 import useModal from '@/hooks/useModal';
+import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
+import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
+import { getCookie } from 'cookies-next';
 
 interface IBtn
   extends Omit<
     TMyChallengeInfo,
-    'myChallengeId' | 'groupTitle' | 'endDate' | 'successCount' | 'deposit'
+    'groupTitle' | 'endDate' | 'successCount' | 'deposit'
   > {
   status: TMyChallengeStatus;
+  setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
 
 export default function ChallengeBtn({
+  myChallengeId,
   challengeGroupId,
   isReviewed,
   isVerified,
   isSuccessed,
-  isRefunded,
+  isRefundRequested,
   isGithubConnected,
   verificationType,
   startDate,
   status,
+  setData,
 }: IBtn) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
+  const cookieToken = getCookie('accessToken');
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -38,13 +45,24 @@ export default function ChallengeBtn({
     }
   };
 
-  const postMyVerification = () => {};
-
-  const goToMyGithub = () => {
-    router.push(`/profile/mygithub`);
+  const postMyVerification = async () => {
+    try {
+      const response = await postMyCommitVerifiactionApi(challengeGroupId);
+      if (response) {
+        fetchMyChallenges(status, cookieToken).then((res) => {
+          if (setData !== undefined) setData(res);
+        });
+      }
+    } catch (error) {
+      console.error('커밋인증 실패', error);
+    }
   };
-  const getRefund = () => {
+
+  const getRefund = async () => {
     // 결제취소로직
+    fetchMyChallenges(status, cookieToken).then((res) => {
+      if (setData !== undefined) setData(res);
+    });
     openModal({
       image: '/icons/icon-done.svg',
       mainText: '환급 신청이 완료되었습니다.',
@@ -82,8 +100,9 @@ export default function ChallengeBtn({
           {verificationType === 'GITHUB' ? (
             <SBtn
               as="button"
-              styleType="middle"
+              styleType={isAble ? 'middle' : 'gray'}
               onClick={() =>
+                isAble &&
                 openModal({
                   image: '/icons/icon-exclamation-mark.svg',
                   mainText: isGithubConnected
@@ -102,7 +121,7 @@ export default function ChallengeBtn({
                 })
               }
             >
-              인증 하기
+              {isAble ? '인증 하기' : '인증 완료'}
             </SBtn>
           ) : (
             <SLink
@@ -135,7 +154,7 @@ export default function ChallengeBtn({
           <SLink href="#">
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          {isSuccessed && !isRefunded ? (
+          {isSuccessed && !isRefundRequested ? (
             <SBtn as="button" styleType="middle" onClick={getRefund}>
               환급 신청
             </SBtn>
