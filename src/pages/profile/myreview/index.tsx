@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
@@ -10,11 +9,38 @@ import ISnackBarState from '@/types/snackbar';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import Modal from '@/components/modal/Modal';
 
-export default function MyReview({
-  getMyReviews,
-}: {
-  getMyReviews: IMyReview[];
-}) {
+const getMyReviews: IMyReview[] = [
+  {
+    id: '2634637',
+    challengeTitle: '프론트엔드 기술 면접 1기',
+    createdDate: '2024년 03월 10일',
+    context:
+      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+  },
+  {
+    id: '43436',
+    challengeTitle: '1일 1커밋',
+    createdDate: '2024년 02월 22일',
+    context:
+      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+  },
+  {
+    id: '163636',
+    challengeTitle: '1일 1커밋',
+    createdDate: '2024년 02월 22일',
+    context:
+      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+  },
+  {
+    id: '264532',
+    challengeTitle: '1일 1커밋',
+    createdDate: '2024년 02월 22일',
+    context:
+      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
+  },
+];
+
+export default function MyReview() {
   const router = useRouter();
   const { query } = router;
   const [reviews, setReviews] = useState(getMyReviews);
@@ -90,25 +116,4 @@ export default function MyReview({
       <Modal />
     </Layout>
   );
-}
-
-export async function getStaticProps(): Promise<{
-  props: { getMyReviews: IMyReview[] };
-}> {
-  try {
-    const response = await axios.get<IMyReview[]>('/api/myReviews');
-    const { data } = response;
-    return {
-      props: {
-        getMyReviews: data,
-      },
-    };
-  } catch (error) {
-    console.error('myReviewData GET 실패', error);
-    return {
-      props: {
-        getMyReviews: [],
-      },
-    };
-  }
 }
