@@ -67,7 +67,7 @@ export default function Home({
       <HomeHeader />
       <main>
         <TopBanner />
-        {isLogined && getMyProcessingChallenges.length !== 0 && (
+        {isLogined && getMyProcessingChallenges.length > 0 && (
           <SSection>
             <STitleLink href="/mychallenge">
               <h2>👨‍💻 진행 중인 챌린지</h2>
@@ -83,7 +83,10 @@ export default function Home({
             <ScrollXBox>
               <SListScrollX>
                 {getMyProcessingChallenges.map((challenge) => (
-                  <ChallengeCardWide key={challenge.groupId} {...challenge} />
+                  <ChallengeCardWide
+                    key={challenge.challengeGroupId}
+                    {...challenge}
+                  />
                 ))}
               </SListScrollX>
             </ScrollXBox>
@@ -113,6 +116,7 @@ export async function getServerSideProps(
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
+  console.log('🍪🍪🍪🍪🍪🍪🍪', cookieToken);
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(

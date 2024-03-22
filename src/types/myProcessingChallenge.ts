@@ -1,8 +1,7 @@
 interface IMyProcessingChallenge {
-  groupId: number;
   groupTitle: string;
   startDate: string;
-  thumbnail: string;
+  challengeGroupId: number;
 }
 
 export default IMyProcessingChallenge;

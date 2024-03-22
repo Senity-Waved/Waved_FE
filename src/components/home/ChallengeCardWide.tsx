@@ -6,7 +6,7 @@ import calculateDDay from '@/utils/calculateDDay';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 
 export default function ChallengeCardWide({
-  groupId,
+  challengeGroupId,
   groupTitle,
   startDate,
 }: IMyProcessingChallenge) {
@@ -18,7 +18,7 @@ export default function ChallengeCardWide({
 
   return (
     <SChallengeCardWide>
-      <Link href={`/challenge/${groupId}`}>
+      <Link href={`/challenge/${challengeGroupId}`}>
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
