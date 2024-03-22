@@ -1,6 +1,6 @@
 import axiosInstance from '../instance';
 
-export interface IPaymentResult {
+interface IPaymentResult {
   imp_uid: string;
   deposit: number;
 }
@@ -9,22 +9,33 @@ export interface IPayments {
   myChallengeId: number;
 }
 
-export interface IChallengeGroupApply {
+interface IChallengeGroupApply {
   challengeGroupId: string;
   deposit: number;
 }
 
+/**
+ * 챌린지 그룹 신청 POST
+ * @param challengeGroupApplyProps - challengeGroupId, deposit
+ * @returns (성공) myChallengeId
+ */
 const challengeGroupApplyApi = (
   challengeGroupApplyProps: IChallengeGroupApply,
 ) => {
   return axiosInstance.post(
-    `/api/v1/challengeGroups/${challengeGroupApplyProps.challengeGroupId}/apply?deposit=${challengeGroupApplyProps.deposit}`,
+    `/challengeGroups/${challengeGroupApplyProps.challengeGroupId}?deposit=${challengeGroupApplyProps.deposit}`,
   );
 };
 
+/**
+ * 결제 후검증 POST
+ * @param paymentsCheck - (param) myChallengeId, (body) imp_uid, deposit
+ * @returns response.data
+ */
 const challengePaymentsApi = (paymentsCheck: IPayments) => {
+  console.log(paymentsCheck);
   return axiosInstance.post(
-    `/api/v1/payments/${paymentsCheck.myChallengeId}`,
+    `/payments/${paymentsCheck.myChallengeId}`,
     paymentsCheck.paymentResult,
   );
 };
