@@ -42,7 +42,6 @@ export default function VerificationPost() {
     if (verificationType === 'LINK') {
       formData.append('content', text);
       formData.append('link', link);
-      console.log(link, text);
     } else if (verificationType === 'PICTURE' && file) {
       formData.append('imageUrl', file);
     } else if (verificationType === 'TEXT') {
@@ -63,10 +62,11 @@ export default function VerificationPost() {
     try {
       const response = await getQuizApi(challengeGroupId);
       if (response) {
-        console.log(response);
+        setQuiz(response.data.question);
       }
     } catch (error) {
       console.error('getQuiz API 실패', error);
+      setQuiz('문제를 불러오는데 실패했습니다.');
     }
   };
 
@@ -106,7 +106,7 @@ export default function VerificationPost() {
       >
         {verificationType === 'TEXT' && (
           <>
-            <SQuestion>Q.출제된문제내용</SQuestion>
+            <SQuestion>Q.{quiz}</SQuestion>
             <TextArea placeholder={placeholder} setText={setText} />
           </>
         )}
