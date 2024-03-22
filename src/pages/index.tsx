@@ -116,7 +116,7 @@ export async function getServerSideProps(
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
-        'https://waved.azurewebsites.net/api/v1/myChallenges?status=PROGRESS',
+        'http://127.0.0.1:9000/api/v1/myChallenges?status=PROGRESS',
         {
           headers: {
             Authorization: `Bearer ${cookieToken}`,
@@ -133,7 +133,7 @@ export async function getServerSideProps(
   async function fetchRecruitingChallenges() {
     try {
       const response = await axios.get<IRecruitingChallenge[]>(
-        'http://localhost:9000/api/v1/challenges/waiting',
+        'http://127.0.0.1:9000/api/v1/challenges/waiting',
       );
       console.log('recruitingChallenge API GET 성공', response.data);
       return response.data;
