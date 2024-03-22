@@ -4,11 +4,11 @@ import IProfile from '@/types/profile';
 
 /**
  * 멤버 정보 수정 PATCH
- * @param registerData - Partial
+ * @param memberInfo - Partial
  * @returns resonse.data
  */
-const registerApi = (registerData: IRegisterState) => {
-  return axiosInstance.patch('/members/edit', registerData);
+const editMemberApi = (memberInfo: IRegisterState) => {
+  return axiosInstance.patch('/members/edit', memberInfo);
 };
 
 /**
@@ -19,8 +19,33 @@ const logoutApi = () => {
   return axiosInstance.post('/members/logout');
 };
 
+/**
+ * 프로필 정보 조회 GET
+ * @returns Profile Info (nickname, gender, jobTitle)
+ */
 const getProfileApi = () => {
   return axiosInstance.get<IProfile>('/members/profile');
 };
 
-export { registerApi, logoutApi, getProfileApi };
+/**
+ * 프로필 수정 정보 조회 GET
+ * @returns Edit Profile Info (nickname, gender, birthYear, jobTitle)
+ */
+const getEditProfileApi = () => {
+  return axiosInstance.get<IRegisterState>('/members/profile/edit');
+};
+
+/**
+ * 회원 탈퇴 DELETE
+ */
+const deleteMemberApi = () => {
+  return axiosInstance.delete('/members/delete');
+};
+
+export {
+  editMemberApi,
+  logoutApi,
+  getProfileApi,
+  getEditProfileApi,
+  deleteMemberApi,
+};

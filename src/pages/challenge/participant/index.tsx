@@ -43,11 +43,12 @@ export default function ChallengeParticipant() {
   // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     const paymentRequest = async () => {
-      if (myChallengeId !== 0 && !challengeData.isFree && deposit !== 0) {
+      if (myChallengeId !== 0 && deposit !== 0) {
         try {
           const { groupTitle } = challengeData;
           const response = await getProfileApi();
           const { nickname } = response.data;
+          console.log(nickname);
 
           requestPay({
             deposit,
@@ -89,7 +90,6 @@ export default function ChallengeParticipant() {
     };
 
     paymentRequest().catch((error) => console.error(error));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myChallengeId]);
 
@@ -120,7 +120,6 @@ export default function ChallengeParticipant() {
         console.log(response.data);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMyChallengeId(response.data);
-        console.log('mychallengeId 전달받음. :', response.data);
       }
     } catch (error) {
       console.error('challengeGroupApply API 실패', error);

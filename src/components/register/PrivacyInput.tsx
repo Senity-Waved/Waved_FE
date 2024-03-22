@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import YEARS from '@/constants/years';
 import TGenderOrNull, { EGender } from '@/types/gender';
 import IRegisterState from '@/types/register';
@@ -15,12 +14,8 @@ export default function PrivacyInput({
   updateData,
   birthYear: currentBirthYear,
 }: IPravacyInput) {
-  const [selectedBirthYear, setSelectedBirthYear] =
-    useState<string>(currentBirthYear);
-
   const handleBirthYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newYear = e.target.value;
-    setSelectedBirthYear(newYear);
     updateData({ birthYear: newYear });
   };
 
@@ -31,7 +26,7 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
-          value={selectedBirthYear}
+          value={currentBirthYear}
           onChange={handleBirthYearChange}
         >
           <option value="출생연도">출생연도</option>

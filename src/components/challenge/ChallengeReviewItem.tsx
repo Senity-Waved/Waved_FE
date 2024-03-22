@@ -1,26 +1,20 @@
 import styled from '@emotion/styled';
-
-interface IChallengeReview {
-  author: string;
-  jobTitle?: string;
-  createdDate: string;
-  context: string;
-}
+import { TChallengeReview } from '@/types/review';
 
 export default function ChallengeReviewItem({
-  author,
+  nickname,
   jobTitle,
-  createdDate,
-  context,
-}: IChallengeReview) {
+  createDate,
+  content,
+}: TChallengeReview) {
   return (
     <SReviewItem>
       <SReviewInfo>
-        <SAuthor>{author}</SAuthor>
+        <SAuthor>{nickname}</SAuthor>
         {jobTitle && <SJobTitle>{jobTitle}</SJobTitle>}
-        <SDate>{createdDate}</SDate>
+        <SDate>{createDate}</SDate>
       </SReviewInfo>
-      <SReviewContext>{context}</SReviewContext>
+      <SReviewContent>{content}</SReviewContent>
     </SReviewItem>
   );
 }
@@ -75,7 +69,7 @@ const SDate = styled.span`
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
 `;
 
-const SReviewContext = styled.p`
+const SReviewContent = styled.p`
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};

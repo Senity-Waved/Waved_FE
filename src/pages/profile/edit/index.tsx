@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import NicknameInput from '@/components/register/NicknameInput';
@@ -7,32 +7,53 @@ import IRegisterState from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import JOBTITLE from '@/constants/jobTitle';
+import { editMemberApi, getEditProfileApi } from '@/lib/axios/profile/api';
 
 export default function ProfileEdit() {
   const router = useRouter();
   const [editProfile, setEditProfile] = useState<IRegisterState>({
-    birthYear: '1999',
+    birthYear: '',
     gender: null,
-    nickname: '웨이브드',
-    jobTitle: JOBTITLE.FRONT,
+    nickname: '',
+    jobTitle: '',
   });
 
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await getEditProfileApi();
+        setEditProfile(response.data);
+      } catch (error) {
+        console.error('프로필 정보를 불러오는데 실패했습니다.', error);
+      }
+    };
+    fetchProfile().catch((error) => console.error(error));
+  }, []);
+
+  const editProfileInfo = async () => {
+    try {
+      const response = await editMemberApi(editProfile);
+      console.log('프로필 수정 | ', response.data);
+      router
+        .push({
+          pathname: '/profile',
+          query: {
+            profileEdit: true,
+          },
+        })
+        .catch((error) => {
+          console.error('프로필 수정 후 페이지 이동 실패', error);
+        });
+    } catch (error) {
+      console.error('프로필 수정 실패', error);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`프로필 수정: ${JSON.stringify(editProfile)}`);
-    router
-      .push({
-        pathname: '/profile',
-        query: {
-          profileEdit: true,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+    editProfileInfo().catch((error) => console.error(error));
   };
 
   const updateProfileData = (newProfile: Partial<IRegisterState>) => {
