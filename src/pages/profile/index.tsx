@@ -117,14 +117,6 @@ export default function Profile() {
       title="프로필"
       description="WAVED 회원의 프로필 페이지입니다. 챌린지 기록, 계정 설정, 고객 센터 등을 확인할 수 있습니다. "
     >
-      <SNotificationBtn type="button">
-        <Image
-          src="/icons/icon-notification.svg"
-          alt="알림 아이콘"
-          width={24}
-          height={24}
-        />
-      </SNotificationBtn>
       <SProfileWrapper>
         <h2 className="a11yHidden">프로필</h2>
         <ProfileShortcut isLogined={isLogined} profileInfo={profileInfo} />
@@ -340,12 +332,6 @@ const SProfileWrapper = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
     margin-top: 2rem;
   }
-`;
-
-const SNotificationBtn = styled.button`
-  position: absolute;
-  top: 16px;
-  right: 16px;
 `;
 
 const SPropfileBaseMenuWrapper = styled.li<{ isLogined?: boolean }>`
