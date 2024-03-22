@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
 import { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
+import { getCookie } from 'cookies-next';
+import axios, { AxiosError } from 'axios';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -21,11 +23,16 @@ import SnackBar from '@/components/common/SnackBar';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
-import { challengeGroupApi, reviewApi } from '@/lib/axios/challenge/api';
 import IChallengeGroup from '@/types/challengeGroup';
 import { TChallengeReview } from '@/types/review';
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
+
+interface IReviewList {
+  content: TChallengeReview[];
+  totalPages: number;
+  totalElements: number;
+}
 
 export default function Challenge({
   challengeInfo,
@@ -37,8 +44,6 @@ export default function Challenge({
   const router = useRouter();
   const groupId = router.query.groupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
-  // const [reviewItems, setReviewItems] = useState<IChallengeReview[]>([]);
-  // const [reviewPage, setReviewPage] = useState<number>(0);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
@@ -188,10 +193,19 @@ export async function getServerSideProps(
     reviews: TChallengeReview[];
   };
 }> {
+  const cookieToken = getCookie('accessToken', context);
+  console.log('🍪🍪🍪🍪🍪🍪🍪', cookieToken);
   const { groupId } = context.params as { groupId: string };
   async function fetchChallengeInfo() {
     try {
-      const response = await challengeGroupApi(groupId);
+      const response = await axios.get<IChallengeGroup>(
+        `http://localhost:9000/api/v1/challengeGroups/info/${groupId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookieToken}`,
+          },
+        },
+      );
       console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
@@ -214,14 +228,20 @@ export async function getServerSideProps(
   const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
   const { challengeId } = challengeInfo;
   async function fetchReviews() {
-    try {
-      const response = await reviewApi({ challengeId, page: 0 });
-      console.log('review API GET 성공', response.data.content);
-      return response.data.content;
-    } catch (error) {
-      console.error('review API GET 실패', error);
-      return [];
-    }
+    await axios
+      .get<IReviewList>(
+        `http://localhost:9000/api/v1/challenges/${challengeId}/reviews?page=0&limit=5`,
+      )
+      .then((res) => {
+        console.log('review API GET 성공', res.data.content);
+        return res.data.content;
+      })
+      .catch((error: AxiosError) => {
+        if (error.response) {
+          console.error('review API GET 실패', error.response.data);
+        }
+      });
+    return [];
   }
   const reviews = (await fetchReviews()) || [];
   return {
