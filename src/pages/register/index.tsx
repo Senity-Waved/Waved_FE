@@ -11,7 +11,7 @@ import NicknameInput from '@/components/register/NicknameInput';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import IRegisterState from '@/types/register';
 import { SLayoutWrapper } from '@/components/common/Layout';
-import { registerApi } from '@/lib/axios/profile/api';
+import { editMemberApi } from '@/lib/axios/profile/api';
 
 export default function Register() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Register() {
   const submitMebmerInfo = async () => {
     if (step === 4 && registerData.jobTitle) {
       try {
-        const response = await registerApi(registerData);
+        const response = await editMemberApi(registerData);
         console.log('회원가입 완료 | ', response.data);
         router
           .push('/register/success')

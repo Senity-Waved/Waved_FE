@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Layout from '@/components/common/Layout';
 import NicknameInput from '@/components/register/NicknameInput';
@@ -7,18 +7,32 @@ import IRegisterState from '@/types/register';
 import JobTitleInput from '@/components/register/JobTitleInput';
 import PrivacyInput from '@/components/register/PrivacyInput';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
-import { JOBTITLE } from '@/constants/jobTitle';
+import { getEditProfileApi } from '@/lib/axios/profile/api';
 
 export default function ProfileEdit() {
   const router = useRouter();
   const [editProfile, setEditProfile] = useState<IRegisterState>({
-    birthYear: '1999',
+    birthYear: '',
     gender: null,
-    nickname: '웨이브드',
-    jobTitle: JOBTITLE.FRONT,
+    nickname: '',
+    jobTitle: '',
   });
 
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await getEditProfileApi();
+        setEditProfile(response.data);
+      } catch (error) {
+        console.error('프로필 정보를 불러오는데 실패했습니다.', error);
+      }
+    };
+    fetchProfile().catch((error) => console.error(error));
+  }, []);
+
+  console.log(editProfile);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

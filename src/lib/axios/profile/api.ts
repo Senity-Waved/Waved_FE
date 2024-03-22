@@ -7,7 +7,7 @@ import IProfile from '@/types/profile';
  * @param registerData - Partial
  * @returns resonse.data
  */
-const registerApi = (registerData: IRegisterState) => {
+const editMemberApi = (registerData: IRegisterState) => {
   return axiosInstance.patch('/members/edit', registerData);
 };
 
@@ -23,4 +23,8 @@ const getProfileApi = () => {
   return axiosInstance.get<IProfile>('/members/profile');
 };
 
-export { registerApi, logoutApi, getProfileApi };
+const getEditProfileApi = () => {
+  return axiosInstance.get<IRegisterState>('/members/profile/edit');
+};
+
+export { editMemberApi, logoutApi, getProfileApi, getEditProfileApi };
