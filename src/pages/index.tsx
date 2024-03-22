@@ -116,7 +116,7 @@ export async function getServerSideProps(
   async function fetchMyProcessingChallenges() {
     try {
       const response = await axios.get<IMyProcessingChallenge[]>(
-        'http://localhost:9000/api/v1/myChallenges?status=PROGRESS',
+        'https://waved.azurewebsites.net/api/v1/myChallenges?status=PROGRESS',
         {
           headers: {
             Authorization: `Bearer ${cookieToken}`,

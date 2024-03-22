@@ -100,7 +100,7 @@ const SProfileGreetingWrapper = styled.div`
     align-items: center;
   }
 
-  & span {
+  & span:first-of-type {
     color: ${({ theme }) => theme.color.normal};
   }
 `;

@@ -342,7 +342,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   try {
     const response = await axios.get<IProfile>(
-      'http://127.0.0.1:9000/api/v1/members/profile',
+      'https://waved.azurewebsites.net/api/v1/members/profile',
       {
         headers: { Authorization: `Bearer ${cookieToken}` },
       },
