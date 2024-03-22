@@ -1,30 +1,38 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 import styled from '@emotion/styled';
+import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
+import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
-import calculateDDay from '@/utils/calculateDDay';
 import useModal from '@/hooks/useModal';
+import calculateDDay from '@/utils/calculateDDay';
 
 interface IBtn
   extends Omit<
     TMyChallengeInfo,
-    'myChallengeId' | 'groupTitle' | 'endDate' | 'successCount' | 'deposit'
+    'groupTitle' | 'endDate' | 'successCount' | 'deposit'
   > {
   status: TMyChallengeStatus;
+  setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
 
 export default function ChallengeBtn({
-  groupId,
+  myChallengeId,
+  challengeGroupId,
   isReviewed,
   isVerified,
   isSuccessed,
-  isRefunded,
+  isRefundRequested,
+  isGithubConnected,
   verificationType,
   startDate,
   status,
+  setData,
 }: IBtn) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
+  const cookieToken = getCookie('accessToken');
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -37,7 +45,22 @@ export default function ChallengeBtn({
     }
   };
 
-  const getRefund = () => {
+  const postMyVerification = async () => {
+    try {
+      const response = await postMyCommitVerifiactionApi(challengeGroupId);
+      if (response) {
+        const res = await fetchMyChallenges(status, cookieToken);
+        if (setData !== undefined) setData(res);
+      }
+    } catch (error) {
+      console.error('커밋인증 실패', error);
+    }
+  };
+
+  const getRefund = async () => {
+    // 결제취소로직
+    const res = await fetchMyChallenges(status, cookieToken);
+    if (setData !== undefined) setData(res);
     openModal({
       image: '/icons/icon-done.svg',
       mainText: '환급 신청이 완료되었습니다.',
@@ -49,7 +72,7 @@ export default function ChallengeBtn({
           .push({
             pathname: `/mychallenge/review`,
             query: {
-              challengeId: groupId,
+              challengeId: challengeGroupId,
             },
           })
           .catch((error) => {
@@ -66,8 +89,8 @@ export default function ChallengeBtn({
         <SBtnWrapper>
           <SLink
             href={{
-              pathname: `/verification/collection/${groupId}`,
-              query: { type: verificationType },
+              pathname: `/verification/collection/${challengeGroupId}`,
+              query: { type: verificationType, myChallengeId },
             }}
           >
             <SBtn styleType="light">인증 내역</SBtn>
@@ -75,28 +98,39 @@ export default function ChallengeBtn({
           {verificationType === 'GITHUB' ? (
             <SBtn
               as="button"
-              styleType="middle"
+              styleType={isAble ? 'middle' : 'gray'}
               onClick={() =>
+                isAble &&
                 openModal({
                   image: '/icons/icon-exclamation-mark.svg',
-                  mainText: '인증을 제출 하시겠습니까?',
-                  subText:
-                    '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.',
-                  btnText: '제출하기',
+                  mainText: isGithubConnected
+                    ? '인증을 제출 하시겠습니까?'
+                    : '깃허브 아이디를 연동하시겠습니까?',
+                  subText: isGithubConnected
+                    ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
+                    : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
+                  btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
                   onClick: () => {
-                    console.log('인증제출하기');
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    isGithubConnected
+                      ? postMyVerification().catch((error) =>
+                          console.error(error),
+                        )
+                      : router
+                          .push(`/profile/mygithub`)
+                          .catch((error) => console.error(error));
                     closeModal();
                   },
                 })
               }
             >
-              인증 하기
+              {isAble ? '인증 하기' : '인증 완료'}
             </SBtn>
           ) : (
             <SLink
               href={{
-                pathname: `/verification/post/${groupId}`,
-                query: { type: verificationType },
+                pathname: `/verification/post/${challengeGroupId}`,
+                query: { type: verificationType, myChallengeId },
               }}
             >
               <SBtn
@@ -120,10 +154,16 @@ export default function ChallengeBtn({
     case 'COMPLETED':
       return (
         <SBtnWrapper>
-          <SLink href="#">
+          <SLink
+            href={{
+              pathname: `/verification/collection/${challengeGroupId}`,
+              query: { type: verificationType, myChallengeId },
+            }}
+          >
             <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
-          {isSuccessed && !isRefunded ? (
+          {isSuccessed && !isRefundRequested ? (
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <SBtn as="button" styleType="middle" onClick={getRefund}>
               환급 신청
             </SBtn>
@@ -131,7 +171,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/mychallenge/review`,
-                query: { challengeId: groupId },
+                query: { challengeId: challengeGroupId },
               }}
               as="mychallenge/review"
             >

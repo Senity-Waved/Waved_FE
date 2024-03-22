@@ -18,7 +18,7 @@ interface IWriteLayout {
   isLinkValid?: boolean | undefined;
   children: React.ReactNode;
   handleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  onClick?: () => void;
 }
 
 export default function WriteLayout({
@@ -34,7 +34,7 @@ export default function WriteLayout({
   const { btnText } = writeLayoutText[pageType];
   const [isBtnActive, setIsBtnActive] = useState(false);
   const isVerificationPage = pageType.includes('인증');
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const checkValidation = useCallback(() => {
     switch (pageType) {
@@ -78,7 +78,10 @@ export default function WriteLayout({
                         subText:
                           '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.',
                         btnText: '제출하기',
-                        onClick,
+                        onClick: () => {
+                          onClick();
+                          closeModal();
+                        },
                       })
                   : undefined,
             },

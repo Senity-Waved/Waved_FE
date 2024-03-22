@@ -6,12 +6,14 @@ interface IChallengeSection {
   mainText: '🧑🏻‍💻 진행 중' | '📚 대기 중' | '🥳 진행 완료';
   status: TMyChallengeStatus;
   challenges: TMyChallengeInfo[];
+  setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
 
 export default function ChallengeSection({
   status,
   mainText,
   challenges,
+  setData,
 }: IChallengeSection) {
   return (
     <SWrapper id={status}>
@@ -21,9 +23,10 @@ export default function ChallengeSection({
       <SChallengeList>
         {challenges.map((challenge) => (
           <ChallengeItem
-            key={challenge.myChallengeId}
+            key={challenge.challengeGroupId}
             status={status}
             {...challenge}
+            setData={setData}
           />
         ))}
       </SChallengeList>

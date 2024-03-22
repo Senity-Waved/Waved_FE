@@ -1,17 +1,17 @@
 import { TVerificationType } from './verification';
 
 export type TMyChallengeInfo = {
-  myChallengeId: number;
-  groupId: number;
-  groupTitle: string;
-  startDate: string;
+  challengeGroupId: number;
   endDate: string;
-  successCount: number;
+  groupTitle: string;
+  isGithubConnected?: boolean;
   isReviewed?: boolean | null;
   isVerified?: boolean | null;
-  isRefunded?: boolean | null;
+  myChallengeId: number;
+  startDate: string;
+  successCount: number;
+  isRefundRequested?: boolean | null;
   isSuccessed?: boolean | null;
-  isGithubConnected?: boolean;
   verificationType: TVerificationType;
   deposit: number;
 };
