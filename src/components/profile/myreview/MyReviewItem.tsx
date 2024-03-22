@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import IMyReview from '@/types/myReview';
-import Modal from '@/components/modal/Modal';
 import useModal from '@/hooks/useModal';
 
 interface IMyReviewItem extends IMyReview {
@@ -17,41 +16,39 @@ export default function MyReviewItem({
 }: IMyReviewItem) {
   const { openModal, closeModal } = useModal();
   return (
-    <>
-      <SMyReviewItem>
-        <STitleWrapper>
-          <STitle>{challengeTitle}</STitle>
-          <SDate>{createdDate}</SDate>
-        </STitleWrapper>
-        <SContext>{context}</SContext>
-        <SBtnWrapper>
-          <SEditBtn
-            href={{
-              pathname: `/profile/myreview/edit`,
-              query: { context, reviewId: id },
-            }}
-            as="myreview/edit"
-          >
-            수정
-          </SEditBtn>
-          <SDeleteBtn
-            type="button"
-            onClick={() =>
-              openModal({
-                mainText: '남기신 후기를 삭제하시겠습니까?',
-                btnText: '삭제하기',
-                onClick: () => {
-                  onDelete();
-                  closeModal();
-                },
-              })
-            }
-          >
-            삭제
-          </SDeleteBtn>
-        </SBtnWrapper>
-      </SMyReviewItem>
-    </>
+    <SMyReviewItem>
+      <STitleWrapper>
+        <STitle>{challengeTitle}</STitle>
+        <SDate>{createdDate}</SDate>
+      </STitleWrapper>
+      <SContext>{context}</SContext>
+      <SBtnWrapper>
+        <SEditBtn
+          href={{
+            pathname: `/profile/myreview/edit`,
+            query: { context, reviewId: id },
+          }}
+          as="myreview/edit"
+        >
+          수정
+        </SEditBtn>
+        <SDeleteBtn
+          type="button"
+          onClick={() =>
+            openModal({
+              mainText: '남기신 후기를 삭제하시겠습니까?',
+              btnText: '삭제하기',
+              onClick: () => {
+                onDelete();
+                closeModal();
+              },
+            })
+          }
+        >
+          삭제
+        </SDeleteBtn>
+      </SBtnWrapper>
+    </SMyReviewItem>
   );
 }
 

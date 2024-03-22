@@ -29,6 +29,7 @@ export default function MyChallenge({
   const [progressData, setProgressData] = useState<TMyChallengeInfo[]>(
     getMyProgressChallenges,
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [waitingData, setWaitingData] = useState<TMyChallengeInfo[]>(
     getMyWaitingChallenges,
   );

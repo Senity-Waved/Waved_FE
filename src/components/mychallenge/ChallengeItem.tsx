@@ -26,7 +26,6 @@ export default function ChallengeItem({
   isRefundRequested,
   isGithubConnected,
   verificationType,
-  deposit,
   setData,
 }: TMyChallengeItem) {
   const [startYY, startMM, startDD] = parseDate(startDate);
