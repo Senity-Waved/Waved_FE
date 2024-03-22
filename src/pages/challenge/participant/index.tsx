@@ -47,8 +47,7 @@ export default function ChallengeParticipant() {
         try {
           const { groupTitle } = challengeData;
           const response = await getProfileApi();
-          const { nickname } = response.data;
-          console.log(nickname);
+          const nickname = response.data.nickname ? response.data.nickname : '';
 
           requestPay({
             deposit,

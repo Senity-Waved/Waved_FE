@@ -43,7 +43,7 @@ const requestPay = ({
     merchant_uid: `IMP${makeMerchantUid()}`,
     name: groupTitle,
     amount: deposit,
-    buyer_name: nickname,
+    ...(nickname ? { buyer_name: nickname } : {}),
     m_redirect_url: '/challenge/participant/success',
   };
 

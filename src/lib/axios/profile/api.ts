@@ -21,7 +21,7 @@ const logoutApi = () => {
 
 /**
  * 프로필 정보 조회 GET
- * @returns Profile Info (nickname, gender, jobTitle)
+ * @returns Profile Info (nickname, github, jobTitle)
  */
 const getProfileApi = () => {
   return axiosInstance.get<IProfile>('/members/profile');
