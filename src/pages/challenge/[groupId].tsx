@@ -232,9 +232,9 @@ export async function getServerSideProps(
       .get<IReviewList>(
         `http://localhost:9000/api/v1/challenges/${challengeId}/reviews?page=0&limit=5`,
       )
-      .then((res) => {
-        console.log('review API GET 성공', res.data.content);
-        return res.data.content;
+      .then((response) => {
+        console.log('review API GET 성공', response.data.content);
+        return response.data.content;
       })
       .catch((error: AxiosError) => {
         if (error.response) {

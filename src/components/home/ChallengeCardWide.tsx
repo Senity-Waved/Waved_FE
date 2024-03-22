@@ -11,7 +11,7 @@ export default function ChallengeCardWide({
   startDate,
 }: IMyProcessingChallenge) {
   const caculateProcessDay = (date: string) => {
-    const dDay = Math.abs(calculateDDay(date)) + 2;
+    const dDay = Math.abs(calculateDDay(date)) + 1;
     const dDayStr = `${dDay}일차`;
     return dDayStr;
   };
