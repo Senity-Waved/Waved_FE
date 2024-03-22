@@ -12,7 +12,7 @@ import SnackBar from '@/components/common/SnackBar';
 import profileSnackBarText from '@/constants/profileSnackBarText';
 import Modal from '@/components/modal/Modal';
 import ISnackBarState from '@/types/snackbar';
-import { logoutApi } from '@/lib/axios/profile/api';
+import { deleteMemberApi, logoutApi } from '@/lib/axios/profile/api';
 import useModal from '@/hooks/useModal';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import IProfile from '@/types/profile';
@@ -33,13 +33,40 @@ export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleWithdrawal = () => {
-    router
-      .push({
-        pathname: '/onboarding',
-        query: { withdrawal: true },
+    deleteMemberApi()
+      .then((response) => {
+        console.log('백엔드 서버에서 탈퇴 처리 성공:', response);
+
+        // 백엔드 탈퇴 성공 후 클라이언트 측 토큰 제거
+        axios
+          .post(
+            '/api/auth/unregister',
+            {},
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+          .then((res) => {
+            console.log('클라이언트 측에서 탈퇴 처리 성공:', res.data);
+
+            // 탈퇴 처리 후 리다이렉션
+            router
+              .push({
+                pathname: '/onboarding',
+                query: { withdrawal: true },
+              })
+              .catch((error) => {
+                console.error('탈퇴 후 온보딩 리디렉션 실패:', error);
+              });
+          })
+          .catch((error) => {
+            console.error('클라이언트 측에서 탈퇴 처리 중 오류 발생:', error);
+          });
       })
       .catch((error) => {
-        console.error('로그아웃 후 온보딩 리디렉션 실패:', error);
+        console.error('백엔드 서버 탈퇴 처리 중 오류 발생:', error);
       });
   };
 
@@ -342,7 +369,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   try {
     const response = await axios.get<IProfile>(
-      'https://waved.azurewebsites.net/api/v1/members/profile',
+      'http://127.0.0.1:9000/api/v1/members/profile',
       {
         headers: { Authorization: `Bearer ${cookieToken}` },
       },
