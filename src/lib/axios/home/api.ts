@@ -8,7 +8,7 @@ import IMyProcessingChallenge from '@/types/myProcessingChallenge';
  */
 const getMyProcessingChallengeApi = (serverInstance: AxiosInstance) => {
   return serverInstance.get<IMyProcessingChallenge[]>(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=PROGRESS`,
+    `/myChallenges?status=PROGRESS`,
   );
 };
 
@@ -17,9 +17,7 @@ const getMyProcessingChallengeApi = (serverInstance: AxiosInstance) => {
  * @returns response.data
  */
 const getRecruitingChallengeApi = (serverInstance: AxiosInstance) => {
-  return serverInstance.get<IRecruitingChallenge[]>(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/waiting`,
-  );
+  return serverInstance.get<IRecruitingChallenge[]>(`/challenges/waiting`);
 };
 
 export { getMyProcessingChallengeApi, getRecruitingChallengeApi };
