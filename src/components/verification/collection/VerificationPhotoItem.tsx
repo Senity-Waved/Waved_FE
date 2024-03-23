@@ -11,8 +11,14 @@ import {
 } from './VerificationItem';
 import screenSize from '@/constants/screenSize';
 import IVerificationInfo from '@/types/verification';
+import {
+  deleteLikeApi,
+  getLikeCountApi,
+  postLikeApi,
+} from '@/lib/axios/verification/collection/api';
 
 export default function VerificationPhotoItem({
+  verificationId,
   memberId,
   imageUrl,
   isLiked,
@@ -20,6 +26,7 @@ export default function VerificationPhotoItem({
 }: IVerificationInfo) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [liked, setLiked] = useState<boolean>(isLiked);
+  const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
   const myId = 1;
@@ -28,8 +35,30 @@ export default function VerificationPhotoItem({
     event.stopPropagation();
     if (liked) {
       setLiked(false);
+      deleteLikeApi(verificationId)
+        .then(() => {
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     } else {
       setLiked(true);
+      postLikeApi(verificationId)
+        .then(() => {
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     }
   };
 
@@ -40,8 +69,8 @@ export default function VerificationPhotoItem({
         <SShadow />
         {myId === memberId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
-          <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
-          <SLikeCountWhite>{likesCount}</SLikeCountWhite>
+          <SLikeBtnWhite isLiked={liked} onClick={toggleLike} />
+          <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>
       {isModalOpen && (

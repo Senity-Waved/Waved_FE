@@ -21,8 +21,12 @@ export const getVerificationsApi = async (
   return response.data;
 };
 
-export const getLikeCountApi = (verificationId: number) => {
-  return axiosInstance.get(`/likes/${verificationId}`);
+export const getLikeCountApi = async (
+  verificationId: number,
+): Promise<{ verificationId: number; likedCount: number }> => {
+  const response = await axiosInstance.get(`/likes/${verificationId}`);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return response.data;
 };
 
 export const postLikeApi = (verificationId: number) => {

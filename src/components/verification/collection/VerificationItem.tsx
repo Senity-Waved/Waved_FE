@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
 import IVerificationInfo from '@/types/verification';
+import {
+  deleteLikeApi,
+  getLikeCountApi,
+  postLikeApi,
+} from '@/lib/axios/verification/collection/api';
 
 interface IVerificationItem extends IVerificationInfo {
   selectedId: number;
@@ -29,10 +34,30 @@ export default function VerificationItem({
     event.stopPropagation();
     if (liked) {
       setLiked(false);
-      setLikeCountNum(likeCountNum - 1);
+      deleteLikeApi(verificationId)
+        .then(() => {
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     } else {
       setLiked(true);
-      setLikeCountNum(likeCountNum + 1);
+      postLikeApi(verificationId)
+        .then(() => {
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     }
   };
 
@@ -58,8 +83,8 @@ export default function VerificationItem({
       )}
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
-        <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
-        <SLikeCount>{likesCount}</SLikeCount>
+        <SLikeBtn type="button" onClick={toggleLike} isLiked={liked} />
+        <SLikeCount>{likeCountNum}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>
   );
