@@ -26,6 +26,8 @@ import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
 import { TChallengeReview } from '@/types/review';
+import parseDate from '@/utils/parseDate';
+import WEEKDAYS from '@/constants/weekdays';
 
 const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
 
@@ -41,6 +43,16 @@ interface IFetchMoreReviewsResponse {
   totalPages?: number;
 }
 
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  const dateObj = new Date(
+    parseInt(year, 10),
+    parseInt(month, 10) - 1,
+    parseInt(day, 10),
+  );
+  return `${month}월 ${day}일 (${WEEKDAYS[dateObj.getDay()]})`;
+};
+
 export default function Challenge({
   challengeInfo,
   reviewList,
@@ -55,6 +67,8 @@ export default function Challenge({
     open: false,
     text: '',
   });
+  const formattedStartDate = formattedDate(challengeInfo.startDate);
+  const formattedEndDate = formattedDate(challengeInfo.endDate);
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const fetchMoreReviews = async ({
@@ -99,8 +113,8 @@ export default function Challenge({
     selectedChallenge({
       challengeGroupId: groupId,
       groupTitle: challengeInfo.groupTitle,
-      startDate: challengeInfo.startDate,
-      endDate: challengeInfo.endDate,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
       condition,
       participantCount: challengeInfo.participantCount,
       isFree: challengeInfo.isFree,
@@ -142,8 +156,8 @@ export default function Challenge({
           className="description"
           groupTitle={challengeInfo.groupTitle}
           participantCount={challengeInfo.participantCount}
-          startDate={challengeInfo.startDate}
-          endDate={challengeInfo.endDate}
+          startDate={formattedStartDate}
+          endDate={formattedEndDate}
           condition={condition}
           setSummaryHeight={setSummaryHeight}
         />
