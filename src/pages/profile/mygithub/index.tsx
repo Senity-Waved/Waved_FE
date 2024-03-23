@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -6,23 +6,40 @@ import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Modal from '@/components/modal/Modal';
 import useModal from '@/hooks/useModal';
-
-interface IGithub {
-  githubId: string;
-  githubToken: string;
-}
+import {
+  deleteGithubApi,
+  getGithubInfoApi,
+  linkGithubApi,
+} from '@/lib/axios/profile/api';
+import IGithubInfo from '@/types/github';
 
 export default function MyGithub() {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
-  const [githubData, setGithubData] = useState<IGithub>({
-    githubId: 'hello_world',
-    githubToken: '12345678',
+  const [githubData, setGithubData] = useState<IGithubInfo>({
+    githubId: '',
+    githubToken: '',
   });
-  const isGithubValid = true;
-  const [isGithubLinked, setIsGithubLinked] = useState<boolean>(
-    githubData.githubId !== '' && githubData.githubToken !== '',
-  );
+  const [isGithubLinked, setIsGithubLinked] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchGithubInfo = async () => {
+      try {
+        const response = await getGithubInfoApi();
+        if (response) {
+          setGithubData(response.data);
+          if (
+            response.data.githubId !== null &&
+            response.data.githubToken !== null
+          )
+            setIsGithubLinked(true);
+        }
+      } catch (error) {
+        console.error('깃허브 연동 정보를 불러오는데 실패했습니다.', error);
+      }
+    };
+    fetchGithubInfo().catch((error) => console.error(error));
+  }, []);
 
   const navigateToProfile = (queryParam: { [key: string]: boolean }): void => {
     router
@@ -35,24 +52,35 @@ export default function MyGithub() {
       });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (isGithubValid) {
-      setIsGithubLinked(true);
-      console.log(`깃허브 연동: ${JSON.stringify(githubData)}`);
-      navigateToProfile({ githubLinked: true });
-    } else {
+  const linkGithub = async () => {
+    try {
+      const response = await linkGithubApi(githubData);
+      if (response) {
+        setIsGithubLinked(true);
+        navigateToProfile({ githubLinked: true });
+      }
+      console.log('깃허브 연동 성공|', response.data);
+    } catch (error) {
+      console.error('깃허브 연동 실패 | ', error);
       console.log('유효하지 않은 깃허브 아이디 혹은 토큰입니다.');
       navigateToProfile({ linkedFail: true });
     }
   };
 
-  const clickModalBtn = () => {
-    if (isGithubLinked) {
-      setIsGithubLinked(false);
-      navigateToProfile({ linkedCancel: true });
+  const unlinkGithub = async () => {
+    try {
+      const response = await deleteGithubApi();
+      if (response) {
+        setIsGithubLinked(false);
+        navigateToProfile({ linkedCancel: true });
+      }
+    } catch (error) {
+      console.error('깃허브 연동 해제 실패 | ', error);
     }
+  };
+
+  const clickModalBtn = () => {
+    unlinkGithub().catch((error) => console.error(error));
     closeModal();
   };
 
@@ -74,7 +102,7 @@ export default function MyGithub() {
             토큰 입력 전 유효기간을 꼭 확인하고 해주세요.
           </p>
         </SGithubGuide>
-        <SGithubForm onSubmit={handleSubmit} isGithubLinked={isGithubLinked}>
+        <SGithubForm isGithubLinked={isGithubLinked}>
           <div>
             <label htmlFor="githubIdInput">아이디</label>
             <input
@@ -86,7 +114,7 @@ export default function MyGithub() {
                 setGithubData({ ...githubData, githubId: e.target.value })
               }
               placeholder={
-                isGithubLinked
+                isGithubLinked && githubData.githubId !== null
                   ? githubData.githubId
                   : '깃허브 아이디를 입력해주세요'
               }
@@ -103,7 +131,9 @@ export default function MyGithub() {
                 setGithubData({ ...githubData, githubToken: e.target.value })
               }
               placeholder={
-                isGithubLinked ? githubData.githubToken : '토큰을 입력해주세요'
+                isGithubLinked && githubData.githubToken !== null
+                  ? githubData.githubToken
+                  : '토큰을 입력해주세요'
               }
             />
           </div>
@@ -119,7 +149,7 @@ export default function MyGithub() {
               text: isGithubLinked ? '해지하기' : '연동하기',
               styleType: 'primary',
               size: 'large',
-              type: isGithubLinked ? 'button' : 'submit',
+              type: 'button',
               onClick: isGithubLinked
                 ? () =>
                     openModal({
@@ -130,7 +160,7 @@ export default function MyGithub() {
                       btnText: '네, 해지할게요',
                       onClick: clickModalBtn,
                     })
-                : undefined,
+                : linkGithub,
             },
           ]}
         />
