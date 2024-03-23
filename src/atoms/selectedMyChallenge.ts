@@ -7,11 +7,12 @@ const { persistAtom } = recoilPersist();
 const ASelectedMyChallenge = atom<ISelectedMyChallenge>({
   key: 'selectedMyChallenge',
   default: {
-    challengeGroupId: '',
+    challengeGroupId: 0,
+    myChallengeId: 0,
     groupTitle: '',
     startDate: '',
     endDate: '',
-    verificationType: undefined,
+    verificationType: 'TEXT',
     status: 'PROGRESS',
   },
   effects_UNSTABLE: [persistAtom],
