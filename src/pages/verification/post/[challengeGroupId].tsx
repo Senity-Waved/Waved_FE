@@ -13,7 +13,7 @@ import { TVerificationType } from '@/types/verification';
 import {
   getQuizApi,
   postMyVerificationApi,
-} from '@/lib/axios/verification/api';
+} from '@/lib/axios/verification/post/api';
 
 export default function VerificationPost() {
   const router = useRouter();
