@@ -13,42 +13,42 @@ import screenSize from '@/constants/screenSize';
 import IVerificationInfo from '@/types/verification';
 
 export default function VerificationPhotoItem({
-  authorId,
-  content,
-  liked,
-  likeCount,
+  memberId,
+  imageUrl,
+  isLiked,
+  likesCount,
 }: IVerificationInfo) {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
+  const [liked, setLiked] = useState<boolean>(isLiked);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
   const myId = 1;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (isLiked) {
-      setIsLiked(false);
+    if (liked) {
+      setLiked(false);
     } else {
-      setIsLiked(true);
+      setLiked(true);
     }
   };
 
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae src={content} alt="이미지" fill sizes="100%" priority />
+        <SImgae src={imageUrl} alt="이미지" fill sizes="100%" priority />
         <SShadow />
-        {myId === authorId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
+        {myId === memberId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
           <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
-          <SLikeCountWhite>{likeCount}</SLikeCountWhite>
+          <SLikeCountWhite>{likesCount}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>
       {isModalOpen && (
         <Portal>
           <SModalWrapper>
             <SPhotoModal>
-              <SImgae src={content} alt="이미지" fill sizes="100%" />
+              <SImgae src={imageUrl} alt="이미지" fill sizes="100%" />
               <SCloseBtn type="button" onClick={closeModal} />
             </SPhotoModal>
           </SModalWrapper>

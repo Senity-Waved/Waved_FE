@@ -11,25 +11,28 @@ interface IVerificationItem extends IVerificationInfo {
 
 export default function VerificationItem({
   verificationId,
-  authorId,
-  authorName,
+  memberId,
+  nickname,
   content,
-  liked,
-  likeCount,
+  isLiked,
+  likesCount,
   link,
   selectedId,
   setSelectedId,
 }: IVerificationItem) {
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
+  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const myId = 1;
   const isSelected = selectedId === verificationId;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (isLiked) {
-      setIsLiked(false);
+    if (liked) {
+      setLiked(false);
+      setLikeCountNum(likeCountNum - 1);
     } else {
-      setIsLiked(true);
+      setLiked(true);
+      setLikeCountNum(likeCountNum + 1);
     }
   };
 
@@ -46,8 +49,8 @@ export default function VerificationItem({
 
   return (
     <SWrapper isSelected={isSelected} onClick={toggleContent}>
-      {myId === authorId && <SMineLabel>내 인증</SMineLabel>}
-      <SAuthor>{authorName}</SAuthor>
+      {myId === memberId && <SMineLabel>내 인증</SMineLabel>}
+      <SAuthor>{nickname}</SAuthor>
       {link && (
         <SLink href={link} target="_blank" onClick={clickLink}>
           {link}
@@ -56,7 +59,7 @@ export default function VerificationItem({
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
         <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
-        <SLikeCount>{likeCount}</SLikeCount>
+        <SLikeCount>{likesCount}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>
   );
