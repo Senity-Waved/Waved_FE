@@ -26,7 +26,7 @@ export default function ChallengeItem({
   isRefundRequested,
   isGithubConnected,
   verificationType,
-  // deposit,
+  deposit,
   setData,
 }: TMyChallengeItem) {
   const [startYY, startMM, startDD] = parseDate(startDate);
@@ -48,7 +48,7 @@ export default function ChallengeItem({
           </SDuration>
           <SDeposit>
             <span>예치금</span>
-            <span>{changePriceFormat(5000)}원</span>
+            <span>{deposit ? changePriceFormat(deposit) : 0}원</span>
           </SDeposit>
         </div>
         <SDetailBtn href={`/challenge/${challengeGroupId}`} />
