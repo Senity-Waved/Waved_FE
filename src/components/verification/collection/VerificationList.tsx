@@ -3,19 +3,25 @@ import styled from '@emotion/styled';
 import IVerificationInfo, { TVerificationType } from '@/types/verification';
 import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
+import { getQuizApi } from '@/lib/axios/verification/post/api';
+import EmptyView from '@/components/common/EmptyView';
 
 interface IVerificationList {
   verificationType: TVerificationType;
   verifications: IVerificationInfo[];
+  challengeGroupId: string;
   isToday: boolean;
-  question?: string;
+  date: string;
+  isEmptyData: boolean;
 }
 
 export default function VerificationList({
   verificationType,
   verifications,
-  question,
+  challengeGroupId,
   isToday,
+  date,
+  isEmptyData,
 }: IVerificationList) {
   const myId = 1;
   const [sort, setSort] = useState<'time' | 'likeCount'>('likeCount');
@@ -23,29 +29,43 @@ export default function VerificationList({
   const [sortedVerifications, setSortedVerifications] = useState<
     IVerificationInfo[]
   >([]);
+  const [question, setQuestion] = useState<string>('');
 
   const [myVerification] = verifications.filter(
-    (verification) => verification.authorId === myId,
+    (verification) => verification.memberId === myId,
   );
-
   const allVerification = useMemo(() => {
     return verifications.filter(
-      (verification) => verification.authorId !== myId,
+      (verification) => verification.memberId !== myId,
     );
   }, [verifications, myId]);
 
+  // 인증내역 정렬
   useEffect(() => {
     const sorted = [...allVerification].sort((veri1, veri2) => {
       if (sort === 'time') {
-        const time1 = new Date(veri1.time);
-        const time2 = new Date(veri2.time);
+        const time1 = new Date(veri1.verificationDate);
+        const time2 = new Date(veri2.verificationDate);
         return time2.getTime() - time1.getTime();
       }
       // sort === likeCount
-      return veri2.likeCount - veri1.likeCount;
+      return veri2.likesCount - veri1.likesCount;
     });
     setSortedVerifications(sorted);
   }, [sort, allVerification]);
+
+  // 기술면접 문제 get
+  // useEffect(() => {
+  //   if (verificationType === 'TEXT' && challengeGroupId !== undefined)
+  //     getQuizApi(challengeGroupId)
+  //       .then((data) => {
+  //         setQuestion(data.question);
+  //       })
+  //       .catch((error) => {
+  //         console.error('getQuiz API 실패', error);
+  //         setQuestion('문제를 불러오는데 실패했습니다.');
+  //       });
+  // }, [verificationType, challengeGroupId]);
 
   return (
     <SWrapper>
@@ -95,6 +115,7 @@ export default function VerificationList({
             />
           );
         })}
+        {isEmptyData && <EmptyView pageType="인증내역" />}
       </SList>
     </SWrapper>
   );
@@ -122,6 +143,7 @@ const SList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  position: relative;
 `;
 
 const SQuestion = styled.p`
@@ -139,6 +161,7 @@ const SEmptyMyVerifiaction = styled.p`
   color: ${({ theme }) => theme.color.gray_99};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
+  width: 100%;
   margin-bottom: 1rem;
   text-align: center;
 `;
