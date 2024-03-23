@@ -273,15 +273,18 @@ export default function Challenge({
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext,
-): Promise<{
-  props: {
-    challengeInfo: IChallengeGroup;
-    reviewList: IReviewList;
-  };
-}> {
+): Promise<
+  | {
+      props: {
+        challengeInfo: IChallengeGroup;
+        reviewList: IReviewList;
+      };
+    }
+  | { notFound: true }
+> {
   const cookieToken = getCookie('accessToken', context);
-  console.log('🍪', cookieToken);
   const { groupId } = context.params as { groupId: string };
+
   async function fetchChallengeInfo() {
     try {
       const headers = cookieToken
@@ -296,25 +299,17 @@ export async function getServerSideProps(
       console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
-      console.error('challengeGroup API GET 실패', error);
-      return {
-        groupTitle: '챌린지 정보를 불러오는 데 실패했습니다.',
-        participantCount: 0,
-        startDate: '2099-99-99',
-        endDate: '2099-99-99',
-        verficationType: 'TEXT',
-        description: '챌린지 정보를 불러오는 데 실패했습니다.',
-        verificationDescription: '',
-        isFree: false,
-        isApplied: false,
-        challengeId: -1,
-        mychallengeId: -1,
-      };
+      return null;
     }
   }
-  const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
+  const challengeInfo = await fetchChallengeInfo();
+  if (!challengeInfo) {
+    return { notFound: true };
+  }
+
   const { challengeId, isApplied, myChallengeId } = challengeInfo;
   console.log(challengeId, isApplied, myChallengeId);
+
   async function fetchReviews() {
     try {
       const response = await axios.get<IReviewList>(
