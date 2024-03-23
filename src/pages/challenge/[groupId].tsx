@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
@@ -29,6 +28,7 @@ import calculateDDay from '@/utils/calculateDDay';
 import ParticipantButton from '@/components/challenge/ParticipantButton';
 import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
 import Modal from '@/components/modal/Modal';
+import createServerInstance from '@/lib/axios/serverInstance';
 
 interface IFetchMoreReviewsResponse {
   content: TChallengeReview[];
@@ -267,12 +267,12 @@ export async function getServerSideProps(
     }
   | { notFound: true }
 > {
-  const cookieToken = getCookie('accessToken', context);
   const { groupId } = context.params as { groupId: string };
+  const serverInstance = createServerInstance(context);
 
   async function fetchChallengeInfo() {
     try {
-      const response = await getChallengeGroupApi(groupId, cookieToken);
+      const response = await getChallengeGroupApi(groupId, serverInstance);
       console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
@@ -287,7 +287,7 @@ export async function getServerSideProps(
   const { challengeId } = challengeInfo;
   async function fetchReviews() {
     try {
-      const response = await getReviewsApi(challengeId);
+      const response = await getReviewsApi(challengeId, serverInstance);
       console.log('review API GET 성공', response.data.content);
       return response.data;
     } catch (error) {

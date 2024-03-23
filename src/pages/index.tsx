@@ -22,6 +22,7 @@ import {
   getMyProcessingChallengeApi,
   getRecruitingChallengeApi,
 } from '@/lib/axios/home/api';
+import createServerInstance from '@/lib/axios/serverInstance';
 
 export default function Home({
   myProcessingChallenges,
@@ -116,10 +117,10 @@ export async function getServerSideProps(
     recruitingChallenges: IRecruitingChallenge[];
   };
 }> {
-  const cookieToken = getCookie('accessToken', context);
+  const serverInstance = createServerInstance(context);
   async function fetchMyProcessingChallenges() {
     try {
-      const response = await getMyProcessingChallengeApi(cookieToken);
+      const response = await getMyProcessingChallengeApi(serverInstance);
       console.log('myProcessingChallenge API GET 성공');
       return response.data;
     } catch (error) {
@@ -129,7 +130,7 @@ export async function getServerSideProps(
   }
   async function fetchRecruitingChallenges() {
     try {
-      const response = await getRecruitingChallengeApi();
+      const response = await getRecruitingChallengeApi(serverInstance);
       console.log('recruitingChallenge API GET 성공');
       return response.data;
     } catch (error) {
@@ -137,9 +138,7 @@ export async function getServerSideProps(
       return [];
     }
   }
-  const myProcessingChallenges = cookieToken
-    ? await fetchMyProcessingChallenges()
-    : [];
+  const myProcessingChallenges = await fetchMyProcessingChallenges();
   const recruitingChallenges = await fetchRecruitingChallenges();
   return {
     props: {

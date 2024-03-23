@@ -1,3 +1,4 @@
+import { AxiosInstance } from 'axios';
 import IChallengeGroup from '@/types/challengeGroup';
 import axiosInstance from '../instance';
 import { IReviewList } from '@/types/review';
@@ -8,13 +9,12 @@ import { IReviewList } from '@/types/review';
  * @param token (optional)
  * @returns response.data
  */
-const getChallengeGroupApi = (groupId: string, token?: string) => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  return axiosInstance.get<IChallengeGroup>(
+const getChallengeGroupApi = (
+  groupId: string,
+  serverInstance: AxiosInstance,
+) => {
+  return serverInstance.get<IChallengeGroup>(
     `/challengeGroups/info/${groupId}`,
-    {
-      headers,
-    },
   );
 };
 
@@ -23,8 +23,8 @@ const getChallengeGroupApi = (groupId: string, token?: string) => {
  * @param challengeId
  * @returns response.data
  */
-const getReviewsApi = (challengeId: number) => {
-  return axiosInstance.get<IReviewList>(
+const getReviewsApi = (challengeId: number, serverInstance: AxiosInstance) => {
+  return serverInstance.get<IReviewList>(
     `/challenges/${challengeId}/reviews?page=0&limit=5`,
   );
 };
