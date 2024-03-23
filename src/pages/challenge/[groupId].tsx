@@ -17,7 +17,7 @@ import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
-import ISelectedChallenge from '@/types/selectedChallenge';
+import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
@@ -28,8 +28,7 @@ import IChallengeGroup from '@/types/challengeGroup';
 import { TChallengeReview } from '@/types/review';
 import parseDate from '@/utils/parseDate';
 import WEEKDAYS from '@/constants/weekdays';
-
-const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
+import calculateDDay from '@/utils/calculateDDay';
 
 interface IReviewList {
   content: TChallengeReview[];
@@ -53,6 +52,22 @@ const formattedDate = (date: string) => {
   return `${month}월 ${day}일 (${WEEKDAYS[dateObj.getDay()]})`;
 };
 
+const calculateCondition = (startDate: string, endDate: string): TCondition => {
+  const dDayToStart = calculateDDay(startDate);
+  const dDayToEnd = calculateDDay(endDate);
+  let condition: TCondition;
+  if (dDayToStart <= 14 && dDayToStart >= 1) {
+    condition = 'recruiting';
+  } else if (dDayToStart < 1 && dDayToEnd >= 0) {
+    condition = 'processing';
+  } else if (dDayToEnd < 0) {
+    condition = 'closed';
+  } else {
+    condition = 'waiting';
+  }
+  return condition;
+};
+
 export default function Challenge({
   challengeInfo,
   reviewList,
@@ -69,6 +84,10 @@ export default function Challenge({
   });
   const formattedStartDate = formattedDate(challengeInfo.startDate);
   const formattedEndDate = formattedDate(challengeInfo.endDate);
+  const condition = calculateCondition(
+    challengeInfo.startDate,
+    challengeInfo.endDate,
+  );
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const fetchMoreReviews = async ({
