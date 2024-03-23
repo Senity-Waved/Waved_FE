@@ -157,6 +157,7 @@ export async function getServerSideProps(
 
 const SHomeWrapper = styled(SLayoutWrapper)`
   position: relative;
+  margin-bottom: 3rem;
 `;
 
 const SSection = styled.section`
