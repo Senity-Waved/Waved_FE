@@ -1,3 +1,9 @@
+export interface IReviewList {
+  content: TChallengeReview[];
+  totalPages: number;
+  totalElements: number;
+}
+
 interface IReview {
   challengeId: number;
   groupTitle: string;

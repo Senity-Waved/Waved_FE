@@ -22,17 +22,12 @@ import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
-import { TChallengeReview } from '@/types/review';
+import { IReviewList, TChallengeReview } from '@/types/review';
 import parseDate from '@/utils/parseDate';
 import WEEKDAYS from '@/constants/weekdays';
 import calculateDDay from '@/utils/calculateDDay';
 import ParticipantButton from '@/components/challenge/ParticipantButton';
-
-interface IReviewList {
-  content: TChallengeReview[];
-  totalPages: number;
-  totalElements: number;
-}
+import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
 
 interface IFetchMoreReviewsResponse {
   content: TChallengeReview[];
@@ -288,15 +283,7 @@ export async function getServerSideProps(
 
   async function fetchChallengeInfo() {
     try {
-      const headers = cookieToken
-        ? { Authorization: `Bearer ${cookieToken}` }
-        : {};
-      const response = await axios.get<IChallengeGroup>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/challengeGroups/info/${groupId}`,
-        {
-          headers,
-        },
-      );
+      const response = await getChallengeGroupApi(groupId, cookieToken);
       console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
@@ -314,9 +301,7 @@ export async function getServerSideProps(
 
   async function fetchReviews() {
     try {
-      const response = await axios.get<IReviewList>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/${challengeId}/reviews?page=0&limit=5`,
-      );
+      const response = await getReviewsApi(challengeId);
       console.log('review API GET 성공', response.data.content);
       return response.data;
     } catch (error) {
