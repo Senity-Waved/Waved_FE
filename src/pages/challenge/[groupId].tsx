@@ -3,7 +3,6 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
-import { useSetRecoilState } from 'recoil';
 import React, { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import { getCookie } from 'cookies-next';
@@ -11,14 +10,12 @@ import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
-import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
-import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
@@ -29,6 +26,7 @@ import { TChallengeReview } from '@/types/review';
 import parseDate from '@/utils/parseDate';
 import WEEKDAYS from '@/constants/weekdays';
 import calculateDDay from '@/utils/calculateDDay';
+import ParticipantButton from '@/components/challenge/ParticipantButton';
 
 interface IReviewList {
   content: TChallengeReview[];
@@ -88,8 +86,15 @@ export default function Challenge({
     challengeInfo.startDate,
     challengeInfo.endDate,
   );
-  const selectedChallenge =
-    useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
+  const challengeData: ISelectedChallenge = {
+    challengeGroupId: groupId,
+    groupTitle: challengeInfo.groupTitle,
+    startDate: formattedStartDate,
+    endDate: formattedEndDate,
+    condition,
+    participantCount: challengeInfo.participantCount,
+    isFree: challengeInfo.isFree,
+  };
   const fetchMoreReviews = async ({
     pageParam = 0,
   }): Promise<IFetchMoreReviewsResponse> => {
@@ -128,20 +133,20 @@ export default function Challenge({
       });
     }
   };
-  const goToParticipant = () => {
-    selectedChallenge({
-      challengeGroupId: groupId,
-      groupTitle: challengeInfo.groupTitle,
-      startDate: formattedStartDate,
-      endDate: formattedEndDate,
-      condition,
-      participantCount: challengeInfo.participantCount,
-      isFree: challengeInfo.isFree,
-    });
-    router.push('/challenge/participant').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
-  };
+  // const goToParticipant = () => {
+  //   selectedChallenge({
+  //     challengeGroupId: groupId,
+  //     groupTitle: challengeInfo.groupTitle,
+  //     startDate: formattedStartDate,
+  //     endDate: formattedEndDate,
+  //     condition,
+  //     participantCount: challengeInfo.participantCount,
+  //     isFree: challengeInfo.isFree,
+  //   });
+  //   router.push('/challenge/participant').catch((error) => {
+  //     console.error('페이지 이동에 실패하였습니다.', error);
+  //   });
+  // };
 
   return (
     <SLayoutWrapper withBottomFixedBtn>
@@ -249,15 +254,11 @@ export default function Challenge({
             height={24}
           />
         </SLinkItem>
-        <BottomFixedBtn
-          btns={[
-            {
-              text: '신청하기',
-              styleType: 'primary',
-              size: 'large',
-              onClick: goToParticipant,
-            },
-          ]}
+        <ParticipantButton
+          challengeData={challengeData}
+          isApplied={challengeInfo.isApplied}
+          myChallengeId={challengeInfo.myChallengeId}
+          startDate={challengeInfo.startDate}
         />
         {snackBarState.open && (
           <SnackBar
@@ -307,8 +308,9 @@ export async function getServerSideProps(
     return { notFound: true };
   }
 
-  const { challengeId, isApplied, myChallengeId } = challengeInfo;
-  console.log(challengeId, isApplied, myChallengeId);
+  const { challengeId } = challengeInfo;
+  console.log('🔥 isApplied:', challengeInfo.isApplied);
+  console.log('🔥 myChallengeId:', challengeInfo.myChallengeId);
 
   async function fetchReviews() {
     try {
