@@ -1,6 +1,7 @@
 import { getCookie } from 'cookies-next';
 import { useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import BottomFixedBtn, { IBtn } from '@/components/common/BottomFixedBtn';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
@@ -21,61 +22,72 @@ export default function ParticipantButton({
   startDate,
 }: IParticipantButton) {
   const router = useRouter();
-  const isLogined = getCookie('accessToken');
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const dDayToStart = calculateDDay(startDate);
-  const goToOnboarding = () => {
-    router.push('/onboarding').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
-  };
-  const goToParticipant = () => {
-    selectedChallenge(challengeData);
-    router.push('/challenge/participant').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
-  };
-  const cancelApplication = () => {
-    try {
-      console.log(myChallengeId);
-      console.log('신청 취소 요청 성공');
-    } catch (error) {
-      console.error('신청 취소 요청 실패', error);
-    }
-  };
-  let btnConfig: IBtn = {
-    text: '마감',
+  const [btnConfig, setBtnConfig] = useState<IBtn>({
+    text: '대기',
     styleType: 'disabled',
     size: 'large',
-  };
-  if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
-    btnConfig = {
-      ...btnConfig,
-      text: '신청하기',
-      styleType: 'primary',
-      onClick: goToOnboarding,
+  });
+  useEffect(() => {
+    const isLogined = getCookie('accessToken');
+    const goToOnboarding = () => {
+      router.push('/onboarding').catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
     };
-  } else if (isLogined && !isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
-    btnConfig = {
-      ...btnConfig,
-      text: '신청하기',
-      styleType: 'primary',
-      onClick: goToParticipant,
+
+    const goToParticipant = () => {
+      selectedChallenge(challengeData);
+      router.push('/challenge/participant').catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
     };
-  } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
-    btnConfig = {
-      ...btnConfig,
-      text: '신청 취소',
-      styleType: 'primary',
-      onClick: cancelApplication,
+
+    const cancelApplication = () => {
+      try {
+        console.log(myChallengeId);
+        console.log('신청 취소 요청 성공');
+      } catch (error) {
+        console.error('신청 취소 요청 실패', error);
+      }
     };
-  } else if (dDayToStart < 1) {
-    btnConfig = {
-      ...btnConfig,
-      text: '마감',
-    };
-  }
+
+    if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
+      setBtnConfig({
+        ...btnConfig,
+        text: '신청하기',
+        styleType: 'primary',
+        onClick: goToOnboarding,
+      });
+    } else if (
+      isLogined &&
+      !isApplied &&
+      dDayToStart <= 14 &&
+      dDayToStart >= 1
+    ) {
+      setBtnConfig({
+        ...btnConfig,
+        text: '신청하기',
+        styleType: 'primary',
+        onClick: goToParticipant,
+      });
+    } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
+      setBtnConfig({
+        ...btnConfig,
+        text: '신청 취소',
+        styleType: 'primary',
+        onClick: cancelApplication,
+      });
+    } else if (dDayToStart < 1) {
+      setBtnConfig({
+        ...btnConfig,
+        text: '마감',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <BottomFixedBtn btns={[btnConfig]} />;
 }
