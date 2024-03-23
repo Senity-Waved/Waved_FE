@@ -51,8 +51,20 @@ const getGithubInfoApi = () => {
   return axiosInstance.get<IGithubInfo>('/members/github');
 };
 
+/**
+ * 깃허브 연동 POST
+ * @param githubInfo - githubId, githubToken
+ * @returns message (성공 / 실패)
+ */
 const linkGithubApi = (githubInfo: IGithubInfo) => {
   return axiosInstance.post('/members/github', githubInfo);
+};
+
+/**
+ * 깃허브 연동 해제 DELETE
+ */
+const deleteGithubApi = () => {
+  return axiosInstance.delete('/members/github');
 };
 
 export {
@@ -63,4 +75,5 @@ export {
   deleteMemberApi,
   getGithubInfoApi,
   linkGithubApi,
+  deleteGithubApi,
 };

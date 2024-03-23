@@ -6,7 +6,11 @@ import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import Modal from '@/components/modal/Modal';
 import useModal from '@/hooks/useModal';
-import { getGithubInfoApi, linkGithubApi } from '@/lib/axios/profile/api';
+import {
+  deleteGithubApi,
+  getGithubInfoApi,
+  linkGithubApi,
+} from '@/lib/axios/profile/api';
 import IGithubInfo from '@/types/github';
 
 export default function MyGithub() {
@@ -48,8 +52,6 @@ export default function MyGithub() {
       });
   };
 
-  console.log(githubData, isGithubLinked);
-
   const linkGithub = async () => {
     try {
       const response = await linkGithubApi(githubData);
@@ -65,11 +67,20 @@ export default function MyGithub() {
     }
   };
 
-  const clickModalBtn = () => {
-    if (isGithubLinked) {
-      setIsGithubLinked(false);
-      navigateToProfile({ linkedCancel: true });
+  const unlinkGithub = async () => {
+    try {
+      const response = await deleteGithubApi();
+      if (response) {
+        setIsGithubLinked(false);
+        navigateToProfile({ linkedCancel: true });
+      }
+    } catch (error) {
+      console.error('깃허브 연동 해제 실패 | ', error);
     }
+  };
+
+  const clickModalBtn = () => {
+    unlinkGithub().catch((error) => console.error(error));
     closeModal();
   };
 
