@@ -4,7 +4,7 @@ import Layout from '@/components/common/Layout';
 import WriteLayout from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
 import TextArea from '@/components/common/TextArea';
-import { postMyReviewApi } from '@/lib/axios/mychallenge/api';
+import { postReviewApi } from '@/lib/axios/review/api';
 
 export default function PostReview() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function PostReview() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    postMyReviewApi(myChallengeId, text)
+    postReviewApi(myChallengeId, text)
       .then((response) => {
         if (response) {
           console.log(`${myChallengeId}의 리뷰 작성 완료! : ${text}`);
