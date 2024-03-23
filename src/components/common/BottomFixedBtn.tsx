@@ -8,7 +8,7 @@ export interface IBtn {
   text: string;
   styleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   size: 'large' | 'small';
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 interface IBottomFixedBtn {

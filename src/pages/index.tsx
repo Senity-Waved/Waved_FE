@@ -119,7 +119,7 @@ export async function getServerSideProps(
   const cookieToken = getCookie('accessToken', context);
   async function fetchMyProcessingChallenges() {
     try {
-      const response = await getMyProcessingChallengeApi();
+      const response = await getMyProcessingChallengeApi(cookieToken);
       console.log('myProcessingChallenge API GET 성공');
       return response.data;
     } catch (error) {

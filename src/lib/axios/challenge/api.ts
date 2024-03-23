@@ -29,4 +29,13 @@ const getReviewsApi = (challengeId: number) => {
   );
 };
 
-export { getChallengeGroupApi, getReviewsApi };
+/**
+ * 챌린지 신청 취소 DEL
+ * @param challengeId
+ * @returns response.data
+ */
+const deleteMyChallengeApi = (myChallengeId: number) => {
+  return axiosInstance.delete(`/myChallenges/${myChallengeId}/delete`);
+};
+
+export { getChallengeGroupApi, getReviewsApi, deleteMyChallengeApi };

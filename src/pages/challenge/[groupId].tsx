@@ -28,6 +28,7 @@ import WEEKDAYS from '@/constants/weekdays';
 import calculateDDay from '@/utils/calculateDDay';
 import ParticipantButton from '@/components/challenge/ParticipantButton';
 import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
+import Modal from '@/components/modal/Modal';
 
 interface IFetchMoreReviewsResponse {
   content: TChallengeReview[];
@@ -128,20 +129,6 @@ export default function Challenge({
       });
     }
   };
-  // const goToParticipant = () => {
-  //   selectedChallenge({
-  //     challengeGroupId: groupId,
-  //     groupTitle: challengeInfo.groupTitle,
-  //     startDate: formattedStartDate,
-  //     endDate: formattedEndDate,
-  //     condition,
-  //     participantCount: challengeInfo.participantCount,
-  //     isFree: challengeInfo.isFree,
-  //   });
-  //   router.push('/challenge/participant').catch((error) => {
-  //     console.error('페이지 이동에 실패하였습니다.', error);
-  //   });
-  // };
 
   return (
     <SLayoutWrapper withBottomFixedBtn>
@@ -254,6 +241,7 @@ export default function Challenge({
           isApplied={challengeInfo.isApplied}
           myChallengeId={challengeInfo.myChallengeId}
           startDate={challengeInfo.startDate}
+          setSnackBarState={setSnackBarState}
         />
         {snackBarState.open && (
           <SnackBar
@@ -262,6 +250,7 @@ export default function Challenge({
             withBottomFixedBtn
           />
         )}
+        <Modal />
       </main>
     </SLayoutWrapper>
   );
@@ -296,9 +285,6 @@ export async function getServerSideProps(
   }
 
   const { challengeId } = challengeInfo;
-  console.log('🔥 isApplied:', challengeInfo.isApplied);
-  console.log('🔥 myChallengeId:', challengeInfo.myChallengeId);
-
   async function fetchReviews() {
     try {
       const response = await getReviewsApi(challengeId);
