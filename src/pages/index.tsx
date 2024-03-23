@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -19,6 +18,10 @@ import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import {
+  getMyProcessingChallengeApi,
+  getRecruitingChallengeApi,
+} from '@/lib/axios/home/api';
 
 export default function Home({
   myProcessingChallenges,
@@ -116,14 +119,7 @@ export async function getServerSideProps(
   const cookieToken = getCookie('accessToken', context);
   async function fetchMyProcessingChallenges() {
     try {
-      const response = await axios.get<IMyProcessingChallenge[]>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=PROGRESS`,
-        {
-          headers: {
-            Authorization: `Bearer ${cookieToken}`,
-          },
-        },
-      );
+      const response = await getMyProcessingChallengeApi();
       console.log('myProcessingChallenge API GET 성공');
       return response.data;
     } catch (error) {
@@ -133,9 +129,7 @@ export async function getServerSideProps(
   }
   async function fetchRecruitingChallenges() {
     try {
-      const response = await axios.get<IRecruitingChallenge[]>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/waiting`,
-      );
+      const response = await getRecruitingChallengeApi();
       console.log('recruitingChallenge API GET 성공');
       return response.data;
     } catch (error) {
