@@ -4,10 +4,11 @@ import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import { getCookie } from 'cookies-next';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -34,12 +35,18 @@ interface IReviewList {
   totalElements: number;
 }
 
+interface IFetchMoreReviewsResponse {
+  content: TChallengeReview[];
+  nextPage: number;
+  totalPages?: number;
+}
+
 export default function Challenge({
   challengeInfo,
-  reviews,
+  reviewList,
 }: {
   challengeInfo: IChallengeGroup;
-  reviews: TChallengeReview[];
+  reviewList: IReviewList;
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
@@ -50,6 +57,44 @@ export default function Challenge({
   });
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
+  const fetchMoreReviews = async ({
+    pageParam = 0,
+  }): Promise<IFetchMoreReviewsResponse> => {
+    const response = await axios.get<IReviewList>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/${challengeInfo.challengeId}/reviews?page=${pageParam}&limit=5`,
+    );
+    return {
+      content: response.data.content,
+      nextPage: pageParam + 1,
+      totalPages: response.data.totalPages,
+    };
+  };
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    IFetchMoreReviewsResponse,
+    Error
+  >(['reviews', challengeInfo.challengeId], fetchMoreReviews, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.nextPage < reviewList.totalPages) return lastPage.nextPage;
+      return undefined;
+    },
+    initialData: {
+      pages: [
+        {
+          content: reviewList.content,
+          nextPage: 1,
+          totalPages: reviewList.totalPages,
+        },
+      ],
+      pageParams: [0],
+    },
+  });
+  const handleReviewMore = () => {
+    if (!isFetching && hasNextPage) {
+      fetchNextPage().catch((error) => {
+        console.error('리뷰 더보기 실패', error);
+      });
+    }
+  };
   const goToParticipant = () => {
     selectedChallenge({
       challengeGroupId: groupId,
@@ -120,18 +165,26 @@ export default function Challenge({
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {reviews.length === 0 ? (
+          {reviewList.totalElements === 0 ? (
             <SEmptyViewWrapper>
               <EmptyView pageType="챌린지후기" />
             </SEmptyViewWrapper>
           ) : (
             <>
               <ul>
-                {reviews.map((review) => {
-                  return <ChallengeReviewItem key={uuidv4()} {...review} />;
-                })}
+                {data?.pages.map((page) => (
+                  <React.Fragment key={uuidv4()}>
+                    {page.content.map((review) => (
+                      <ChallengeReviewItem key={uuidv4()} {...review} />
+                    ))}
+                  </React.Fragment>
+                ))}
               </ul>
-              <SMoreBtn type="button">더보기</SMoreBtn>
+              {hasNextPage && (
+                <SMoreBtn type="button" onClick={handleReviewMore}>
+                  더보기
+                </SMoreBtn>
+              )}
             </>
           )}
         </SSection>
@@ -190,7 +243,7 @@ export async function getServerSideProps(
 ): Promise<{
   props: {
     challengeInfo: IChallengeGroup;
-    reviews: TChallengeReview[];
+    reviewList: IReviewList;
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
@@ -228,28 +281,28 @@ export async function getServerSideProps(
   }
   const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
   const { challengeId, isApplied, myChallengeId } = challengeInfo;
-  console.log(isApplied, myChallengeId);
+  console.log(challengeId, isApplied, myChallengeId);
   async function fetchReviews() {
-    await axios
-      .get<IReviewList>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${challengeId}/reviews?page=0&limit=5`,
-      )
-      .then((response) => {
-        console.log('review API GET 성공', response.data.content);
-        return response.data.content;
-      })
-      .catch((error: AxiosError) => {
-        if (error.response) {
-          console.error('review API GET 실패', error.response.data);
-        }
-      });
-    return [];
+    try {
+      const response = await axios.get<IReviewList>(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/${challengeId}/reviews?page=0&limit=5`,
+      );
+      console.log('review API GET 성공', response.data.content);
+      return response.data;
+    } catch (error) {
+      console.error('review API GET 실패', error);
+      return {
+        content: [],
+        totalPages: 0,
+        totalElements: 0,
+      };
+    }
   }
-  const reviews = (await fetchReviews()) || [];
+  const reviewList = await fetchReviews();
   return {
     props: {
       challengeInfo,
-      reviews,
+      reviewList,
     },
   };
 }
