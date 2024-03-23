@@ -170,10 +170,8 @@ export default function ChallengeBtn({
           ) : (
             <SLink
               href={{
-                pathname: `/mychallenge/review`,
-                query: { challengeId: challengeGroupId },
+                pathname: `/mychallenge/review/${myChallengeId}`,
               }}
-              as="mychallenge/review"
             >
               <SBtn
                 styleType={isAble ? 'border' : 'bordergray'}

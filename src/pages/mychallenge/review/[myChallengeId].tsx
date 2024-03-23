@@ -7,13 +7,13 @@ import TextArea from '@/components/common/TextArea';
 
 export default function PostReview() {
   const router = useRouter();
-  const challengeId = router.query.challengeId as string;
+  const mychallengeId = router.query.myChallengeId as string;
   const { placeholder } = writeLayoutText['후기작성'];
   const [text, setText] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`${challengeId}의 리뷰 작성 완료! : ${text}`);
+    console.log(`${mychallengeId}의 리뷰 작성 완료! : ${text}`);
     router
       .push({
         pathname: '/mychallenge',
