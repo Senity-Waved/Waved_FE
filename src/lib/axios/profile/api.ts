@@ -1,6 +1,7 @@
 import IRegisterState from '@/types/register';
 import axiosInstance from '../instance';
 import IProfile from '@/types/profile';
+import IGithubInfo from '@/types/github';
 
 /**
  * 멤버 정보 수정 PATCH
@@ -42,10 +43,24 @@ const deleteMemberApi = () => {
   return axiosInstance.delete('/members/delete');
 };
 
+/**
+ * 깃허브 연동 정보 GET
+ * @returns githubId, githubToken
+ */
+const getGithubInfoApi = () => {
+  return axiosInstance.get<IGithubInfo>('/members/github');
+};
+
+const linkGithubApi = (githubInfo: IGithubInfo) => {
+  return axiosInstance.post('/members/github', githubInfo);
+};
+
 export {
   editMemberApi,
   logoutApi,
   getProfileApi,
   getEditProfileApi,
   deleteMemberApi,
+  getGithubInfoApi,
+  linkGithubApi,
 };
