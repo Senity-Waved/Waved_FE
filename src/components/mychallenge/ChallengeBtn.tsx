@@ -2,17 +2,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import styled from '@emotion/styled';
+import { useSetRecoilState } from 'recoil';
 import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
-import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
+import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/post/api';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import useModal from '@/hooks/useModal';
 import calculateDDay from '@/utils/calculateDDay';
+import ISelectedMyChallenge from '@/types/selectedMyChallenge';
+import ASelectedMyChallenge from '@/atoms/selectedMyChallenge';
 
-interface IBtn
-  extends Omit<
-    TMyChallengeInfo,
-    'groupTitle' | 'endDate' | 'successCount' | 'deposit'
-  > {
+interface IBtn extends Omit<TMyChallengeInfo, 'successCount' | 'deposit'> {
   status: TMyChallengeStatus;
   setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
@@ -20,6 +19,7 @@ interface IBtn
 export default function ChallengeBtn({
   myChallengeId,
   challengeGroupId,
+  groupTitle,
   isReviewed,
   isVerified,
   isSuccessed,
@@ -27,12 +27,15 @@ export default function ChallengeBtn({
   isGithubConnected,
   verificationType,
   startDate,
+  endDate,
   status,
   setData,
 }: IBtn) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const cookieToken = getCookie('accessToken');
+  const setSelectedMyChallenge =
+    useSetRecoilState<ISelectedMyChallenge>(ASelectedMyChallenge);
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -43,6 +46,18 @@ export default function ChallengeBtn({
     if (!isAble) {
       e.preventDefault(); // 버튼이 비활성화 상태일 때 링크 이동 중지
     }
+  };
+
+  const setAMyChallengeInfo = () => {
+    setSelectedMyChallenge({
+      challengeGroupId,
+      myChallengeId,
+      groupTitle,
+      startDate,
+      endDate,
+      verificationType,
+      status,
+    });
   };
 
   const postMyVerification = async () => {
@@ -83,6 +98,30 @@ export default function ChallengeBtn({
     });
   };
 
+  const handleCommitBtn = () => {
+    if (isAble) {
+      openModal({
+        image: '/icons/icon-exclamation-mark.svg',
+        mainText: isGithubConnected
+          ? '인증을 제출 하시겠습니까?'
+          : '깃허브 아이디를 연동하시겠습니까?',
+        subText: isGithubConnected
+          ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
+          : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
+        btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
+        onClick: () => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          isGithubConnected
+            ? postMyVerification().catch((error) => console.error(error))
+            : router
+                .push(`/profile/mygithub`)
+                .catch((error) => console.error(error));
+          closeModal();
+        },
+      });
+    }
+  };
+
   switch (status) {
     case 'PROGRESS':
       return (
@@ -90,39 +129,18 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType, myChallengeId },
+              query: { type: verificationType },
             }}
           >
-            <SBtn styleType="light">인증 내역</SBtn>
+            <SBtn styleType="light" onClick={setAMyChallengeInfo}>
+              인증 내역
+            </SBtn>
           </SLink>
           {verificationType === 'GITHUB' ? (
             <SBtn
               as="button"
               styleType={isAble ? 'middle' : 'gray'}
-              onClick={() =>
-                isAble &&
-                openModal({
-                  image: '/icons/icon-exclamation-mark.svg',
-                  mainText: isGithubConnected
-                    ? '인증을 제출 하시겠습니까?'
-                    : '깃허브 아이디를 연동하시겠습니까?',
-                  subText: isGithubConnected
-                    ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
-                    : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
-                  btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
-                  onClick: () => {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    isGithubConnected
-                      ? postMyVerification().catch((error) =>
-                          console.error(error),
-                        )
-                      : router
-                          .push(`/profile/mygithub`)
-                          .catch((error) => console.error(error));
-                    closeModal();
-                  },
-                })
-              }
+              onClick={handleCommitBtn}
             >
               {isAble ? '인증 하기' : '인증 완료'}
             </SBtn>
@@ -130,7 +148,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/verification/post/${challengeGroupId}`,
-                query: { type: verificationType, myChallengeId },
+                query: { type: verificationType },
               }}
             >
               <SBtn
@@ -157,10 +175,12 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType, myChallengeId },
+              query: { type: verificationType },
             }}
           >
-            <SBtn styleType="light">인증 내역</SBtn>
+            <SBtn styleType="light" onClick={setAMyChallengeInfo}>
+              인증 내역
+            </SBtn>
           </SLink>
           {isSuccessed && !isRefundRequested ? (
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
