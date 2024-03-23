@@ -67,6 +67,15 @@ const deleteGithubApi = () => {
   return axiosInstance.delete('/members/github');
 };
 
+/**
+ * 예치금 내역 페이징 조회
+ * @param pageNum
+ * @returns paymentRecords
+ */
+const getPaymentRecordsApi = (pageNum: number) => {
+  return axiosInstance.get(`/members/paymentRecords?page=${pageNum}&limit=20`);
+};
+
 export {
   editMemberApi,
   logoutApi,
@@ -76,4 +85,5 @@ export {
   getGithubInfoApi,
   linkGithubApi,
   deleteGithubApi,
+  getPaymentRecordsApi,
 };

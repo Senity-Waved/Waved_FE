@@ -1,27 +1,38 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
 import changePriceFormat from '@/utils/changePriceFormat';
+import parseDate from '@/utils/parseDate';
 
 interface IDepositItem {
   depositData: {
-    challengeName: string;
-    challengeResult: string;
-    challengeDate: string;
+    groupTitle: string;
+    status: string;
+    createDate: string;
     deposit: number;
   };
 }
 
 export default function DepositItem({ depositData }: IDepositItem) {
+  const [year, month, day] = parseDate(depositData.createDate);
+
   return (
     <SDepositItemWrapper>
       <div>
         <SChallengeInfo>
-          {depositData.challengeName} ({depositData.challengeResult})
+          {depositData.groupTitle} (
+          {depositData.status === 'APPLIED'
+            ? '신청'
+            : depositData.status === 'SUCCESS'
+              ? '성공'
+              : '실패'}
+          )
         </SChallengeInfo>
-        <SDepositHistoryDate>{depositData.challengeDate}</SDepositHistoryDate>
+        <SDepositHistoryDate>
+          {year}년 {month}월 {day}일
+        </SDepositHistoryDate>
       </div>
       <SDepositHistory>
-        예치금 {depositData.challengeResult === '성공' ? '+' : '-'}
-        {changePriceFormat(depositData.deposit)}원
+        예치금 {changePriceFormat(depositData.deposit)}원
       </SDepositHistory>
     </SDepositItemWrapper>
   );

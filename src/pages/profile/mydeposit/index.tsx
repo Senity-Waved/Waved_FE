@@ -1,16 +1,28 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import Layout from '@/components/common/Layout';
 import DepositItem from '@/components/profile/DepositItem';
 import EmptyView from '@/components/common/EmptyView';
+import { getPaymentRecordsApi } from '@/lib/axios/profile/api';
+import IPaymentRecord from '@/types/paymentRecord';
 
 export default function MyDeposit() {
-  const depositData = {
-    challengeName: '백엔드 기술면접 챌린지 2기',
-    challengeResult: '성공',
-    challengeDate: '2023년 02월 27일',
-    deposit: 5000,
-  };
-  const haveDeposit = true;
+  const [paymentRecords, setPaymentRecords] = useState<IPaymentRecord[]>([]);
+
+  useEffect(() => {
+    const fetchPaymentRecords = async () => {
+      try {
+        const response = await getPaymentRecordsApi(0);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        setPaymentRecords(response.data.content);
+      } catch (error) {
+        console.error('예치금 내역 조회 실패:', error);
+      }
+    };
+
+    fetchPaymentRecords().catch((error) => console.error(error));
+  }, []);
+
   return (
     <Layout
       noFooter
@@ -20,11 +32,10 @@ export default function MyDeposit() {
     >
       <SMyDepositWrapper>
         <h2 className="a11yHidden">예치금 내역</h2>
-        {haveDeposit ? (
-          <div>
+        {paymentRecords.length > 0 ? (
+          paymentRecords.map((depositData) => (
             <DepositItem depositData={depositData} />
-            <DepositItem depositData={depositData} />
-          </div>
+          ))
         ) : (
           <EmptyView pageType="예치금내역" />
         )}
@@ -33,4 +44,11 @@ export default function MyDeposit() {
   );
 }
 
-const SMyDepositWrapper = styled.div``;
+const SMyDepositWrapper = styled.div`
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
