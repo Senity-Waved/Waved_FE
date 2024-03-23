@@ -75,10 +75,14 @@ export default function VeirificationCollection() {
           console.error(`getMyStampApi API 실패`, error);
         });
     }
+  }, [recoilMyChallengeData, challengeData.myChallengeId]);
+
+  useEffect(() => {
     if (challengeGroupId && date) {
       getVerificationsApi(challengeGroupId, `${year}-${month}-${day}`)
         .then((data) => {
           setVerificationsData(data);
+          setIsEmptyData(false);
         })
         .catch((error) => {
           if (
@@ -90,15 +94,7 @@ export default function VeirificationCollection() {
           console.error(`getVerificationsApi API 실패`, error);
         });
     }
-  }, [
-    recoilMyChallengeData,
-    challengeData.myChallengeId,
-    challengeGroupId,
-    year,
-    month,
-    day,
-    date,
-  ]);
+  }, [challengeGroupId, year, month, day, date]);
 
   console.log(verificationsData);
   // 스낵바
