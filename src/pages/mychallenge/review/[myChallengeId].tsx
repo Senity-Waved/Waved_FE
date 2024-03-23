@@ -4,26 +4,33 @@ import Layout from '@/components/common/Layout';
 import WriteLayout from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
 import TextArea from '@/components/common/TextArea';
+import { postMyReviewApi } from '@/lib/axios/mychallenge/api';
 
 export default function PostReview() {
   const router = useRouter();
-  const mychallengeId = router.query.myChallengeId as string;
+  const myChallengeId = router.query.myChallengeId as string;
   const { placeholder } = writeLayoutText['후기작성'];
   const [text, setText] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`${mychallengeId}의 리뷰 작성 완료! : ${text}`);
-    router
-      .push({
-        pathname: '/mychallenge',
-        query: {
-          postReviewSuccess: true,
-        },
+    postMyReviewApi(myChallengeId, text)
+      .then((response) => {
+        if (response) {
+          console.log(`${myChallengeId}의 리뷰 작성 완료! : ${text}`);
+          router
+            .push({
+              pathname: '/mychallenge',
+              query: {
+                postReviewSuccess: true,
+              },
+            })
+            .catch((error) => console.error(error));
+        }
       })
-      .catch((error) => {
-        console.error('페이지 이동 실패', error);
-      });
+      .catch((error) =>
+        console.error(`${myChallengeId}의 리뷰 작성 실패`, error),
+      );
   };
 
   return (
