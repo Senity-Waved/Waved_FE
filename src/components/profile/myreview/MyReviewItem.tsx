@@ -1,32 +1,32 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import IMyReview from '@/types/myReview';
+import { TMyReview } from '@/types/review';
 import useModal from '@/hooks/useModal';
 
-interface IMyReviewItem extends IMyReview {
+interface IMyReviewItem extends TMyReview {
   onDelete: () => void;
 }
 
 export default function MyReviewItem({
-  id,
-  challengeTitle,
-  createdDate,
-  context,
+  reviewId,
+  groupTitle,
+  createDate,
+  content,
   onDelete,
 }: IMyReviewItem) {
   const { openModal, closeModal } = useModal();
   return (
     <SMyReviewItem>
       <STitleWrapper>
-        <STitle>{challengeTitle}</STitle>
-        <SDate>{createdDate}</SDate>
+        <STitle>{groupTitle}</STitle>
+        <SDate>{createDate}</SDate>
       </STitleWrapper>
-      <SContext>{context}</SContext>
+      <SContext>{content}</SContext>
       <SBtnWrapper>
         <SEditBtn
           href={{
             pathname: `/profile/myreview/edit`,
-            query: { context, reviewId: id },
+            query: { content, reviewId },
           }}
           as="myreview/edit"
         >

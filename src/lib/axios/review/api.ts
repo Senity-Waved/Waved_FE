@@ -11,12 +11,12 @@ const postReviewApi = (myChallengeId: string, content: string) => {
 };
 
 /**
- * 내가 작성한 후기 목록 GET
+ * 내가 작성한 후기 목록 조회 GET
  * @returns response.data
  */
 const getMyReviewsApi = (pageParam: number) => {
-  return axiosInstance.get<IMyReviewList[]>(
-    `/members/review?page=${pageParam}&limit=5`,
+  return axiosInstance.get<IMyReviewList>(
+    `/members/reviews?page=${pageParam}&limit=5`,
   );
 };
 
