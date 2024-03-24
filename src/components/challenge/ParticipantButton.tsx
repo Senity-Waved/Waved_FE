@@ -85,7 +85,12 @@ export default function ParticipantButton({
     const handleClick = () => {
       if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
         goToOnboarding();
-      } else if (isLogined && !isApplied && dDayToStart <= 14) {
+      } else if (
+        isLogined &&
+        !isApplied &&
+        dDayToStart <= 14 &&
+        dDayToStart >= 1
+      ) {
         goToParticipant();
       } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
         openModal({
@@ -129,8 +134,8 @@ export default function ParticipantButton({
       });
     } else if (dDayToStart < 1) {
       setBtnConfig({
-        text: '마감이지만 테스트를 위해 신청 허용',
-        styleType: 'primary',
+        text: '마감',
+        styleType: 'disabled',
         size: 'large',
         onClick: handleClick,
       });
