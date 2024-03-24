@@ -1,7 +1,9 @@
+import { TVerificationType } from './verification';
+
 interface IRecruitingChallenge {
   challengeGroupId: number;
   groupTitle: string;
-  verificationType: 'TEXT' | 'LINK' | 'GITHUB' | 'PICTURE';
+  verificationType: TVerificationType;
   isFree: boolean;
   participantCount: number;
   startDate: string;

@@ -1,9 +1,11 @@
+export type TCondition = 'closed' | 'recruiting' | 'processing' | 'waiting';
+
 interface ISelectedChallenge {
   challengeGroupId: string;
   groupTitle: string;
   startDate: string;
   endDate: string;
-  condition: 'closed' | 'recruiting' | 'processing';
+  condition: TCondition;
   participantCount: number;
   isFree: boolean;
 }

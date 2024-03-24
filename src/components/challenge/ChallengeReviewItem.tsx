@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
 import { TChallengeReview } from '@/types/review';
+import parseDate from '@/utils/parseDate';
+import { JOB_TITLE_KR } from '@/constants/jobTitle';
+
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  return `${year}년 ${month}월 ${day}일`;
+};
 
 export default function ChallengeReviewItem({
   nickname,
@@ -11,8 +18,8 @@ export default function ChallengeReviewItem({
     <SReviewItem>
       <SReviewInfo>
         <SAuthor>{nickname}</SAuthor>
-        {jobTitle && <SJobTitle>{jobTitle}</SJobTitle>}
-        <SDate>{createDate}</SDate>
+        {jobTitle && <SJobTitle>{JOB_TITLE_KR[jobTitle]}</SJobTitle>}
+        <SDate>{formattedDate(createDate)}</SDate>
       </SReviewInfo>
       <SReviewContent>{content}</SReviewContent>
     </SReviewItem>
