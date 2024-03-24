@@ -303,7 +303,11 @@ export async function getServerSideProps(
   return {
     props: {
       challengeInfo,
-      reviewList,
+      reviewList: {
+        content: reviewList.content,
+        totalPages: reviewList.totalPages,
+        totalElements: reviewList.totalElements,
+      },
     },
   };
 }
