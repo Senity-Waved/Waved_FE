@@ -34,13 +34,11 @@ export default function ChallengeParticipant() {
     isFree: false,
   });
 
-  // 리코일에서 챌린지 상세 정보 가져오기
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
   }, [challengeData.isFree, recoilChallengeData]);
 
-  // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     const paymentRequest = async () => {
       if (myChallengeId !== 0 && deposit !== 0) {
@@ -107,7 +105,6 @@ export default function ChallengeParticipant() {
       : 'disabled';
   }, [challengeData.isFree, deposit]);
 
-  // 챌린지 신청을 위한 myChallengeId 가져오기
   const challengeApply = async () => {
     try {
       const challengeGroupProps = {
@@ -171,7 +168,7 @@ export default function ChallengeParticipant() {
       <BottomFixedBtn
         btns={[
           {
-            text: '신청하기',
+            text: '결제하기',
             styleType: buttonStyleType(),
             size: 'large',
             onClick: goToSuccess,

@@ -20,7 +20,6 @@ export default function DepositRefundGuide() {
 
 const SDepositRefundGuideWrapper = styled.section`
   padding: 1.5rem 1.25rem;
-  border-bottom: 6px solid ${({ theme }) => theme.color.gray_ec};
 `;
 
 const SDepositRefundGuideTitle = styled.p`
