@@ -21,7 +21,7 @@ import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
-import { IReviewList, TChallengeReview } from '@/types/review';
+import { IChallengeReviewList, TChallengeReview } from '@/types/review';
 import parseDate from '@/utils/parseDate';
 import WEEKDAYS from '@/constants/weekdays';
 import calculateDDay from '@/utils/calculateDDay';
@@ -67,7 +67,7 @@ export default function Challenge({
   reviewList,
 }: {
   challengeInfo: IChallengeGroup;
-  reviewList: IReviewList;
+  reviewList: IChallengeReviewList;
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
@@ -94,7 +94,7 @@ export default function Challenge({
   const fetchMoreReviews = async ({
     pageParam = 0,
   }): Promise<IFetchMoreReviewsResponse> => {
-    const response = await axios.get<IReviewList>(
+    const response = await axios.get<IChallengeReviewList>(
       `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/${challengeInfo.challengeId}/reviews?page=${pageParam}&limit=5`,
     );
     return {
@@ -262,7 +262,7 @@ export async function getServerSideProps(
   | {
       props: {
         challengeInfo: IChallengeGroup;
-        reviewList: IReviewList;
+        reviewList: IChallengeReviewList;
       };
     }
   | { notFound: true }
@@ -288,7 +288,7 @@ export async function getServerSideProps(
   async function fetchReviews() {
     try {
       const response = await getReviewsApi(challengeId, serverInstance);
-      console.log('review API GET 성공', response.data.content);
+      console.log('review API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('review API GET 실패', error);

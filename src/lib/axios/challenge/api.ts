@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import IChallengeGroup from '@/types/challengeGroup';
 import axiosInstance from '../instance';
-import { IReviewList } from '@/types/review';
+import { IChallengeReviewList } from '@/types/review';
 
 /**
  * 챌린지 그룹 정보 GET
@@ -24,7 +24,7 @@ const getChallengeGroupApi = (
  * @returns response.data
  */
 const getReviewsApi = (challengeId: number, serverInstance: AxiosInstance) => {
-  return serverInstance.get<IReviewList>(
+  return serverInstance.get<IChallengeReviewList>(
     `/challenges/${challengeId}/reviews?page=0&limit=5`,
   );
 };
