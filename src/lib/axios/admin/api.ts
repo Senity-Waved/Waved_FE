@@ -13,7 +13,7 @@ const getProgressChallengeGroupApi = () => {
  * @param groupId
  * @returns 그룹별 인증 내역 (인증아이디, 내용, 링크, imageUrl, 인증 날짜, 닉네임, 삭제처리여부)
  */
-const getGroupVerifications = (groupId: number) => {
+const getGroupVerificationsApi = (groupId: number) => {
   return adminInstance.get(`/${groupId}/verifications`);
 };
 
@@ -23,12 +23,12 @@ const getGroupVerifications = (groupId: number) => {
  * @param verificationId 인증 아이디
  * @returns (성공) 인증 취소 처리가 되었습니다
  */
-const deleteVerfication = (groupId: number, verificationId: number) => {
+const deleteVerficationApi = (groupId: number, verificationId: number) => {
   return adminInstance.delete(`/${groupId}/verifications/${verificationId}`);
 };
 
 export {
   getProgressChallengeGroupApi,
-  getGroupVerifications,
-  deleteVerfication,
+  getGroupVerificationsApi,
+  deleteVerficationApi,
 };

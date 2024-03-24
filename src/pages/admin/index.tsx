@@ -3,7 +3,11 @@ import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { SLayoutWrapper } from '@/components/common/Layout';
-import { getProgressChallengeGroupApi } from '@/lib/axios/admin/api';
+import {
+  getProgressChallengeGroupApi,
+  getGroupVerificationsApi,
+  deleteVerficationApi,
+} from '@/lib/axios/admin/api';
 import parseDate from '@/utils/parseDate';
 
 interface IAdminProgressChallengeGroup {
@@ -13,12 +17,76 @@ interface IAdminProgressChallengeGroup {
   groupId: number;
 }
 
+interface IAdminVerification {
+  verificationId: number;
+  content: string;
+  link: string | null;
+  imageUrl: string | null;
+  verificationDate: string;
+  nickname: string | null;
+  isDeleted: boolean;
+}
+
+const testVerificationData = {
+  content: [
+    {
+      verificationId: 1,
+      content: '글인증',
+      link: null,
+      imageUrl: null,
+      verificationDate: '2024-03-19T18:00:49.492788+09:00',
+      nickname: '유진닉네임',
+      isDeleted: false,
+    },
+    {
+      verificationId: 2,
+      content: '글인증',
+      link: null,
+      imageUrl: null,
+      verificationDate: '2024-03-19T18:00:53.265556+09:00',
+      nickname: '채원닉네임',
+      isDeleted: false,
+    },
+  ],
+  pageable: {
+    pageNumber: 0,
+    pageSize: 5,
+    sort: {
+      empty: true,
+      unsorted: true,
+      sorted: false,
+    },
+    offset: 0,
+    paged: true,
+    unpaged: false,
+  },
+  last: true,
+  totalPages: 1,
+  totalElements: 2,
+  first: true,
+  size: 5,
+  number: 0,
+  sort: {
+    empty: true,
+    unsorted: true,
+    sorted: false,
+  },
+  numberOfElements: 2,
+  empty: false,
+};
+
 export default function AdminPage() {
   const [progressChallengeGroupData, setProgressChallengeGroupData] = useState<
     IAdminProgressChallengeGroup[] | []
   >();
 
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
+  const [selectedChallengeVerification, setSelectedChallengeVerification] =
+    useState<IAdminVerification[] | []>();
+
+  const [selectedVerificationId, setSelectedVerificationId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const testProgressChallengeGroupData = [
@@ -70,6 +138,44 @@ export default function AdminPage() {
   //   fetchProgressGroup().catch((error) => console.error(error));
   // }, []);
 
+  const handleVerificationBtn = () => {
+    setSelectedChallengeVerification(testVerificationData.content);
+    // const fetchSelectedChallengeVerifications = async () => {
+    //   try {
+    //     if (typeof selectedGroupId === 'number') {
+    //       const response = await getGroupVerificationsApi(selectedGroupId);
+    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    //       setSelectedChallengeVerification(response.data.content);
+    //     }
+    //   } catch (error) {
+    //     console.error('선택한 챌린지 그룹의 인증 내역 조회 실패', error);
+    //   }
+    // };
+    // fetchSelectedChallengeVerifications().catch((error) =>
+    //   console.error(error),
+    // );
+  };
+
+  const deleteVerification = () => {
+    const deleteSelectedVerification = async () => {
+      try {
+        if (
+          typeof selectedGroupId === 'number' &&
+          typeof selectedVerificationId === 'number'
+        ) {
+          const response = await deleteVerficationApi(
+            selectedGroupId,
+            selectedVerificationId,
+          );
+          console.log('인증 취소 성공 | ', response);
+        }
+      } catch (error) {
+        console.error('선택한 인증 내역 삭제 실패', error);
+      }
+    };
+    deleteSelectedVerification().catch((error) => console.error(error));
+  };
+
   return (
     <SAdminPageWrapper>
       <Head>
@@ -114,9 +220,51 @@ export default function AdminPage() {
           )}
         </SAdminProgressChallengeWrapper>
         <SSelectedChallengeVerificationWrapper>
-          <h3>선택한 챌린지 그룹 인증내역 조회</h3>
+          <h3>선택한 챌린지 그룹 인증내역</h3>
           <p>선택된 챌린지 그룹 : {selectedGroupId}</p>
+          <SVerificationBtn type="button" onClick={handleVerificationBtn}>
+            인증 내역 조회하기
+          </SVerificationBtn>
+          <SAdminVerificationWrapper>
+            {selectedChallengeVerification ? (
+              selectedChallengeVerification.length > 0 ? (
+                selectedChallengeVerification.map((verification) => (
+                  <label key={verification.verificationId}>
+                    <input
+                      type="radio"
+                      name="selectedVerification"
+                      value={verification.verificationId}
+                      checked={
+                        selectedVerificationId === verification.verificationId
+                      }
+                      onChange={() =>
+                        setSelectedVerificationId(verification.verificationId)
+                      }
+                    />
+                    <span>verificationId : {verification.verificationId}</span>
+                    <p>{verification.content}</p>
+                    <p>{verification.nickname}</p>
+                    <p>
+                      {verification.isDeleted
+                        ? '인증 무효로 삭제함'
+                        : '인증 승인 상태'}
+                    </p>
+                  </label>
+                ))
+              ) : (
+                <p>해당 챌린지의 인증 내역이 존재하지 않습니다.</p>
+              )
+            ) : (
+              <p>버튼을 클릭하여 선택한 챌린지의 인증 내역을 확인하세요.</p>
+            )}
+          </SAdminVerificationWrapper>
         </SSelectedChallengeVerificationWrapper>
+        <div>
+          <p>선택한 인증 내역 ID : {selectedVerificationId}</p>
+          <SVerificationBtn type="button" onClick={deleteVerification}>
+            해당 인증 내역 삭제 (인증무효처리)
+          </SVerificationBtn>
+        </div>
       </main>
     </SAdminPageWrapper>
   );
@@ -163,4 +311,17 @@ const SSelectedChallengeVerificationWrapper = styled.div`
   padding: 10px 0;
   margin-bottom: 10px;
   border-bottom: 3px solid ${({ theme }) => theme.color.gray_de};
+`;
+
+const SVerificationBtn = styled.button`
+  padding: 10px 10px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.normal};
+  color: ${({ theme }) => theme.color.white};
+  font-size: ${({ theme }) => theme.fontSize.caption2};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
+`;
+
+const SAdminVerificationWrapper = styled.div`
+  border-top: 3px solid ${({ theme }) => theme.color.gray_de};
 `;
