@@ -53,11 +53,6 @@ export const getVerificationsApi = async (
     const err = error as AxiosError;
     if (err.code === 'ECONNABORTED') {
       throw new Error('🚨 요청시간초과');
-    } else if (
-      err.response &&
-      err.response.data === '해당 날짜에 존재하는 인증내역이 없습니다.'
-    ) {
-      throw new Error('emptyData');
     }
     throw error;
   }
