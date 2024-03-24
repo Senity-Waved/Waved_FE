@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
-import { RecoilEnv, useRecoilValue } from 'recoil';
+import { RecoilEnv, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -21,6 +21,7 @@ export default function ChallengeParticipant() {
   const router = useRouter();
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const [myChallengeId, setMyChallengeId] = useState<number>(0);
+  const updateSelectedChallengeData = useSetRecoilState(ASelectedChallenge);
 
   const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
@@ -33,6 +34,13 @@ export default function ChallengeParticipant() {
     participantCount: 0,
     isFree: false,
   });
+
+  const increaseParticipantCount = () => {
+    updateSelectedChallengeData((oldChallengeData) => ({
+      ...oldChallengeData,
+      participantCount: oldChallengeData.participantCount + 1,
+    }));
+  };
 
   useEffect(() => {
     setChallengeData(recoilChallengeData);
@@ -53,6 +61,7 @@ export default function ChallengeParticipant() {
             groupTitle,
             nickname,
             onSuccess: () => {
+              increaseParticipantCount();
               router
                 .push({
                   pathname: '/challenge/participant/success',
