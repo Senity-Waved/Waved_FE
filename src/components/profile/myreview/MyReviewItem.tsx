@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { TMyReview } from '@/types/review';
 import useModal from '@/hooks/useModal';
 import formattedFormText from '@/utils/formattedFormText';
 import parseDate from '@/utils/parseDate';
-
-interface IMyReviewItem extends TMyReview {
-  onDelete: () => void;
-}
+import { deleteReviewApi } from '@/lib/axios/review/api';
 
 const formattedDate = (date: string) => {
   const [year, month, day] = parseDate(date);
@@ -19,9 +18,28 @@ export default function MyReviewItem({
   groupTitle,
   createDate,
   content,
-  onDelete,
-}: IMyReviewItem) {
+}: TMyReview) {
+  const router = useRouter();
   const { openModal, closeModal } = useModal();
+  const { mutate: deleteReview } = useMutation(
+    () => deleteReviewApi(reviewId),
+    {
+      onSuccess: () => {
+        console.log(`${reviewId} 삭제완료!`);
+        router
+          .push({
+            pathname: '/profile/myreview',
+            query: {
+              deleteReviewSuccess: true,
+            },
+          })
+          .catch((error) => console.error('페이지 이동 실패', error));
+      },
+      onError: (error) => {
+        console.error('리뷰 삭제 실패', error);
+      },
+    },
+  );
   return (
     <SMyReviewItem>
       <STitleWrapper>
@@ -45,7 +63,7 @@ export default function MyReviewItem({
               mainText: '남기신 후기를 삭제하시겠습니까?',
               btnText: '삭제하기',
               onClick: () => {
-                onDelete();
+                deleteReview();
                 closeModal();
               },
             })

@@ -55,20 +55,6 @@ export default function MyReview() {
     }
   };
 
-  const deleteReview = (reviewId: number) => {
-    console.log(`삭제완료! ${reviewId}`);
-    setSnackBarState({
-      open: true,
-      text: REVIEW_SNACKBAR_TEXT.DELETE,
-    });
-    setTimeout(() => {
-      setSnackBarState({
-        open: false,
-        text: '',
-      });
-    }, 3500);
-  };
-
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
@@ -93,6 +79,8 @@ export default function MyReview() {
     };
     if (query.editReviewSuccess) {
       handleRouting(REVIEW_SNACKBAR_TEXT.EDIT);
+    } else if (query.deleteReviewSuccess) {
+      handleRouting(REVIEW_SNACKBAR_TEXT.DELETE);
     }
   }, [query, router]);
 
@@ -107,11 +95,7 @@ export default function MyReview() {
           {data.pages.map((page) => (
             <React.Fragment key={uuidv4()}>
               {page.content.map((review) => (
-                <MyReviewItem
-                  key={review.reviewId}
-                  {...review}
-                  onDelete={() => deleteReview(review.reviewId)}
-                />
+                <MyReviewItem key={review.reviewId} {...review} />
               ))}
             </React.Fragment>
           ))}
