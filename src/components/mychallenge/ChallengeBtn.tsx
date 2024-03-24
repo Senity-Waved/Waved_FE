@@ -1,15 +1,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
 import styled from '@emotion/styled';
-import { useSetRecoilState } from 'recoil';
-import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
+import {
+  fetchMyChallenges,
+  refundRequestApi,
+} from '@/lib/axios/mychallenge/api';
 import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/post/api';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import useModal from '@/hooks/useModal';
 import calculateDDay from '@/utils/calculateDDay';
-import ISelectedMyChallenge from '@/types/selectedMyChallenge';
-import ASelectedMyChallenge from '@/atoms/selectedMyChallenge';
 
 interface IBtn extends Omit<TMyChallengeInfo, 'successCount' | 'deposit'> {
   status: TMyChallengeStatus;
@@ -19,7 +18,6 @@ interface IBtn extends Omit<TMyChallengeInfo, 'successCount' | 'deposit'> {
 export default function ChallengeBtn({
   myChallengeId,
   challengeGroupId,
-  groupTitle,
   isReviewed,
   isVerified,
   isSuccessed,
@@ -27,15 +25,11 @@ export default function ChallengeBtn({
   isGithubConnected,
   verificationType,
   startDate,
-  endDate,
   status,
   setData,
 }: IBtn) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
-  const cookieToken = getCookie('accessToken');
-  const setSelectedMyChallenge =
-    useSetRecoilState<ISelectedMyChallenge>(ASelectedMyChallenge);
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -48,23 +42,11 @@ export default function ChallengeBtn({
     }
   };
 
-  const setAMyChallengeInfo = () => {
-    setSelectedMyChallenge({
-      challengeGroupId,
-      myChallengeId,
-      groupTitle,
-      startDate,
-      endDate,
-      verificationType,
-      status,
-    });
-  };
-
   const postMyVerification = async () => {
     try {
       const response = await postMyCommitVerifiactionApi(challengeGroupId);
       if (response) {
-        const res = await fetchMyChallenges(status, cookieToken);
+        const res = await fetchMyChallenges(status);
         if (setData !== undefined) setData(res);
       }
     } catch (error) {
@@ -72,30 +54,37 @@ export default function ChallengeBtn({
     }
   };
 
-  const getRefund = async () => {
-    // 결제취소로직
-    const res = await fetchMyChallenges(status, cookieToken);
-    if (setData !== undefined) setData(res);
-    openModal({
-      image: '/icons/icon-done.svg',
-      mainText: '환급 신청이 완료되었습니다.',
-      subText: '참여한 챌린지가 어떠했는지 여러분의 소중한 후기를 남겨주세요.',
-      btnText: '후기 작성',
-      cancelBtnText: '나중에 하기',
-      onClick: () => {
-        router
-          .push({
-            pathname: `/mychallenge/review`,
-            query: {
-              challengeId: challengeGroupId,
-            },
+  const getRefund = () => {
+    refundRequestApi(myChallengeId)
+      .then(() => {
+        fetchMyChallenges(status)
+          .then((res) => {
+            if (setData !== undefined) setData(res);
+            openModal({
+              image: '/icons/icon-done.svg',
+              mainText: '환급 신청이 완료되었습니다.',
+              subText:
+                '참여한 챌린지가 어떠했는지 여러분의 소중한 후기를 남겨주세요.',
+              btnText: '후기 작성',
+              cancelBtnText: '나중에 하기',
+              onClick: () => {
+                router
+                  .push({
+                    pathname: `/mychallenge/review`,
+                    query: {
+                      challengeId: challengeGroupId,
+                    },
+                  })
+                  .catch((error) => {
+                    console.error('페이지 이동에 실패하였습니다.', error);
+                  });
+                closeModal();
+              },
+            });
           })
-          .catch((error) => {
-            console.error('페이지 이동에 실패하였습니다.', error);
-          });
-        closeModal();
-      },
-    });
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
   };
 
   const handleCommitBtn = () => {
@@ -129,12 +118,10 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType },
+              query: { type: verificationType, myChallengeId },
             }}
           >
-            <SBtn styleType="light" onClick={setAMyChallengeInfo}>
-              인증 내역
-            </SBtn>
+            <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           {verificationType === 'GITHUB' ? (
             <SBtn
@@ -148,7 +135,7 @@ export default function ChallengeBtn({
             <SLink
               href={{
                 pathname: `/verification/post/${challengeGroupId}`,
-                query: { type: verificationType },
+                query: { type: verificationType, myChallengeId },
               }}
             >
               <SBtn
@@ -175,12 +162,10 @@ export default function ChallengeBtn({
           <SLink
             href={{
               pathname: `/verification/collection/${challengeGroupId}`,
-              query: { type: verificationType },
+              query: { type: verificationType, myChallengeId },
             }}
           >
-            <SBtn styleType="light" onClick={setAMyChallengeInfo}>
-              인증 내역
-            </SBtn>
+            <SBtn styleType="light">인증 내역</SBtn>
           </SLink>
           {isSuccessed && !isRefundRequested ? (
             // eslint-disable-next-line @typescript-eslint/no-misused-promises

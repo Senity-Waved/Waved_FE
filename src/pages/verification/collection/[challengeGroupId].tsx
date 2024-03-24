@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import { RecoilEnv, useRecoilValue } from 'recoil';
 import ISnackBarState from '@/types/snackbar';
 import ONE_DAY from '@/constants/day';
 import Layout from '@/components/common/Layout';
@@ -9,42 +8,26 @@ import Stamp from '@/components/verification/collection/Stamp';
 import VerificationList from '@/components/verification/collection/VerificationList';
 import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
-import ISelectedMyChallenge from '@/types/selectedMyChallenge';
-import ASelectedMyChallenge from '@/atoms/selectedMyChallenge';
-import IVerificationInfo from '@/types/verification';
-import {
-  getMyStampApi,
-  getVerificationsApi,
-} from '@/lib/axios/verification/collection/api';
-
-RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
+import { getCollectionInfoApi } from '@/lib/axios/verification/collection/api';
+import { ICollectionInfo } from '@/types/verification';
 
 export default function VeirificationCollection() {
   const router = useRouter();
   const { query } = useRouter();
   const challengeGroupId = router.query.challengeGroupId as string;
+  const verificationType = router.query.type as string;
+  const myChallengeId = router.query.myChallengeId as string;
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
   });
 
-  const recoilMyChallengeData =
-    useRecoilValue<ISelectedMyChallenge>(ASelectedMyChallenge);
-  const [challengeData, setChallengeData] = useState<ISelectedMyChallenge>({
-    challengeGroupId: 0,
-    myChallengeId: 0,
+  const [stampData, setStampData] = useState<number[]>([]);
+  const [challengeData, setChallengeData] = useState<ICollectionInfo>({
     groupTitle: '',
     startDate: '',
     endDate: '',
-    verificationType: 'TEXT',
-    status: 'PROGRESS',
   });
-
-  const [stampData, setStampData] = useState<number[]>([]);
-  const [verificationsData, setVerificationsData] = useState<
-    IVerificationInfo[]
-  >([]);
-  const [isEmptyData, setIsEmptyData] = useState<boolean>(false);
 
   const today = new Date().getTime();
   const [date, setDate] = useState<number>(today);
@@ -63,40 +46,24 @@ export default function VeirificationCollection() {
     if (endDateTime < date) setDate(endDateTime);
   }, [challengeData.endDate, date]);
 
-  // 리코일에서 마이챌린지 정보 가져오기
+  // 인증내역 페이지 정보 GET
   useEffect(() => {
-    setChallengeData(recoilMyChallengeData);
-    if (challengeData.myChallengeId) {
-      getMyStampApi(challengeData.myChallengeId)
+    if (myChallengeId) {
+      getCollectionInfoApi(myChallengeId)
         .then((data) => {
           setStampData(data.myVerifs);
+          setChallengeData({
+            groupTitle: data.groupTitle,
+            startDate: data.startDate,
+            endDate: data.endDate,
+          });
         })
         .catch((error) => {
           console.error(`getMyStampApi API 실패`, error);
         });
     }
-  }, [recoilMyChallengeData, challengeData.myChallengeId]);
+  }, [myChallengeId]);
 
-  useEffect(() => {
-    if (challengeGroupId && date) {
-      getVerificationsApi(challengeGroupId, `${year}-${month}-${day}`)
-        .then((data) => {
-          setVerificationsData(data);
-          setIsEmptyData(false);
-        })
-        .catch((error) => {
-          if (
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            error.response.data === '해당 날짜에 존재하는 인증내역이 없습니다.'
-          ) {
-            setIsEmptyData(true);
-          }
-          console.error(`getVerificationsApi API 실패`, error);
-        });
-    }
-  }, [challengeGroupId, year, month, day, date]);
-
-  console.log(verificationsData);
   // 스낵바
   useEffect(() => {
     const handleRouting = (
@@ -112,6 +79,10 @@ export default function VeirificationCollection() {
         .replace(
           {
             pathname: `/verification/collection/${challengeGroupId}`,
+            query: {
+              type: verificationType,
+              myChallengeId,
+            },
           },
           undefined,
           {
@@ -131,7 +102,7 @@ export default function VeirificationCollection() {
     if (query.submitVerification) {
       handleRouting('인증 제출이 완료되었습니다.');
     }
-  }, [query, router, challengeGroupId]);
+  }, [query, router, challengeGroupId, myChallengeId, verificationType]);
 
   return (
     <Layout
@@ -144,7 +115,7 @@ export default function VeirificationCollection() {
         <STitle>📌 내 인증 현황 </STitle>
         <Stamp results={stampData} startDate={challengeData.startDate} />
       </SStampWrapper>
-      {challengeData.verificationType !== 'GITHUB' && (
+      {verificationType !== 'GITHUB' && (
         <>
           <SDateWrapper>
             <SDateBtn
@@ -162,12 +133,10 @@ export default function VeirificationCollection() {
             />
           </SDateWrapper>
           <VerificationList
-            verificationType={challengeData.verificationType}
+            verificationType={verificationType}
             challengeGroupId={challengeGroupId}
-            verifications={verificationsData}
             date={`${year}-${month}-${day}`}
             isToday={isToday}
-            isEmptyData={isEmptyData}
           />
         </>
       )}
