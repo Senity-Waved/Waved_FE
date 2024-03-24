@@ -288,7 +288,7 @@ export async function getServerSideProps(
   async function fetchReviews() {
     try {
       const response = await getReviewsApi(challengeId, serverInstance);
-      console.log('review API GET 성공', response.data.content);
+      console.log('review API GET 성공', response.data);
       return response.data;
     } catch (error) {
       console.error('review API GET 실패', error);
@@ -303,7 +303,11 @@ export async function getServerSideProps(
   return {
     props: {
       challengeInfo,
-      reviewList,
+      reviewList: {
+        content: reviewList.content,
+        totalPages: reviewList.totalPages,
+        totalElements: reviewList.totalElements,
+      },
     },
   };
 }

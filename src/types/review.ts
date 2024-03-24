@@ -1,8 +1,10 @@
+import TJobTitle from './jobTitle';
+
 interface IReview {
   challengeId: number;
   groupTitle: string;
   nickname: string;
-  jobTitle?: string;
+  jobTitle?: TJobTitle;
   createDate: string;
   content: string;
 }
