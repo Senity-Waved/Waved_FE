@@ -17,19 +17,22 @@ import {
   postLikeApi,
 } from '@/lib/axios/verification/collection/api';
 
+interface IPhotoItem extends IVerificationInfo {
+  isMine: boolean;
+}
+
 export default function VerificationPhotoItem({
   verificationId,
-  memberId,
+  isMine,
   imageUrl,
   isLiked,
   likesCount,
-}: IVerificationInfo) {
-  const [isModalOpen, setModalOpen] = useState(false);
+}: IPhotoItem) {
   const [liked, setLiked] = useState<boolean>(isLiked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
+  const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-  const myId = 1;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -65,9 +68,15 @@ export default function VerificationPhotoItem({
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae src={imageUrl} alt="이미지" fill sizes="100%" priority />
+        <SImgae
+          src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+          alt="챌린지 인증 이미지"
+          fill
+          sizes="100%"
+          priority
+        />
         <SShadow />
-        {myId === memberId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
+        {isMine && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
           <SLikeBtnWhite isLiked={liked} onClick={toggleLike} />
           <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
@@ -77,7 +86,12 @@ export default function VerificationPhotoItem({
         <Portal>
           <SModalWrapper>
             <SPhotoModal>
-              <SImgae src={imageUrl} alt="이미지" fill sizes="100%" />
+              <SImgae
+                src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+                alt="챌린지 인증 이미지"
+                fill
+                sizes="100%"
+              />
               <SCloseBtn type="button" onClick={closeModal} />
             </SPhotoModal>
           </SModalWrapper>
