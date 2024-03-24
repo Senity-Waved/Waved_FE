@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
+import { useInView } from 'react-intersection-observer';
 import Layout from '@/components/common/Layout';
 import MyReviewItem from '@/components/profile/myreview/MyReviewItem';
 import SnackBar from '@/components/common/SnackBar';
@@ -36,6 +37,7 @@ export default function MyReview() {
     open: false,
     text: '',
   });
+  const [ref, inView] = useInView();
 
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
     IFetchMoreReviewsResponse,
@@ -47,13 +49,19 @@ export default function MyReview() {
     },
   });
 
-  const handleReviewMore = () => {
+  const handleReviewMore = useCallback(() => {
     if (!isFetching && hasNextPage) {
       fetchNextPage().catch((error) => {
         console.error('리뷰 더보기 실패', error);
       });
     }
-  };
+  }, [isFetching, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (inView) {
+      handleReviewMore();
+    }
+  }, [inView, handleReviewMore]);
 
   useEffect(() => {
     const handleRouting = (
@@ -99,11 +107,7 @@ export default function MyReview() {
               ))}
             </React.Fragment>
           ))}
-          {hasNextPage && (
-            <button type="button" onClick={handleReviewMore}>
-              더보기
-            </button>
-          )}
+          {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
         </ul>
       )}
       {snackBarState.open && (
