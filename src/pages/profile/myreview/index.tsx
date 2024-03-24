@@ -13,7 +13,7 @@ import Modal from '@/components/modal/Modal';
 import { getMyReviewsApi } from '@/lib/axios/review/api';
 import { IMyReviewList } from '@/types/review';
 
-interface IFetchMoreReviewsResponse extends IMyReviewList {
+export interface IFetchMoreReviewsResponse extends IMyReviewList {
   nextPage: number;
 }
 

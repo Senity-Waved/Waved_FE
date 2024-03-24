@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { TMyReview } from '@/types/review';
 import useModal from '@/hooks/useModal';
@@ -20,12 +20,16 @@ export default function MyReviewItem({
   content,
 }: TMyReview) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { openModal, closeModal } = useModal();
   const { mutate: deleteReview } = useMutation(
     () => deleteReviewApi(reviewId),
     {
       onSuccess: () => {
         console.log(`${reviewId} 삭제완료!`);
+        queryClient
+          .invalidateQueries(['myReviews'])
+          .catch((error) => console.error('쿼리 초기화 실패', error));
         router
           .push({
             pathname: '/profile/myreview',
