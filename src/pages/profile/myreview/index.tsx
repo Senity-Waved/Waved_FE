@@ -17,6 +17,18 @@ interface IFetchMoreReviewsResponse extends IMyReviewList {
   nextPage: number;
 }
 
+const fetchMoreReviews = async ({
+  pageParam = 0,
+}): Promise<IFetchMoreReviewsResponse> => {
+  const response = await getMyReviewsApi(pageParam);
+  return {
+    content: response.data.content,
+    nextPage: pageParam + 1,
+    totalPages: response.data.totalPages,
+    totalElements: response.data.totalElements,
+  };
+};
+
 export default function MyReview() {
   const router = useRouter();
   const { query } = router;
@@ -25,17 +37,6 @@ export default function MyReview() {
     text: '',
   });
 
-  const fetchMoreReviews = async ({
-    pageParam = 0,
-  }): Promise<IFetchMoreReviewsResponse> => {
-    const response = await getMyReviewsApi(pageParam);
-    return {
-      content: response.data.content,
-      nextPage: pageParam + 1,
-      totalPages: response.data.totalPages,
-      totalElements: response.data.totalElements,
-    };
-  };
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
     IFetchMoreReviewsResponse,
     Error

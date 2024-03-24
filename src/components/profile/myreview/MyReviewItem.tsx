@@ -2,10 +2,17 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { TMyReview } from '@/types/review';
 import useModal from '@/hooks/useModal';
+import formattedFormText from '@/utils/formattedFormText';
+import parseDate from '@/utils/parseDate';
 
 interface IMyReviewItem extends TMyReview {
   onDelete: () => void;
 }
+
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  return `${year}년 ${month}월 ${day}일`;
+};
 
 export default function MyReviewItem({
   reviewId,
@@ -19,16 +26,15 @@ export default function MyReviewItem({
     <SMyReviewItem>
       <STitleWrapper>
         <STitle>{groupTitle}</STitle>
-        <SDate>{createDate}</SDate>
+        <SDate>{formattedDate(createDate)}</SDate>
       </STitleWrapper>
-      <SContext>{content}</SContext>
+      <SContext>{formattedFormText(content)}</SContext>
       <SBtnWrapper>
         <SEditBtn
           href={{
             pathname: `/profile/myreview/edit`,
-            query: { content, reviewId },
+            query: { reviewId },
           }}
-          as="myreview/edit"
         >
           수정
         </SEditBtn>
