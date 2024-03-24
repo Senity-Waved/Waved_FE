@@ -31,16 +31,23 @@ const SSliderWrapper = styled(Slider)`
   }
 
   .slick-dots li {
-    width: 4px;
-    height: 4px;
+    width: 2px;
+    height: 2px;
+    margin: 0 0.5rem;
+  }
+
+  .slick-dots li button {
+    width: 0;
+    height: 0;
+    padding: 0;
   }
 
   .slick-dots li button::before {
     color: ${({ theme }) => theme.color.gray_de};
     opacity: 100;
     line-height: 1.4;
-    height: 4px;
-    margin-top: 0.25rem;
+    width: 4px;
+    height: 2px;
   }
 
   .slick-dots .slick-active button::before {
