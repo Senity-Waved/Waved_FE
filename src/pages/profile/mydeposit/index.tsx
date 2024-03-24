@@ -30,14 +30,19 @@ export default function MyDeposit() {
       title="예치금 내역"
       description="챌린지 참여 시 결제한  내역과 환급받은 내역을 확인할 수 있는 페이지입니다."
     >
+      <h2 className="a11yHidden">예치금 내역</h2>
       <SMyDepositWrapper>
-        <h2 className="a11yHidden">예치금 내역</h2>
-        {paymentRecords.length > 0 ? (
-          paymentRecords.map((depositData) => (
-            <DepositItem depositData={depositData} />
-          ))
-        ) : (
+        {paymentRecords.length !== 0 ? (
           <EmptyView pageType="예치금내역" />
+        ) : (
+          <ul>
+            {paymentRecords.map((depositData) => (
+              <DepositItem
+                key={depositData.createDate}
+                depositData={depositData}
+              />
+            ))}
+          </ul>
         )}
       </SMyDepositWrapper>
     </Layout>
@@ -45,6 +50,7 @@ export default function MyDeposit() {
 }
 
 const SMyDepositWrapper = styled.div`
+  height: calc(100vh - 4.0625rem);
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
