@@ -1,10 +1,11 @@
+import { AxiosInstance } from 'axios';
 import { IMyReviewList } from '@/types/review';
 import axiosInstance from '../instance';
 
 /**
  * 후기 작성 POST
- * @param myChallengeId
- * @returns response.data
+ * @param myChallengeId, content
+ * @returns message (성공: '리뷰를 작성했습니다')
  */
 const postReviewApi = (myChallengeId: string, content: string) => {
   return axiosInstance.post(`/reviews/myChallenge/${myChallengeId}`, content);
@@ -12,6 +13,7 @@ const postReviewApi = (myChallengeId: string, content: string) => {
 
 /**
  * 내가 작성한 후기 목록 조회 GET
+ * @param pageParam
  * @returns response.data
  */
 const getMyReviewsApi = (pageParam: number) => {
@@ -25,8 +27,11 @@ const getMyReviewsApi = (pageParam: number) => {
  * @param reviewId
  * @returns content
  */
-const getPrevReviewContentApi = (reviewId: number) => {
-  return axiosInstance.get<IMyReviewList[]>(`/reviews/${reviewId}`);
+const getPreviousReviewContentApi = (
+  serverInstance: AxiosInstance,
+  reviewId: string,
+) => {
+  return serverInstance.get<string>(`/reviews/${reviewId}`);
 };
 
 /**
@@ -34,7 +39,7 @@ const getPrevReviewContentApi = (reviewId: number) => {
  * @param reviewId, content
  * @returns message (성공: '리뷰를 수정했습니다')
  */
-const patchReviewApi = (reviewId: number, content: string) => {
+const patchReviewApi = (reviewId: string, content: string) => {
   return axiosInstance.patch(`/reviews/${reviewId}`, content);
 };
 
@@ -50,7 +55,7 @@ const deleteReviewApi = (reviewId: number) => {
 export {
   postReviewApi,
   getMyReviewsApi,
-  getPrevReviewContentApi,
+  getPreviousReviewContentApi,
   patchReviewApi,
   deleteReviewApi,
 };
