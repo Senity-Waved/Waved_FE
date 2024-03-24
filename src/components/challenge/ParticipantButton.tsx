@@ -85,12 +85,7 @@ export default function ParticipantButton({
     const handleClick = () => {
       if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
         goToOnboarding();
-      } else if (
-        isLogined &&
-        !isApplied &&
-        dDayToStart <= 14 &&
-        dDayToStart >= 1
-      ) {
+      } else if (isLogined && !isApplied && dDayToStart <= 14) {
         goToParticipant();
       } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
         openModal({
@@ -134,9 +129,10 @@ export default function ParticipantButton({
       });
     } else if (dDayToStart < 1) {
       setBtnConfig({
-        text: '마감',
-        styleType: 'disabled',
+        text: '마감이지만 테스트를 위해 신청 허용',
+        styleType: 'primary',
         size: 'large',
+        onClick: handleClick,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
