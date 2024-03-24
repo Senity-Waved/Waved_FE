@@ -112,7 +112,10 @@ export default function Register() {
       <h1 className="a11yHidden">WAVED</h1>
       <SHeaderWrapper>
         <SHeaderCenter>회원가입</SHeaderCenter>
-        <SRegisterBackBtn className="a11yHidden" onClick={goToPreviousStep}>
+        <SRegisterBackBtn
+          className={step === 1 ? 'a11yHidden' : ''}
+          onClick={goToPreviousStep}
+        >
           <Image
             src="/icons/icon-left-arrow.svg"
             width={24}
@@ -122,7 +125,7 @@ export default function Register() {
         </SRegisterBackBtn>
       </SHeaderWrapper>
       <main>
-        <h2 className={step === 1 ? 'a11yHidden' : ''}>회원가입</h2>
+        <h2 className="a11yHidden">회원가입</h2>
         <SRegisterStepGuide step={step}>
           <SCurrentStep>({step}/4)</SCurrentStep>
           {step === 1 && (
