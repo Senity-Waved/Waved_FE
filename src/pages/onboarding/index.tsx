@@ -60,7 +60,7 @@ export default function OnBoarding() {
         <PreviewSlider>
           <SPreviewImage>
             <Image
-              src="/images/image-waved-preview1.svg"
+              src="/images/image-waved-preview1.png"
               alt="개발자들과 함께 챌린지를 시작해요. 개발자 직군만 모여있는 유일한 챌린지 서비스. WAVED에서 챌린지를 시작해 보세요!"
               width={390}
               height={518}
@@ -69,7 +69,7 @@ export default function OnBoarding() {
           </SPreviewImage>
           <SPreviewImage>
             <Image
-              src="/images/image-waved-preview2.svg"
+              src="/images/image-waved-preview2.png"
               alt="목표에 돈을 걸어서 목표를 달성해보세요. 목표를 세우고 잘 못 지키는 일이 있었나요? WAVED와 함께라면 달성할 수 있어요!"
               width={390}
               height={518}
@@ -78,7 +78,7 @@ export default function OnBoarding() {
           </SPreviewImage>
           <SPreviewImage>
             <Image
-              src="/images/image-waved-preview3.svg"
+              src="/images/image-waved-preview3.png"
               alt="인증을 100% 달성하면 전액 환급을 받을 수 있어요. 결심을 달성하기 위해 WAVED와 함께 도전해보세요!"
               width={390}
               height={518}
@@ -144,7 +144,7 @@ const SPreviewImage = styled.div`
   height: 455px;
   position: relative;
   top: 30%;
-  left: 50%;
+  left: 48%;
   transform: translate(-50%, 0);
   & img {
     position: absolute;
