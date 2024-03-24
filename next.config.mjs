@@ -9,6 +9,7 @@ const nextConfig = {
         port: '',
       },
     ],
+    domains: ['wavedstorage.blob.core.windows.net'],
   },
 };
 
