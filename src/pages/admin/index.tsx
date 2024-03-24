@@ -4,11 +4,13 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import {
-  getProgressChallengeGroupApi,
-  getGroupVerificationsApi,
+  // getProgressChallengeGroupApi,
+  // getGroupVerificationsApi,
   deleteVerficationApi,
 } from '@/lib/axios/admin/api';
 import parseDate from '@/utils/parseDate';
+import useModal from '@/hooks/useModal';
+import Modal from '@/components/modal/Modal';
 
 interface IAdminProgressChallengeGroup {
   groupTitle: string;
@@ -87,6 +89,8 @@ export default function AdminPage() {
   const [selectedVerificationId, setSelectedVerificationId] = useState<
     number | null
   >(null);
+
+  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     const testProgressChallengeGroupData = [
@@ -261,10 +265,29 @@ export default function AdminPage() {
         </SSelectedChallengeVerificationWrapper>
         <div>
           <p>선택한 인증 내역 ID : {selectedVerificationId}</p>
-          <SVerificationBtn type="button" onClick={deleteVerification}>
+          <SVerificationBtn
+            type="button"
+            onClick={
+              selectedVerificationId
+                ? () => {
+                    openModal({
+                      mainText: '해당 인증 내역을 무효 처리하시겠습니까?',
+                      subText: '',
+                      btnText: '예',
+                      cancelBtnText: '아니오',
+                      onClick: () => {
+                        deleteVerification();
+                        closeModal();
+                      },
+                    });
+                  }
+                : undefined
+            }
+          >
             해당 인증 내역 삭제 (인증무효처리)
           </SVerificationBtn>
         </div>
+        <Modal />
       </main>
     </SAdminPageWrapper>
   );
