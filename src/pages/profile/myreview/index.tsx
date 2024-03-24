@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import Layout from '@/components/common/Layout';
@@ -96,8 +97,10 @@ export default function MyReview() {
 
   return (
     <Layout headerText="나의 후기" title="나의 후기" noFooter>
-      {!data || data.pages.length === 0 ? (
-        <EmptyView pageType="내후기" />
+      {!data || data.pages[0].totalElements === 0 ? (
+        <SEmptyViewWrapper>
+          <EmptyView pageType="내후기" />
+        </SEmptyViewWrapper>
       ) : (
         <ul>
           {data.pages.map((page) => (
@@ -129,3 +132,9 @@ export default function MyReview() {
     </Layout>
   );
 }
+
+const SEmptyViewWrapper = styled.div`
+  width: 100%;
+  min-height: 80vh;
+  height: auto;
+`;
