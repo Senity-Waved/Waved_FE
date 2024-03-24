@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
@@ -21,19 +20,21 @@ import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
-import { IChallengeReviewList, TChallengeReview } from '@/types/review';
+import { IChallengeReviewList } from '@/types/review';
 import parseDate from '@/utils/parseDate';
 import WEEKDAYS from '@/constants/weekdays';
 import calculateDDay from '@/utils/calculateDDay';
 import ParticipantButton from '@/components/challenge/ParticipantButton';
-import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
+import {
+  getChallengeGroupApi,
+  getMoreReviewsApi,
+  getReviewsApi,
+} from '@/lib/axios/challenge/api';
 import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
 
-interface IFetchMoreReviewsResponse {
-  content: TChallengeReview[];
+interface IFetchMoreReviewsResponse extends IChallengeReviewList {
   nextPage: number;
-  totalPages?: number;
 }
 
 const formattedDate = (date: string) => {
@@ -92,15 +93,17 @@ export default function Challenge({
     isFree: challengeInfo.isFree,
   };
   const fetchMoreReviews = async ({
-    pageParam = 0,
+    pageParam = 1,
   }): Promise<IFetchMoreReviewsResponse> => {
-    const response = await axios.get<IChallengeReviewList>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/${challengeInfo.challengeId}/reviews?page=${pageParam}&limit=5`,
+    const response = await getMoreReviewsApi(
+      pageParam,
+      challengeInfo.challengeId,
     );
     return {
       content: response.data.content,
       nextPage: pageParam + 1,
       totalPages: response.data.totalPages,
+      totalElements: response.data.totalElements,
     };
   };
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
@@ -117,6 +120,7 @@ export default function Challenge({
           content: reviewList.content,
           nextPage: 1,
           totalPages: reviewList.totalPages,
+          totalElements: reviewList.totalElements,
         },
       ],
       pageParams: [0],

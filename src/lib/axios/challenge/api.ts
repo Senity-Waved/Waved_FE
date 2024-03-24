@@ -19,13 +19,26 @@ const getChallengeGroupApi = (
 };
 
 /**
- * 리뷰 목록 조회 GET
+ * 리뷰 목록 최초 조회 GET
  * @param challengeId
  * @returns response.data
  */
 const getReviewsApi = (challengeId: number, serverInstance: AxiosInstance) => {
   return serverInstance.get<IChallengeReviewList>(
     `/challenges/${challengeId}/reviews?page=0&limit=5`,
+  );
+};
+
+/**
+ * 리뷰 목록 추가 조회 GET
+ * @param pageParam
+ * @param challengeId
+ * @returns response.data
+ */
+
+const getMoreReviewsApi = (pageParam: number, challengeId: number) => {
+  return axiosInstance.get<IChallengeReviewList>(
+    `/challenges/${challengeId}/reviews?page=${pageParam}&limit=5`,
   );
 };
 
@@ -38,4 +51,9 @@ const deleteMyChallengeApi = (myChallengeId: number) => {
   return axiosInstance.delete(`/myChallenges/${myChallengeId}/delete`);
 };
 
-export { getChallengeGroupApi, getReviewsApi, deleteMyChallengeApi };
+export {
+  getChallengeGroupApi,
+  getReviewsApi,
+  getMoreReviewsApi,
+  deleteMyChallengeApi,
+};
