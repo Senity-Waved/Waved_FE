@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-import IVerificationInfo from '@/types/verification';
+import { IVerificationInfo } from '@/types/verification';
 import {
   deleteLikeApi,
   getLikeCountApi,
@@ -12,11 +12,12 @@ import {
 interface IVerificationItem extends IVerificationInfo {
   selectedId: number;
   setSelectedId: React.Dispatch<React.SetStateAction<number>>;
+  isMine: boolean;
 }
 
 export default function VerificationItem({
   verificationId,
-  memberId,
+  isMine,
   nickname,
   content,
   isLiked,
@@ -27,34 +28,33 @@ export default function VerificationItem({
 }: IVerificationItem) {
   const [liked, setLiked] = useState<boolean>(isLiked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
-  const myId = 1;
   const isSelected = selectedId === verificationId;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     if (liked) {
-      setLiked(false);
       deleteLikeApi(verificationId)
         .then(() => {
+          setLiked(false);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
         .catch((error) => console.error(error));
     } else {
-      setLiked(true);
       postLikeApi(verificationId)
         .then(() => {
+          setLiked(true);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
         .catch((error) => console.error(error));
@@ -74,7 +74,7 @@ export default function VerificationItem({
 
   return (
     <SWrapper isSelected={isSelected} onClick={toggleContent}>
-      {myId === memberId && <SMineLabel>내 인증</SMineLabel>}
+      {isMine && <SMineLabel>내 인증</SMineLabel>}
       <SAuthor>{nickname}</SAuthor>
       {link && (
         <SLink href={link} target="_blank" onClick={clickLink}>
@@ -145,6 +145,7 @@ const SContent = styled.p<{ isSelected: boolean }>`
   margin-bottom: 1rem;
   line-height: 1.7;
   transition: 0.2s ease-in;
+  white-space: pre-wrap;
   ${({ isSelected }) => isSelected || ellipsisStyle}
 `;
 

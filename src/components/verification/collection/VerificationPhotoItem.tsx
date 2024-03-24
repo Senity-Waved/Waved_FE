@@ -10,7 +10,7 @@ import {
   SMineLabel,
 } from './VerificationItem';
 import screenSize from '@/constants/screenSize';
-import IVerificationInfo from '@/types/verification';
+import { IVerificationInfo } from '@/types/verification';
 import {
   deleteLikeApi,
   getLikeCountApi,
@@ -37,9 +37,9 @@ export default function VerificationPhotoItem({
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     if (liked) {
-      setLiked(false);
       deleteLikeApi(verificationId)
         .then(() => {
+          setLiked(false);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -50,9 +50,9 @@ export default function VerificationPhotoItem({
         })
         .catch((error) => console.error(error));
     } else {
-      setLiked(true);
       postLikeApi(verificationId)
         .then(() => {
+          setLiked(true);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
