@@ -10,6 +10,10 @@ export interface IVerificationInfo {
   link?: string | null;
 }
 
-export type TVerificationType = 'TEXT' | 'GITHUB' | 'PICTURE' | 'LINK';
+export interface ICollectionInfo {
+  groupTitle: string;
+  startDate: string;
+  endDate: string;
+}
 
-export default IVerificationInfo;
+export type TVerificationType = 'TEXT' | 'GITHUB' | 'PICTURE' | 'LINK';
