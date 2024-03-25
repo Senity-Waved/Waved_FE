@@ -1,34 +1,62 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import IMyReview from '@/types/myReview';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import { TMyReview } from '@/types/review';
 import useModal from '@/hooks/useModal';
+import formattedFormText from '@/utils/formattedFormText';
+import parseDate from '@/utils/parseDate';
+import { deleteReviewApi } from '@/lib/axios/review/api';
 
-interface IMyReviewItem extends IMyReview {
-  onDelete: () => void;
-}
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  return `${year}년 ${month}월 ${day}일`;
+};
 
 export default function MyReviewItem({
-  id,
-  challengeTitle,
-  createdDate,
-  context,
-  onDelete,
-}: IMyReviewItem) {
+  reviewId,
+  groupTitle,
+  createDate,
+  content,
+}: TMyReview) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { openModal, closeModal } = useModal();
+  const { mutate: deleteReview } = useMutation(
+    () => deleteReviewApi(reviewId),
+    {
+      onSuccess: () => {
+        console.log(`${reviewId} 삭제완료!`);
+        queryClient
+          .invalidateQueries(['myReviews'])
+          .catch((error) => console.error('쿼리 초기화 실패', error));
+        router
+          .push({
+            pathname: '/profile/myreview',
+            query: {
+              deleteReviewSuccess: true,
+            },
+          })
+          .catch((error) => console.error('페이지 이동 실패', error));
+      },
+      onError: (error) => {
+        console.error('리뷰 삭제 실패', error);
+      },
+    },
+  );
   return (
     <SMyReviewItem>
       <STitleWrapper>
-        <STitle>{challengeTitle}</STitle>
-        <SDate>{createdDate}</SDate>
+        <STitle>{groupTitle}</STitle>
+        <SDate>{formattedDate(createDate)}</SDate>
       </STitleWrapper>
-      <SContext>{context}</SContext>
+      <SContext>{formattedFormText(content)}</SContext>
       <SBtnWrapper>
         <SEditBtn
           href={{
             pathname: `/profile/myreview/edit`,
-            query: { context, reviewId: id },
+            query: { reviewId },
           }}
-          as="myreview/edit"
         >
           수정
         </SEditBtn>
@@ -39,7 +67,7 @@ export default function MyReviewItem({
               mainText: '남기신 후기를 삭제하시겠습니까?',
               btnText: '삭제하기',
               onClick: () => {
-                onDelete();
+                deleteReview();
                 closeModal();
               },
             })
