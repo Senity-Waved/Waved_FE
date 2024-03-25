@@ -39,9 +39,14 @@ export default function ParticipantButton({
   });
 
   const goToOnboarding = () => {
-    router.push('/onboarding').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+    router
+      .push({
+        pathname: '/onboarding',
+        query: { needLoginToParticipant: true },
+      })
+      .catch((error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
   };
 
   const goToParticipant = () => {

@@ -37,6 +37,8 @@ export default function OnBoarding() {
       handleRouting('로그아웃이 완료되었습니다.');
     } else if (query.withdrawal) {
       handleRouting('계정을 탈퇴하셨습니다');
+    } else if (query.needLoginToParticipant) {
+      handleRouting('로그인 후 신청 가능합니다', 'warning');
     }
   }, [query, router]);
 
