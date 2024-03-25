@@ -14,7 +14,7 @@ const getProgressChallengeGroupApi = () => {
  * @returns 그룹별 인증 내역 (인증아이디, 내용, 링크, imageUrl, 인증 날짜, 닉네임, 삭제처리여부)
  */
 const getGroupVerificationsApi = (groupId: number) => {
-  return adminInstance.get(`/${groupId}/verifications`);
+  return adminInstance.get(`/${groupId}/verifications?page=0&limit=20`);
 };
 
 /**

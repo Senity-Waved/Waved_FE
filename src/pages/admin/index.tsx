@@ -2,10 +2,11 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import {
-  // getProgressChallengeGroupApi,
-  // getGroupVerificationsApi,
+  getProgressChallengeGroupApi,
+  getGroupVerificationsApi,
   deleteVerficationApi,
 } from '@/lib/axios/admin/api';
 import parseDate from '@/utils/parseDate';
@@ -16,7 +17,7 @@ interface IAdminProgressChallengeGroup {
   groupTitle: string;
   startDate: string;
   endDate: string;
-  groupId: number;
+  challengeGroupId: number;
 }
 
 interface IAdminVerification {
@@ -28,54 +29,6 @@ interface IAdminVerification {
   nickname: string | null;
   isDeleted: boolean;
 }
-
-const testVerificationData = {
-  content: [
-    {
-      verificationId: 1,
-      content: '글인증',
-      link: null,
-      imageUrl: null,
-      verificationDate: '2024-03-19T18:00:49.492788+09:00',
-      nickname: '유진닉네임',
-      isDeleted: false,
-    },
-    {
-      verificationId: 2,
-      content: '글인증',
-      link: null,
-      imageUrl: null,
-      verificationDate: '2024-03-19T18:00:53.265556+09:00',
-      nickname: '채원닉네임',
-      isDeleted: false,
-    },
-  ],
-  pageable: {
-    pageNumber: 0,
-    pageSize: 5,
-    sort: {
-      empty: true,
-      unsorted: true,
-      sorted: false,
-    },
-    offset: 0,
-    paged: true,
-    unpaged: false,
-  },
-  last: true,
-  totalPages: 1,
-  totalElements: 2,
-  first: true,
-  size: 5,
-  number: 0,
-  sort: {
-    empty: true,
-    unsorted: true,
-    sorted: false,
-  },
-  numberOfElements: 2,
-  empty: false,
-};
 
 export default function AdminPage() {
   const [progressChallengeGroupData, setProgressChallengeGroupData] = useState<
@@ -93,71 +46,36 @@ export default function AdminPage() {
   const { openModal, closeModal } = useModal();
 
   useEffect(() => {
-    const testProgressChallengeGroupData = [
-      {
-        groupTitle: '백엔드 기술면접 챌린지 2기',
-        startDate: '2024-03-11T00:00:00+09:00',
-        endDate: '2024-03-24T00:00:00+09:00',
-        groupId: 1,
-      },
-      {
-        groupTitle: '프론트엔드 아티클 공유 챌린지 2기',
-        startDate: '2024-03-11T00:00:00+09:00',
-        endDate: '2024-03-24T00:00:00+09:00',
-        groupId: 2,
-      },
-      {
-        groupTitle: '1일 1커밋 챌린지 2기',
-        startDate: '2024-03-11T00:00:00+09:00',
-        endDate: '2024-03-24T00:00:00+09:00',
-        groupId: 3,
-      },
-      {
-        groupTitle: '스크린타임 4시간 챌린지 2기',
-        startDate: '2024-03-11T00:00:00+09:00',
-        endDate: '2024-03-24T00:00:00+09:00',
-        groupId: 4,
-      },
-    ];
-
-    setProgressChallengeGroupData(testProgressChallengeGroupData);
-    if (testProgressChallengeGroupData.length > 0) {
-      setSelectedGroupId(testProgressChallengeGroupData[0].groupId);
-    }
+    const fetchProgressGroup = async () => {
+      try {
+        const response = await getProgressChallengeGroupApi();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setProgressChallengeGroupData(response.data);
+      } catch (error) {
+        console.error(
+          '관리자 | 진행중인 챌린지 그룹 조회를 실패하였습니다. ',
+          error,
+        );
+      }
+    };
+    fetchProgressGroup().catch((error) => console.error(error));
   }, []);
 
-  // useEffect(() => {
-  //   const fetchProgressGroup = async () => {
-  //     try {
-  //       const response = await getProgressChallengeGroupApi();
-  //       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  //       setProgressChallengeGroupData(response.data);
-  //     } catch (error) {
-  //       console.error(
-  //         '관리자 | 진행중인 챌린지 그룹 조회를 실패하였습니다. ',
-  //         error,
-  //       );
-  //     }
-  //   };
-  //   fetchProgressGroup().catch((error) => console.error(error));
-  // }, []);
-
   const handleVerificationBtn = () => {
-    setSelectedChallengeVerification(testVerificationData.content);
-    // const fetchSelectedChallengeVerifications = async () => {
-    //   try {
-    //     if (typeof selectedGroupId === 'number') {
-    //       const response = await getGroupVerificationsApi(selectedGroupId);
-    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-    //       setSelectedChallengeVerification(response.data.content);
-    //     }
-    //   } catch (error) {
-    //     console.error('선택한 챌린지 그룹의 인증 내역 조회 실패', error);
-    //   }
-    // };
-    // fetchSelectedChallengeVerifications().catch((error) =>
-    //   console.error(error),
-    // );
+    const fetchSelectedChallengeVerifications = async () => {
+      try {
+        if (typeof selectedGroupId === 'number') {
+          const response = await getGroupVerificationsApi(selectedGroupId);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+          setSelectedChallengeVerification(response.data.content);
+        }
+      } catch (error) {
+        console.error('선택한 챌린지 그룹의 인증 내역 조회 실패', error);
+      }
+    };
+    fetchSelectedChallengeVerifications().catch((error) =>
+      console.error(error),
+    );
   };
 
   const deleteVerification = () => {
@@ -200,14 +118,16 @@ export default function AdminPage() {
             progressChallengeGroupData.length > 0 ? (
               <form>
                 {progressChallengeGroupData.map((challengeGroup) => (
-                  <label key={challengeGroup.groupId}>
+                  <label key={challengeGroup.challengeGroupId}>
                     <input
                       type="radio"
                       name="progressChallengeGroup"
-                      value={challengeGroup.groupId}
-                      checked={selectedGroupId === challengeGroup.groupId}
+                      value={challengeGroup.challengeGroupId}
+                      checked={
+                        selectedGroupId === challengeGroup.challengeGroupId
+                      }
                       onChange={() =>
-                        setSelectedGroupId(challengeGroup.groupId)
+                        setSelectedGroupId(challengeGroup.challengeGroupId)
                       }
                     />
                     {challengeGroup.groupTitle}
@@ -247,6 +167,15 @@ export default function AdminPage() {
                     />
                     <span>verificationId : {verification.verificationId}</span>
                     <p>{verification.content}</p>
+                    {verification.imageUrl && (
+                      <Image
+                        src={`${verification.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+                        alt="챌린지 사진 인증 이미지"
+                        width={300}
+                        height={300}
+                      />
+                    )}
+                    <p>{verification.imageUrl}</p>
                     <p>{verification.nickname}</p>
                     <p>
                       {verification.isDeleted
