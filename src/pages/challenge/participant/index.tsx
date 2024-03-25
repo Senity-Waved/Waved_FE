@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
-import { RecoilEnv, useRecoilValue } from 'recoil';
+import { RecoilEnv, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import Layout from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
@@ -21,6 +21,7 @@ export default function ChallengeParticipant() {
   const router = useRouter();
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const [myChallengeId, setMyChallengeId] = useState<number>(0);
+  const updateSelectedChallengeData = useSetRecoilState(ASelectedChallenge);
 
   const recoilChallengeData =
     useRecoilValue<ISelectedChallenge>(ASelectedChallenge);
@@ -34,13 +35,18 @@ export default function ChallengeParticipant() {
     isFree: false,
   });
 
-  // 리코일에서 챌린지 상세 정보 가져오기
+  const increaseParticipantCount = () => {
+    updateSelectedChallengeData((oldChallengeData) => ({
+      ...oldChallengeData,
+      participantCount: oldChallengeData.participantCount + 1,
+    }));
+  };
+
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
   }, [challengeData.isFree, recoilChallengeData]);
 
-  // 챌린지 그룹 신청(challengeApply)이 완료되면 결제 실행
   useEffect(() => {
     const paymentRequest = async () => {
       if (myChallengeId !== 0 && deposit !== 0) {
@@ -55,6 +61,7 @@ export default function ChallengeParticipant() {
             groupTitle,
             nickname,
             onSuccess: () => {
+              increaseParticipantCount();
               router
                 .push({
                   pathname: '/challenge/participant/success',
@@ -107,7 +114,6 @@ export default function ChallengeParticipant() {
       : 'disabled';
   }, [challengeData.isFree, deposit]);
 
-  // 챌린지 신청을 위한 myChallengeId 가져오기
   const challengeApply = async () => {
     try {
       const challengeGroupProps = {
@@ -171,7 +177,7 @@ export default function ChallengeParticipant() {
       <BottomFixedBtn
         btns={[
           {
-            text: '신청하기',
+            text: '결제하기',
             styleType: buttonStyleType(),
             size: 'large',
             onClick: goToSuccess,

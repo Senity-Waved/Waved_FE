@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { SBtn, SBtnWrapper } from '@/components/common/Btn';
 import screenSize from '@/constants/screenSize';
 
-interface IBtn {
+export interface IBtn {
   type?: 'button' | 'submit';
   text: string;
   styleType: 'primary' | 'gray' | 'white' | 'white_line' | 'disabled';
   size: 'large' | 'small';
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 interface IBottomFixedBtn {

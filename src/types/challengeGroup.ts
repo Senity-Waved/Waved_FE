@@ -1,9 +1,11 @@
+import { TVerificationType } from './verification';
+
 interface IChallengeGroup {
   groupTitle: string;
   participantCount: number;
   startDate: string;
   endDate: string;
-  verificationType: 'TEXT' | 'LINK' | 'PICTURE' | 'GITHUB';
+  verificationType: TVerificationType;
   description: string;
   verificationDescription: string;
   isFree: boolean;
