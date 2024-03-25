@@ -10,45 +10,88 @@ import {
   SMineLabel,
 } from './VerificationItem';
 import screenSize from '@/constants/screenSize';
-import IVerificationInfo from '@/types/verification';
+import { IVerificationInfo } from '@/types/verification';
+import {
+  deleteLikeApi,
+  getLikeCountApi,
+  postLikeApi,
+} from '@/lib/axios/verification/collection/api';
+
+interface IPhotoItem extends IVerificationInfo {
+  isMine: boolean;
+}
 
 export default function VerificationPhotoItem({
-  authorId,
-  content,
-  liked,
-  likeCount,
-}: IVerificationInfo) {
+  verificationId,
+  isMine,
+  imageUrl,
+  isLiked,
+  likesCount,
+}: IPhotoItem) {
+  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-  const myId = 1;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (isLiked) {
-      setIsLiked(false);
+    if (liked) {
+      deleteLikeApi(verificationId)
+        .then(() => {
+          setLiked(false);
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     } else {
-      setIsLiked(true);
+      postLikeApi(verificationId)
+        .then(() => {
+          setLiked(true);
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error('getLikeCount API 실패', error);
+            });
+        })
+        .catch((error) => console.error(error));
     }
   };
 
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae src={content} alt="이미지" fill sizes="100%" priority />
+        <SImgae
+          src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+          alt="챌린지 인증 이미지"
+          fill
+          sizes="100%"
+          priority
+        />
         <SShadow />
-        {myId === authorId && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
+        {isMine && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
-          <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
-          <SLikeCountWhite>{likeCount}</SLikeCountWhite>
+          <SLikeBtnWhite isLiked={liked} onClick={toggleLike} />
+          <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>
       {isModalOpen && (
         <Portal>
           <SModalWrapper>
             <SPhotoModal>
-              <SImgae src={content} alt="이미지" fill sizes="100%" />
+              <SImgae
+                src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+                alt="챌린지 인증 이미지"
+                fill
+                sizes="100%"
+              />
               <SCloseBtn type="button" onClick={closeModal} />
             </SPhotoModal>
           </SModalWrapper>

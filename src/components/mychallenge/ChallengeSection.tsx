@@ -36,7 +36,7 @@ export default function ChallengeSection({
 
 const SWrapper = styled.section`
   padding: 1rem 1.25rem 2rem 1.25rem;
-  scroll-margin-top: 42px;
+  scroll-margin-top: 98px;
   position: relative;
 
   &:nth-of-type(2),

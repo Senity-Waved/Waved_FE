@@ -1,25 +1,15 @@
-import axios from 'axios';
-import { CookieValueTypes } from 'cookies-next';
 import { TMyChallengeInfo } from '@/types/myChallenge';
+import axiosInstance from '../instance';
 
-export const fetchMyChallenges = async (
-  status: string,
-  cookieToken: CookieValueTypes,
-) => {
-  try {
-    const response = await axios.get<TMyChallengeInfo[]>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=${status}`,
-      {
-        headers: {
-          Authorization: `Bearer ${cookieToken}`,
-        },
-      },
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`my${status}Challenge API 실패`, error);
-    return [];
-  }
+export const fetchMyChallenges = async (status: string) => {
+  const response = await axiosInstance.get<TMyChallengeInfo[]>(
+    `/myChallenges?status=${status}`,
+  );
+  return response.data;
+};
+
+export const refundRequestApi = (myChallengeId: number) => {
+  return axiosInstance.post(`/payments/${myChallengeId}/completed`);
 };
 
 export default fetchMyChallenges;

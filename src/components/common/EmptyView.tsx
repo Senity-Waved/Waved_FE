@@ -9,7 +9,8 @@ interface IEmptyView {
     | '마이챌린지'
     | '챌린지후기'
     | '내후기'
-    | '예치금내역';
+    | '예치금내역'
+    | '인증내역';
 }
 
 export default function EmptyView({ pageType }: IEmptyView) {
@@ -44,7 +45,8 @@ const SEmptyWrapper = styled.div<IEmptyView>`
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  ${({ pageType }) => (pageType === '마이챌린지' ? '' : centerStyle)}
+  ${({ pageType }) =>
+    pageType === '마이챌린지' || pageType === '인증내역' ? '' : centerStyle}
 `;
 
 const SEmptyMainText = styled.h2`

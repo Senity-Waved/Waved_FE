@@ -1,18 +1,16 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
 import styled from '@emotion/styled';
-import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
-import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/api';
+import {
+  fetchMyChallenges,
+  refundRequestApi,
+} from '@/lib/axios/mychallenge/api';
+import { postMyCommitVerifiactionApi } from '@/lib/axios/verification/post/api';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import useModal from '@/hooks/useModal';
 import calculateDDay from '@/utils/calculateDDay';
 
-interface IBtn
-  extends Omit<
-    TMyChallengeInfo,
-    'groupTitle' | 'endDate' | 'successCount' | 'deposit'
-  > {
+interface IBtn extends Omit<TMyChallengeInfo, 'successCount' | 'deposit'> {
   status: TMyChallengeStatus;
   setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
 }
@@ -32,7 +30,6 @@ export default function ChallengeBtn({
 }: IBtn) {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
-  const cookieToken = getCookie('accessToken');
   const isAble = (() => {
     return status === 'PROGRESS'
       ? !isVerified
@@ -49,7 +46,7 @@ export default function ChallengeBtn({
     try {
       const response = await postMyCommitVerifiactionApi(challengeGroupId);
       if (response) {
-        const res = await fetchMyChallenges(status, cookieToken);
+        const res = await fetchMyChallenges(status);
         if (setData !== undefined) setData(res);
       }
     } catch (error) {
@@ -57,30 +54,61 @@ export default function ChallengeBtn({
     }
   };
 
-  const getRefund = async () => {
-    // 결제취소로직
-    const res = await fetchMyChallenges(status, cookieToken);
-    if (setData !== undefined) setData(res);
-    openModal({
-      image: '/icons/icon-done.svg',
-      mainText: '환급 신청이 완료되었습니다.',
-      subText: '참여한 챌린지가 어떠했는지 여러분의 소중한 후기를 남겨주세요.',
-      btnText: '후기 작성',
-      cancelBtnText: '나중에 하기',
-      onClick: () => {
-        router
-          .push({
-            pathname: `/mychallenge/review`,
-            query: {
-              challengeId: challengeGroupId,
-            },
+  const getRefund = () => {
+    refundRequestApi(myChallengeId)
+      .then(() => {
+        fetchMyChallenges(status)
+          .then((res) => {
+            if (setData !== undefined) setData(res);
+            openModal({
+              image: '/icons/icon-done.svg',
+              mainText: '환급 신청이 완료되었습니다.',
+              subText:
+                '참여한 챌린지가 어떠했는지 여러분의 소중한 후기를 남겨주세요.',
+              btnText: '후기 작성',
+              cancelBtnText: '나중에 하기',
+              onClick: () => {
+                router
+                  .push({
+                    pathname: `/mychallenge/review`,
+                    query: {
+                      challengeId: challengeGroupId,
+                    },
+                  })
+                  .catch((error) => {
+                    console.error('페이지 이동에 실패하였습니다.', error);
+                  });
+                closeModal();
+              },
+            });
           })
-          .catch((error) => {
-            console.error('페이지 이동에 실패하였습니다.', error);
-          });
-        closeModal();
-      },
-    });
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommitBtn = () => {
+    if (isAble) {
+      openModal({
+        image: '/icons/icon-exclamation-mark.svg',
+        mainText: isGithubConnected
+          ? '인증을 제출 하시겠습니까?'
+          : '깃허브 아이디를 연동하시겠습니까?',
+        subText: isGithubConnected
+          ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
+          : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
+        btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
+        onClick: () => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          isGithubConnected
+            ? postMyVerification().catch((error) => console.error(error))
+            : router
+                .push(`/profile/mygithub`)
+                .catch((error) => console.error(error));
+          closeModal();
+        },
+      });
+    }
   };
 
   switch (status) {
@@ -99,30 +127,7 @@ export default function ChallengeBtn({
             <SBtn
               as="button"
               styleType={isAble ? 'middle' : 'gray'}
-              onClick={() =>
-                isAble &&
-                openModal({
-                  image: '/icons/icon-exclamation-mark.svg',
-                  mainText: isGithubConnected
-                    ? '인증을 제출 하시겠습니까?'
-                    : '깃허브 아이디를 연동하시겠습니까?',
-                  subText: isGithubConnected
-                    ? '인증하기 제출 후 수정, 삭제할 수 없으니 확인 후 올려주시기 바랍니다.'
-                    : '1일 1커밋 챌린지의 경우 깃허브 아이디를 연동해야 인증이 가능합니다. ',
-                  btnText: isGithubConnected ? '제출하기' : '네,연동할게요',
-                  onClick: () => {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    isGithubConnected
-                      ? postMyVerification().catch((error) =>
-                          console.error(error),
-                        )
-                      : router
-                          .push(`/profile/mygithub`)
-                          .catch((error) => console.error(error));
-                    closeModal();
-                  },
-                })
-              }
+              onClick={handleCommitBtn}
             >
               {isAble ? '인증 하기' : '인증 완료'}
             </SBtn>
