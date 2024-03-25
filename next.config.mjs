@@ -8,8 +8,12 @@ const nextConfig = {
         hostname: 'via.placeholder.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'wavedstorage.blob.core.windows.net',
+        port: '',
+      },
     ],
-    domains: ['wavedstorage.blob.core.windows.net'],
   },
 };
 
