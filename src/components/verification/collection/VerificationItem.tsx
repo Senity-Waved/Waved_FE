@@ -2,34 +2,62 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-import IVerificationInfo from '@/types/verification';
+import { IVerificationInfo } from '@/types/verification';
+import {
+  deleteLikeApi,
+  getLikeCountApi,
+  postLikeApi,
+} from '@/lib/axios/verification/collection/api';
 
 interface IVerificationItem extends IVerificationInfo {
   selectedId: number;
   setSelectedId: React.Dispatch<React.SetStateAction<number>>;
+  isMine: boolean;
 }
 
 export default function VerificationItem({
   verificationId,
-  authorId,
-  authorName,
+  isMine,
+  nickname,
   content,
-  liked,
-  likeCount,
+  isLiked,
+  likesCount,
   link,
   selectedId,
   setSelectedId,
 }: IVerificationItem) {
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
-  const myId = 1;
+  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const isSelected = selectedId === verificationId;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (isLiked) {
-      setIsLiked(false);
+    if (liked) {
+      deleteLikeApi(verificationId)
+        .then(() => {
+          setLiked(false);
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => console.error(error));
     } else {
-      setIsLiked(true);
+      postLikeApi(verificationId)
+        .then(() => {
+          setLiked(true);
+          getLikeCountApi(verificationId)
+            .then((data) => {
+              setLikeCountNum(data.likedCount);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => console.error(error));
     }
   };
 
@@ -46,8 +74,8 @@ export default function VerificationItem({
 
   return (
     <SWrapper isSelected={isSelected} onClick={toggleContent}>
-      {myId === authorId && <SMineLabel>내 인증</SMineLabel>}
-      <SAuthor>{authorName}</SAuthor>
+      {isMine && <SMineLabel>내 인증</SMineLabel>}
+      <SAuthor>{nickname}</SAuthor>
       {link && (
         <SLink href={link} target="_blank" onClick={clickLink}>
           {link}
@@ -55,8 +83,8 @@ export default function VerificationItem({
       )}
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
-        <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
-        <SLikeCount>{likeCount}</SLikeCount>
+        <SLikeBtn type="button" onClick={toggleLike} isLiked={liked} />
+        <SLikeCount>{likeCountNum}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>
   );
@@ -117,6 +145,7 @@ const SContent = styled.p<{ isSelected: boolean }>`
   margin-bottom: 1rem;
   line-height: 1.7;
   transition: 0.2s ease-in;
+  white-space: pre-wrap;
   ${({ isSelected }) => isSelected || ellipsisStyle}
 `;
 

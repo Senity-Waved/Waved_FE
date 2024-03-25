@@ -3,6 +3,10 @@
 
 name: Build and deploy Node.js app to Azure Web App - waved-fe
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   push:
     branches:
@@ -27,14 +31,11 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: release.zip
+          path: .next
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,8 +50,12 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}	
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -58,5 +63,5 @@ jobs:
         with:
           app-name: 'waved-fe'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AB070F033EF64BD09D73D0E02DE0A13D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_69C6BA1003F44F05A4E955216555B6CE }}
           package: .

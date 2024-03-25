@@ -137,6 +137,7 @@ export default function ParticipantButton({
         text: '마감',
         styleType: 'disabled',
         size: 'large',
+        onClick: handleClick,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

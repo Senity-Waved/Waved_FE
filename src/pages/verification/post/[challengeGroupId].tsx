@@ -13,7 +13,7 @@ import { TVerificationType } from '@/types/verification';
 import {
   getQuizApi,
   postMyVerificationApi,
-} from '@/lib/axios/verification/api';
+} from '@/lib/axios/verification/post/api';
 
 export default function VerificationPost() {
   const router = useRouter();
@@ -27,6 +27,7 @@ export default function VerificationPost() {
     verificationType = 'TEXT';
   }
   const challengeGroupId = router.query.challengeGroupId as string;
+  const myChallengeId = router.query.myChallengeId as string;
   const pageType = VERIFICATION_TYPE[verificationType];
   const { placeholder } = writeLayoutText[pageType];
   const [text, setText] = useState<string>('');
@@ -59,18 +60,22 @@ export default function VerificationPost() {
   };
 
   const handleSubmit = () => {
-    postMyVerification().catch((error) => console.error(error));
-    router
-      .replace({
-        pathname: `/verification/collection/${challengeGroupId}`,
-        query: {
-          type: verificationType,
-          submitVerification: true,
-        },
+    postMyVerification()
+      .then(() => {
+        router
+          .replace({
+            pathname: `/verification/collection/${challengeGroupId}`,
+            query: {
+              type: verificationType,
+              myChallengeId,
+              submitVerification: true,
+            },
+          })
+          .catch((error) => {
+            console.error('페이지 이동에 실패하였습니다.', error);
+          });
       })
-      .catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {

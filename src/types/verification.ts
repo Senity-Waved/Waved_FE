@@ -1,14 +1,19 @@
 export interface IVerificationInfo {
   verificationId: number;
-  authorId: number;
-  authorName: string;
+  memberId: number;
+  nickname: string;
   content: string;
-  liked: boolean;
-  likeCount: number;
-  time: string; // zonedDateTime
-  link?: string;
+  imageUrl: string;
+  isLiked: boolean;
+  likesCount: number;
+  verificationDate: string; // zonedDateTime
+  link?: string | null;
+}
+
+export interface ICollectionInfo {
+  groupTitle: string;
+  startDate: string;
+  endDate: string;
 }
 
 export type TVerificationType = 'TEXT' | 'GITHUB' | 'PICTURE' | 'LINK';
-
-export default IVerificationInfo;

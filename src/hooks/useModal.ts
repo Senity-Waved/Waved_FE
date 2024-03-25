@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { RecoilEnv, useRecoilState } from 'recoil';
 import { IModal } from '@/types/modal';
 import modalState from '@/atoms/modal';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function useModal() {
   const [modalData, setModalData] = useRecoilState(modalState);

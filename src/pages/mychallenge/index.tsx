@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { getCookie } from 'cookies-next';
 import styled from '@emotion/styled';
-import { fetchMyChallenges } from '@/lib/axios/mychallenge/api';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
 import { TMyChallengeInfo } from '@/types/myChallenge';
@@ -14,6 +12,7 @@ import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
+import createServerInstance from '@/lib/axios/serverInstance';
 
 interface IMyChallenges {
   getMyProgressChallenges: TMyChallengeInfo[];
@@ -29,10 +28,6 @@ export default function MyChallenge({
   const [progressData, setProgressData] = useState<TMyChallengeInfo[]>(
     getMyProgressChallenges,
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [waitingData, setWaitingData] = useState<TMyChallengeInfo[]>(
-    getMyWaitingChallenges,
-  );
   const [completedData, setCompletedData] = useState<TMyChallengeInfo[]>(
     getMyCompletedChallenges,
   );
@@ -43,11 +38,11 @@ export default function MyChallenge({
     text: '',
   });
 
-  // console.log(
-  //   getMyProgressChallenges,
-  //   getMyWaitingChallenges,
-  //   getMyCompletedChallenges,
-  // );
+  console.log(
+    getMyProgressChallenges,
+    getMyWaitingChallenges,
+    getMyCompletedChallenges,
+  );
 
   useEffect(() => {
     const handleRouting = (
@@ -76,7 +71,7 @@ export default function MyChallenge({
     }
   }, [query, router]);
   const isEmptyData =
-    progressData.length + waitingData.length + completedData.length;
+    progressData.length + getMyWaitingChallenges.length + completedData.length;
   return (
     <Layout
       headerText="MY 챌린지"
@@ -100,11 +95,11 @@ export default function MyChallenge({
             setData={setProgressData}
           />
         )}
-        {waitingData.length !== 0 && (
+        {getMyWaitingChallenges.length !== 0 && (
           <ChallengeSection
             mainText="📚 대기 중"
             status="WAITING"
-            challenges={waitingData}
+            challenges={getMyWaitingChallenges}
           />
         )}
         {completedData.length !== 0 && (
@@ -117,7 +112,7 @@ export default function MyChallenge({
         )}
       </div>
       {isEmptyData === 0 && <ChallengeEmptyView />}
-      {progressData.length + waitingData.length === 0 &&
+      {progressData.length + getMyWaitingChallenges.length === 0 &&
         completedData.length !== 0 && (
           <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
         )}
@@ -130,12 +125,25 @@ export default function MyChallenge({
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const cookieToken = getCookie('accessToken', context);
+  const serverInstance = createServerInstance(context);
+
+  const fetchMyChallenges = async (status: string) => {
+    try {
+      const response = await serverInstance.get<TMyChallengeInfo[]>(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=${status}`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error(`my${status}Challenge API 실패`, error);
+      return [];
+    }
+  };
+
   const [myProgressChallenges, myWaitingChallenges, myCompletedChallenges] =
     await Promise.all([
-      fetchMyChallenges('PROGRESS', cookieToken),
-      fetchMyChallenges('WAITING', cookieToken),
-      fetchMyChallenges('COMPLETED', cookieToken),
+      fetchMyChallenges('PROGRESS'),
+      fetchMyChallenges('WAITING'),
+      fetchMyChallenges('COMPLETED'),
     ]);
   return {
     props: {
