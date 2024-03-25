@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'waved-fe'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AB070F033EF64BD09D73D0E02DE0A13D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_69C6BA1003F44F05A4E955216555B6CE }}
           package: .
