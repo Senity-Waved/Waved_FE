@@ -1,6 +1,7 @@
 import TJobTitle from './jobTitle';
 
 interface IReview {
+  reviewId: number;
   challengeId: number;
   groupTitle: string;
   nickname: string;
@@ -9,7 +10,10 @@ interface IReview {
   content: string;
 }
 
-export type TMyReview = Pick<IReview, 'groupTitle' | 'createDate' | 'content'>;
+export type TMyReview = Pick<
+  IReview,
+  'reviewId' | 'groupTitle' | 'createDate' | 'content'
+>;
 
 export type TChallengeReview = Pick<
   IReview,
