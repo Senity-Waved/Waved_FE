@@ -17,7 +17,6 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import {
   getMyProcessingChallengeApi,
   getRecruitingChallengeApi,
@@ -32,16 +31,11 @@ export default function Home({
   recruitingChallenges: IRecruitingChallenge[];
 }) {
   const router = useRouter();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
     type: 'warning',
   });
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -66,14 +60,14 @@ export default function Home({
 
   const isLogined = getCookie('accessToken');
 
-  return isLoaded ? (
+  return (
     <SHomeWrapper>
       <HomeHeader />
       <main>
         <TopBanner />
         {isLogined && myProcessingChallenges.length > 0 && (
           <SSection>
-            <STitleLink href="/mychallenge">
+            <STitleLink href="/mychallenge" suppressHydrationWarning>
               <h2>👨‍💻 진행 중인 챌린지</h2>
               <Image
                 src="/icons/icon-left-arrow.svg"
@@ -104,8 +98,6 @@ export default function Home({
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
       <Footer />
     </SHomeWrapper>
-  ) : (
-    <LoadingSpinner />
   );
 }
 
