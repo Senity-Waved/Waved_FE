@@ -2,15 +2,18 @@
 import styled from '@emotion/styled';
 import changePriceFormat from '@/utils/changePriceFormat';
 import parseDate from '@/utils/parseDate';
+import paymentStatus from '@/constants/paymentStatus';
 
 interface IDepositItem {
   depositData: {
     groupTitle: string;
-    status: string;
+    status: PaymentStatusKey;
     createDate: string;
     deposit: number;
   };
 }
+
+export type PaymentStatusKey = keyof typeof paymentStatus;
 
 export default function DepositItem({ depositData }: IDepositItem) {
   const [year, month, day] = parseDate(depositData.createDate);
@@ -19,13 +22,7 @@ export default function DepositItem({ depositData }: IDepositItem) {
     <SDepositItemWrapper>
       <div>
         <SChallengeInfo>
-          {depositData.groupTitle} (
-          {depositData.status === 'APPLIED'
-            ? '신청'
-            : depositData.status === 'SUCCESS'
-              ? '성공'
-              : '실패'}
-          )
+          {depositData.groupTitle} ({paymentStatus[depositData.status]})
         </SChallengeInfo>
         <SDepositHistoryDate>
           {year}년 {month}월 {day}일
@@ -38,7 +35,7 @@ export default function DepositItem({ depositData }: IDepositItem) {
   );
 }
 
-const SDepositItemWrapper = styled.div`
+const SDepositItemWrapper = styled.li`
   height: 106px;
   padding: 1.5rem 1.25rem;
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};

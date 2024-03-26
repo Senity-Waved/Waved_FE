@@ -1,6 +1,8 @@
+import { PaymentStatusKey } from '@/components/profile/DepositItem';
+
 export default interface IPaymentRecord {
   groupTitle: string;
-  status: string;
+  status: PaymentStatusKey;
   deposit: number;
   createDate: string;
 }

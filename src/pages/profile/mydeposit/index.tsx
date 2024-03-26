@@ -32,7 +32,7 @@ export default function MyDeposit() {
     >
       <h2 className="a11yHidden">예치금 내역</h2>
       <SMyDepositWrapper>
-        {paymentRecords.length !== 0 ? (
+        {paymentRecords.length === 0 ? (
           <EmptyView pageType="예치금내역" />
         ) : (
           <ul>
