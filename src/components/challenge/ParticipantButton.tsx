@@ -45,7 +45,7 @@ export default function ParticipantButton({
   const goToOnboarding = () => {
     router
       .push({
-        pathname: '/onboarding',
+        pathname: '/',
         query: { needLoginToParticipant: true },
       })
       .catch((error) => {

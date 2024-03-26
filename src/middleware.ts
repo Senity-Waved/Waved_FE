@@ -21,7 +21,7 @@ export default function middleware(request: NextRequest) {
     !token &&
     protectedPaths.some((protectedPath) => pathname.startsWith(protectedPath))
   ) {
-    return NextResponse.redirect(new URL('/?redirected=true', request.url));
+    return NextResponse.redirect(new URL('/home?redirected=true', request.url));
   }
 
   return NextResponse.next();

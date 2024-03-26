@@ -17,10 +17,10 @@ export default function Footer() {
 
   return (
     <SFooterWrapper>
-      <SFooterNavLink href="/">
-        <SFooterNavItem isActive={router.pathname === '/'}>
+      <SFooterNavLink href="/home">
+        <SFooterNavItem isActive={router.pathname === '/home'}>
           <Image
-            src={router.pathname === '/' ? homeFilled : homeNormal}
+            src={router.pathname === '/home' ? homeFilled : homeNormal}
             alt="홈 아이콘"
             width={24}
             height={24}

@@ -35,7 +35,7 @@ export default function ProfileShortcut({
             )}
           </p>
         ) : (
-          <Link href="/onboarding">
+          <Link href="/">
             <p>
               <span>로그인</span>&nbsp;혹은&nbsp;<span>회원가입</span>
               <Image

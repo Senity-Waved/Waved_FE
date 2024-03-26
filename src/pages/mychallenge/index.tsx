@@ -114,7 +114,7 @@ export default function MyChallenge({
       {isEmptyData === 0 && <ChallengeEmptyView />}
       {progressData.length + getMyWaitingChallenges.length === 0 &&
         completedData.length !== 0 && (
-          <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
+          <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
         )}
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />

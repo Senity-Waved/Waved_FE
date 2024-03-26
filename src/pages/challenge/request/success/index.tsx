@@ -8,7 +8,7 @@ import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 export default function ChallengeRequestSuccess() {
   const router = useRouter();
   const goToHome = () => {
-    router.push('/').catch((error) => {
+    router.push('/home').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
     });
   };
