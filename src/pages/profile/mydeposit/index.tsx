@@ -1,27 +1,50 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { v4 as uuidv4 } from 'uuid';
 import Layout from '@/components/common/Layout';
 import DepositItem from '@/components/profile/DepositItem';
 import EmptyView from '@/components/common/EmptyView';
-import { getPaymentRecordsApi } from '@/lib/axios/profile/api';
-import IPaymentRecord from '@/types/paymentRecord';
+import { getMyDepositApi } from '@/lib/axios/profile/api';
+import { IFetchMoreDepositResponse } from '@/types/deposit';
+
+const fetchMoreDeposit = async ({
+  pageParam = 0,
+}): Promise<IFetchMoreDepositResponse> => {
+  const response = await getMyDepositApi(pageParam);
+  return {
+    content: response.data.content,
+    nextPage: pageParam + 1,
+    totalPages: response.data.totalPages,
+    totalElements: response.data.totalElements,
+  };
+};
 
 export default function MyDeposit() {
-  const [paymentRecords, setPaymentRecords] = useState<IPaymentRecord[]>([]);
+  const [ref, inView] = useInView();
+
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    IFetchMoreDepositResponse,
+    Error
+  >(['myDeposits'], fetchMoreDeposit, {
+    getNextPageParam: (lastPage) => {
+      const totalPages = lastPage.totalPages || 0;
+      return lastPage.nextPage < totalPages ? lastPage.nextPage : undefined;
+    },
+  });
+
+  const handleDepositMore = useCallback(() => {
+    if (!isFetching && hasNextPage) {
+      fetchNextPage().catch((error) =>
+        console.error('예치금 더보기 실패', error),
+      );
+    }
+  }, [isFetching, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
-    const fetchPaymentRecords = async () => {
-      try {
-        const response = await getPaymentRecordsApi(0);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        setPaymentRecords(response.data.content);
-      } catch (error) {
-        console.error('예치금 내역 조회 실패:', error);
-      }
-    };
-
-    fetchPaymentRecords().catch((error) => console.error(error));
-  }, []);
+    if (inView) handleDepositMore();
+  }, [handleDepositMore, inView]);
 
   return (
     <Layout
@@ -32,16 +55,18 @@ export default function MyDeposit() {
     >
       <h2 className="a11yHidden">예치금 내역</h2>
       <SMyDepositWrapper>
-        {paymentRecords.length === 0 ? (
+        {!data || data.pages[0].totalElements === 0 ? (
           <EmptyView pageType="예치금내역" />
         ) : (
           <ul>
-            {paymentRecords.map((depositData) => (
-              <DepositItem
-                key={depositData.createDate}
-                depositData={depositData}
-              />
+            {data.pages.map((page) => (
+              <React.Fragment key={uuidv4()}>
+                {page.content.map((deposit) => (
+                  <DepositItem key={deposit.createDate} depositData={deposit} />
+                ))}
+              </React.Fragment>
             ))}
+            {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
           </ul>
         )}
       </SMyDepositWrapper>

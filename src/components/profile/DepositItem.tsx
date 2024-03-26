@@ -2,18 +2,17 @@
 import styled from '@emotion/styled';
 import changePriceFormat from '@/utils/changePriceFormat';
 import parseDate from '@/utils/parseDate';
-import paymentStatus from '@/constants/paymentStatus';
+import depositStatus from '@/constants/depositStatus';
+import { TDepositStatusKey } from '@/types/deposit';
 
 interface IDepositItem {
   depositData: {
     groupTitle: string;
-    status: PaymentStatusKey;
+    status: TDepositStatusKey;
     createDate: string;
     deposit: number;
   };
 }
-
-export type PaymentStatusKey = keyof typeof paymentStatus;
 
 export default function DepositItem({ depositData }: IDepositItem) {
   const [year, month, day] = parseDate(depositData.createDate);
@@ -22,7 +21,7 @@ export default function DepositItem({ depositData }: IDepositItem) {
     <SDepositItemWrapper>
       <div>
         <SChallengeInfo>
-          {depositData.groupTitle} ({paymentStatus[depositData.status]})
+          {depositData.groupTitle} ({depositStatus[depositData.status]})
         </SChallengeInfo>
         <SDepositHistoryDate>
           {year}년 {month}월 {day}일
