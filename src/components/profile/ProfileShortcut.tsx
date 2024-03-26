@@ -50,7 +50,7 @@ export default function ProfileShortcut({
         )}
         <p>개발자님 오늘도 화이팅하세요!</p>
       </SProfileGreetingWrapper>
-      {isLogined && (
+      {isLogined && profileInfo && (
         <SGithubIdBtn
           type="button"
           onClick={goToGithub}
@@ -63,10 +63,8 @@ export default function ProfileShortcut({
             height={18}
           />
           <p>
-            {isLogined && profileInfo
+            {isLogined && profileInfo.githubId
               ? profileInfo.githubId
-                ? profileInfo.githubId
-                : '깃허브 연동하기'
               : '깃허브 연동하기'}
           </p>
         </SGithubIdBtn>
