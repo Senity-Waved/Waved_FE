@@ -55,10 +55,18 @@ export default function VerificationPost() {
     try {
       const response = await postMyVerificationApi(challengeGroupId, formData);
       if (response) {
+        navigateToCollection({ successSubmission: true });
         console.log(response);
       }
     } catch (error) {
-      console.error('postMyVerification API 실패', error);
+      const err = error as AxiosError;
+      if (
+        err.response &&
+        err.response.data === '이미 오늘의 인증을 완료했습니다.'
+      ) {
+        navigateToCollection({ duplicateSubmission: true });
+      }
+      setIsLoading(false);
     }
   };
 
@@ -81,21 +89,9 @@ export default function VerificationPost() {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    postMyVerification()
-      .then(() => {
-        navigateToCollection({ successSubmission: true });
-      })
-      .catch((error) => {
-        const err = error as AxiosError;
-        if (
-          err.response &&
-          err.response.data === '이미 오늘의 인증을 완료했습니다.'
-        ) {
-          navigateToCollection({ duplicateSubmission: true });
-        }
-        setIsLoading(false);
-        console.error(error);
-      });
+    postMyVerification().catch((error) =>
+      console.error('postMyVerification API 실패', error),
+    );
   };
 
   useEffect(() => {
