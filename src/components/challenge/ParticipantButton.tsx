@@ -7,7 +7,7 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import IChallengeGroup from '@/types/challengeGroup';
 import calculateDDay from '@/utils/calculateDDay';
-import { postRequestRefundApi } from '@/lib/axios/challenge/api';
+import { postCancelParticipantApi } from '@/lib/axios/challenge/api';
 import ISnackBarState from '@/types/snackbar';
 import useModal from '@/hooks/useModal';
 
@@ -58,12 +58,24 @@ export default function ParticipantButton({
 
   const cancelParticipant = async () => {
     try {
-      const refundResponse = await postRequestRefundApi(myChallengeId);
-      if (refundResponse) {
-        console.log('🧡 챌린지 환불 요청 성공', myChallengeId);
+      const response = await postCancelParticipantApi(myChallengeId);
+      if (response) {
+        console.log('챌린지 취소 및 환불 요청 성공했습니다', myChallengeId);
+        router
+          .push({
+            pathname: `/challenge/${groupId}`,
+            query: {
+              cancelParticipantSuccess: true,
+            },
+          })
+          .catch((error) => console.error('페이지 이동 실패', error));
       }
     } catch (deleteError) {
-      console.error('🧡 챌린지 환불 요청 실패', myChallengeId, deleteError);
+      console.error(
+        '챌린지 취소 및 환불 요청 실패했습니다',
+        myChallengeId,
+        deleteError,
+      );
     }
   };
   const { openModal, closeModal } = useModal();
