@@ -26,7 +26,7 @@ export default function ProfileShortcut({
     <SProfileShortcutWrapper>
       <h3 className="a11yHidden">프로필 인사말</h3>
       <SProfileGreetingWrapper>
-        {isLogined ? (
+        {isLogined && profileInfo ? (
           <p>
             <span>{profileInfo.nickname}</span>
             {profileInfo.jobTitle && (
