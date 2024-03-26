@@ -108,7 +108,9 @@ export default function OnBoarding() {
             ]}
           />
         </SLoginBtnWrapper>
-        <SNonMemberLink href="/">먼저 둘러볼게요</SNonMemberLink>
+        <SNonMemberLink prefetch href="/">
+          먼저 둘러볼게요
+        </SNonMemberLink>
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
           <SServicePolicyLink href="/">개인정보 처리방침</SServicePolicyLink>
