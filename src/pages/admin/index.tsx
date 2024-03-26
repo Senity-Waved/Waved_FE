@@ -131,7 +131,10 @@ export default function AdminPage() {
                           setSelectedGroupId(challengeGroup.challengeGroupId)
                         }
                       />
-                      {challengeGroup.groupTitle}
+                      <span>
+                        ({challengeGroup.challengeGroupId})
+                        {challengeGroup.groupTitle}
+                      </span>
                       <span>{parseDate(challengeGroup.startDate)}</span>~
                       <span>{parseDate(challengeGroup.endDate)}</span>
                     </label>
@@ -146,8 +149,7 @@ export default function AdminPage() {
           )}
         </SAdminProgressChallengeWrapper>
         <SSelectedChallengeVerificationWrapper>
-          <h3>선택한 챌린지 그룹 인증내역</h3>
-          <p>선택된 챌린지 그룹 : {selectedGroupId}</p>
+          <p>선택한 챌린지 그룹 ID : {selectedGroupId}</p>
           <SVerificationBtn type="button" onClick={handleVerificationBtn}>
             인증 내역 조회하기
           </SVerificationBtn>
@@ -168,29 +170,38 @@ export default function AdminPage() {
                           setSelectedVerificationId(verification.verificationId)
                         }
                       />
-                      <span>
-                        verificationId : {verification.verificationId}
-                      </span>
-                      <p>{verification.content}</p>
+                      <span>인증 내역 ID : {verification.verificationId}</span>
                       {verification.imageUrl && (
                         <Image
                           src={`${verification.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
                           alt="챌린지 사진 인증 이미지"
-                          width={150}
-                          height={150}
+                          width={300}
+                          height={300}
                         />
                       )}
-                      <p>{verification.nickname}</p>
+                      <p>닉네임 : {verification.nickname}</p>
                       {verification.link && (
-                        <a href={verification.link}>
-                          <p>인증 링크</p>
-                        </a>
+                        <SVerificationLink
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          href={verification.link}
+                        >
+                          <p>[인증링크]</p>
+                        </SVerificationLink>
                       )}
                       <p>
-                        {verification.isDeleted
-                          ? '인증 무효로 삭제함'
-                          : '인증 승인 상태'}
+                        {verification.content === 'true'
+                          ? '깃허브 커밋 상태 : 커밋 성공'
+                          : verification.content === 'false'
+                            ? '깃허브 커밋 상태 : 커밋 실패'
+                            : verification.content}
                       </p>
+                      <SVerificationStatus>
+                        인증 상태 :{' '}
+                        {verification.isDeleted
+                          ? '인증 무효 처리됨'
+                          : '인증 성공'}
+                      </SVerificationStatus>
                     </label>
                   </SVerificationBox>
                 ))
@@ -202,8 +213,9 @@ export default function AdminPage() {
             )}
           </SAdminVerificationWrapper>
         </SSelectedChallengeVerificationWrapper>
-        <div>
+        <SSelectedVerificationWrapper>
           <p>선택한 인증 내역 ID : {selectedVerificationId}</p>
+          <p>🚨 당일 인증된 내역은 무효 처리하면 안됩니다 !</p>
           <SVerificationBtn
             type="button"
             onClick={
@@ -225,7 +237,7 @@ export default function AdminPage() {
           >
             해당 인증 내역 삭제 (인증무효처리)
           </SVerificationBtn>
-        </div>
+        </SSelectedVerificationWrapper>
         <Modal />
       </main>
     </SAdminPageWrapper>
@@ -294,4 +306,19 @@ const SVerificationBtn = styled.button`
 
 const SAdminVerificationWrapper = styled.div`
   border-top: 3px solid ${({ theme }) => theme.color.gray_de};
+`;
+
+const SVerificationLink = styled.a`
+  cursor: pointer;
+  color: ${({ theme }) => theme.color.normal};
+`;
+
+const SVerificationStatus = styled.p`
+  font-weight: ${({ theme }) => theme.fontWeight.body1};
+  margin-top: 10px;
+  color: ${({ theme }) => theme.color.positive};
+`;
+
+const SSelectedVerificationWrapper = styled.div`
+  margin: 0 20px;
 `;
