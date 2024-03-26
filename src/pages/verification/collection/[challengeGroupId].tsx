@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import ISnackBarState from '@/types/snackbar';
@@ -59,10 +60,18 @@ export default function VeirificationCollection() {
           });
         })
         .catch((error) => {
-          console.error(`getMyStampApi API 실패`, error);
+          const err = error as AxiosError;
+          if (
+            err.response &&
+            err.response.data === '해당 마이 챌린지를 찾을 수 없습니다.'
+          ) {
+            router
+              .push(`/404`)
+              .catch((er) => console.error('404페이지로 이동 실패', er));
+          }
         });
     }
-  }, [myChallengeId]);
+  }, [myChallengeId, router]);
 
   // 스낵바
   useEffect(() => {

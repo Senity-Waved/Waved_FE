@@ -17,7 +17,11 @@ const getMyProcessingChallengeApi = (serverInstance: AxiosInstance) => {
  * @returns response.data
  */
 const getRecruitingChallengeApi = (serverInstance: AxiosInstance) => {
-  return serverInstance.get<IRecruitingChallenge[]>(`/challenges/waiting`);
+  return serverInstance.get<IRecruitingChallenge[]>(`/challenges/waiting`, {
+    headers: {
+      Authorization: '',
+    },
+  });
 };
 
 export { getMyProcessingChallengeApi, getRecruitingChallengeApi };
