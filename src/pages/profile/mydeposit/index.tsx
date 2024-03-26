@@ -50,11 +50,7 @@ export default function MyDeposit() {
 }
 
 const SMyDepositWrapper = styled.div`
-  height: calc(100vh - 4.0625rem);
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  min-height: 80vh;
+  width: 100%;
+  height: auto;
 `;
