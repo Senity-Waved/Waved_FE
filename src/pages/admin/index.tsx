@@ -118,22 +118,24 @@ export default function AdminPage() {
             progressChallengeGroupData.length > 0 ? (
               <form>
                 {progressChallengeGroupData.map((challengeGroup) => (
-                  <label key={challengeGroup.challengeGroupId}>
-                    <input
-                      type="radio"
-                      name="progressChallengeGroup"
-                      value={challengeGroup.challengeGroupId}
-                      checked={
-                        selectedGroupId === challengeGroup.challengeGroupId
-                      }
-                      onChange={() =>
-                        setSelectedGroupId(challengeGroup.challengeGroupId)
-                      }
-                    />
-                    {challengeGroup.groupTitle}
-                    <span>{parseDate(challengeGroup.startDate)}</span>~
-                    <span>{parseDate(challengeGroup.endDate)}</span>
-                  </label>
+                  <div>
+                    <label key={challengeGroup.challengeGroupId}>
+                      <input
+                        type="radio"
+                        name="progressChallengeGroup"
+                        value={challengeGroup.challengeGroupId}
+                        checked={
+                          selectedGroupId === challengeGroup.challengeGroupId
+                        }
+                        onChange={() =>
+                          setSelectedGroupId(challengeGroup.challengeGroupId)
+                        }
+                      />
+                      {challengeGroup.groupTitle}
+                      <span>{parseDate(challengeGroup.startDate)}</span>~
+                      <span>{parseDate(challengeGroup.endDate)}</span>
+                    </label>
+                  </div>
                 ))}
               </form>
             ) : (
@@ -153,36 +155,44 @@ export default function AdminPage() {
             {selectedChallengeVerification ? (
               selectedChallengeVerification.length > 0 ? (
                 selectedChallengeVerification.map((verification) => (
-                  <label key={verification.verificationId}>
-                    <input
-                      type="radio"
-                      name="selectedVerification"
-                      value={verification.verificationId}
-                      checked={
-                        selectedVerificationId === verification.verificationId
-                      }
-                      onChange={() =>
-                        setSelectedVerificationId(verification.verificationId)
-                      }
-                    />
-                    <span>verificationId : {verification.verificationId}</span>
-                    <p>{verification.content}</p>
-                    {verification.imageUrl && (
-                      <Image
-                        src={`${verification.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
-                        alt="챌린지 사진 인증 이미지"
-                        width={300}
-                        height={300}
+                  <SVerificationBox>
+                    <label key={verification.verificationId}>
+                      <input
+                        type="radio"
+                        name="selectedVerification"
+                        value={verification.verificationId}
+                        checked={
+                          selectedVerificationId === verification.verificationId
+                        }
+                        onChange={() =>
+                          setSelectedVerificationId(verification.verificationId)
+                        }
                       />
-                    )}
-                    <p>{verification.imageUrl}</p>
-                    <p>{verification.nickname}</p>
-                    <p>
-                      {verification.isDeleted
-                        ? '인증 무효로 삭제함'
-                        : '인증 승인 상태'}
-                    </p>
-                  </label>
+                      <span>
+                        verificationId : {verification.verificationId}
+                      </span>
+                      <p>{verification.content}</p>
+                      {verification.imageUrl && (
+                        <Image
+                          src={`${verification.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+                          alt="챌린지 사진 인증 이미지"
+                          width={150}
+                          height={150}
+                        />
+                      )}
+                      <p>{verification.nickname}</p>
+                      {verification.link && (
+                        <a href={verification.link}>
+                          <p>인증 링크</p>
+                        </a>
+                      )}
+                      <p>
+                        {verification.isDeleted
+                          ? '인증 무효로 삭제함'
+                          : '인증 승인 상태'}
+                      </p>
+                    </label>
+                  </SVerificationBox>
                 ))
               ) : (
                 <p>해당 챌린지의 인증 내역이 존재하지 않습니다.</p>
@@ -245,6 +255,7 @@ const SAdminProgressChallengeWrapper = styled.div`
   padding: 10px 0;
   margin-bottom: 10px;
   border-bottom: 3px solid ${({ theme }) => theme.color.gray_de};
+  margin: 0 20px;
 
   & form {
     display: flex;
@@ -260,9 +271,16 @@ const SAdminProgressChallengeWrapper = styled.div`
 `;
 
 const SSelectedChallengeVerificationWrapper = styled.div`
+  margin: 0 20px 10px 20px;
   padding: 10px 0;
-  margin-bottom: 10px;
-  border-bottom: 3px solid ${({ theme }) => theme.color.gray_de};
+  border-bottom: 3px solid ${({ theme }) => theme.color.gray_ec};
+`;
+
+const SVerificationBox = styled.div`
+  border: 1px solid ${({ theme }) => theme.color.gray_3c};
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: 5px 10px;
 `;
 
 const SVerificationBtn = styled.button`
