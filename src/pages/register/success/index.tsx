@@ -2,12 +2,16 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useState } from 'react';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import BottomFixedBtn from '@/components/common/BottomFixedBtn';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function RegisterSuccess() {
   const router = useRouter();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const goToHome = () => {
+    setIsLoaded(true);
     router.push('/').catch((error) => {
       console.error('페이지 이동에 실패하였습니다.', error);
     });
@@ -26,29 +30,36 @@ export default function RegisterSuccess() {
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
-        <SRegisterSuccessBox>
-          <div>
-            <Image
-              src="/images/image-fanfare.svg"
-              alt="팡파레 이미지"
-              width={88}
-              height={88}
-              priority
+        {isLoaded ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {' '}
+            <SRegisterSuccessBox>
+              <div>
+                <Image
+                  src="/images/image-fanfare.svg"
+                  alt="팡파레 이미지"
+                  width={88}
+                  height={88}
+                  priority
+                />
+                <SSuccessText>회원가입 완료</SSuccessText>
+                <p>함께 챌린지를 시작해볼까요?</p>
+              </div>
+            </SRegisterSuccessBox>
+            <BottomFixedBtn
+              btns={[
+                {
+                  text: '시작하기',
+                  styleType: 'primary',
+                  size: 'large',
+                  onClick: goToHome,
+                },
+              ]}
             />
-            <SSuccessText>회원가입 완료</SSuccessText>
-            <p>함께 챌린지를 시작해볼까요?</p>
-          </div>
-        </SRegisterSuccessBox>
-        <BottomFixedBtn
-          btns={[
-            {
-              text: '시작하기',
-              styleType: 'primary',
-              size: 'large',
-              onClick: goToHome,
-            },
-          ]}
-        />
+          </>
+        )}
       </main>
     </SRegisterSuccessWrapper>
   );
