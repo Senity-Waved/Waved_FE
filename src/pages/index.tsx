@@ -24,9 +24,11 @@ import {
 import createServerInstance from '@/lib/axios/serverInstance';
 
 export default function Home({
+  isLogined,
   myProcessingChallenges,
   recruitingChallenges,
 }: {
+  isLogined: boolean;
   myProcessingChallenges: IMyProcessingChallenge[];
   recruitingChallenges: IRecruitingChallenge[];
 }) {
@@ -58,8 +60,6 @@ export default function Home({
     handleRedirect().catch((error) => console.error(error));
   }, [router, router.query]);
 
-  const isLogined = getCookie('accessToken');
-
   return (
     <SHomeWrapper>
       <HomeHeader />
@@ -67,7 +67,7 @@ export default function Home({
         <TopBanner />
         {isLogined && myProcessingChallenges.length > 0 && (
           <SSection>
-            <STitleLink href="/mychallenge" suppressHydrationWarning>
+            <STitleLink href="/mychallenge">
               <h2>👨‍💻 진행 중인 챌린지</h2>
               <Image
                 src="/icons/icon-left-arrow.svg"
@@ -105,10 +105,13 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<{
   props: {
+    isLogined: boolean;
     myProcessingChallenges: IMyProcessingChallenge[];
     recruitingChallenges: IRecruitingChallenge[];
   };
 }> {
+  const cookieToken = getCookie('accessToken', context);
+  const isLogined = !!cookieToken;
   const serverInstance = createServerInstance(context);
   async function fetchMyProcessingChallenges() {
     try {
@@ -136,6 +139,7 @@ export async function getServerSideProps(
     props: {
       myProcessingChallenges,
       recruitingChallenges,
+      isLogined,
     },
   };
 }
