@@ -59,6 +59,7 @@ const SDepositHistoryDate = styled.p`
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
   color: ${({ theme }) => theme.color.gray_70};
+  margin-left: 0.625rem;
 `;
 const SDepositHistory = styled.p`
   margin-top: 1rem;
