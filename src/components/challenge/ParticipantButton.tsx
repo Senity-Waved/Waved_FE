@@ -32,6 +32,10 @@ export default function ParticipantButton({
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const dDayToStart = calculateDDay(startDate);
+
+  const [canCancelParticpant, setCanCancelParticpant] =
+    useState<boolean>(isApplied);
+
   const [btnConfig, setBtnConfig] = useState<IBtn>({
     text: '대기',
     styleType: 'disabled',
@@ -61,13 +65,21 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         console.log('챌린지 취소 및 환불 요청 성공했습니다', myChallengeId);
+        // const currentUrl = window.location.pathname;
+        // const newUrl = new URL(currentUrl, window.location.origin);
+        // newUrl.searchParams.set('cancelParticipantSuccess', 'true');
+        // window.history.pushState({}, '', newUrl); // URL을 변경하지만 페이지 이동은 없음
+        // window.location.reload(); // 서버에서 페이지를 다시 로드
+        setCanCancelParticpant(false);
         router
-          .push({
-            pathname: `/challenge/${groupId}`,
-            query: {
-              cancelParticipantSuccess: true,
+          .replace(
+            {
+              pathname: `/challenge/${groupId}`,
+              query: { cancelParticipantSuccess: true },
             },
-          })
+            `/challenge/${groupId}`,
+            { shallow: false },
+          )
           .catch((error) => console.error('페이지 이동 실패', error));
       }
     } catch (deleteError) {
@@ -85,9 +97,9 @@ export default function ParticipantButton({
     const handleClick = () => {
       if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
         goToOnboarding();
-      } else if (isLogined && !isApplied && dDayToStart <= 14) {
+      } else if (isLogined && !canCancelParticpant && dDayToStart <= 14) {
         goToParticipant();
-      } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
+      } else if (canCancelParticpant && dDayToStart <= 14 && dDayToStart >= 1) {
         openModal({
           mainText: '챌린지 신청을 취소하시겠어요?',
           subText:
@@ -110,7 +122,7 @@ export default function ParticipantButton({
       });
     } else if (
       isLogined &&
-      !isApplied &&
+      !canCancelParticpant &&
       dDayToStart <= 14 &&
       dDayToStart >= 1
     ) {
@@ -120,7 +132,7 @@ export default function ParticipantButton({
         size: 'large',
         onClick: handleClick,
       });
-    } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
+    } else if (canCancelParticpant && dDayToStart <= 14 && dDayToStart >= 1) {
       setBtnConfig({
         text: '신청 취소',
         styleType: 'primary',
@@ -136,7 +148,7 @@ export default function ParticipantButton({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [canCancelParticpant]);
 
   useEffect(() => {
     const handleRouting = (): void => {
@@ -144,11 +156,6 @@ export default function ParticipantButton({
         open: true,
         text: '챌린지 신청이 취소되었습니다.',
       });
-      router
-        .replace(`/challenge/${groupId}`, undefined, { shallow: true })
-        .catch((error: Error) =>
-          console.error('쿼리스트링 제거 후 URL 변경 실패', error),
-        );
       setTimeout(() => {
         setSnackBarState({
           open: false,
