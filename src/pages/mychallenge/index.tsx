@@ -25,9 +25,6 @@ export default function MyChallenge({
   getMyWaitingChallenges,
   getMyCompletedChallenges,
 }: IMyChallenges) {
-  const [progressData, setProgressData] = useState<TMyChallengeInfo[]>(
-    getMyProgressChallenges,
-  );
   const [completedData, setCompletedData] = useState<TMyChallengeInfo[]>(
     getMyCompletedChallenges,
   );
@@ -71,7 +68,9 @@ export default function MyChallenge({
     }
   }, [query, router]);
   const isEmptyData =
-    progressData.length + getMyWaitingChallenges.length + completedData.length;
+    getMyProgressChallenges.length +
+    getMyWaitingChallenges.length +
+    completedData.length;
   return (
     <Layout
       headerText="MY 챌린지"
@@ -87,12 +86,11 @@ export default function MyChallenge({
       />
 
       <div>
-        {progressData.length !== 0 && (
+        {getMyProgressChallenges.length !== 0 && (
           <ChallengeSection
             mainText="🧑🏻‍💻 진행 중"
             status="PROGRESS"
-            challenges={progressData}
-            setData={setProgressData}
+            challenges={getMyProgressChallenges}
           />
         )}
         {getMyWaitingChallenges.length !== 0 && (
@@ -112,7 +110,7 @@ export default function MyChallenge({
         )}
       </div>
       {isEmptyData === 0 && <ChallengeEmptyView />}
-      {progressData.length + getMyWaitingChallenges.length === 0 &&
+      {getMyProgressChallenges.length + getMyWaitingChallenges.length === 0 &&
         completedData.length !== 0 && (
           <SLinkToHome href="/">챌린지 둘러보기</SLinkToHome>
         )}
