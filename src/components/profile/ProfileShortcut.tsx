@@ -106,7 +106,6 @@ const SProfileGreetingWrapper = styled.div`
 `;
 
 const SGithubIdBtn = styled.button<{ isGithub: boolean }>`
-  width: 100%;
   margin-right: auto;
   height: 28px;
   border-radius: 16px;
