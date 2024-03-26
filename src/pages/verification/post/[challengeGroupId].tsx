@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { AxiosError } from 'axios';
 import Layout from '@/components/common/Layout';
 import WriteLayout, { TPageType } from '@/components/common/WriteLayout';
 import writeLayoutText from '@/constants/writeLayoutText';
@@ -37,7 +38,7 @@ export default function VerificationPost() {
   const [isLinkValid, setIsLinkaValid] = useState<boolean | undefined>(
     undefined,
   );
-  const [quiz, setQuiz] = useState<string>('');
+  const [quiz, setQuiz] = useState<string>('문제를 불러오고 있습니다.');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const postMyVerification = async () => {
@@ -61,24 +62,40 @@ export default function VerificationPost() {
     }
   };
 
+  const navigateToCollection = (queryParam: {
+    [key: string]: boolean;
+  }): void => {
+    router
+      .replace({
+        pathname: `/verification/collection/${challengeGroupId}`,
+        query: {
+          type: verificationType,
+          myChallengeId,
+          ...queryParam,
+        },
+      })
+      .catch((error: Error) => {
+        console.error('페이지 이동에 실패하였습니다.', error);
+      });
+  };
+
   const handleSubmit = () => {
     setIsLoading(true);
     postMyVerification()
       .then(() => {
-        router
-          .replace({
-            pathname: `/verification/collection/${challengeGroupId}`,
-            query: {
-              type: verificationType,
-              myChallengeId,
-              submitVerification: true,
-            },
-          })
-          .catch((error) => {
-            console.error('페이지 이동에 실패하였습니다.', error);
-          });
+        navigateToCollection({ successSubmission: true });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        const err = error as AxiosError;
+        if (
+          err.response &&
+          err.response.data === '이미 오늘의 인증을 완료했습니다.'
+        ) {
+          navigateToCollection({ duplicateSubmission: true });
+        }
+        setIsLoading(false);
+        console.error(error);
+      });
   };
 
   useEffect(() => {

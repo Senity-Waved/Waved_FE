@@ -109,8 +109,11 @@ export default function VeirificationCollection() {
         });
       }, 3500);
     };
-    if (query.submitVerification) {
+    if (query.successSubmission) {
       handleRouting('인증 제출이 완료되었습니다.');
+    }
+    if (query.duplicateSubmission) {
+      handleRouting('오늘의 인증을 이미 완료했습니다.', 'warning');
     }
   }, [query, router, challengeGroupId, myChallengeId, verificationType]);
 

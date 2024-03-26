@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { AxiosError } from 'axios';
 import { IVerificationInfo } from '@/types/verification';
 import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
@@ -48,46 +47,34 @@ export default function VerificationList({
     );
   }, [verificationsData, myVerification]);
 
-  const getVerifications = useCallback(() => {
-    getVerificationsApi(challengeGroupId, date)
-      .then((data) => {
-        setVerificationsData(data);
-        setIsEmptyData(false);
-      })
-      .catch((error) => {
-        const err = error as AxiosError;
-        if (
-          err.response &&
-          err.response.data === '해당 날짜에 존재하는 인증내역이 없습니다.'
-        ) {
-          setIsEmptyData(true);
-        }
-        console.error(error);
-      });
-  }, [challengeGroupId, date]);
-
-  const getMyVerification = useCallback(() => {
-    getMyVerifiactionApi(challengeGroupId, date)
-      .then((data) => {
-        setMyVerificationData(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const getVerificationList = useCallback(async () => {
+    // 내 인증내역 GET
+    try {
+      const myVeriData = await getMyVerifiactionApi(challengeGroupId, date);
+      setMyVerificationData(myVeriData);
+      console.log(myVeriData);
+    } catch (MyVeriError) {
+      setMyVerificationData([]);
+      console.error('날짜별 내 인증내역 불러오기 실패');
+    }
+    // 전체 인증내역 GET
+    try {
+      const veriData = await getVerificationsApi(challengeGroupId, date);
+      setVerificationsData(veriData);
+      console.log(veriData);
+      setIsEmptyData(false);
+    } catch (veriError) {
+      setVerificationsData([]);
+      setIsEmptyData(true);
+      console.error('날짜별 인증내역 불러오기 실패');
+    }
   }, [challengeGroupId, date]);
 
   useEffect(() => {
     if (challengeGroupId !== undefined && verificationType !== 'GITHUB') {
-      getMyVerification();
-      getVerifications();
+      getVerificationList().catch((err) => console.error(err));
     }
-  }, [
-    getMyVerification,
-    getVerifications,
-    challengeGroupId,
-    verificationType,
-    sort,
-  ]);
+  }, [getVerificationList, challengeGroupId, verificationType, sort]);
 
   // 인증내역 정렬
   useEffect(() => {
@@ -102,6 +89,8 @@ export default function VerificationList({
         return veri2.likesCount - veri1.likesCount;
       });
       setSortedVerifications(sorted);
+    } else {
+      setSortedVerifications([]);
     }
   }, [sort, allVerification]);
 
