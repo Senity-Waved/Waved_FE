@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,7 +27,7 @@ export default function ProfileShortcut({
     <SProfileShortcutWrapper>
       <h3 className="a11yHidden">프로필 인사말</h3>
       <SProfileGreetingWrapper>
-        {isLogined ? (
+        {isLogined && profileInfo ? (
           <p>
             <span>{profileInfo.nickname}</span>
             {profileInfo.jobTitle && (
@@ -49,7 +50,7 @@ export default function ProfileShortcut({
         )}
         <p>개발자님 오늘도 화이팅하세요!</p>
       </SProfileGreetingWrapper>
-      {isLogined && (
+      {isLogined && profileInfo && (
         <SGithubIdBtn
           type="button"
           onClick={goToGithub}

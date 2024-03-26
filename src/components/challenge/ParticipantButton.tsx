@@ -7,7 +7,7 @@ import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import IChallengeGroup from '@/types/challengeGroup';
 import calculateDDay from '@/utils/calculateDDay';
-// import { deleteMyChallengeApi } from '@/lib/axios/challenge/api';
+import { postCancelParticipantApi } from '@/lib/axios/challenge/api';
 import ISnackBarState from '@/types/snackbar';
 import useModal from '@/hooks/useModal';
 
@@ -56,32 +56,27 @@ export default function ParticipantButton({
     });
   };
 
-  const cancelParticipant = () => {
-    // deleteMyChallengeApi(myChallengeId)
-    //   .then((response) => {
-    //     if (response) {
-    //       console.log('챌린지 신청 취소 요청 성공');
-    //       router.push({
-    //         pathname: `/challenge/${groupId}`,
-    //         query: {
-    //           cancelParticipantSuccess: true,
-    //         },
-    //       });
-    //     }
-    //   }).catch((error) => {
-    //     console.error('챌린지 신청 취소 요청 실패', error);
-    //   });
-    console.log('챌린지 신청 취소 요청 성공 | myChallengeId:', myChallengeId);
-    router
-      .push({
-        pathname: `/challenge/${groupId}`,
-        query: {
-          cancelParticipantSuccess: true,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동 실패', error);
-      });
+  const cancelParticipant = async () => {
+    try {
+      const response = await postCancelParticipantApi(myChallengeId);
+      if (response) {
+        console.log('챌린지 취소 및 환불 요청 성공했습니다', myChallengeId);
+        router
+          .push({
+            pathname: `/challenge/${groupId}`,
+            query: {
+              cancelParticipantSuccess: true,
+            },
+          })
+          .catch((error) => console.error('페이지 이동 실패', error));
+      }
+    } catch (deleteError) {
+      console.error(
+        '챌린지 취소 및 환불 요청 실패했습니다',
+        myChallengeId,
+        deleteError,
+      );
+    }
   };
   const { openModal, closeModal } = useModal();
 
@@ -90,12 +85,7 @@ export default function ParticipantButton({
     const handleClick = () => {
       if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
         goToOnboarding();
-      } else if (
-        isLogined &&
-        !isApplied &&
-        dDayToStart <= 14 &&
-        dDayToStart >= 1
-      ) {
+      } else if (isLogined && !isApplied && dDayToStart <= 14) {
         goToParticipant();
       } else if (isApplied && dDayToStart <= 14 && dDayToStart >= 1) {
         openModal({
@@ -104,7 +94,7 @@ export default function ParticipantButton({
             '추가하신 예치금은 100% 환불이 가능하며, 카드사 사정에 따라 영업일 기준 평균 2~5일 이내 처리됩니다',
           btnText: '네, 취소할게요',
           onClick: () => {
-            cancelParticipant();
+            cancelParticipant().catch((error) => console.log(error));
             closeModal();
           },
         });
@@ -139,8 +129,8 @@ export default function ParticipantButton({
       });
     } else if (dDayToStart < 1) {
       setBtnConfig({
-        text: '마감',
-        styleType: 'disabled',
+        text: '마감이지만 테스트를 위해 신청 허용',
+        styleType: 'primary',
         size: 'large',
         onClick: handleClick,
       });
