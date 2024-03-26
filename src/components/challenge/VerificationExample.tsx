@@ -35,15 +35,16 @@ const getChallengeExamplePath = (title: string): string[] => {
     //   examplePathArr.push(...paths);
     //   break;
     // }
-    // case '스크린타임 4시간 챌린지': {
-    //   const paths = [
-    //     'https://via.placeholder.com/300/E9F1FF/838A94.jpg?text=EXAMPLE',
-    //     'https://via.placeholder.com/300/E9F1FF/838A94.jpg?text=EXAMPLE',
-    //     'https://via.placeholder.com/300/E9F1FF/838A94.jpg?text=EXAMPLE',
-    //   ];
-    //   examplePathArr.push(...paths);
-    //   break;
-    // }
+    case '스크린타임 4시간 챌린지': {
+      const paths = [
+        '/images/image-verification-nottodo-1.png',
+        '/images/image-verification-nottodo-2.png',
+        '/images/image-verification-nottodo-3.png',
+        '/images/image-verification-nottodo-4.png',
+      ];
+      examplePathArr.push(...paths);
+      break;
+    }
     default: {
       const paths = [
         'https://via.placeholder.com/300/E9F1FF/838A94.jpg?text=EXAMPLE',

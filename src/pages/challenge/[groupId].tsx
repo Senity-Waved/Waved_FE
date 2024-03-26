@@ -292,7 +292,7 @@ export async function getServerSideProps(
   async function fetchReviews() {
     try {
       const response = await getReviewsApi(challengeId, serverInstance);
-      console.log('review API GET 성공', response.data);
+      console.log('review API GET 성공', response.data.content.length);
       return response.data;
     } catch (error) {
       console.error('review API GET 실패', error);
