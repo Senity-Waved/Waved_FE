@@ -43,15 +43,6 @@ const getMoreReviewsApi = (pageParam: number, challengeId: number) => {
 };
 
 /**
- * 챌린지 신청 취소 DEL
- * @param challengeId
- * @returns response.data
- */
-const deleteMyChallengeApi = (myChallengeId: number) => {
-  return axiosInstance.delete(`/myChallenges/${myChallengeId}/delete`);
-};
-
-/**
  * 챌린지 신청 취소 환급 요청 POST
  * @param myChallengeId
  * @returns message (성공: '결제 취소 처리되었습니다.')
@@ -64,6 +55,5 @@ export {
   getChallengeGroupApi,
   getReviewsApi,
   getMoreReviewsApi,
-  deleteMyChallengeApi,
   postRequestRefundApi,
 };
