@@ -112,7 +112,10 @@ export default function Register() {
       <h1 className="a11yHidden">WAVED</h1>
       <SHeaderWrapper>
         <SHeaderCenter>회원가입</SHeaderCenter>
-        <SRegisterBackBtn onClick={goToPreviousStep}>
+        <SRegisterBackBtn
+          className={step === 1 ? 'a11yHidden' : ''}
+          onClick={goToPreviousStep}
+        >
           <Image
             src="/icons/icon-left-arrow.svg"
             width={24}

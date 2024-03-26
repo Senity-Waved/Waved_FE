@@ -13,7 +13,8 @@ import { TVerificationType } from '@/types/verification';
 import {
   getQuizApi,
   postMyVerificationApi,
-} from '@/lib/axios/verification/api';
+} from '@/lib/axios/verification/post/api';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function VerificationPost() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function VerificationPost() {
     verificationType = 'TEXT';
   }
   const challengeGroupId = router.query.challengeGroupId as string;
+  const myChallengeId = router.query.myChallengeId as string;
   const pageType = VERIFICATION_TYPE[verificationType];
   const { placeholder } = writeLayoutText[pageType];
   const [text, setText] = useState<string>('');
@@ -36,6 +38,7 @@ export default function VerificationPost() {
     undefined,
   );
   const [quiz, setQuiz] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const postMyVerification = async () => {
     const formData = new FormData();
@@ -59,18 +62,23 @@ export default function VerificationPost() {
   };
 
   const handleSubmit = () => {
-    postMyVerification().catch((error) => console.error(error));
-    router
-      .replace({
-        pathname: `/verification/collection/${challengeGroupId}`,
-        query: {
-          type: verificationType,
-          submitVerification: true,
-        },
+    setIsLoading(true);
+    postMyVerification()
+      .then(() => {
+        router
+          .replace({
+            pathname: `/verification/collection/${challengeGroupId}`,
+            query: {
+              type: verificationType,
+              myChallengeId,
+              submitVerification: true,
+            },
+          })
+          .catch((error) => {
+            console.error('페이지 이동에 실패하였습니다.', error);
+          });
       })
-      .catch((error) => {
-        console.error('페이지 이동에 실패하였습니다.', error);
-      });
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
@@ -92,31 +100,35 @@ export default function VerificationPost() {
       description="챌린지 인증방식에 맞게 인증을 진행하는 페이지입니다."
       noFooter
     >
-      <WriteLayout
-        pageType={pageType as TPageType}
-        text={text}
-        file={file}
-        isLinkValid={isLinkValid}
-        onClick={handleSubmit}
-      >
-        {verificationType === 'TEXT' && (
-          <>
-            <SQuestion>Q.{quiz}</SQuestion>
-            <TextArea placeholder={placeholder} setText={setText} />
-          </>
-        )}
-        {verificationType === 'PICTURE' && <PhotoInput setFile={setFile} />}
-        {verificationType === 'LINK' && (
-          <>
-            <LinkInput
-              isLinkValid={isLinkValid}
-              setIsLinkValid={setIsLinkaValid}
-              setLink={setLink}
-            />
-            <TextArea placeholder={placeholder} setText={setText} />
-          </>
-        )}
-      </WriteLayout>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <WriteLayout
+          pageType={pageType as TPageType}
+          text={text}
+          file={file}
+          isLinkValid={isLinkValid}
+          onClick={handleSubmit}
+        >
+          {verificationType === 'TEXT' && (
+            <>
+              <SQuestion>Q.{quiz}</SQuestion>
+              <TextArea placeholder={placeholder} setText={setText} />
+            </>
+          )}
+          {verificationType === 'PICTURE' && <PhotoInput setFile={setFile} />}
+          {verificationType === 'LINK' && (
+            <>
+              <LinkInput
+                isLinkValid={isLinkValid}
+                setIsLinkValid={setIsLinkaValid}
+                setLink={setLink}
+              />
+              <TextArea placeholder={placeholder} setText={setText} />
+            </>
+          )}
+        </WriteLayout>
+      )}
       <Modal />
     </Layout>
   );

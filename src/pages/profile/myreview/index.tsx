@@ -1,61 +1,67 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import styled from '@emotion/styled';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { v4 as uuidv4 } from 'uuid';
+import { useInView } from 'react-intersection-observer';
 import Layout from '@/components/common/Layout';
-import IMyReview from '@/types/myReview';
 import MyReviewItem from '@/components/profile/myreview/MyReviewItem';
 import SnackBar from '@/components/common/SnackBar';
 import EmptyView from '@/components/common/EmptyView';
 import ISnackBarState from '@/types/snackbar';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import Modal from '@/components/modal/Modal';
+import { getMyReviewsApi } from '@/lib/axios/review/api';
+import { IMyReviewList } from '@/types/review';
 
-const getMyReviews: IMyReview[] = [
-  {
-    id: '43436',
-    challengeTitle: '1일 1커밋',
-    createdDate: '2024년 02월 22일',
-    context:
-      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-  },
-  {
-    id: '163636',
-    challengeTitle: '1일 1커밋',
-    createdDate: '2024년 02월 22일',
-    context:
-      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-  },
-  {
-    id: '264532',
-    challengeTitle: '1일 1커밋',
-    createdDate: '2024년 02월 22일',
-    context:
-      '피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.피그마 플러그인 개발에 관심이 생겨서 찾아보게 되었는데,많은 도움이 되네요.',
-  },
-];
+export interface IFetchMoreReviewsResponse extends IMyReviewList {
+  nextPage: number;
+}
+
+const fetchMoreReviews = async ({
+  pageParam = 0,
+}): Promise<IFetchMoreReviewsResponse> => {
+  const response = await getMyReviewsApi(pageParam);
+  return {
+    content: response.data.content,
+    nextPage: pageParam + 1,
+    totalPages: response.data.totalPages,
+    totalElements: response.data.totalElements,
+  };
+};
 
 export default function MyReview() {
   const router = useRouter();
   const { query } = router;
-  const [reviews, setReviews] = useState(getMyReviews);
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
   });
+  const [ref, inView] = useInView();
 
-  const deleteReview = (id: string) => {
-    console.log(`삭제완료! ${id}`);
-    setReviews(reviews.filter((review) => review.id !== id));
-    setSnackBarState({
-      open: true,
-      text: REVIEW_SNACKBAR_TEXT.DELETE,
-    });
-    setTimeout(() => {
-      setSnackBarState({
-        open: false,
-        text: '',
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    IFetchMoreReviewsResponse,
+    Error
+  >(['myReviews'], fetchMoreReviews, {
+    getNextPageParam: (lastPage) => {
+      const totalPages = lastPage.totalPages || 0;
+      return lastPage.nextPage < totalPages ? lastPage.nextPage : undefined;
+    },
+  });
+
+  const handleReviewMore = useCallback(() => {
+    if (!isFetching && hasNextPage) {
+      fetchNextPage().catch((error) => {
+        console.error('리뷰 더보기 실패', error);
       });
-    }, 3500);
-  };
+    }
+  }, [isFetching, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (inView) {
+      handleReviewMore();
+    }
+  }, [inView, handleReviewMore]);
 
   useEffect(() => {
     const handleRouting = (
@@ -81,22 +87,27 @@ export default function MyReview() {
     };
     if (query.editReviewSuccess) {
       handleRouting(REVIEW_SNACKBAR_TEXT.EDIT);
+    } else if (query.deleteReviewSuccess) {
+      handleRouting(REVIEW_SNACKBAR_TEXT.DELETE);
     }
   }, [query, router]);
 
   return (
     <Layout headerText="나의 후기" title="나의 후기" noFooter>
-      {reviews.length === 0 ? (
-        <EmptyView pageType="내후기" />
+      {!data || data.pages[0].totalElements === 0 ? (
+        <SEmptyViewWrapper>
+          <EmptyView pageType="내후기" />
+        </SEmptyViewWrapper>
       ) : (
         <ul>
-          {reviews.map((review) => (
-            <MyReviewItem
-              key={review.id}
-              {...review}
-              onDelete={() => deleteReview(review.id)}
-            />
+          {data.pages.map((page) => (
+            <React.Fragment key={uuidv4()}>
+              {page.content.map((review) => (
+                <MyReviewItem key={review.reviewId} {...review} />
+              ))}
+            </React.Fragment>
           ))}
+          {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
         </ul>
       )}
       {snackBarState.open && (
@@ -110,3 +121,9 @@ export default function MyReview() {
     </Layout>
   );
 }
+
+const SEmptyViewWrapper = styled.div`
+  width: 100%;
+  min-height: 80vh;
+  height: auto;
+`;

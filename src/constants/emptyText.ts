@@ -19,6 +19,10 @@ const emptyText = {
     mainText: '예치금 내역이 없어요',
     subText: '예치금을 걸어서 챌린지에 참여해보세요!',
   },
+  인증내역: {
+    mainText: '인증 내역이 없어요',
+    subText: '아무도 인증을 하지 않은 날입니다.',
+  },
 };
 
 export default emptyText;

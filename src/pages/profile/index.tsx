@@ -16,6 +16,7 @@ import { deleteMemberApi, logoutApi } from '@/lib/axios/profile/api';
 import useModal from '@/hooks/useModal';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import IProfile from '@/types/profile';
+import createServerInstance from '@/lib/axios/serverInstance';
 
 export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
   const router = useRouter();
@@ -364,15 +365,13 @@ export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  const cookieToken = getCookie('accessToken', context);
   let profileInfo = null;
 
+  const serverInstance = createServerInstance(context);
+
   try {
-    const response = await axios.get<IProfile>(
+    const response = await serverInstance.get<IProfile>(
       `${process.env.NEXT_PUBLIC_BASE_URL}/members/profile`,
-      {
-        headers: { Authorization: `Bearer ${cookieToken}` },
-      },
     );
 
     profileInfo = response.data;

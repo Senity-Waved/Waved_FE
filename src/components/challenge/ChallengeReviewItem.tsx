@@ -1,5 +1,13 @@
 import styled from '@emotion/styled';
 import { TChallengeReview } from '@/types/review';
+import parseDate from '@/utils/parseDate';
+import { JOB_TITLE_KR } from '@/constants/jobTitle';
+import formattedFormText from '@/utils/formattedFormText';
+
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  return `${year}년 ${month}월 ${day}일`;
+};
 
 export default function ChallengeReviewItem({
   nickname,
@@ -11,10 +19,10 @@ export default function ChallengeReviewItem({
     <SReviewItem>
       <SReviewInfo>
         <SAuthor>{nickname}</SAuthor>
-        {jobTitle && <SJobTitle>{jobTitle}</SJobTitle>}
-        <SDate>{createDate}</SDate>
+        {jobTitle && <SJobTitle>{JOB_TITLE_KR[jobTitle]}</SJobTitle>}
+        <SDate>{formattedDate(createDate)}</SDate>
       </SReviewInfo>
-      <SReviewContent>{content}</SReviewContent>
+      <SReviewContent>{formattedFormText(content)}</SReviewContent>
     </SReviewItem>
   );
 }
@@ -70,6 +78,7 @@ const SDate = styled.span`
 `;
 
 const SReviewContent = styled.p`
+  white-space: pre-line;
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};

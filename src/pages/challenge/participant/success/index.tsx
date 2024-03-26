@@ -67,7 +67,7 @@ export default function ParticipantSuccess() {
             participantCount={challengeData.participantCount}
             startDate={challengeData.startDate}
             endDate={challengeData.endDate}
-            condition="recruiting"
+            condition={challengeData.condition}
           />
           <SPayDepositWrapper>
             <p>예치금</p>

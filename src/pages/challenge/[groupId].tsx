@@ -3,43 +3,72 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
-import { useSetRecoilState } from 'recoil';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { GetServerSidePropsContext } from 'next';
-import { getCookie } from 'cookies-next';
-import axios, { AxiosError } from 'axios';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
-import BottomFixedBtn from '@/components/common/BottomFixedBtn';
 import ChallengeSummary from '@/components/challenge/ChallengeSummary';
 import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
 import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
-import ISelectedChallenge from '@/types/selectedChallenge';
-import ASelectedChallenge from '@/atoms/selectedChallenge';
+import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
 import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
-import { TChallengeReview } from '@/types/review';
+import { IChallengeReviewList } from '@/types/review';
+import parseDate from '@/utils/parseDate';
+import WEEKDAYS from '@/constants/weekdays';
+import calculateDDay from '@/utils/calculateDDay';
+import ParticipantButton from '@/components/challenge/ParticipantButton';
+import {
+  getChallengeGroupApi,
+  getMoreReviewsApi,
+  getReviewsApi,
+} from '@/lib/axios/challenge/api';
+import Modal from '@/components/modal/Modal';
+import createServerInstance from '@/lib/axios/serverInstance';
 
-const condition = 'recruiting'; // 날짜 이용한 가공 이전 static 사용
-
-interface IReviewList {
-  content: TChallengeReview[];
-  totalPages: number;
-  totalElements: number;
+interface IFetchMoreReviewsResponse extends IChallengeReviewList {
+  nextPage: number;
 }
+
+const formattedDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  const dateObj = new Date(
+    parseInt(year, 10),
+    parseInt(month, 10) - 1,
+    parseInt(day, 10),
+  );
+  return `${month}월 ${day}일 (${WEEKDAYS[dateObj.getDay()]})`;
+};
+
+const calculateCondition = (startDate: string, endDate: string): TCondition => {
+  const dDayToStart = calculateDDay(startDate);
+  const dDayToEnd = calculateDDay(endDate);
+  let condition: TCondition;
+  if (dDayToStart <= 14 && dDayToStart >= 1) {
+    condition = 'recruiting';
+  } else if (dDayToStart < 1 && dDayToEnd >= 0) {
+    condition = 'processing';
+  } else if (dDayToEnd < 0) {
+    condition = 'closed';
+  } else {
+    condition = 'waiting';
+  }
+  return condition;
+};
 
 export default function Challenge({
   challengeInfo,
-  reviews,
+  reviewList,
 }: {
   challengeInfo: IChallengeGroup;
-  reviews: TChallengeReview[];
+  reviewList: IChallengeReviewList;
 }) {
   const router = useRouter();
   const groupId = router.query.groupId as string;
@@ -48,21 +77,61 @@ export default function Challenge({
     open: false,
     text: '',
   });
-  const selectedChallenge =
-    useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
-  const goToParticipant = () => {
-    selectedChallenge({
-      challengeGroupId: groupId,
-      groupTitle: challengeInfo.groupTitle,
-      startDate: challengeInfo.startDate,
-      endDate: challengeInfo.endDate,
-      condition,
-      participantCount: challengeInfo.participantCount,
-      isFree: challengeInfo.isFree,
-    });
-    router.push('/challenge/participant').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
+  const formattedStartDate = formattedDate(challengeInfo.startDate);
+  const formattedEndDate = formattedDate(challengeInfo.endDate);
+  const condition = calculateCondition(
+    challengeInfo.startDate,
+    challengeInfo.endDate,
+  );
+  const challengeData: ISelectedChallenge = {
+    challengeGroupId: groupId,
+    groupTitle: challengeInfo.groupTitle,
+    startDate: formattedStartDate,
+    endDate: formattedEndDate,
+    condition,
+    participantCount: challengeInfo.participantCount,
+    isFree: challengeInfo.isFree,
+  };
+  const fetchMoreReviews = async ({
+    pageParam = 1,
+  }): Promise<IFetchMoreReviewsResponse> => {
+    const response = await getMoreReviewsApi(
+      pageParam,
+      challengeInfo.challengeId,
+    );
+    return {
+      content: response.data.content,
+      nextPage: pageParam + 1,
+      totalPages: response.data.totalPages,
+      totalElements: response.data.totalElements,
+    };
+  };
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
+    IFetchMoreReviewsResponse,
+    Error
+  >(['reviews', challengeInfo.challengeId], fetchMoreReviews, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.nextPage < reviewList.totalPages) return lastPage.nextPage;
+      return undefined;
+    },
+    initialData: {
+      pages: [
+        {
+          content: reviewList.content,
+          nextPage: 1,
+          totalPages: reviewList.totalPages,
+          totalElements: reviewList.totalElements,
+        },
+      ],
+      pageParams: [0],
+    },
+  });
+  const handleReviewMore = () => {
+    if (!isFetching && hasNextPage) {
+      fetchNextPage().catch((error) => {
+        console.error('리뷰 더보기 실패', error);
+      });
+    }
   };
 
   return (
@@ -97,8 +166,8 @@ export default function Challenge({
           className="description"
           groupTitle={challengeInfo.groupTitle}
           participantCount={challengeInfo.participantCount}
-          startDate={challengeInfo.startDate}
-          endDate={challengeInfo.endDate}
+          startDate={formattedStartDate}
+          endDate={formattedEndDate}
           condition={condition}
           setSummaryHeight={setSummaryHeight}
         />
@@ -120,18 +189,26 @@ export default function Challenge({
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {reviews.length === 0 ? (
+          {reviewList.totalElements === 0 ? (
             <SEmptyViewWrapper>
               <EmptyView pageType="챌린지후기" />
             </SEmptyViewWrapper>
           ) : (
             <>
               <ul>
-                {reviews.map((review) => {
-                  return <ChallengeReviewItem key={uuidv4()} {...review} />;
-                })}
+                {data?.pages.map((page) => (
+                  <React.Fragment key={uuidv4()}>
+                    {page.content.map((review) => (
+                      <ChallengeReviewItem key={uuidv4()} {...review} />
+                    ))}
+                  </React.Fragment>
+                ))}
               </ul>
-              <SMoreBtn type="button">더보기</SMoreBtn>
+              {hasNextPage && (
+                <SMoreBtn type="button" onClick={handleReviewMore}>
+                  더보기
+                </SMoreBtn>
+              )}
             </>
           )}
         </SSection>
@@ -163,15 +240,12 @@ export default function Challenge({
             height={24}
           />
         </SLinkItem>
-        <BottomFixedBtn
-          btns={[
-            {
-              text: '신청하기',
-              styleType: 'primary',
-              size: 'large',
-              onClick: goToParticipant,
-            },
-          ]}
+        <ParticipantButton
+          challengeData={challengeData}
+          isApplied={challengeInfo.isApplied}
+          myChallengeId={challengeInfo.myChallengeId}
+          startDate={challengeInfo.startDate}
+          setSnackBarState={setSnackBarState}
         />
         {snackBarState.open && (
           <SnackBar
@@ -180,6 +254,7 @@ export default function Challenge({
             withBottomFixedBtn
           />
         )}
+        <Modal />
       </main>
     </SLayoutWrapper>
   );
@@ -187,69 +262,56 @@ export default function Challenge({
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext,
-): Promise<{
-  props: {
-    challengeInfo: IChallengeGroup;
-    reviews: TChallengeReview[];
-  };
-}> {
-  const cookieToken = getCookie('accessToken', context);
-  console.log('🍪', cookieToken);
+): Promise<
+  | {
+      props: {
+        challengeInfo: IChallengeGroup;
+        reviewList: IChallengeReviewList;
+      };
+    }
+  | { notFound: true }
+> {
   const { groupId } = context.params as { groupId: string };
+  const serverInstance = createServerInstance(context);
+
   async function fetchChallengeInfo() {
     try {
-      const headers = cookieToken
-        ? { Authorization: `Bearer ${cookieToken}` }
-        : {};
-      const response = await axios.get<IChallengeGroup>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/challengeGroups/info/${groupId}`,
-        {
-          headers,
-        },
-      );
+      const response = await getChallengeGroupApi(groupId, serverInstance);
       console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
-      console.error('challengeGroup API GET 실패', error);
+      return null;
+    }
+  }
+  const challengeInfo = await fetchChallengeInfo();
+  if (!challengeInfo) {
+    return { notFound: true };
+  }
+
+  const { challengeId } = challengeInfo;
+  async function fetchReviews() {
+    try {
+      const response = await getReviewsApi(challengeId, serverInstance);
+      console.log('review API GET 성공', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('review API GET 실패', error);
       return {
-        groupTitle: '챌린지 정보를 불러오는 데 실패했습니다.',
-        participantCount: 0,
-        startDate: '2099-99-99',
-        endDate: '2099-99-99',
-        verficationType: 'TEXT',
-        description: '챌린지 정보를 불러오는 데 실패했습니다.',
-        verificationDescription: '',
-        isFree: false,
-        isApplied: false,
-        challengeId: -1,
-        mychallengeId: -1,
+        content: [],
+        totalPages: 0,
+        totalElements: 0,
       };
     }
   }
-  const challengeInfo = (await fetchChallengeInfo()) as IChallengeGroup;
-  const { challengeId, isApplied, myChallengeId } = challengeInfo;
-  console.log(isApplied, myChallengeId);
-  async function fetchReviews() {
-    await axios
-      .get<IReviewList>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${challengeId}/reviews?page=0&limit=5`,
-      )
-      .then((response) => {
-        console.log('review API GET 성공', response.data.content);
-        return response.data.content;
-      })
-      .catch((error: AxiosError) => {
-        if (error.response) {
-          console.error('review API GET 실패', error.response.data);
-        }
-      });
-    return [];
-  }
-  const reviews = (await fetchReviews()) || [];
+  const reviewList = await fetchReviews();
   return {
     props: {
       challengeInfo,
-      reviews,
+      reviewList: {
+        content: reviewList.content,
+        totalPages: reviewList.totalPages,
+        totalElements: reviewList.totalElements,
+      },
     },
   };
 }

@@ -38,6 +38,7 @@ export default function ChallengeSummary({
           {condition === 'closed' && '종료'}
           {condition === 'recruiting' && '모집중'}
           {condition === 'processing' && '진행중'}
+          {condition === 'waiting' && '대기'}
         </SStatus>
       </SColumn>
       <SColumn>
@@ -92,6 +93,7 @@ const SStatus = styled.span<Pick<ISelectedChallenge, 'condition'>>`
         closed: theme.color.error,
         recruiting: theme.color.normal,
         processing: theme.color.positive,
+        waiting: theme.color.gray_83,
       })[condition]};
   border-radius: 10px;
   color: ${({ condition, theme }) =>
@@ -99,6 +101,7 @@ const SStatus = styled.span<Pick<ISelectedChallenge, 'condition'>>`
       closed: theme.color.error,
       recruiting: theme.color.normal,
       processing: theme.color.positive,
+      waiting: theme.color.gray_83,
     })[condition]};
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};

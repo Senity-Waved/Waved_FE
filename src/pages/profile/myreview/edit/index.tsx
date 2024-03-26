@@ -1,32 +1,46 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useMutation } from '@tanstack/react-query';
+import { GetServerSidePropsContext } from 'next';
 import Layout from '@/components/common/Layout';
 import WriteLayout from '@/components/common/WriteLayout';
 import TextArea from '@/components/common/TextArea';
 import writeLayoutText from '@/constants/writeLayoutText';
+import {
+  getPreviousReviewContentApi,
+  patchReviewApi,
+} from '@/lib/axios/review/api';
+import createServerInstance from '@/lib/axios/serverInstance';
 
-export default function EditReview() {
+export default function EditReview({ prevContent }: { prevContent: string }) {
   const router = useRouter();
   const reviewId = router.query.reviewId as string;
-  const context = router.query.context as string;
   const { placeholder } = writeLayoutText['후기수정'];
-  const [text, setText] = useState<string>(
-    typeof context === 'string' ? context : '',
+  const [text, setText] = useState<string>(prevContent);
+
+  const { mutate: patchReview } = useMutation(
+    (newContent: string) => patchReviewApi(reviewId, newContent),
+    {
+      onSuccess: () => {
+        console.log(`${reviewId} 수정완료! : ${text}`);
+        router
+          .push({
+            pathname: '/profile/myreview',
+            query: {
+              editReviewSuccess: true,
+            },
+          })
+          .catch((error) => console.error('페이지 이동 실패', error));
+      },
+      onError: (error) => {
+        console.error('리뷰 수정 실패', error);
+      },
+    },
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(`${reviewId} 수정완료! : ${text}`);
-    router
-      .push({
-        pathname: '/profile/myreview',
-        query: {
-          editReviewSuccess: true,
-        },
-      })
-      .catch((error) => {
-        console.error('페이지 이동 실패', error);
-      });
+    patchReview(text);
   };
 
   return (
@@ -41,4 +55,30 @@ export default function EditReview() {
       </WriteLayout>
     </Layout>
   );
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<{
+  props: {
+    prevContent: string;
+  };
+}> {
+  const { reviewId } = context.query as { reviewId: string };
+  const serverInstance = createServerInstance(context);
+  let prevContent = '';
+  try {
+    const response = await getPreviousReviewContentApi(
+      serverInstance,
+      reviewId,
+    );
+    prevContent = response.data;
+  } catch (error) {
+    console.error('이전 리뷰 데이터 가져오기 실패', error);
+  }
+  return {
+    props: {
+      prevContent,
+    },
+  };
 }
