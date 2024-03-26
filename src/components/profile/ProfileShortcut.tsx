@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -62,8 +63,10 @@ export default function ProfileShortcut({
             height={18}
           />
           <p>
-            {isLogined && profileInfo.githubId
+            {isLogined && profileInfo
               ? profileInfo.githubId
+                ? profileInfo.githubId
+                : '깃허브 연동하기'
               : '깃허브 연동하기'}
           </p>
         </SGithubIdBtn>
