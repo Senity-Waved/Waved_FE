@@ -14,24 +14,24 @@ import Modal from '@/components/modal/Modal';
 import ISnackBarState from '@/types/snackbar';
 import { deleteMemberApi, logoutApi } from '@/lib/axios/profile/api';
 import useModal from '@/hooks/useModal';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import IProfile from '@/types/profile';
 import createServerInstance from '@/lib/axios/serverInstance';
 
-export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
+interface IProfileProps {
+  profileInfo: IProfile;
+  isLogined: boolean;
+}
+
+export default function Profile({ profileInfo, isLogined }: IProfileProps) {
   const router = useRouter();
   const { query } = useRouter();
   const { openModal, closeModal } = useModal();
-
-  const isLogined = !!getCookie('accessToken');
 
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
     text: '',
     type: 'correct',
   });
-
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const handleWithdrawal = () => {
     deleteMemberApi()
@@ -113,10 +113,6 @@ export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
   };
 
   useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
     const handleRouting = (
       snackBarText: string,
       snackBarType: 'correct' | 'warning' = 'correct',
@@ -146,218 +142,202 @@ export default function Profile({ profileInfo }: { profileInfo: IProfile }) {
       title="프로필"
       description="WAVED 회원의 프로필 페이지입니다. 챌린지 기록, 계정 설정, 고객 센터 등을 확인할 수 있습니다. "
     >
-      {isLoaded ? (
-        <>
-          <SProfileWrapper>
-            <h2 className="a11yHidden">프로필</h2>
-            <ProfileShortcut isLogined={isLogined} profileInfo={profileInfo} />
-            <div>
-              <h3>챌린지 기록</h3>
-              <ul>
-                <SProfileActiveMenuWrapper isLogined={isLogined}>
-                  <Link href="/profile/myreview">
-                    <p>나의 후기</p>
-                    <Image
-                      src={
-                        isLogined
-                          ? '/icons/icon-down-arrow.svg'
-                          : '/icons/icon-small-arrow.svg'
-                      }
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{
-                        transform: isLogined
-                          ? 'rotate(270deg)'
-                          : 'rotate(360deg)',
-                      }}
-                    />
-                  </Link>
-                </SProfileActiveMenuWrapper>
-                <SProfileActiveMenuWrapper isLogined={isLogined}>
-                  <Link href="/profile/mydeposit">
-                    <p>예치금 내역</p>
-                    <Image
-                      src={
-                        isLogined
-                          ? '/icons/icon-down-arrow.svg'
-                          : '/icons/icon-small-arrow.svg'
-                      }
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{
-                        transform: isLogined
-                          ? 'rotate(270deg)'
-                          : 'rotate(360deg)',
-                      }}
-                    />
-                  </Link>
-                </SProfileActiveMenuWrapper>
-              </ul>
-            </div>
-            <div>
-              <h3>계정 설정</h3>
-              <ul>
-                <SProfileActiveMenuWrapper isLogined={isLogined}>
-                  <Link href="/profile/edit">
-                    <p>프로필 수정</p>
-                    <Image
-                      src={
-                        isLogined
-                          ? '/icons/icon-down-arrow.svg'
-                          : '/icons/icon-small-arrow.svg'
-                      }
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{
-                        transform: isLogined
-                          ? 'rotate(270deg)'
-                          : 'rotate(360deg)',
-                      }}
-                    />
-                  </Link>
-                </SProfileActiveMenuWrapper>
-                <SProfileActiveMenuWrapper isLogined={isLogined}>
-                  <Link href="/profile/mygithub">
-                    <p>깃허브 연동 관리</p>
-                    <Image
-                      src={
-                        isLogined
-                          ? '/icons/icon-down-arrow.svg'
-                          : '/icons/icon-small-arrow.svg'
-                      }
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{
-                        transform: isLogined
-                          ? 'rotate(270deg)'
-                          : 'rotate(360deg)',
-                      }}
-                    />
-                  </Link>
-                </SProfileActiveMenuWrapper>
-                <SLogoutBtnWrapper isLogined={isLogined}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      openModal({
-                        image: '/icons/icon-exclamation-mark.svg',
-                        mainText: '로그아웃',
-                        subText: '로그아웃하시겠습니까?',
-                        btnText: '로그아웃',
-                        onClick: () => {
-                          handleLogout();
-                          closeModal();
-                        },
-                      });
-                    }}
-                  >
-                    로그아웃
-                  </button>
-                </SLogoutBtnWrapper>
-              </ul>
-            </div>
-            <div>
-              <h3>고객 센터</h3>
-              <ul>
-                <SPropfileBaseMenuWrapper>
-                  <Link href="/">
-                    <p>자주 묻는 질문</p>
-                    <Image
-                      src="/icons/icon-down-arrow.svg"
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{ transform: 'rotate(270deg)' }}
-                    />
-                  </Link>
-                </SPropfileBaseMenuWrapper>
-                <SPropfileBaseMenuWrapper>
-                  <Link href="/">
-                    <p>1:1 문의하기</p>
-                    <Image
-                      src="/icons/icon-down-arrow.svg"
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{ transform: 'rotate(270deg)' }}
-                    />
-                  </Link>
-                </SPropfileBaseMenuWrapper>
-                <SProfileActiveMenuWrapper isLogined={isLogined}>
-                  <Link href="/">
-                    <p>챌린지 요청</p>
-                    <Image
-                      src={
-                        isLogined
-                          ? '/icons/icon-down-arrow.svg'
-                          : '/icons/icon-small-arrow.svg'
-                      }
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{
-                        transform: isLogined
-                          ? 'rotate(270deg)'
-                          : 'rotate(360deg)',
-                      }}
-                    />
-                  </Link>
-                </SProfileActiveMenuWrapper>
-                <SPropfileBaseMenuWrapper>
-                  <Link href="/">
-                    <p>약관 및 정책</p>
-                    <Image
-                      src="/icons/icon-down-arrow.svg"
-                      alt="화살표 아이콘"
-                      width={24}
-                      height={24}
-                      style={{ transform: 'rotate(270deg)' }}
-                    />
-                  </Link>
-                </SPropfileBaseMenuWrapper>
-              </ul>
-            </div>
-            <SProfileEtc>
-              <div>
-                <p>현재 버전</p>
-                <p>1.0.0</p>
-              </div>
-            </SProfileEtc>
-            <SwithdrawalBtnWrapper>
-              {isLogined && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    openModal({
-                      image: '/icons/icon-exclamation-mark.svg',
-                      mainText: '정말 계정을 탈퇴하시겠습니까?',
-                      subText:
-                        '탈퇴 이후에 예치금을 돌려받으실 수 없으며, 등록된 정보는 전부 삭제되어 재가입 후에도 확인하실 수 없습니다.',
-                      btnText: '네, 탈퇴할게요.',
-                      onClick: () => {
-                        handleWithdrawal();
-                        closeModal();
-                      },
-                    });
+      <SProfileWrapper>
+        <h2 className="a11yHidden">프로필</h2>
+        <ProfileShortcut isLogined={isLogined} profileInfo={profileInfo} />
+        <div>
+          <h3>챌린지 기록</h3>
+          <ul>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
+              <Link href="/profile/myreview">
+                <p>나의 후기</p>
+                <Image
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
                   }}
-                >
-                  회원 탈퇴
-                </button>
-              )}
-            </SwithdrawalBtnWrapper>
-          </SProfileWrapper>
-          {snackBarState.open && (
-            <SnackBar text={snackBarState.text} type={snackBarState.type} />
+                />
+              </Link>
+            </SProfileActiveMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
+              <Link href="/profile/mydeposit">
+                <p>예치금 내역</p>
+                <Image
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
+                />
+              </Link>
+            </SProfileActiveMenuWrapper>
+          </ul>
+        </div>
+        <div>
+          <h3>계정 설정</h3>
+          <ul>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
+              <Link href="/profile/edit">
+                <p>프로필 수정</p>
+                <Image
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
+                />
+              </Link>
+            </SProfileActiveMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
+              <Link href="/profile/mygithub">
+                <p>깃허브 연동 관리</p>
+                <Image
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
+                />
+              </Link>
+            </SProfileActiveMenuWrapper>
+            <SLogoutBtnWrapper isLogined={isLogined}>
+              <button
+                type="button"
+                onClick={() => {
+                  openModal({
+                    image: '/icons/icon-exclamation-mark.svg',
+                    mainText: '로그아웃',
+                    subText: '로그아웃하시겠습니까?',
+                    btnText: '로그아웃',
+                    onClick: () => {
+                      handleLogout();
+                      closeModal();
+                    },
+                  });
+                }}
+              >
+                로그아웃
+              </button>
+            </SLogoutBtnWrapper>
+          </ul>
+        </div>
+        <div>
+          <h3>고객 센터</h3>
+          <ul>
+            <SPropfileBaseMenuWrapper>
+              <Link href="/">
+                <p>자주 묻는 질문</p>
+                <Image
+                  src="/icons/icon-down-arrow.svg"
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(270deg)' }}
+                />
+              </Link>
+            </SPropfileBaseMenuWrapper>
+            <SPropfileBaseMenuWrapper>
+              <Link href="/">
+                <p>1:1 문의하기</p>
+                <Image
+                  src="/icons/icon-down-arrow.svg"
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(270deg)' }}
+                />
+              </Link>
+            </SPropfileBaseMenuWrapper>
+            <SProfileActiveMenuWrapper isLogined={isLogined}>
+              <Link href="/">
+                <p>챌린지 요청</p>
+                <Image
+                  src={
+                    isLogined
+                      ? '/icons/icon-down-arrow.svg'
+                      : '/icons/icon-small-arrow.svg'
+                  }
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{
+                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
+                  }}
+                />
+              </Link>
+            </SProfileActiveMenuWrapper>
+            <SPropfileBaseMenuWrapper>
+              <Link href="/">
+                <p>약관 및 정책</p>
+                <Image
+                  src="/icons/icon-down-arrow.svg"
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(270deg)' }}
+                />
+              </Link>
+            </SPropfileBaseMenuWrapper>
+          </ul>
+        </div>
+        <SProfileEtc>
+          <div>
+            <p>현재 버전</p>
+            <p>1.0.0</p>
+          </div>
+        </SProfileEtc>
+        <SwithdrawalBtnWrapper>
+          {isLogined && (
+            <button
+              type="button"
+              onClick={() => {
+                openModal({
+                  image: '/icons/icon-exclamation-mark.svg',
+                  mainText: '정말 계정을 탈퇴하시겠습니까?',
+                  subText:
+                    '탈퇴 이후에 예치금을 돌려받으실 수 없으며, 등록된 정보는 전부 삭제되어 재가입 후에도 확인하실 수 없습니다.',
+                  btnText: '네, 탈퇴할게요.',
+                  onClick: () => {
+                    handleWithdrawal();
+                    closeModal();
+                  },
+                });
+              }}
+            >
+              회원 탈퇴
+            </button>
           )}
-          <Modal />
-        </>
-      ) : (
-        <LoadingSpinner />
+        </SwithdrawalBtnWrapper>
+      </SProfileWrapper>
+      {snackBarState.open && (
+        <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
+      <Modal />
     </Layout>
   );
 }
@@ -366,6 +346,8 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
   let profileInfo = null;
+  const cookieToken = getCookie('accessToken', context);
+  const isLogined = !!cookieToken;
 
   const serverInstance = createServerInstance(context);
 
@@ -382,6 +364,7 @@ export const getServerSideProps: GetServerSideProps = async (
   return {
     props: {
       profileInfo,
+      isLogined,
     },
   };
 };
