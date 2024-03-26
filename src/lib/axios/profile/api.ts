@@ -2,6 +2,7 @@ import IRegisterState from '@/types/register';
 import axiosInstance from '../instance';
 import IProfile from '@/types/profile';
 import IGithubInfo from '@/types/github';
+import { IMyDepositList } from '@/types/deposit';
 
 /**
  * 멤버 정보 수정 PATCH
@@ -67,6 +68,17 @@ const deleteGithubApi = () => {
   return axiosInstance.delete('/members/github');
 };
 
+/**
+ * 예치금 내역 페이징 조회
+ * @param pageNum
+ * @returns paymentRecords
+ */
+const getMyDepositApi = (pageParam: number) => {
+  return axiosInstance.get<IMyDepositList>(
+    `/members/paymentRecords?page=${pageParam}&limit=5`,
+  );
+};
+
 export {
   editMemberApi,
   logoutApi,
@@ -76,4 +88,5 @@ export {
   getGithubInfoApi,
   linkGithubApi,
   deleteGithubApi,
+  getMyDepositApi,
 };
