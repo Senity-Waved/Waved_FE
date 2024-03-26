@@ -26,7 +26,7 @@ export default function PrivacyInput({
         <SBirthYearSelect
           name="birthYear"
           id="birthYearInput"
-          value={currentBirthYear}
+          value={currentBirthYear || '출생연도'}
           onChange={handleBirthYearChange}
         >
           <option value="출생연도">출생연도</option>
