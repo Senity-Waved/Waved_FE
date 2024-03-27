@@ -71,7 +71,11 @@ export default function ServiceTermCheck({ updateData }: IServiceTermCheck) {
             <label htmlFor="termCheck">(필수) 서비스 이용약관동의</label>
           </div>
           <SServiceTermLink>
-            <Link href="/">
+            <Link
+              href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               <Image
                 src="/icons/icon-small-arrow.svg"
                 alt="서비스 이용약관 보기"
