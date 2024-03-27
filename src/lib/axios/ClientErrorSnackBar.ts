@@ -14,9 +14,14 @@ export default function ClientErrorSnackBar() {
       openSnackBar('요청 시간이 초과되었습니다.');
     }
 
+    if (code === 'ERR_NETWORK') {
+      openSnackBar('네트워크 에러가 발생했습니다.');
+    }
+
     if (error.response && status === 500) {
       openSnackBar('문제가 발생했어요. 잠시 후 다시 시도해주세요.');
     }
+
     return Promise.reject(error);
   };
 

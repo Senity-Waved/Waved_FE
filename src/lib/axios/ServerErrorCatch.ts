@@ -35,6 +35,14 @@ export default function serverErrorCatch(
           },
         };
       }
+      if (code === 'ERR_NETWORK') {
+        return {
+          props: {
+            requireSnackBar: true, // snackbar 띄워줄지 여부
+            errorMsg: '네트워크 에러가 발생했습니다.', // snackbar 메시지 내용
+          },
+        };
+      }
       return {
         props: {
           requireSnackBar: true,
