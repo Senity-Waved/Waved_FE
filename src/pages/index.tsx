@@ -46,6 +46,8 @@ export default function OnBoarding() {
     window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
   };
 
+  console.log(`env의 LOGIN_URL : ${process.env.NEXT_PUBLIC_LOGIN_URL}`);
+
   return (
     <SOnBoardingWrapper>
       <Head>
