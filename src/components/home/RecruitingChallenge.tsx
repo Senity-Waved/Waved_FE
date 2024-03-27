@@ -6,12 +6,12 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 export default function RecruitingChallenge({
   recruitingChallenges,
 }: {
-  recruitingChallenges: IRecruitingChallenge[];
+  recruitingChallenges: IRecruitingChallenge[] | null;
 }) {
   return (
     <SSection>
       <STitle>✅ 모집 중인 챌린지</STitle>
-      {recruitingChallenges.length > 0 ? (
+      {recruitingChallenges && recruitingChallenges.length > 0 ? (
         <SList>
           {recruitingChallenges.map((challenge) => (
             <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
