@@ -11,7 +11,11 @@ export default function FloatingBtn({ type }: IFloatingBtn) {
     if (type === 'challengeRequest') {
       return (
         <SFloatingBtnWrapper>
-          <SChallengeRequest href="/challenge/request">
+          <SChallengeRequest
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://open.kakao.com/o/sFCnMohg"
+          >
             챌린지 요청
           </SChallengeRequest>
         </SFloatingBtnWrapper>

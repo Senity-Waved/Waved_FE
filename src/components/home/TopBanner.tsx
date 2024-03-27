@@ -25,7 +25,7 @@ const bannerItems: IBannerItem[] = [
       alt: '2주동안 매일 웨이브드와 함께 챌린지를 완주해 보아요!',
     },
     link: {
-      href: '#',
+      href: 'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263',
       text: '더 알아보기',
     },
   },
@@ -78,7 +78,25 @@ export default function TopBanner() {
               style={{ objectFit: 'cover' }}
               priority
             />
-            {item.link && <SLink href={item.link.href}>{item.link.text}</SLink>}
+            {item.link && (
+              <SLink
+                target={
+                  item.link.href ===
+                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
+                    ? '_blank'
+                    : undefined
+                }
+                rel={
+                  item.link.href ===
+                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
+                    ? 'noreferrer noopener'
+                    : undefined
+                }
+                href={item.link.href}
+              >
+                {item.link.text}
+              </SLink>
+            )}
           </SSlides>
         ))}
       </SSlider>

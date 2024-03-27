@@ -244,7 +244,11 @@ export default function Challenge({
           </SSectionContext>
           <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
-        <SLinkItem href="/">
+        <SLinkItem
+          href="https://waved-challenge.notion.site/bd9580432ee8470da26234db32ec15d7"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           <h3>주의사항</h3>
           <Image
             src="/icons/icon-left-arrow.svg"
@@ -253,7 +257,11 @@ export default function Challenge({
             height={24}
           />
         </SLinkItem>
-        <SLinkItem href="/">
+        <SLinkItem
+          href="https://waved-challenge.notion.site/cbc09e0792fe470da7da980034534919"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           <h3>예치금 환불 안내</h3>
           <Image
             src="/icons/icon-left-arrow.svg"

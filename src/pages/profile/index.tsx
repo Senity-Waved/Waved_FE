@@ -250,7 +250,11 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
           <h3>고객 센터</h3>
           <ul>
             <SPropfileBaseMenuWrapper>
-              <Link href="/">
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://waved-challenge.notion.site/FAQ-d61402baa16047caa19b90588caab233"
+              >
                 <p>자주 묻는 질문</p>
                 <Image
                   src="/icons/icon-down-arrow.svg"
@@ -262,7 +266,11 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
               </Link>
             </SPropfileBaseMenuWrapper>
             <SPropfileBaseMenuWrapper>
-              <Link href="/">
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://open.kakao.com/o/sFCnMohg"
+              >
                 <p>1:1 문의하기</p>
                 <Image
                   src="/icons/icon-down-arrow.svg"
@@ -274,7 +282,11 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
               </Link>
             </SPropfileBaseMenuWrapper>
             <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link href="/">
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://open.kakao.com/o/sFCnMohg"
+              >
                 <p>챌린지 요청</p>
                 <Image
                   src={
@@ -292,7 +304,11 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
               </Link>
             </SProfileActiveMenuWrapper>
             <SPropfileBaseMenuWrapper>
-              <Link href="/">
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+              >
                 <p>약관 및 정책</p>
                 <Image
                   src="/icons/icon-down-arrow.svg"

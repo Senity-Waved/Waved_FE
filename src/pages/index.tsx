@@ -111,10 +111,22 @@ export default function OnBoarding() {
         <SNonMemberLink href="/home">먼저 둘러볼게요</SNonMemberLink>
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
-          <SServicePolicyLink href="/">개인정보 처리방침</SServicePolicyLink>
+          <SServicePolicyLink
+            href="https://waved-challenge.notion.site/10970657567d47128df672d68aa4d16a"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            개인정보 처리방침
+          </SServicePolicyLink>
           &nbsp;및 &nbsp;
-          <SServicePolicyLink href="/">이용약관</SServicePolicyLink>에 동의하게
-          됩니다.
+          <SServicePolicyLink
+            href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            이용약관
+          </SServicePolicyLink>
+          에 동의하게 됩니다.
         </SServiceRegisterText>
         {snackBarState.open && (
           <SnackBar
