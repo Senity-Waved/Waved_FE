@@ -10,7 +10,7 @@ interface IReissueResponse {
 
 const createServerInstance = (context: GetServerSidePropsContext) => {
   const serverInstance = axios.create({
-    baseURL: 'https://waved.azurewebsites.net/api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
     timeout: 10000,
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,

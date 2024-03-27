@@ -25,7 +25,7 @@ const getChallengeGroupApi = (
  */
 const getReviewsApi = (challengeId: number, serverInstance: AxiosInstance) => {
   return serverInstance.get<IChallengeReviewList>(
-    `/challenges/${challengeId}/reviews?page=0&limit=1`,
+    `/challenges/${challengeId}/reviews?page=0&limit=5`,
   );
 };
 
