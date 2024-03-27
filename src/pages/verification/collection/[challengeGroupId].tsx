@@ -11,6 +11,7 @@ import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
 import { getCollectionInfoApi } from '@/lib/axios/verification/collection/api';
 import { ICollectionInfo } from '@/types/verification';
+import useSnackBar from '@/hooks/useSnackBar';
 
 export default function VeirificationCollection() {
   const router = useRouter();
@@ -112,6 +113,11 @@ export default function VeirificationCollection() {
       handleRouting('인증 제출이 완료되었습니다.');
     }
   }, [query, router, challengeGroupId, myChallengeId, verificationType]);
+
+  const { snackBarData } = useSnackBar();
+  useEffect(() => {
+    setSnackBarState(snackBarData);
+  }, [snackBarData]);
 
   return (
     <Layout
