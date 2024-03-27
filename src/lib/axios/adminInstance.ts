@@ -74,6 +74,8 @@ const onResponseError = async (error: AxiosError) => {
       console.error('액세스 토큰 재발급 실패', reissueError);
       return Promise.reject(reissueError);
     }
+  } else if (error.response && error.response.status === 403) {
+    throw new Error('UnauthorizedAdminAccess');
   }
 
   return Promise.reject(error);

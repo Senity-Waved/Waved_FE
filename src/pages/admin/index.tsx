@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import {
   getProgressChallengeGroupApi,
@@ -44,6 +45,7 @@ export default function AdminPage() {
   >(null);
 
   const { openModal, closeModal } = useModal();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProgressGroup = async () => {
@@ -51,15 +53,19 @@ export default function AdminPage() {
         const response = await getProgressChallengeGroupApi();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setProgressChallengeGroupData(response.data);
-      } catch (error) {
-        console.error(
-          '관리자 | 진행중인 챌린지 그룹 조회를 실패하였습니다. ',
-          error,
-        );
+      } catch (progressError) {
+        if (
+          progressError instanceof Error &&
+          progressError.message === 'UnauthorizedAdminAccess'
+        ) {
+          router.push('/home').catch(console.error);
+        } else {
+          console.error('관리자 페이지 로딩 실패', progressError);
+        }
       }
     };
-    fetchProgressGroup().catch((error) => console.error(error));
-  }, []);
+    fetchProgressGroup().catch(console.error);
+  }, [router]);
 
   const handleVerificationBtn = () => {
     const fetchSelectedChallengeVerifications = async () => {
@@ -69,13 +75,14 @@ export default function AdminPage() {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
           setSelectedChallengeVerification(response.data.content);
         }
-      } catch (error) {
-        console.error('선택한 챌린지 그룹의 인증 내역 조회 실패', error);
+      } catch (verificationListError) {
+        console.error(
+          '선택한 챌린지 그룹의 인증 내역 조회 실패',
+          verificationListError,
+        );
       }
     };
-    fetchSelectedChallengeVerifications().catch((error) =>
-      console.error(error),
-    );
+    fetchSelectedChallengeVerifications().catch(console.error);
   };
 
   const deleteVerification = () => {
@@ -91,11 +98,11 @@ export default function AdminPage() {
           );
           console.log('인증 취소 성공 | ', response);
         }
-      } catch (error) {
-        console.error('선택한 인증 내역 삭제 실패', error);
+      } catch (deleteVerificationError) {
+        console.error('선택한 인증 내역 삭제 실패', deleteVerificationError);
       }
     };
-    deleteSelectedVerification().catch((error) => console.error(error));
+    deleteSelectedVerification().catch(console.error);
   };
 
   return (
@@ -118,27 +125,25 @@ export default function AdminPage() {
             progressChallengeGroupData.length > 0 ? (
               <form>
                 {progressChallengeGroupData.map((challengeGroup) => (
-                  <div>
-                    <label key={challengeGroup.challengeGroupId}>
-                      <input
-                        type="radio"
-                        name="progressChallengeGroup"
-                        value={challengeGroup.challengeGroupId}
-                        checked={
-                          selectedGroupId === challengeGroup.challengeGroupId
-                        }
-                        onChange={() =>
-                          setSelectedGroupId(challengeGroup.challengeGroupId)
-                        }
-                      />
-                      <span>
-                        ({challengeGroup.challengeGroupId})
-                        {challengeGroup.groupTitle}
-                      </span>
-                      <span>{parseDate(challengeGroup.startDate)}</span>~
-                      <span>{parseDate(challengeGroup.endDate)}</span>
-                    </label>
-                  </div>
+                  <label key={challengeGroup.challengeGroupId}>
+                    <input
+                      type="radio"
+                      name="progressChallengeGroup"
+                      value={challengeGroup.challengeGroupId}
+                      checked={
+                        selectedGroupId === challengeGroup.challengeGroupId
+                      }
+                      onChange={() =>
+                        setSelectedGroupId(challengeGroup.challengeGroupId)
+                      }
+                    />
+                    <span>
+                      ({challengeGroup.challengeGroupId})
+                      {challengeGroup.groupTitle}
+                    </span>
+                    <span>{parseDate(challengeGroup.startDate)}</span>~
+                    <span>{parseDate(challengeGroup.endDate)}</span>
+                  </label>
                 ))}
               </form>
             ) : (
@@ -157,8 +162,8 @@ export default function AdminPage() {
             {selectedChallengeVerification ? (
               selectedChallengeVerification.length > 0 ? (
                 selectedChallengeVerification.map((verification) => (
-                  <SVerificationBox>
-                    <label key={verification.verificationId}>
+                  <SVerificationBox key={verification.verificationId}>
+                    <label>
                       <input
                         type="radio"
                         name="selectedVerification"
@@ -196,6 +201,7 @@ export default function AdminPage() {
                             ? '깃허브 커밋 상태 : 커밋 실패'
                             : verification.content}
                       </p>
+                      <p>{parseDate(verification.verificationDate)}</p>
                       <SVerificationStatus>
                         인증 상태 :{' '}
                         {verification.isDeleted
