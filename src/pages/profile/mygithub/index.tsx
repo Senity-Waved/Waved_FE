@@ -224,6 +224,12 @@ const SGithubForm = styled.form<{ isGithubLinked: boolean }>`
       color: ${({ theme, isGithubLinked }) =>
         isGithubLinked ? theme.color.gray_de : theme.color.gray_bf};
     }
+
+    &:focus {
+      border-bottom: 2px solid
+        ${({ theme, isGithubLinked }) =>
+          isGithubLinked ? theme.color.gray_de : theme.color.gray_3c};
+    }
   }
 
   & div {
