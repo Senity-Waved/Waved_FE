@@ -37,6 +37,19 @@ interface IFetchMoreReviewsResponse extends IChallengeReviewList {
   nextPage: number;
 }
 
+const previousStartDate = (date: string) => {
+  const [year, month, day] = parseDate(date);
+  const dateObj = new Date(
+    parseInt(year, 10),
+    parseInt(month, 10) - 1,
+    parseInt(day, 10),
+  );
+  dateObj.setDate(dateObj.getDate() - 1);
+  const newMonth = dateObj.getMonth() + 1;
+  const newDay = dateObj.getDate();
+  return `${newMonth}월 ${newDay}일 (${WEEKDAYS[dateObj.getDay()]})`;
+};
+
 const formattedDate = (date: string) => {
   const [year, month, day] = parseDate(date);
   const dateObj = new Date(
@@ -215,7 +228,15 @@ export default function Challenge({
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
           <SSectionContext>
-            {challengeInfo.description.split('\n').map((line) => (
+            {challengeInfo.groupTitle.includes('스크린타임') && (
+              <SNoticeVerification>
+                스크린타임 챌린지는 <b>하루 전 날</b>의 핸드폰 사용 시간 인증
+                제출을 규칙으로 합니다. 참가자는 실질적으로 전날인{' '}
+                <b>{previousStartDate(challengeInfo.startDate)}</b> 부터
+                챌린지에 참여해야 합니다.
+              </SNoticeVerification>
+            )}
+            {challengeInfo.verificationDescription.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
@@ -386,6 +407,20 @@ const SSectionContext = styled.div`
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
   line-height: 1.8;
+`;
+
+const SNoticeVerification = styled.p`
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: ${({ theme }) => theme.color.light};
+  border-radius: 12px;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  line-height: 1.8;
+  b {
+    color: ${({ theme }) => theme.color.normal};
+  }
 `;
 
 const SEmptyViewWrapper = styled.div`
