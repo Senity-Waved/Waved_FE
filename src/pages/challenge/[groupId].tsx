@@ -180,7 +180,7 @@ export default function Challenge({
           ]}
         />
         <SSection>
-          <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
+          <SSectionTitle>챌린지 정보</SSectionTitle>
           <SSectionContext>
             {challengeInfo.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
