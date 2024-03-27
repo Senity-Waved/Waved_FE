@@ -58,12 +58,7 @@ export default function AdminPage() {
           progressError instanceof Error &&
           progressError.message === 'UnauthorizedAdminAccess'
         ) {
-          router
-            .push({
-              pathname: '/home',
-              query: { isadmin: false },
-            })
-            .catch(console.error);
+          router.push('/home').catch(console.error);
         } else {
           console.error('관리자 페이지 로딩 실패', progressError);
         }
