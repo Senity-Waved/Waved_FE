@@ -36,7 +36,7 @@ export const getMyVerifiactionApi = async (
   date: string, // -> 2024-03-19
 ): Promise<IVerificationInfo[]> => {
   const response = await axiosInstance.get(
-    `/challengeGroups/${groupId}/myVerifies?verificationDate=${date} 00:00:00.000`,
+    `/challengeGroups/${groupId}/myVerifies?verificationDate=${date} 09:00:00.000`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
@@ -53,7 +53,7 @@ export const getVerificationsApi = async (
   date: string, // -> 2024-03-19
 ): Promise<IVerificationInfo[]> => {
   const response = await axiosInstance.get(
-    `/challengeGroups/${groupId}?verificationDate=${date} 00:00:00.0`,
+    `/challengeGroups/${groupId}?verificationDate=${date} 09:00:00.0`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
@@ -109,7 +109,7 @@ export const getQuizApi = async (
   date: string,
 ): Promise<{ date: string; question: string }> => {
   const response = await axiosInstance.get(
-    `/verify/${groupId}/dates?quizDate=${date} 00:00:00.0`,
+    `/verify/${groupId}/dates?quizDate=${date} 09:00:00.0`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;

@@ -11,6 +11,7 @@ import SnackBar from '@/components/common/SnackBar';
 import parseDate from '@/utils/parseDate';
 import { getCollectionInfoApi } from '@/lib/axios/verification/collection/api';
 import { ICollectionInfo } from '@/types/verification';
+import EmptyView from '@/components/common/EmptyView';
 
 export default function VeirificationCollection() {
   const router = useRouter();
@@ -108,8 +109,11 @@ export default function VeirificationCollection() {
         });
       }, 3500);
     };
-    if (query.submitVerification) {
+    if (query.successSubmission) {
       handleRouting('인증 제출이 완료되었습니다.');
+    }
+    if (query.duplicateSubmission) {
+      handleRouting('오늘의 인증을 이미 완료했습니다.', 'warning');
     }
   }, [query, router, challengeGroupId, myChallengeId, verificationType]);
 
@@ -124,7 +128,26 @@ export default function VeirificationCollection() {
         <STitle>📌 내 인증 현황 </STitle>
         <Stamp results={stampData} startDate={challengeData.startDate} />
       </SStampWrapper>
-      {verificationType !== 'GITHUB' && (
+      {verificationType === 'GITHUB' ? (
+        <SGithubWrapper>
+          <EmptyView pageType="커밋인증" />
+          <SGithubCautionList>
+            <h3>주의사항</h3>
+            <SGithubCautionItem>
+              • 깃허브 연동 해지 시, 진행 중인 챌린지는 실패로 기록됩니다.
+            </SGithubCautionItem>
+            <SGithubCautionItem>
+              • 깃허브 커밋 인증의 경우 리포지토리 커밋이 성공 기준입니다.
+            </SGithubCautionItem>
+            <SGithubCautionItem>
+              • 이슈 생성, PR 확인은 인증이 불가합니다.
+            </SGithubCautionItem>
+            <SGithubCautionItem>
+              • 인증 후 확인까지 최소 1-5분이 소요됩니다.
+            </SGithubCautionItem>
+          </SGithubCautionList>
+        </SGithubWrapper>
+      ) : (
         <>
           <SDateWrapper>
             <SDateBtn
@@ -195,4 +218,31 @@ const SDateBtn = styled.button<{ direction: 'prev' | 'next' }>`
     opacity: 0.5;
     cursor: not-allowed;
   }
+`;
+
+const SGithubWrapper = styled.div`
+  padding: 0 2rem;
+`;
+
+const SGithubCautionList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.gray_f9};
+  padding: 1rem;
+  margin-top: 2rem;
+
+  h3 {
+    font-size: ${({ theme }) => theme.fontSize.subtitle1};
+    font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+    color: ${({ theme }) => theme.color.gray_3c};
+    margin-bottom: 0.25rem;
+  }
+`;
+
+const SGithubCautionItem = styled.li`
+  font-size: ${({ theme }) => theme.fontSize.body4};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
+  color: ${({ theme }) => theme.color.gray_52};
 `;

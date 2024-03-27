@@ -23,6 +23,10 @@ const emptyText = {
     mainText: '인증 내역이 없어요',
     subText: '아무도 인증을 하지 않은 날입니다.',
   },
+  커밋인증: {
+    mainText: '나만의 커밋 인증',
+    subText: '1일 1커밋 챌린지는 내 인증 내역만 볼 수 있습니다.',
+  },
 };
 
 export default emptyText;
