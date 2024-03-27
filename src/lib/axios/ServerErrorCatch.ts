@@ -19,14 +19,6 @@ export default function serverErrorCatch(
       const { code } = axiosError;
       const status = axiosError.response?.status;
 
-      if (axiosError.response && status === 500) {
-        return {
-          props: {
-            requireSnackBar: true, // snackbar 띄워줄지 여부
-            errorMsg: '문제가 발생했어요. 잠시 후 다시 시도해주세요.', // snackbar 메시지 내용
-          },
-        };
-      }
       if (code === 'ECONNABORTED' || status === 408) {
         return {
           props: {
