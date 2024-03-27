@@ -27,11 +27,8 @@ export default function MyGithub() {
       try {
         const response = await getGithubInfoApi();
         if (response) {
-          setGithubData(response.data);
-          if (
-            response.data.githubId !== null &&
-            response.data.githubToken !== null
-          )
+          setGithubData(response);
+          if (response.githubId !== null && response.githubToken !== null)
             setIsGithubLinked(true);
         }
       } catch (error) {
