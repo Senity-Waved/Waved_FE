@@ -13,21 +13,36 @@ import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
+import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 
 interface IMyChallenges {
-  getMyProgressChallenges: TMyChallengeInfo[];
-  getMyWaitingChallenges: TMyChallengeInfo[];
-  getMyCompletedChallenges: TMyChallengeInfo[];
+  getMyProgressChallenges?: TMyChallengeInfo[];
+  getMyWaitingChallenges?: TMyChallengeInfo[];
+  getMyCompletedChallenges?: TMyChallengeInfo[];
+  requireSnackBar?: boolean;
+  errorMsg?: string;
 }
 
 export default function MyChallenge({
   getMyProgressChallenges,
   getMyWaitingChallenges,
   getMyCompletedChallenges,
+  requireSnackBar,
+  errorMsg,
 }: IMyChallenges) {
   const [completedData, setCompletedData] = useState<TMyChallengeInfo[]>(
-    getMyCompletedChallenges,
+    getMyCompletedChallenges || [],
   );
+  const progressDataLength = getMyProgressChallenges
+    ? getMyProgressChallenges.length
+    : 0;
+  const waitingDataLength = getMyWaitingChallenges
+    ? getMyWaitingChallenges.length
+    : 0;
+  const completedDataLength = completedData ? completedData.length : 0;
+  const isEmptyData =
+    progressDataLength + waitingDataLength + completedDataLength;
+
   const router = useRouter();
   const { query } = router;
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
@@ -35,12 +50,7 @@ export default function MyChallenge({
     text: '',
   });
 
-  console.log(
-    getMyProgressChallenges,
-    getMyWaitingChallenges,
-    getMyCompletedChallenges,
-  );
-
+  // 스낵바
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
@@ -67,10 +77,24 @@ export default function MyChallenge({
       handleRouting(REVIEW_SNACKBAR_TEXT.POST);
     }
   }, [query, router]);
-  const isEmptyData =
-    getMyProgressChallenges.length +
-    getMyWaitingChallenges.length +
-    completedData.length;
+
+  useEffect(() => {
+    if (requireSnackBar && errorMsg) {
+      setSnackBarState({
+        open: true,
+        text: errorMsg,
+        type: 'warning',
+      });
+
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    }
+  }, [requireSnackBar, errorMsg]);
+
   return (
     <Layout
       headerText="MY 챌린지"
@@ -86,21 +110,21 @@ export default function MyChallenge({
       />
 
       <div>
-        {getMyProgressChallenges.length !== 0 && (
+        {progressDataLength !== 0 && (
           <ChallengeSection
             mainText="🧑🏻‍💻 진행 중"
             status="PROGRESS"
-            challenges={getMyProgressChallenges}
+            challenges={getMyProgressChallenges || []}
           />
         )}
-        {getMyWaitingChallenges.length !== 0 && (
+        {waitingDataLength !== 0 && (
           <ChallengeSection
             mainText="📚 대기 중"
             status="WAITING"
-            challenges={getMyWaitingChallenges}
+            challenges={getMyWaitingChallenges || []}
           />
         )}
-        {completedData.length !== 0 && (
+        {completedDataLength !== 0 && (
           <ChallengeSection
             mainText="🥳 진행 완료"
             status="COMPLETED"
@@ -110,8 +134,8 @@ export default function MyChallenge({
         )}
       </div>
       {isEmptyData === 0 && <ChallengeEmptyView />}
-      {getMyProgressChallenges.length + getMyWaitingChallenges.length === 0 &&
-        completedData.length !== 0 && (
+      {progressDataLength + waitingDataLength === 0 &&
+        completedDataLength !== 0 && (
           <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
         )}
       {snackBarState.open && (
@@ -122,19 +146,14 @@ export default function MyChallenge({
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
   const serverInstance = createServerInstance(context);
 
   const fetchMyChallenges = async (status: string) => {
-    try {
-      const response = await serverInstance.get<TMyChallengeInfo[]>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=${status}`,
-      );
-      return response.data;
-    } catch (error) {
-      console.error(`my${status}Challenge API 실패`, error);
-      return [];
-    }
+    const response = await serverInstance.get<TMyChallengeInfo[]>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/myChallenges?status=${status}`,
+    );
+    return response.data;
   };
 
   const [myProgressChallenges, myWaitingChallenges, myCompletedChallenges] =
@@ -151,6 +170,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
+
+export const getServerSideProps = serverErrorCatch(getServerSidePropsFunction);
 
 const SLinkToHome = styled(Link)`
   font-size: ${({ theme }) => theme.fontSize.body2};

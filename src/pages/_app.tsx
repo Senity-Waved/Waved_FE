@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import theme from '@/styles/theme';
 import global from '@/styles/global';
+import ClientErrorSnackBar from '@/lib/axios/ClientErrorSnackBar';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
+        <ClientErrorSnackBar />
         <ThemeProvider theme={theme}>
           <Global styles={global} />
           <Component {...pageProps} />
