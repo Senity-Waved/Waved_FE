@@ -32,7 +32,7 @@ export default function Custom404() {
             <br />
             다시 한번 확인해 주세요.
           </SSubText>
-          <SLink href="/">홈으로 이동</SLink>
+          <SLink href="/home">홈으로 이동</SLink>
         </SCustom404>
       </main>
     </SCustom404Wrapper>

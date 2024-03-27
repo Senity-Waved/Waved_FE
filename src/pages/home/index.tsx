@@ -29,8 +29,8 @@ export default function Home({
   recruitingChallenges,
 }: {
   isLogined: boolean;
-  myProcessingChallenges: IMyProcessingChallenge[];
-  recruitingChallenges: IRecruitingChallenge[];
+  myProcessingChallenges: IMyProcessingChallenge[] | null;
+  recruitingChallenges: IRecruitingChallenge[] | null;
 }) {
   const router = useRouter();
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
@@ -65,31 +65,33 @@ export default function Home({
       <HomeHeader />
       <main>
         <TopBanner />
-        {isLogined && myProcessingChallenges.length > 0 && (
-          <SSection>
-            <STitleLink href="/mychallenge">
-              <h2>👨‍💻 진행 중인 챌린지</h2>
-              <Image
-                src="/icons/icon-left-arrow.svg"
-                alt="마이 챌린지로 가기"
-                width={24}
-                height={24}
-                style={{ transform: 'rotate(180deg)' }}
-                priority
-              />
-            </STitleLink>
-            <ScrollXBox>
-              <SListScrollX>
-                {myProcessingChallenges.map((challenge) => (
-                  <ChallengeCardWide
-                    key={challenge.challengeGroupId}
-                    {...challenge}
-                  />
-                ))}
-              </SListScrollX>
-            </ScrollXBox>
-          </SSection>
-        )}
+        {isLogined &&
+          myProcessingChallenges &&
+          myProcessingChallenges.length > 0 && (
+            <SSection>
+              <STitleLink href="/mychallenge">
+                <h2>👨‍💻 진행 중인 챌린지</h2>
+                <Image
+                  src="/icons/icon-left-arrow.svg"
+                  alt="마이 챌린지로 가기"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(180deg)' }}
+                  priority
+                />
+              </STitleLink>
+              <ScrollXBox>
+                <SListScrollX>
+                  {myProcessingChallenges.map((challenge) => (
+                    <ChallengeCardWide
+                      key={challenge.challengeGroupId}
+                      {...challenge}
+                    />
+                  ))}
+                </SListScrollX>
+              </ScrollXBox>
+            </SSection>
+          )}
         <RecruitingChallenge recruitingChallenges={recruitingChallenges} />
         {snackBarState.open && (
           <SnackBar text={snackBarState.text} type={snackBarState.type} />
@@ -106,8 +108,8 @@ export async function getServerSideProps(
 ): Promise<{
   props: {
     isLogined: boolean;
-    myProcessingChallenges: IMyProcessingChallenge[];
-    recruitingChallenges: IRecruitingChallenge[];
+    myProcessingChallenges: IMyProcessingChallenge[] | null;
+    recruitingChallenges: IRecruitingChallenge[] | null;
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
@@ -120,7 +122,7 @@ export async function getServerSideProps(
       return response.data;
     } catch (error) {
       console.error('myProcessingChallenge API GET 실패', error);
-      return [];
+      return null;
     }
   }
   async function fetchRecruitingChallenges() {
@@ -130,7 +132,7 @@ export async function getServerSideProps(
       return response.data;
     } catch (error) {
       console.error('recruitingChallenge API GET 실패', error);
-      return [];
+      return null;
     }
   }
   const myProcessingChallenges = await fetchMyProcessingChallenges();

@@ -90,18 +90,16 @@ export default function Challenge({
     open: false,
     text: '',
   });
-  const formattedStartDate = formattedDate(challengeInfo.startDate);
-  const formattedEndDate = formattedDate(challengeInfo.endDate);
-  const condition = calculateCondition(
-    challengeInfo.startDate,
-    challengeInfo.endDate,
-  );
+
   const challengeData: ISelectedChallenge = {
     challengeGroupId: groupId,
     groupTitle: challengeInfo.groupTitle,
-    startDate: formattedStartDate,
-    endDate: formattedEndDate,
-    condition,
+    startDate: formattedDate(challengeInfo.startDate),
+    endDate: formattedDate(challengeInfo.endDate),
+    condition: calculateCondition(
+      challengeInfo.startDate,
+      challengeInfo.endDate,
+    ),
     participantCount: challengeInfo.participantCount,
     isFree: challengeInfo.isFree,
   };
@@ -119,6 +117,7 @@ export default function Challenge({
       totalElements: response.data.totalElements,
     };
   };
+
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
     IFetchMoreReviewsResponse,
     Error
@@ -177,11 +176,14 @@ export default function Challenge({
         </SThumbnail>
         <ChallengeSummary
           className="description"
-          groupTitle={challengeInfo.groupTitle}
-          participantCount={challengeInfo.participantCount}
-          startDate={formattedStartDate}
-          endDate={formattedEndDate}
-          condition={condition}
+          groupTitle={challengeInfo?.groupTitle}
+          participantCount={challengeInfo?.participantCount}
+          startDate={formattedDate(challengeInfo.startDate)}
+          endDate={formattedDate(challengeInfo.endDate)}
+          condition={calculateCondition(
+            challengeInfo.startDate,
+            challengeInfo.endDate,
+          )}
           setSummaryHeight={setSummaryHeight}
         />
         <TabMenu
@@ -195,14 +197,14 @@ export default function Challenge({
         <SSection>
           <SSectionTitle>챌린지 정보</SSectionTitle>
           <SSectionContext>
-            {challengeInfo.description.split('\n').map((line) => (
-              <p key={uuidv4()}>{line}</p>
-            ))}
+            {challengeInfo?.description
+              .split('\n')
+              .map((line) => <p key={uuidv4()}>{line}</p>)}
           </SSectionContext>
         </SSection>
         <SSection id="review">
           <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {reviewList.totalElements === 0 ? (
+          {!reviewList || reviewList.totalElements === 0 ? (
             <SEmptyViewWrapper>
               <EmptyView pageType="챌린지후기" />
             </SEmptyViewWrapper>
@@ -228,7 +230,7 @@ export default function Challenge({
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
           <SSectionContext>
-            {challengeInfo.groupTitle.includes('스크린타임') && (
+            {challengeInfo?.groupTitle.includes('스크린타임') && (
               <SNoticeVerification>
                 스크린타임 챌린지는 <b>하루 전 날</b>의 핸드폰 사용 시간 인증
                 제출을 규칙으로 합니다. 참가자는 실질적으로 전날인{' '}
@@ -236,9 +238,9 @@ export default function Challenge({
                 챌린지에 참여해야 합니다.
               </SNoticeVerification>
             )}
-            {challengeInfo.verificationDescription.split('\n').map((line) => (
-              <p key={uuidv4()}>{line}</p>
-            ))}
+            {challengeInfo?.verificationDescription
+              .split('\n')
+              .map((line) => <p key={uuidv4()}>{line}</p>)}
           </SSectionContext>
           <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
@@ -260,13 +262,15 @@ export default function Challenge({
             height={24}
           />
         </SLinkItem>
-        <ParticipantButton
-          challengeData={challengeData}
-          isApplied={challengeInfo.isApplied}
-          myChallengeId={challengeInfo.myChallengeId}
-          startDate={challengeInfo.startDate}
-          setSnackBarState={setSnackBarState}
-        />
+        {challengeInfo && (
+          <ParticipantButton
+            challengeData={challengeData}
+            isApplied={challengeInfo.isApplied}
+            myChallengeId={challengeInfo.myChallengeId}
+            startDate={challengeInfo.startDate}
+            setSnackBarState={setSnackBarState}
+          />
+        )}
         {snackBarState.open && (
           <SnackBar
             text={snackBarState.text}
