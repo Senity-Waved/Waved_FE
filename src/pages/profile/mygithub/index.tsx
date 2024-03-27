@@ -27,8 +27,11 @@ export default function MyGithub() {
       try {
         const response = await getGithubInfoApi();
         if (response) {
-          setGithubData(response);
-          if (response.githubId !== null && response.githubToken !== null)
+          setGithubData(response.data);
+          if (
+            response.data.githubId !== null &&
+            response.data.githubToken !== null
+          )
             setIsGithubLinked(true);
         }
       } catch (error) {
@@ -136,11 +139,7 @@ export default function MyGithub() {
           </div>
         </SGithubForm>
         <SGithubGuideBtnWrapper>
-          <SGithubGuideLink
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://waved-challenge.notion.site/GitHub-d6e9b94f8193411f83bd701f5b749d0c"
-          >
+          <SGithubGuideLink href="/">
             <span>토큰 가져오는 방법</span>
           </SGithubGuideLink>
         </SGithubGuideBtnWrapper>
@@ -224,12 +223,6 @@ const SGithubForm = styled.form<{ isGithubLinked: boolean }>`
     &::placeholder {
       color: ${({ theme, isGithubLinked }) =>
         isGithubLinked ? theme.color.gray_de : theme.color.gray_bf};
-    }
-
-    &:focus {
-      border-bottom: 2px solid
-        ${({ theme, isGithubLinked }) =>
-          isGithubLinked ? theme.color.gray_de : theme.color.gray_3c};
     }
   }
 

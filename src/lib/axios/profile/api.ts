@@ -48,9 +48,8 @@ const deleteMemberApi = () => {
  * 깃허브 연동 정보 GET
  * @returns githubId, githubToken
  */
-const getGithubInfoApi = async (): Promise<IGithubInfo> => {
-  const response = await axiosInstance.get<IGithubInfo>('/members/github');
-  return response.data;
+const getGithubInfoApi = () => {
+  return axiosInstance.get<IGithubInfo>('/members/github');
 };
 
 /**
