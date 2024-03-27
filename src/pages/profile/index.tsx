@@ -55,7 +55,7 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
             // 탈퇴 처리 후 리다이렉션
             router
               .push({
-                pathname: '/onboarding',
+                pathname: '/',
                 query: { withdrawal: true },
               })
               .catch((error) => {
@@ -93,7 +93,7 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
             // 로그아웃 처리 후 리다이렉션
             router
               .push({
-                pathname: '/onboarding',
+                pathname: '/',
                 query: { logout: true },
               })
               .catch((error) => {

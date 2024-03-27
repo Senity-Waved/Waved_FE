@@ -45,7 +45,7 @@ export default function ParticipantButton({
   const goToOnboarding = () => {
     router
       .push({
-        pathname: '/onboarding',
+        pathname: '/',
         query: { needLoginToParticipant: true },
       })
       .catch((error) => {
@@ -65,11 +65,6 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         console.log('챌린지 취소 및 환불 요청 성공했습니다', myChallengeId);
-        // const currentUrl = window.location.pathname;
-        // const newUrl = new URL(currentUrl, window.location.origin);
-        // newUrl.searchParams.set('cancelParticipantSuccess', 'true');
-        // window.history.pushState({}, '', newUrl); // URL을 변경하지만 페이지 이동은 없음
-        // window.location.reload(); // 서버에서 페이지를 다시 로드
         setCanCancelParticpant(false);
         router
           .replace(

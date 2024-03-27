@@ -31,7 +31,7 @@ export default function MyReviewItem({
           .invalidateQueries(['myReviews'])
           .catch((error) => console.error('쿼리 초기화 실패', error));
         router
-          .push({
+          .replace({
             pathname: '/profile/myreview',
             query: {
               deleteReviewSuccess: true,

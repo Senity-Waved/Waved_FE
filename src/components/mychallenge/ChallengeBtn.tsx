@@ -46,8 +46,18 @@ export default function ChallengeBtn({
     try {
       const response = await postMyCommitVerifiactionApi(challengeGroupId);
       if (response) {
-        const res = await fetchMyChallenges(status);
-        if (setData !== undefined) setData(res);
+        router
+          .push({
+            pathname: `/verification/collection/${challengeGroupId}`,
+            query: {
+              type: verificationType,
+              myChallengeId,
+              successSubmission: true,
+            },
+          })
+          .catch((error) => {
+            console.error('페이지 이동에 실패하였습니다.', error);
+          });
       }
     } catch (error) {
       console.error('커밋인증 실패', error);

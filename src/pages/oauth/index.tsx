@@ -61,7 +61,7 @@ export default function Oauth() {
       (cookieAccessToken && typeof hasInfo === 'boolean')
     ) {
       router
-        .push(hasInfo ? '/' : '/register')
+        .push(hasInfo ? '/home' : '/register')
         .catch((error) => console.error(error));
     }
   }, [hasInfo, router, accessToken, isTokenPosted]);

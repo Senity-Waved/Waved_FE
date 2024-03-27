@@ -10,7 +10,8 @@ interface IEmptyView {
     | '챌린지후기'
     | '내후기'
     | '예치금내역'
-    | '인증내역';
+    | '인증내역'
+    | '커밋인증';
 }
 
 export default function EmptyView({ pageType }: IEmptyView) {
@@ -20,7 +21,11 @@ export default function EmptyView({ pageType }: IEmptyView) {
   return (
     <SEmptyWrapper pageType={pageType}>
       <Image
-        src="/icons/icon-empty-character.svg"
+        src={
+          pageType === '커밋인증'
+            ? '/icons/icon-empty-github.svg'
+            : '/icons/icon-empty-character.svg'
+        }
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
         width={84}
         height={84}
@@ -46,7 +51,11 @@ const SEmptyWrapper = styled.div<IEmptyView>`
   align-items: center;
   gap: 0.5rem;
   ${({ pageType }) =>
-    pageType === '마이챌린지' || pageType === '인증내역' ? '' : centerStyle}
+    pageType === '마이챌린지' ||
+    pageType === '인증내역' ||
+    pageType === '커밋인증'
+      ? ''
+      : centerStyle}
 `;
 
 const SEmptyMainText = styled.h2`

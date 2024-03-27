@@ -180,7 +180,7 @@ export default function Challenge({
           ]}
         />
         <SSection>
-          <SSectionTitle>챌린지 커리큘럼 or 소개</SSectionTitle>
+          <SSectionTitle>챌린지 정보</SSectionTitle>
           <SSectionContext>
             {challengeInfo.description.split('\n').map((line) => (
               <p key={uuidv4()}>{line}</p>
@@ -219,7 +219,6 @@ export default function Challenge({
               <p key={uuidv4()}>{line}</p>
             ))}
           </SSectionContext>
-          <SSectionTitle>예시</SSectionTitle>
           <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
         <SLinkItem href="/">
@@ -350,7 +349,7 @@ const SSection = styled.section`
   color: ${({ theme }) => theme.color.gray_3c};
   scroll-margin-top: 182px;
   &:last-of-type {
-    padding-bottom: 0;
+    padding-bottom: 1.5rem;
   }
   &:not(:last-of-type)::after {
     content: '';
@@ -363,7 +362,7 @@ const SSection = styled.section`
   }
 `;
 
-const SSectionTitle = styled.h3`
+export const SSectionTitle = styled.h3`
   padding: 0 1.25rem;
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
