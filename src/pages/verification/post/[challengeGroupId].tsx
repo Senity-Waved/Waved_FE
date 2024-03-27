@@ -16,6 +16,8 @@ import {
   postMyVerificationApi,
 } from '@/lib/axios/verification/post/api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import useSnackBar from '@/hooks/useSnackBar';
+import SnackBar from '@/components/common/SnackBar';
 
 export default function VerificationPost() {
   const router = useRouter();
@@ -40,6 +42,7 @@ export default function VerificationPost() {
   );
   const [quiz, setQuiz] = useState<string>('문제를 불러오고 있습니다.');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { snackBarData, openSnackBar } = useSnackBar();
 
   const postMyVerification = async () => {
     const formData = new FormData();
@@ -103,8 +106,9 @@ export default function VerificationPost() {
         .catch((error) => {
           console.error('getQuiz API 실패', error);
           setQuiz('문제를 불러오는데 실패했습니다.');
+          openSnackBar('문제를 불러오는데 실패했습니다.');
         });
-  }, [verificationType, challengeGroupId]);
+  }, [verificationType, challengeGroupId, openSnackBar]);
 
   return (
     <Layout
@@ -141,6 +145,9 @@ export default function VerificationPost() {
             </>
           )}
         </WriteLayout>
+      )}
+      {snackBarData.open && (
+        <SnackBar text={snackBarData.text} type={snackBarData.type} noFooter />
       )}
       <Modal />
     </Layout>

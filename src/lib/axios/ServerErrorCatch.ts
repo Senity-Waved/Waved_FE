@@ -37,7 +37,7 @@ export default function serverErrorCatch(
       }
       return {
         props: {
-          requireSnackBar: false,
+          requireSnackBar: true,
           errorMsg: axiosError.message || '에러가 발생했습니다.',
         },
       };
