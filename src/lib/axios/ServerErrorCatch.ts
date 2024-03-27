@@ -6,7 +6,7 @@ import {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-export default function ServerErrorCatch(
+export default function serverErrorCatch(
   getServerSidePropsFunction: GetServerSideProps,
 ) {
   return async (
@@ -19,7 +19,7 @@ export default function ServerErrorCatch(
       const { code } = axiosError;
       const status = axiosError.response?.status;
 
-      if (axiosError.isAxiosError && axiosError.response && status === 500) {
+      if (axiosError.response && status === 500) {
         return {
           props: {
             requireSnackBar: true, // snackbar 띄워줄지 여부
