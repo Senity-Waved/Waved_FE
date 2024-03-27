@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Layout from '@/components/common/Layout';
 import ProfileShortcut from '@/components/profile/ProfileShortcut';
 import SnackBar from '@/components/common/SnackBar';
@@ -16,13 +16,21 @@ import { deleteMemberApi, logoutApi } from '@/lib/axios/profile/api';
 import useModal from '@/hooks/useModal';
 import IProfile from '@/types/profile';
 import createServerInstance from '@/lib/axios/serverInstance';
+import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 
 interface IProfileProps {
   profileInfo: IProfile;
   isLogined: boolean;
+  requireSnackBar?: boolean;
+  errorMsg?: string;
 }
 
-export default function Profile({ profileInfo, isLogined }: IProfileProps) {
+export default function Profile({
+  profileInfo,
+  isLogined,
+  requireSnackBar,
+  errorMsg,
+}: IProfileProps) {
   const router = useRouter();
   const { query } = useRouter();
   const { openModal, closeModal } = useModal();
@@ -135,6 +143,23 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
       handleRouting(profileSnackBarText.LINKED_FAIL, 'warning');
     }
   }, [query, router]);
+
+  useEffect(() => {
+    if (requireSnackBar && errorMsg) {
+      setSnackBarState({
+        open: true,
+        text: errorMsg,
+        type: 'warning',
+      });
+
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    }
+  }, [requireSnackBar, errorMsg]);
 
   return (
     <Layout
@@ -358,24 +383,17 @@ export default function Profile({ profileInfo, isLogined }: IProfileProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext,
-) => {
+async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
   let profileInfo = null;
   const cookieToken = getCookie('accessToken', context);
   const isLogined = !!cookieToken;
 
   const serverInstance = createServerInstance(context);
 
-  try {
-    const response = await serverInstance.get<IProfile>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/members/profile`,
-    );
-
-    profileInfo = response.data;
-  } catch (error) {
-    console.error('💦 로그인 유저 프로필 조회 실패', error);
-  }
+  const response = await serverInstance.get<IProfile>(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/members/profile`,
+  );
+  profileInfo = response.data;
 
   return {
     props: {
@@ -383,7 +401,9 @@ export const getServerSideProps: GetServerSideProps = async (
       isLogined,
     },
   };
-};
+}
+
+export const getServerSideProps = serverErrorCatch(getServerSidePropsFunction);
 
 const SProfileWrapper = styled.div`
   margin: 0 1.25rem;
