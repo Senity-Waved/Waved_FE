@@ -206,6 +206,7 @@ export default function AdminPage() {
                             ? '깃허브 커밋 상태 : 커밋 실패'
                             : verification.content}
                       </p>
+                      <p>{parseDate(verification.verificationDate)}</p>
                       <SVerificationStatus>
                         인증 상태 :{' '}
                         {verification.isDeleted
