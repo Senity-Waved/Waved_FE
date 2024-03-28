@@ -102,7 +102,7 @@ export default function ParticipantProcess() {
         console.log(`${errorCode} | ${errorMsg}`);
         router
           .push({
-            pathname: '/',
+            pathname: '/challenge/participant',
             query: { payFailure: true },
           })
           .catch((error) => {
@@ -112,7 +112,7 @@ export default function ParticipantProcess() {
         console.log('결제 프로세스 비정상 종료');
         router
           .push({
-            pathname: '/',
+            pathname: '/challenge/participant',
             query: { payFailure: true },
           })
           .catch((error) => {
@@ -121,7 +121,7 @@ export default function ParticipantProcess() {
       }
     } else {
       console.log('🚨 결제 정보를 받아오지 못했습니다.');
-      router.push('/').catch(console.error);
+      router.push('/challenge/participant').catch(console.error);
     }
   }, [
     impSuccess,
