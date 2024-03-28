@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
 
 export default async function Reissue(
@@ -45,8 +45,19 @@ export default async function Reissue(
         res.status(401).json({ message: '액세스 토큰 재발급 실패' });
       }
     } catch (error) {
-      console.error('Error refreshing tokens:', error);
-      res.status(500).json({ message: 'Failed to refresh token' });
+      const axiosError = error as AxiosError;
+      const axiosErrorData = axiosError.response?.data;
+      console.error('Error refreshing tokens:', axiosError);
+      if (
+        axiosErrorData ===
+        '다른 위치에서 로그인하여 현재 세션이 로그아웃되었습니다.'
+      ) {
+        res
+          .status(401)
+          .json('다른 위치에서 로그인하여 현재 세션이 로그아웃되었습니다.');
+      } else {
+        res.status(500).json({ message: 'Failed to refresh token' });
+      }
     }
   } else {
     res.setHeader('Allow', ['POST']);

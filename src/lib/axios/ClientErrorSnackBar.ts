@@ -1,8 +1,9 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axiosInstance from '@/lib/axios/instance';
 import useSnackBar from '@/hooks/useSnackBar';
+import { logoutApi } from './profile/api';
 
 export default function ClientErrorSnackBar() {
   const { openSnackBar } = useSnackBar();
@@ -29,7 +30,53 @@ export default function ClientErrorSnackBar() {
       openSnackBar('인증정보가 없습니다.');
     }
 
-    if (status === 500) {
+    if (
+      message === '다른 위치에서 로그인하여 현재 세션이 로그아웃 되었습니다.'
+    ) {
+      logoutApi()
+        .then((response) => {
+          console.log('백엔드 서버에서 로그아웃 처리 성공:', response);
+
+          // 백엔드 로그아웃 성공 후 클라이언트 측 로그아웃 처리
+          axios
+            .post(
+              '/api/auth/logout',
+              {},
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              },
+            )
+            .then((res) => {
+              console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
+
+              // 로그아웃 처리 후 리다이렉션
+              router
+                .push({
+                  pathname: '/',
+                  query: { logout: true },
+                })
+                .catch((err) => {
+                  console.error('로그아웃 후 온보딩 리디렉션 실패:', err);
+                });
+            })
+            .catch((err) => {
+              console.error(
+                '클라이언트 측에서 로그아웃 처리 중 오류 발생:',
+                err,
+              );
+            });
+        })
+        .catch((err) => {
+          console.error('백엔드 서버 로그아웃 처리 중 오류 발생:', err);
+        });
+    }
+
+    if (
+      status === 500 &&
+      message !== '다른 위치에서 로그인하여 현재 세션이 로그아웃 되었습니다.'
+    ) {
       router.push('/500').catch(() => {
         openSnackBar('페이지 이동을 실패했습니다.');
       });

@@ -55,7 +55,21 @@ export default function serverErrorCatch(
         };
       }
 
-      if (status === 500) {
+      if (
+        message === '다른 위치에서 로그인하여 현재 세션이 로그아웃되었습니다.'
+      ) {
+        return {
+          props: {
+            requireSnackBar: false,
+            errorMsg: message,
+          },
+        };
+      }
+
+      if (
+        status === 500 &&
+        message !== '다른 위치에서 로그인하여 현재 세션이 로그아웃 되었습니다.'
+      ) {
         return {
           props: {
             requireSnackBar: false,
@@ -63,6 +77,7 @@ export default function serverErrorCatch(
           },
         };
       }
+
       return {
         props: {
           requireSnackBar: true,

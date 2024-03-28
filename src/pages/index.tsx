@@ -38,6 +38,11 @@ export default function OnBoarding() {
       handleRouting('계정을 탈퇴하셨습니다');
     } else if (query.needLoginToParticipant) {
       handleRouting('로그인 후 신청 가능합니다', 'warning');
+    } else if (query.forcedLogout) {
+      handleRouting(
+        '다른 위치에서 로그인하여 강제 로그아웃되었습니다.',
+        'warning',
+      );
     }
   }, [query, router]);
 

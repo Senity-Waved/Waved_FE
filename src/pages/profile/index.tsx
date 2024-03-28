@@ -164,6 +164,36 @@ export default function Profile({
         console.error(err);
       });
     }
+    if (
+      !requireSnackBar &&
+      errorMsg === '다른 위치에서 로그인하여 현재 세션이 로그아웃되었습니다.'
+    ) {
+      axios
+        .post(
+          '/api/auth/logout',
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((res) => {
+          console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
+          // 로그아웃 처리 후 리다이렉션
+          router
+            .push({
+              pathname: '/',
+              query: { forcedLogout: true },
+            })
+            .catch((err) => {
+              console.error('로그아웃 후 온보딩 리디렉션 실패:', err);
+            });
+        })
+        .catch((err) => {
+          console.error('클라이언트 측에서 로그아웃 처리 중 오류 발생:', err);
+        });
+    }
   }, [requireSnackBar, errorMsg, router]);
 
   return (
