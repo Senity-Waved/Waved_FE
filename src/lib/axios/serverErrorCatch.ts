@@ -49,7 +49,7 @@ export default function serverErrorCatch(
       if (message === '인증정보가 없습니다.') {
         return {
           props: {
-            requireSnackBar: true,
+            requireSnackBar: false,
             errorMsg: '인증정보가 없습니다.',
           },
         };
