@@ -15,7 +15,6 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 10,
           httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
         });
 
         setCookie('refreshToken', refreshToken, {
@@ -25,7 +24,6 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60 * 24,
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'strict',
         });
 
         res.status(200).json({ message: '서버에 토큰 전달 성공' });
