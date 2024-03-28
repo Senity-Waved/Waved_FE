@@ -38,13 +38,13 @@ const requestPay = ({
   IMP.init(IMP_UID);
 
   const payData: RequestPayParams = {
-    pg: 'kcp.IP05D',
+    pg: 'kcp.IP0AA',
     pay_method: 'card',
     merchant_uid: `IMP${makeMerchantUid()}`,
     name: groupTitle,
     amount: deposit,
     ...(nickname ? { buyer_name: nickname } : {}),
-    m_redirect_url: `https://waved-fe.azurewebsites.net/challenge/participant/success?deposit=${deposit}`,
+    m_redirect_url: `https://waved-fe.azurewebsites.net/challenge/process?myChallenge=${myChallengeId}`,
   };
 
   const callback = (response: RequestPayResponse) => {
