@@ -45,22 +45,24 @@ export default function ParticipantSuccess() {
     useRecoilValue(paymentSuccessState);
 
   useEffect(() => {
-    if (imp_uid && myChallengeId) {
-      const paymentProps: IPayments = {
-        paymentResult: {
-          imp_uid,
-          deposit,
-        },
-        myChallengeId,
-      };
+    if (deposit !== 0) {
+      if (imp_uid && myChallengeId) {
+        const paymentProps: IPayments = {
+          paymentResult: {
+            imp_uid,
+            deposit,
+          },
+          myChallengeId,
+        };
 
-      challengePaymentsApi(paymentProps)
-        .then(() => {
-          console.log('결제 정보 처리 성공');
-        })
-        .catch((error) => {
-          console.error('결제 정보 처리 실패', error);
-        });
+        challengePaymentsApi(paymentProps)
+          .then(() => {
+            console.log('결제 정보 처리 성공');
+          })
+          .catch((error) => {
+            console.error('결제 정보 처리 실패', error);
+          });
+      }
     }
   }, [imp_uid, deposit, myChallengeId]);
 
