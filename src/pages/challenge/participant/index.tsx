@@ -11,14 +11,9 @@ import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import {
-  IPayments,
-  challengeGroupApplyApi,
-  challengePaymentsApi,
-} from '@/lib/axios/challengeRequest/api';
+import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
 import requestPay from '@/lib/portone/requestPay';
 import { getProfileApi } from '@/lib/axios/profile/api';
-import paymentSuccessState from '@/atoms/paymentSucceessState';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -47,45 +42,6 @@ export default function ChallengeParticipant() {
     }));
   };
 
-  const setPaymentSuccess = useSetRecoilState(paymentSuccessState);
-
-  const handlePaymentSuccess = (imp_uid: string, deposit: number) => {
-    setPaymentSuccess({ imp_uid, deposit, myChallengeId });
-
-    if (deposit === 0) {
-      increaseParticipantCount();
-      const paymentProps: IPayments = {
-        paymentResult: {
-          imp_uid,
-          deposit,
-        },
-        myChallengeId,
-      };
-
-      challengePaymentsApi(paymentProps)
-        .then(() => {
-          increaseParticipantCount();
-          router
-            .push({
-              pathname: '/challenge/participant/success',
-              query: { deposit },
-            })
-            .catch((error) => console.error(error));
-        })
-        .catch((error) => {
-          console.error('결제 후검증 실패', error);
-        });
-    } else {
-      increaseParticipantCount();
-      router
-        .push({
-          pathname: '/challenge/participant/success',
-          query: { deposit },
-        })
-        .catch((error) => console.error(error));
-    }
-  };
-
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
@@ -104,7 +60,20 @@ export default function ChallengeParticipant() {
             myChallengeId,
             groupTitle,
             nickname,
-            onSuccess: handlePaymentSuccess,
+            onSuccess: () => {
+              increaseParticipantCount();
+              router
+                .push({
+                  pathname: '/challenge/participant/success',
+                  query: { deposit },
+                })
+                .catch((error) => {
+                  console.error(
+                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
+                    error,
+                  );
+                });
+            },
             onFailure: (error) => {
               console.error('결제 오류: ', error);
             },
