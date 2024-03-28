@@ -44,7 +44,7 @@ const requestPay = ({
     name: groupTitle,
     amount: deposit,
     ...(nickname ? { buyer_name: nickname } : {}),
-    m_redirect_url: '/challenge/participant/success',
+    m_redirect_url: `https://waved-fe.azurewebsites.net/challenge/participant/success?deposit=${deposit}`,
   };
 
   const callback = (response: RequestPayResponse) => {
@@ -60,7 +60,7 @@ const requestPay = ({
         .then(() => onSuccess())
         .catch((error) => console.error(error));
     } else {
-      onFailure(error_msg || '결제 실패');
+      onFailure(error_msg || '결제실패');
     }
   };
 
