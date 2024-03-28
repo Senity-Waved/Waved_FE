@@ -93,7 +93,12 @@ export default function MyChallenge({
         });
       }, 3500);
     }
-  }, [requireSnackBar, errorMsg]);
+    if (!requireSnackBar && errorMsg === '500') {
+      router.push('/500').catch((err) => {
+        console.error(err);
+      });
+    }
+  }, [requireSnackBar, errorMsg, router]);
 
   return (
     <Layout

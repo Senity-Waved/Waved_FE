@@ -1,10 +1,12 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import axiosInstance from '@/lib/axios/instance';
 import useSnackBar from '@/hooks/useSnackBar';
 
 export default function ClientErrorSnackBar() {
   const { openSnackBar } = useSnackBar();
+  const router = useRouter();
 
   const handleError = (error: AxiosError) => {
     const { code } = error;
@@ -18,6 +20,11 @@ export default function ClientErrorSnackBar() {
       openSnackBar('네트워크 에러가 발생했습니다.');
     }
 
+    if (status === 500) {
+      router.push('/500').catch(() => {
+        openSnackBar('페이지 이동을 실패했습니다.');
+      });
+    }
     return Promise.reject(error);
   };
 
