@@ -18,6 +18,7 @@ import {
 } from '@/lib/axios/challengeRequest/api';
 import requestPay from '@/lib/portone/requestPay';
 import { getProfileApi } from '@/lib/axios/profile/api';
+import paymentSuccessState from '@/atoms/paymentSucceessState';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -46,28 +47,43 @@ export default function ChallengeParticipant() {
     }));
   };
 
-  const handlePaymentSuccess = (imp_uid: string, deposit: number) => {
-    const paymentProps: IPayments = {
-      paymentResult: {
-        imp_uid,
-        deposit,
-      },
-      myChallengeId,
-    };
+  const setPaymentSuccess = useSetRecoilState(paymentSuccessState);
 
-    challengePaymentsApi(paymentProps)
-      .then(() => {
-        increaseParticipantCount();
-        router
-          .push({
-            pathname: '/challenge/participant/success',
-            query: { deposit },
-          })
-          .catch((error) => console.error(error));
-      })
-      .catch((error) => {
-        console.error('결제 후검증 실패', error);
-      });
+  const handlePaymentSuccess = (imp_uid: string, deposit: number) => {
+    setPaymentSuccess({ imp_uid, deposit, myChallengeId });
+
+    if (deposit === 0) {
+      increaseParticipantCount();
+      const paymentProps: IPayments = {
+        paymentResult: {
+          imp_uid,
+          deposit,
+        },
+        myChallengeId,
+      };
+
+      challengePaymentsApi(paymentProps)
+        .then(() => {
+          increaseParticipantCount();
+          router
+            .push({
+              pathname: '/challenge/participant/success',
+              query: { deposit },
+            })
+            .catch((error) => console.error(error));
+        })
+        .catch((error) => {
+          console.error('결제 후검증 실패', error);
+        });
+    } else {
+      increaseParticipantCount();
+      router
+        .push({
+          pathname: '/challenge/participant/success',
+          query: { deposit },
+        })
+        .catch((error) => console.error(error));
+    }
   };
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -12,6 +13,11 @@ import { SBottomFixedBtn } from '@/components/common/BottomFixedBtn';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import changePriceFormat from '@/utils/changePriceFormat';
+import paymentSuccessState from '@/atoms/paymentSucceessState';
+import {
+  IPayments,
+  challengePaymentsApi,
+} from '@/lib/axios/challengeRequest/api';
 
 export default function ParticipantSuccess() {
   const router = useRouter();
@@ -34,6 +40,29 @@ export default function ParticipantSuccess() {
   useEffect(() => {
     setChallengeData(recoilChallengeData);
   }, [recoilChallengeData]);
+
+  const { imp_uid, deposit, myChallengeId } =
+    useRecoilValue(paymentSuccessState);
+
+  useEffect(() => {
+    if (imp_uid && myChallengeId) {
+      const paymentProps: IPayments = {
+        paymentResult: {
+          imp_uid,
+          deposit,
+        },
+        myChallengeId,
+      };
+
+      challengePaymentsApi(paymentProps)
+        .then(() => {
+          console.log('결제 정보 처리 성공');
+        })
+        .catch((error) => {
+          console.error('결제 정보 처리 실패', error);
+        });
+    }
+  }, [imp_uid, deposit, myChallengeId]);
 
   return (
     <SParticipantSuccessWrapper noHeader noFooter>
