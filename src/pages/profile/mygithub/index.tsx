@@ -160,7 +160,7 @@ export default function MyGithub() {
                       image: '/icons/icon-exclamation-mark.svg',
                       mainText: '정말 연동을 해지하시겠습니까?',
                       subText:
-                        '연동을 해지하면, 현재 깃허브 챌린지를 참가하고 있을 경우 중도 포기로 간주됩니다.',
+                        '연동 해지 시 1일 1커밋 챌린지 인증이 불가합니다.',
                       btnText: '네, 해지할게요',
                       onClick: clickModalBtn,
                     })
