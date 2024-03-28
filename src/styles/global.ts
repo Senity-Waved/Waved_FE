@@ -1,8 +1,97 @@
 import { css } from '@emotion/react';
 
 const global = css`
+  /*
+  Copyright (c) 2021 Kil Hyung-jin, with Reserved Font Name Pretendard.
+  https://github.com/orioncactus/pretendard
+
+  This Font Software is licensed under the SIL Open Font License, Version 1.1.
+  This license is copied below, and is also available with a FAQ at:
+  http://scripts.sil.org/OFL
+  */
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 900;
+    font-display: swap;
+    src:
+      local('Pretendard Black'),
+      url('/fonts/Pretendard-Black.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 800;
+    font-display: swap;
+    src:
+      local('Pretendard ExtraBold'),
+      url('/fonts/Pretendard-ExtraBold.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-display: swap;
+    src:
+      local('Pretendard Bold'),
+      url('/fonts/Pretendard-Bold.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-display: swap;
+    src:
+      local('Pretendard SemiBold'),
+      url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-display: swap;
+    src:
+      local('Pretendard Medium'),
+      url('/fonts/Pretendard-Medium.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-display: swap;
+    src:
+      local('Pretendard Regular'),
+      url('/fonts/Pretendard-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 300;
+    font-display: swap;
+    src:
+      local('Pretendard Light'),
+      url('/fonts/Pretendard-Light.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 200;
+    font-display: swap;
+    src:
+      local('Pretendard ExtraLight'),
+      url('/fonts/Pretendard-ExtraLight.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 100;
+    font-display: swap;
+    src:
+      local('Pretendard Thin'),
+      url('/fonts/Pretendard-Thin.woff2') format('woff2');
+  }
+
   :root {
-    --font-family: sans-serif;
+    --font-family: 'Pretendard', sans-serif;
   }
 
   html,
@@ -62,14 +151,30 @@ const global = css`
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: var(--font-family);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
   }
 
   html {
-    font-size: 14px;
+    background-color: #f1f1f1;
+    color: #3c3f44;
+    font-size: 16px;
+    line-height: 1.4;
   }
 
   body {
+    display: block;
     font-family: var(--font-family);
+    position: relative;
+  }
+
+  main {
+    position: relative;
+    display: inline-block;
+    width: 100%;
   }
 
   a {
