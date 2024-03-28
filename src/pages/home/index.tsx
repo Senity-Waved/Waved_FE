@@ -22,16 +22,22 @@ import {
   getRecruitingChallengeApi,
 } from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
+import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 
+interface IHome {
+  isLogined: boolean;
+  myProcessingChallenges: IMyProcessingChallenge[] | null;
+  recruitingChallenges: IRecruitingChallenge[] | null;
+  requireSnackBar?: boolean;
+  errorMsg?: string;
+}
 export default function Home({
   isLogined,
   myProcessingChallenges,
   recruitingChallenges,
-}: {
-  isLogined: boolean;
-  myProcessingChallenges: IMyProcessingChallenge[] | null;
-  recruitingChallenges: IRecruitingChallenge[] | null;
-}) {
+  requireSnackBar,
+  errorMsg,
+}: IHome) {
   const router = useRouter();
   const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
     open: false,
@@ -59,6 +65,22 @@ export default function Home({
     };
     handleRedirect().catch((error) => console.error(error));
   }, [router, router.query]);
+
+  useEffect(() => {
+    if (requireSnackBar && errorMsg) {
+      setSnackBarState({
+        open: true,
+        text: errorMsg,
+        type: 'warning',
+      });
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
+    }
+  }, [requireSnackBar, errorMsg]);
 
   return (
     <SHomeWrapper>
@@ -103,7 +125,7 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps(
+async function getServerSidePropsFunction(
   context: GetServerSidePropsContext,
 ): Promise<{
   props: {
@@ -115,7 +137,7 @@ export async function getServerSideProps(
   const cookieToken = getCookie('accessToken', context);
   const isLogined = !!cookieToken;
   const serverInstance = createServerInstance(context);
-  async function fetchMyProcessingChallenges() {
+  const fetchMyProcessingChallenges = async () => {
     try {
       const response = await getMyProcessingChallengeApi(serverInstance);
       console.log('myProcessingChallenge API GET 성공');
@@ -124,17 +146,12 @@ export async function getServerSideProps(
       console.error('myProcessingChallenge API GET 실패', error);
       return null;
     }
-  }
-  async function fetchRecruitingChallenges() {
-    try {
-      const response = await getRecruitingChallengeApi(serverInstance);
-      console.log('recruitingChallenge API GET 성공');
-      return response.data;
-    } catch (error) {
-      console.error('recruitingChallenge API GET 실패', error);
-      return null;
-    }
-  }
+  };
+  const fetchRecruitingChallenges = async () => {
+    const response = await getRecruitingChallengeApi(serverInstance);
+    console.log('recruitingChallenge API GET 성공');
+    return response.data;
+  };
   const myProcessingChallenges = await fetchMyProcessingChallenges();
   const recruitingChallenges = await fetchRecruitingChallenges();
   return {
@@ -145,6 +162,8 @@ export async function getServerSideProps(
     },
   };
 }
+
+export const getServerSideProps = serverErrorCatch(getServerSidePropsFunction);
 
 const SHomeWrapper = styled(SLayoutWrapper)`
   position: relative;
