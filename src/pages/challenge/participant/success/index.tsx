@@ -44,6 +44,8 @@ export default function ParticipantSuccess() {
   const { imp_uid, deposit, myChallengeId } =
     useRecoilValue(paymentSuccessState);
 
+  console.log(imp_uid, deposit, myChallengeId);
+
   useEffect(() => {
     if (deposit !== 0) {
       if (imp_uid && myChallengeId) {
@@ -55,6 +57,7 @@ export default function ParticipantSuccess() {
           myChallengeId,
         };
 
+        console.log('challengePaymentsApi 실행');
         challengePaymentsApi(paymentProps)
           .then(() => {
             console.log('결제 정보 처리 성공');
