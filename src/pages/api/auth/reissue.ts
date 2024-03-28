@@ -34,6 +34,7 @@ export default async function Reissue(
           maxAge: 60 * 10,
           httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
+          sameSite: 'none',
         });
 
         res.status(200).json({

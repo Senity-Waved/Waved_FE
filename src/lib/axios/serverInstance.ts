@@ -60,6 +60,7 @@ const createServerInstance = (context: GetServerSidePropsContext) => {
             httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 10,
+            sameSite: 'none',
           });
 
           customConfig.isRetryRequest = true;
