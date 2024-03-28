@@ -15,10 +15,11 @@ export default function ChallengeReviewItem({
   createDate,
   content,
 }: TChallengeReview) {
+  const isInactiveUser = nickname === '탈퇴한 서퍼';
   return (
     <SReviewItem>
       <SReviewInfo>
-        <SAuthor>{nickname}</SAuthor>
+        <SAuthor isInactive={isInactiveUser}>{nickname}</SAuthor>
         {jobTitle && <SJobTitle>{JOB_TITLE_KR[jobTitle]}</SJobTitle>}
         <SDate>{formattedDate(createDate)}</SDate>
       </SReviewInfo>
@@ -43,9 +44,10 @@ const SReviewInfo = styled.div`
   line-height: 22px;
 `;
 
-const SAuthor = styled.span`
+const SAuthor = styled.span<{ isInactive: boolean }>`
   flex-shrink: 0;
-  color: ${({ theme }) => theme.color.gray_3c};
+  color: ${({ theme, isInactive }) =>
+    isInactive ? theme.color.gray_70 : theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
 `;
