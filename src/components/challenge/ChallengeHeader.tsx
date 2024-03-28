@@ -32,6 +32,13 @@ export default function ChallengeHeader({
       },
     );
   };
+
+  const goToHome = () => {
+    router.push('/home').catch((error) => {
+      console.error('페이지 이동에 실패하였습니다.', error);
+    });
+  };
+
   return (
     <>
       <Head>
@@ -44,11 +51,7 @@ export default function ChallengeHeader({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SHeaderWrapper>
-        <SBackBtn
-          type="button"
-          onClick={() => router.back()}
-          aria-label="뒤로 가기"
-        >
+        <SBackBtn type="button" onClick={goToHome} aria-label="홈으로 가기">
           <Image
             src="/icons/icon-left-arrow.svg"
             alt="뒤로가기 아이콘"
