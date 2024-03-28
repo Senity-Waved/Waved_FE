@@ -31,6 +31,7 @@ interface IHome {
   requireSnackBar?: boolean;
   errorMsg?: string;
 }
+
 export default function Home({
   isLogined,
   myProcessingChallenges,
@@ -138,21 +139,17 @@ async function getServerSidePropsFunction(
   const isLogined = !!cookieToken;
   const serverInstance = createServerInstance(context);
   const fetchMyProcessingChallenges = async () => {
-    try {
-      const response = await getMyProcessingChallengeApi(serverInstance);
-      console.log('myProcessingChallenge API GET 성공');
-      return response.data;
-    } catch (error) {
-      console.error('myProcessingChallenge API GET 실패', error);
-      return null;
-    }
+    const response = await getMyProcessingChallengeApi(serverInstance);
+    return response.data;
   };
   const fetchRecruitingChallenges = async () => {
     const response = await getRecruitingChallengeApi(serverInstance);
-    console.log('recruitingChallenge API GET 성공');
     return response.data;
   };
-  const myProcessingChallenges = await fetchMyProcessingChallenges();
+  let myProcessingChallenges = null;
+  if (isLogined) {
+    myProcessingChallenges = await fetchMyProcessingChallenges();
+  }
   const recruitingChallenges = await fetchRecruitingChallenges();
   return {
     props: {
