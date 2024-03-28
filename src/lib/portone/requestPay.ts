@@ -44,7 +44,7 @@ const requestPay = ({
     name: groupTitle,
     amount: deposit,
     ...(nickname ? { buyer_name: nickname } : {}),
-    m_redirect_url: `https://waved-fe.azurewebsites.net/challenge/process?mychallenge_id=${myChallengeId}`,
+    m_redirect_url: `https://waved-fe.azurewebsites.net/challenge/process?mychallenge_id=${myChallengeId}&deposit=${deposit}`,
   };
 
   const callback = (response: RequestPayResponse) => {
