@@ -37,8 +37,7 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
       },
       {
         root: null,
-        rootMargin: `${positionTop + 102}px 0px 0px 0px`,
-        threshold: 0.5,
+        threshold: 0.7,
       },
     );
     tabs.forEach((tab) => {

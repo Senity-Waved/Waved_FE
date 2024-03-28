@@ -82,7 +82,6 @@ export default function MyReviewItem({
 
 const SMyReviewItem = styled.li`
   display: block;
-  min-height: 167px;
   padding: 1.5rem 1.25rem;
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.color.gray_ec};

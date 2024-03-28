@@ -1,3 +1,4 @@
+/* eslint-disable no-void */
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { RecoilEnv, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -11,19 +12,17 @@ import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import {
-  IPayments,
-  challengeGroupApplyApi,
-  challengePaymentsApi,
-} from '@/lib/axios/challengeRequest/api';
+import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
 import requestPay from '@/lib/portone/requestPay';
 import { getProfileApi } from '@/lib/axios/profile/api';
-import paymentSuccessState from '@/atoms/paymentSucceessState';
+import ISnackBarState from '@/types/snackbar';
+import SnackBar from '@/components/common/SnackBar';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function ChallengeParticipant() {
   const router = useRouter();
+  const { query } = useRouter();
   const depositAmounts = [0, 5000, 10000, 20000, 25000, 30000, 50000, 100000];
   const [myChallengeId, setMyChallengeId] = useState<number>(0);
   const updateSelectedChallengeData = useSetRecoilState(ASelectedChallenge);
@@ -47,44 +46,33 @@ export default function ChallengeParticipant() {
     }));
   };
 
-  const setPaymentSuccess = useSetRecoilState(paymentSuccessState);
+  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
+    open: false,
+    text: '',
+    type: 'correct',
+  });
 
-  const handlePaymentSuccess = (imp_uid: string, deposit: number) => {
-    setPaymentSuccess({ imp_uid, deposit, myChallengeId });
-
-    if (deposit === 0) {
-      increaseParticipantCount();
-      const paymentProps: IPayments = {
-        paymentResult: {
-          imp_uid,
-          deposit,
-        },
-        myChallengeId,
-      };
-
-      challengePaymentsApi(paymentProps)
-        .then(() => {
-          increaseParticipantCount();
-          router
-            .push({
-              pathname: '/challenge/participant/success',
-              query: { deposit },
-            })
-            .catch((error) => console.error(error));
-        })
-        .catch((error) => {
-          console.error('결제 후검증 실패', error);
-        });
-    } else {
-      increaseParticipantCount();
+  useEffect(() => {
+    if (query.payFailure) {
+      setSnackBarState({
+        open: true,
+        text: '결제 실패 | 잠시후 재시도 바람',
+        type: 'warning',
+      });
       router
-        .push({
-          pathname: '/challenge/participant/success',
-          query: { deposit },
-        })
-        .catch((error) => console.error(error));
+        .replace('/challenge/particpant', undefined, { shallow: true })
+        .catch((error: Error) =>
+          console.error('쿼리스트링 제거 후 URL 변경 실패', error),
+        );
+
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
     }
-  };
+  }, [query.payFailure, router]);
 
   useEffect(() => {
     setChallengeData(recoilChallengeData);
@@ -104,9 +92,27 @@ export default function ChallengeParticipant() {
             myChallengeId,
             groupTitle,
             nickname,
-            onSuccess: handlePaymentSuccess,
+            onSuccess: () => {
+              increaseParticipantCount();
+              router
+                .push({
+                  pathname: '/challenge/participant/success',
+                  query: { deposit },
+                })
+                .catch((error) => {
+                  console.error(
+                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
+                    error,
+                  );
+                });
+            },
             onFailure: (error) => {
-              console.error('결제 오류: ', error);
+              void router
+                .push({
+                  pathname: '/challenge/participant',
+                  query: { payFailure: true },
+                })
+                .catch((routerError) => console.error(error, routerError));
             },
           });
 
@@ -215,6 +221,13 @@ export default function ChallengeParticipant() {
           },
         ]}
       />
+      {snackBarState.open && (
+        <SnackBar
+          text={snackBarState.text}
+          type={snackBarState.type}
+          noFooter
+        />
+      )}
     </Layout>
   );
 }
