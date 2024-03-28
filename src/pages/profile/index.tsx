@@ -145,7 +145,7 @@ export default function Profile({
   }, [query, router]);
 
   useEffect(() => {
-    if (requireSnackBar && errorMsg) {
+    if (requireSnackBar && errorMsg && !errorMsg.includes('401')) {
       setSnackBarState({
         open: true,
         text: errorMsg,
