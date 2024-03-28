@@ -11,7 +11,11 @@ import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
+import {
+  IPayments,
+  challengeGroupApplyApi,
+  challengePaymentsApi,
+} from '@/lib/axios/challengeRequest/api';
 import requestPay from '@/lib/portone/requestPay';
 import { getProfileApi } from '@/lib/axios/profile/api';
 
@@ -42,6 +46,30 @@ export default function ChallengeParticipant() {
     }));
   };
 
+  const handlePaymentSuccess = (imp_uid: string, deposit: number) => {
+    const paymentProps: IPayments = {
+      paymentResult: {
+        imp_uid,
+        deposit,
+      },
+      myChallengeId,
+    };
+
+    challengePaymentsApi(paymentProps)
+      .then(() => {
+        increaseParticipantCount();
+        router
+          .push({
+            pathname: '/challenge/participant/success',
+            query: { deposit },
+          })
+          .catch((error) => console.error(error));
+      })
+      .catch((error) => {
+        console.error('결제 후검증 실패', error);
+      });
+  };
+
   useEffect(() => {
     setChallengeData(recoilChallengeData);
     setDeposit(challengeData.isFree ? 0 : 5000);
@@ -60,20 +88,7 @@ export default function ChallengeParticipant() {
             myChallengeId,
             groupTitle,
             nickname,
-            onSuccess: () => {
-              increaseParticipantCount();
-              router
-                .push({
-                  pathname: '/challenge/participant/success',
-                  query: { deposit },
-                })
-                .catch((error) => {
-                  console.error(
-                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
-                    error,
-                  );
-                });
-            },
+            onSuccess: handlePaymentSuccess,
             onFailure: (error) => {
               console.error('결제 오류: ', error);
             },
