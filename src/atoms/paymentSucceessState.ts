@@ -1,4 +1,10 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist({
+  key: 'recoil-persist',
+  storage: localStorage,
+});
 
 interface IPaymentSuccessInfo {
   imp_uid: string;
@@ -13,6 +19,7 @@ const paymentSuccessState = atom<IPaymentSuccessInfo>({
     deposit: 0,
     myChallengeId: 0,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export default paymentSuccessState;
