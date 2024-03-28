@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { RequestPayParams, RequestPayResponse } from '@/types/portone';
+import {
+  IPayments,
+  challengePaymentsApi,
+} from '@/lib/axios/challengeRequest/api';
 
 interface IRequestPayArguments {
   deposit: number;
   myChallengeId: number;
   groupTitle: string;
   nickname: string;
-  onSuccess: (imp_uid: string, deposit: number) => void;
+  onSuccess: () => void;
   onFailure: (error: string) => void;
 }
 
@@ -22,6 +26,7 @@ const makeMerchantUid = () => {
 
 const requestPay = ({
   deposit,
+  myChallengeId,
   groupTitle,
   nickname,
   onSuccess,
@@ -46,7 +51,14 @@ const requestPay = ({
     const { success, imp_uid, error_msg } = response;
 
     if (success && imp_uid) {
-      onSuccess(imp_uid, deposit);
+      const paymentsProps: IPayments = {
+        paymentResult: { imp_uid, deposit },
+        myChallengeId,
+      };
+
+      challengePaymentsApi(paymentsProps)
+        .then(() => onSuccess())
+        .catch((error) => console.error(error));
     } else {
       onFailure(error_msg || '결제실패');
     }
