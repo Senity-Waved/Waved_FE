@@ -30,6 +30,10 @@ export default function ParticipantProcess() {
     }));
   }, [updateSelectedChallengeData]);
 
+  console.log(
+    `impUid: ${impUid}, deposit: ${deposit}, myChallengeId:${myChallengeId}`,
+  );
+
   useEffect(() => {
     const url = window.location.search;
     const urlParams = new URLSearchParams(url);
@@ -76,52 +80,37 @@ export default function ParticipantProcess() {
         myChallengeId,
       };
 
-      if (impSuccess && !errorCode) {
-        try {
-          challengePaymentsApi(paymentsProps)
-            .then(() => {
-              increaseParticipantCount();
-
-              router
-                .push({
-                  pathname: '/challenge/participant/success',
-                  query: { deposit },
-                })
-                .catch((error) => {
-                  console.error(
-                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
-                    error,
-                  );
-                });
-            })
-            .catch(console.error);
-        } catch (error) {
-          console.error(error);
-        }
-      } else if (!impSuccess && errorCode) {
-        console.log(`${errorCode} | ${errorMsg}`);
-        router
-          .push({
-            pathname: '/challenge/participant',
-            query: { payFailure: true },
+      try {
+        challengePaymentsApi(paymentsProps)
+          .then(() => {
+            increaseParticipantCount();
+            router
+              .push({
+                pathname: '/challenge/participant/success',
+                query: { deposit },
+              })
+              .catch((error) => {
+                console.error(
+                  '결제 및 챌린지 신청 이후 페이지 이동 실패',
+                  error,
+                );
+              });
           })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
-        console.log('결제 프로세스 비정상 종료');
-        router
-          .push({
-            pathname: '/challenge/participant',
-            query: { payFailure: true },
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+          .catch(console.error);
+      } catch (error) {
+        console.error(error);
       }
     } else {
       console.log('🚨 결제 정보를 받아오지 못했습니다.');
-      router.push('/challenge/participant').catch(console.error);
+      console.log(`${errorCode} | ${errorMsg}`);
+      router
+        .push({
+          pathname: '/challenge/participant',
+          query: { payFailure: true },
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [
     impSuccess,
