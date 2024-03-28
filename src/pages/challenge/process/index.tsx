@@ -76,12 +76,11 @@ export default function ParticipantProcess() {
         myChallengeId,
       };
 
-      if (impSuccess && !errorCode) {
+      if (impSuccess === true) {
         try {
           challengePaymentsApi(paymentsProps)
             .then(() => {
               increaseParticipantCount();
-
               router
                 .push({
                   pathname: '/challenge/participant/success',
@@ -98,18 +97,8 @@ export default function ParticipantProcess() {
         } catch (error) {
           console.error(error);
         }
-      } else if (!impSuccess && errorCode) {
-        console.log(`${errorCode} | ${errorMsg}`);
-        router
-          .push({
-            pathname: '/challenge/participant',
-            query: { payFailure: true },
-          })
-          .catch((error) => {
-            console.error(error);
-          });
       } else {
-        console.log('결제 프로세스 비정상 종료');
+        console.log(`${errorCode} | ${errorMsg}`);
         router
           .push({
             pathname: '/challenge/participant',
