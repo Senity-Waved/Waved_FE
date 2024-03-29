@@ -38,7 +38,7 @@ const requestPay = ({
   IMP.init(IMP_UID);
 
   const payData: RequestPayParams = {
-    pg: 'kcp.AO09C',
+    pg: 'kcp.IP0AA',
     pay_method: 'card',
     merchant_uid: `IMP${makeMerchantUid()}`,
     name: groupTitle,
@@ -61,6 +61,7 @@ const requestPay = ({
         .catch((error) => console.error(error));
     } else {
       onFailure(error_msg || '결제실패');
+      console.error(error_msg);
     }
   };
 
