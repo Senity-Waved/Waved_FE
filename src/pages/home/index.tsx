@@ -60,7 +60,7 @@ export default function Home({
       } else if (payFailure) {
         setSnackBarState({
           open: true,
-          text: '결제 실패 | 잠시후 재시도 바람',
+          text: '결제 실패 | 잠시 후 재시도 바랍니다.',
           type: 'warning',
         });
         await router.replace('/home', undefined, { shallow: true });
