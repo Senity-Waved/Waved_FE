@@ -109,7 +109,7 @@ export default function ChallengeParticipant() {
             onFailure: (error) => {
               void router
                 .push({
-                  pathname: '/challenge/participant',
+                  pathname: '/home',
                   query: { payFailure: true },
                 })
                 .catch((routerError) => console.error(error, routerError));

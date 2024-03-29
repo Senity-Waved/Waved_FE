@@ -49,11 +49,18 @@ export default function Home({
 
   useEffect(() => {
     const handleRedirect = async () => {
-      const { redirected } = router.query;
+      const { redirected, payFailure } = router.query;
       if (redirected) {
         setSnackBarState({
           open: true,
           text: '로그인이 필요한 페이지입니다.',
+          type: 'warning',
+        });
+        await router.replace('/home', undefined, { shallow: true });
+      } else if (payFailure) {
+        setSnackBarState({
+          open: true,
+          text: '결제 실패 | 잠시후 재시도 바람',
           type: 'warning',
         });
         await router.replace('/home', undefined, { shallow: true });
