@@ -80,25 +80,37 @@ export default function ParticipantProcess() {
         myChallengeId,
       };
 
-      try {
-        challengePaymentsApi(paymentsProps)
-          .then(() => {
-            increaseParticipantCount();
-            router
-              .push({
-                pathname: '/challenge/participant/success',
-                query: { deposit },
-              })
-              .catch((error) => {
-                console.error(
-                  '결제 및 챌린지 신청 이후 페이지 이동 실패',
-                  error,
-                );
-              });
+      if (impSuccess === true) {
+        try {
+          challengePaymentsApi(paymentsProps)
+            .then(() => {
+              increaseParticipantCount();
+              router
+                .push({
+                  pathname: '/challenge/participant/success',
+                  query: { deposit },
+                })
+                .catch((error) => {
+                  console.error(
+                    '결제 및 챌린지 신청 이후 페이지 이동 실패',
+                    error,
+                  );
+                });
+            })
+            .catch(console.error);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.log('결제 프로세스가 정상적으로 종료되지 않았습니다.');
+        router
+          .push({
+            pathname: '/challenge/participant',
+            query: { payFailure: true },
           })
-          .catch(console.error);
-      } catch (error) {
-        console.error(error);
+          .catch((error) => {
+            console.error(error);
+          });
       }
     } else {
       console.log('🚨 결제 정보를 받아오지 못했습니다.');
