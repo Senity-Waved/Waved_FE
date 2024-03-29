@@ -49,7 +49,7 @@ export default function Home({
 
   useEffect(() => {
     const handleRedirect = async () => {
-      const { redirected, payFailure } = router.query;
+      const { redirected, payFailure, processFailure } = router.query;
       if (redirected) {
         setSnackBarState({
           open: true,
@@ -61,6 +61,13 @@ export default function Home({
         setSnackBarState({
           open: true,
           text: '결제 실패 | 잠시후 재시도 바람',
+          type: 'warning',
+        });
+        await router.replace('/home', undefined, { shallow: true });
+      } else if (processFailure) {
+        setSnackBarState({
+          open: true,
+          text: '결제 프로세스가 비정상적으로 종료되었습니다.',
           type: 'warning',
         });
         await router.replace('/home', undefined, { shallow: true });

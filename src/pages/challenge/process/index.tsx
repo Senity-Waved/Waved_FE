@@ -101,12 +101,20 @@ export default function ParticipantProcess() {
         } catch (error) {
           console.error(error);
         }
-      } else {
-        console.log('결제 프로세스가 정상적으로 종료되지 않았습니다.');
+      } else if (errorCode) {
         router
           .push({
             pathname: '/home',
             query: { payFailure: true },
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        router
+          .push({
+            pathname: '/home',
+            query: { processFailure: true },
           })
           .catch((error) => {
             console.error(error);

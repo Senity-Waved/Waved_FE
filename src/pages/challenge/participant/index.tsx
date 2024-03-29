@@ -115,8 +115,6 @@ export default function ChallengeParticipant() {
                 .catch((routerError) => console.error(error, routerError));
             },
           });
-
-          console.log('mychallengeId 바뀌고 나서 requestPay() 실행');
         } catch (error) {
           console.error('챌린지 그룹 신청 실패', error);
         }
