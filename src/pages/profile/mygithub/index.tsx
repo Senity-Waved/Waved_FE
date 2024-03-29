@@ -59,10 +59,8 @@ export default function MyGithub() {
         setIsGithubLinked(true);
         navigateToProfile({ githubLinked: true });
       }
-      console.log('깃허브 연동 성공|', response.data);
     } catch (error) {
       console.error('깃허브 연동 실패 | ', error);
-      console.log('유효하지 않은 깃허브 아이디 혹은 토큰입니다.');
       navigateToProfile({ linkedFail: true });
     }
   };

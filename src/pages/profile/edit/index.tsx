@@ -34,8 +34,7 @@ export default function ProfileEdit() {
 
   const editProfileInfo = async () => {
     try {
-      const response = await editMemberApi(editProfile);
-      console.log('프로필 수정 | ', response.data);
+      await editMemberApi(editProfile);
       router
         .push({
           pathname: '/profile',

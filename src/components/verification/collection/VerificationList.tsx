@@ -52,7 +52,6 @@ export default function VerificationList({
     try {
       const myVeriData = await getMyVerifiactionApi(challengeGroupId, date);
       setMyVerificationData(myVeriData);
-      console.log(myVeriData);
     } catch (MyVeriError) {
       setMyVerificationData([]);
       console.error('날짜별 내 인증내역 불러오기 실패');
@@ -61,7 +60,6 @@ export default function VerificationList({
     try {
       const veriData = await getVerificationsApi(challengeGroupId, date);
       setVerificationsData(veriData);
-      console.log(veriData);
       setIsEmptyData(false);
     } catch (veriError) {
       setVerificationsData([]);

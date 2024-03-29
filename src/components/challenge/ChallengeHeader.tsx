@@ -15,7 +15,6 @@ export default function ChallengeHeader({
     const currentUrl = window.location.href.split('#')[0];
     navigator.clipboard.writeText(currentUrl).then(
       () => {
-        console.log('URL 복사 성공');
         setSnackBarState({
           open: true,
           text: '링크가 복사되었습니다.',

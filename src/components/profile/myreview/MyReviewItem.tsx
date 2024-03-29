@@ -26,7 +26,6 @@ export default function MyReviewItem({
     () => deleteReviewApi(reviewId),
     {
       onSuccess: () => {
-        console.log(`${reviewId} 삭제완료!`);
         queryClient
           .invalidateQueries(['myReviews'])
           .catch((error) => console.error('쿼리 초기화 실패', error));

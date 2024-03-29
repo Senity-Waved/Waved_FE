@@ -43,10 +43,7 @@ export default function Profile({
 
   const handleWithdrawal = () => {
     deleteMemberApi()
-      .then((response) => {
-        console.log('백엔드 서버에서 탈퇴 처리 성공:', response);
-
-        // 백엔드 탈퇴 성공 후 클라이언트 측 토큰 제거
+      .then(() => {
         axios
           .post(
             '/api/auth/unregister',
@@ -57,10 +54,7 @@ export default function Profile({
               },
             },
           )
-          .then((res) => {
-            console.log('클라이언트 측에서 탈퇴 처리 성공:', res.data);
-
-            // 탈퇴 처리 후 리다이렉션
+          .then(() => {
             router
               .push({
                 pathname: '/',
@@ -81,10 +75,7 @@ export default function Profile({
 
   const handleLogout = () => {
     logoutApi()
-      .then((response) => {
-        console.log('백엔드 서버에서 로그아웃 처리 성공:', response);
-
-        // 백엔드 로그아웃 성공 후 클라이언트 측 로그아웃 처리
+      .then(() => {
         axios
           .post(
             '/api/auth/logout',
@@ -95,10 +86,7 @@ export default function Profile({
               },
             },
           )
-          .then((res) => {
-            console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
-
-            // 로그아웃 처리 후 리다이렉션
+          .then(() => {
             router
               .push({
                 pathname: '/',
@@ -178,9 +166,7 @@ export default function Profile({
             },
           },
         )
-        .then((res) => {
-          console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
-          // 로그아웃 처리 후 리다이렉션
+        .then(() => {
           router
             .push({
               pathname: '/',

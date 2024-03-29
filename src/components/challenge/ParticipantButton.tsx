@@ -64,7 +64,6 @@ export default function ParticipantButton({
     try {
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
-        console.log('챌린지 취소 및 환불 요청 성공했습니다', myChallengeId);
         setCanCancelParticpant(false);
         router
           .replace(
@@ -101,7 +100,7 @@ export default function ParticipantButton({
             '추가하신 예치금은 100% 환불이 가능하며, 카드사 사정에 따라 영업일 기준 평균 2~5일 이내 처리됩니다',
           btnText: '네, 취소할게요',
           onClick: () => {
-            cancelParticipant().catch((error) => console.log(error));
+            cancelParticipant().catch((error) => console.error(error));
             closeModal();
           },
         });

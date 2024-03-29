@@ -59,7 +59,6 @@ export default function VerificationPost() {
       const response = await postMyVerificationApi(challengeGroupId, formData);
       if (response) {
         navigateToCollection({ successSubmission: true });
-        console.log(response);
       }
     } catch (error) {
       const err = error as AxiosError;

@@ -33,7 +33,6 @@ const challengeGroupApplyApi = (
  * @returns response.data
  */
 const challengePaymentsApi = (paymentsCheck: IPayments) => {
-  console.log(paymentsCheck);
   return axiosInstance.post(
     `/payments/${paymentsCheck.myChallengeId}`,
     paymentsCheck.paymentResult,

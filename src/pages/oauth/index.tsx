@@ -44,7 +44,6 @@ export default function Oauth() {
         .then((res) => {
           if (res.status === 200) {
             setIsTokenPosted(true);
-            console.log(res.data);
           }
         })
         .catch((error) => {

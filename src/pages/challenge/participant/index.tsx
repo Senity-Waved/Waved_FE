@@ -157,7 +157,6 @@ export default function ChallengeParticipant() {
       };
       const response = await challengeGroupApplyApi(challengeGroupProps);
       if (response) {
-        console.log(response.data);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMyChallengeId(response.data);
       }

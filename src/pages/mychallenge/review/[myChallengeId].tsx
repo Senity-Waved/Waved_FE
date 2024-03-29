@@ -20,7 +20,6 @@ export default function PostReview() {
     postReviewApi(myChallengeId, text)
       .then((response) => {
         if (response) {
-          console.log(`${myChallengeId}의 후기 작성 완료! : ${text}`);
           router
             .push({
               pathname: '/mychallenge',

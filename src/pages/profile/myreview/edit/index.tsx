@@ -22,7 +22,6 @@ export default function EditReview({ prevContent }: { prevContent: string }) {
     (newContent: string) => patchReviewApi(reviewId, newContent),
     {
       onSuccess: () => {
-        console.log(`${reviewId} 수정완료! : ${text}`);
         router
           .push({
             pathname: '/profile/myreview',

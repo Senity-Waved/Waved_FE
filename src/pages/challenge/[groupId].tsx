@@ -309,7 +309,6 @@ export async function getServerSideProps(
   async function fetchChallengeInfo() {
     try {
       const response = await getChallengeGroupApi(groupId, serverInstance);
-      console.log('challengeGroup API GET 성공');
       return response.data;
     } catch (error) {
       return null;
@@ -324,7 +323,6 @@ export async function getServerSideProps(
   async function fetchReviews() {
     try {
       const response = await getReviewsApi(challengeId, serverInstance);
-      console.log('review API GET 성공', response.data.content.length);
       return response.data;
     } catch (error) {
       console.error('review API GET 실패', error);

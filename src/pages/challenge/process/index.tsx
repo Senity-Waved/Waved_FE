@@ -30,10 +30,6 @@ export default function ParticipantProcess() {
     }));
   }, [updateSelectedChallengeData]);
 
-  console.log(
-    `impUid: ${impUid}, deposit: ${deposit}, myChallengeId:${myChallengeId}`,
-  );
-
   useEffect(() => {
     const url = window.location.search;
     const urlParams = new URLSearchParams(url);
@@ -121,7 +117,6 @@ export default function ParticipantProcess() {
           });
       }
     } else {
-      console.log('🚨 결제 정보를 받아오지 못했습니다.');
       console.log(`${errorCode} | ${errorMsg}`);
       router
         .push({

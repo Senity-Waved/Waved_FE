@@ -68,7 +68,6 @@ const onResponseError = async (error: AxiosError) => {
       // eslint-disable-next-line no-param-reassign
       error.config.headers.Authorization = `Bearer ${data.accessToken}`;
 
-      console.log(data.message);
       return await axiosInstance(error.config);
     } catch (reissueError) {
       console.error('액세스 토큰 재발급 실패', reissueError);

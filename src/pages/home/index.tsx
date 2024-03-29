@@ -115,9 +115,7 @@ export default function Home({
             },
           },
         )
-        .then((res) => {
-          console.log('클라이언트 측에서 로그아웃 처리 성공:', res.data);
-          // 로그아웃 처리 후 리다이렉션
+        .then(() => {
           router
             .push({
               pathname: '/',

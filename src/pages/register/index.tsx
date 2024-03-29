@@ -29,8 +29,7 @@ export default function Register() {
   const submitMebmerInfo = async () => {
     if (step === 4 && registerData.jobTitle) {
       try {
-        const response = await editMemberApi(registerData);
-        console.log('회원가입 완료 | ', response.data);
+        await editMemberApi(registerData);
         router
           .push('/register/success')
           .catch((error) =>
