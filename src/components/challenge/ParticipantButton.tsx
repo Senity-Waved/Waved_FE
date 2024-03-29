@@ -89,7 +89,7 @@ export default function ParticipantButton({
   useEffect(() => {
     const isLogined = getCookie('accessToken');
     const handleClick = () => {
-      if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
+      if (!isLogined) {
         goToOnboarding();
       } else if (isLogined && !canCancelParticpant && dDayToStart <= 14) {
         goToParticipant();
