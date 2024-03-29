@@ -39,10 +39,7 @@ export default function OnBoarding() {
     } else if (query.needLoginToParticipant) {
       handleRouting('로그인 후 신청 가능합니다', 'warning');
     } else if (query.forcedLogout) {
-      handleRouting(
-        '다른 위치에서 로그인하여 강제 로그아웃되었습니다.',
-        'warning',
-      );
+      handleRouting('중복 로그인으로 강제 로그아웃되었습니다.', 'warning');
     }
   }, [query, router]);
 
