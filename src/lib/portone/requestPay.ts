@@ -44,7 +44,7 @@ const requestPay = ({
     name: groupTitle,
     amount: deposit,
     ...(nickname ? { buyer_name: nickname } : {}),
-    m_redirect_url: `https://waved-likelion.site/challenge/process?mychallenge_id=${myChallengeId}&deposit=${deposit}`,
+    m_redirect_url: `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/challenge/process?mychallenge_id=${myChallengeId}&deposit=${deposit}`,
   };
 
   const callback = (response: RequestPayResponse) => {
