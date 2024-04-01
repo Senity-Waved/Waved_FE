@@ -7,9 +7,11 @@ import ISnackBarState from '@/types/snackbar';
 
 export default function ChallengeHeader({
   title,
+  thumbnail,
   setSnackBarState,
 }: {
   title: string;
+  thumbnail: string;
   setSnackBarState: (state: ISnackBarState) => void;
 }) {
   const router = useRouter();
@@ -44,11 +46,15 @@ export default function ChallengeHeader({
     <>
       <Head>
         <title>WAVED | {title}</title>
-        <meta name="description" content="챌린지 상세 정보입니다.." />
+        <meta
+          name="description"
+          content={`${title} 에 대한 상세 정보를 볼 수 있는 페이지입니다.`}
+        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
+        <meta property="og:image" content={thumbnail} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SHeaderWrapper>

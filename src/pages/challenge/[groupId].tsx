@@ -78,9 +78,11 @@ const calculateCondition = (startDate: string, endDate: string): TCondition => {
 
 export default function Challenge({
   challengeInfo,
+  challengeThumbnail,
   reviewList,
 }: {
   challengeInfo: IChallengeGroup;
+  challengeThumbnail: string;
   reviewList: IChallengeReviewList;
 }) {
   const router = useRouter();
@@ -150,13 +152,14 @@ export default function Challenge({
     <SLayoutWrapper withBottomFixedBtn>
       <ChallengeHeader
         title={challengeInfo.groupTitle}
+        thumbnail={challengeThumbnail}
         setSnackBarState={setSnackBarState}
       />
       <main>
         <SThumbnail id="information">
           <Image
             alt={`${groupId}의 대표 이미지`}
-            src={getChallengeThumbnailPath(challengeInfo.groupTitle)}
+            src={challengeThumbnail}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -301,6 +304,7 @@ export async function getServerSideProps(
   | {
       props: {
         challengeInfo: IChallengeGroup;
+        challengeThumbnail: string;
         reviewList: IChallengeReviewList;
       };
     }
@@ -321,6 +325,9 @@ export async function getServerSideProps(
   if (!challengeInfo) {
     return { notFound: true };
   }
+  const challengeThumbnail = getChallengeThumbnailPath(
+    challengeInfo.groupTitle,
+  );
 
   const { challengeId } = challengeInfo;
   async function fetchReviews() {
@@ -340,6 +347,7 @@ export async function getServerSideProps(
   return {
     props: {
       challengeInfo,
+      challengeThumbnail,
       reviewList: {
         content: reviewList.content,
         totalPages: reviewList.totalPages,
