@@ -29,7 +29,6 @@ export default function ChallengeCardWide({
             width={260}
             height={126}
             style={{ objectFit: 'cover' }}
-            priority
           />
           <SProcessingDay>{caculateProcessDay(startDate)}</SProcessingDay>
         </SThumbnail>
