@@ -148,7 +148,10 @@ export default function Challenge({
 
   return (
     <SLayoutWrapper withBottomFixedBtn>
-      <ChallengeHeader setSnackBarState={setSnackBarState} />
+      <ChallengeHeader
+        title={challengeInfo.groupTitle}
+        setSnackBarState={setSnackBarState}
+      />
       <main>
         <SThumbnail id="information">
           <Image

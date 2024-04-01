@@ -6,8 +6,10 @@ import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
 import ISnackBarState from '@/types/snackbar';
 
 export default function ChallengeHeader({
+  title,
   setSnackBarState,
 }: {
+  title: string;
   setSnackBarState: (state: ISnackBarState) => void;
 }) {
   const router = useRouter();
@@ -41,7 +43,7 @@ export default function ChallengeHeader({
   return (
     <>
       <Head>
-        <title>WAVED | 챌린지 상세 정보</title>
+        <title>WAVED | {title}</title>
         <meta name="description" content="챌린지 상세 정보입니다.." />
         <meta
           name="viewport"
