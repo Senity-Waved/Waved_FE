@@ -5,7 +5,7 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
 import calculateDDay from '@/utils/calculateDDay';
-import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
+import getChallengeImagePath from '@/utils/getChallengeImagePath';
 
 export default function ChallengeCard({
   challengeGroupId,
@@ -15,6 +15,9 @@ export default function ChallengeCard({
   startDate,
   isFree,
 }: IRecruitingChallenge) {
+  const thumbnail = getChallengeImagePath({
+    title: groupTitle,
+  }) as string;
   const caculateRecruitDDay = (date: string) => {
     const dDay = calculateDDay(date) - 1;
     let dDayStr;
@@ -25,14 +28,13 @@ export default function ChallengeCard({
     }
     return dDayStr;
   };
-
   return (
     <SChallengeCard>
       <Link href={`/challenge/${challengeGroupId}`}>
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={getChallengeThumbnailPath(groupTitle)}
+            src={thumbnail}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}

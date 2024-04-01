@@ -16,7 +16,7 @@ import screenSize from '@/constants/screenSize';
 import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
 import ISnackBarState from '@/types/snackbar';
 import SnackBar from '@/components/common/SnackBar';
-import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
+import getChallengeImagePath from '@/utils/getChallengeImagePath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
@@ -325,9 +325,10 @@ export async function getServerSideProps(
   if (!challengeInfo) {
     return { notFound: true };
   }
-  const challengeThumbnail = getChallengeThumbnailPath(
-    challengeInfo.groupTitle,
-  );
+
+  const challengeThumbnail = getChallengeImagePath({
+    title: challengeInfo.groupTitle,
+  }) as string;
 
   const { challengeId } = challengeInfo;
   async function fetchReviews() {
