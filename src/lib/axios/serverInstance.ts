@@ -3,7 +3,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
 import { CustomAxiosRequestConfig } from './axiosConfig';
 
-export interface IReissueResponse {
+interface IReissueResponse {
   accessToken: string;
   message: string;
 }

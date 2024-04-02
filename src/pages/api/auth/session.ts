@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setCookie } from 'cookies-next';
 import IAuth from '@/types/auth';
-import onSilentRefresh from '@/lib/axios/onSilentRefresh';
 
 export default function Session(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -28,13 +27,6 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'lax',
         });
-
-        setTimeout(
-          () => {
-            onSilentRefresh(req, res).catch(console.error);
-          },
-          1 * 60 * 1000,
-        );
 
         res.status(200).json({ message: '서버에 토큰 전달 성공' });
       } else {
