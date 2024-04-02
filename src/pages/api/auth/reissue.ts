@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios, { AxiosError } from 'axios';
 import { getCookie, setCookie } from 'cookies-next';
+import onSilentRefresh from '@/lib/axios/onSilentRefresh';
 
 export default async function Reissue(
   req: NextApiRequest,
@@ -41,6 +42,13 @@ export default async function Reissue(
           message: '액세스 토큰 재발급 성공',
           accessToken,
         });
+
+        setTimeout(
+          () => {
+            onSilentRefresh(req, res).catch(console.error);
+          },
+          1 * 60 * 1000,
+        );
       } else {
         res.status(401).json({ message: '액세스 토큰 재발급 실패' });
       }
