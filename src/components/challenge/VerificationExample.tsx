@@ -34,7 +34,7 @@ export default function VeirificationExample({ title }: { title: string }) {
 }
 
 const SVerificationExample = styled.div`
-  height: 238px;
+  width: 100%;
   padding: 1rem 1.25rem 0;
   img {
     display: inline-block;
