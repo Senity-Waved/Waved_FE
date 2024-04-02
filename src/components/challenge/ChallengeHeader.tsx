@@ -6,11 +6,11 @@ import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
 import ISnackBarState from '@/types/snackbar';
 
 export default function ChallengeHeader({
-  title,
+  groupTitle,
   thumbnail,
   setSnackBarState,
 }: {
-  title: string;
+  groupTitle: string;
   thumbnail: string;
   setSnackBarState: (state: ISnackBarState) => void;
 }) {
@@ -45,10 +45,10 @@ export default function ChallengeHeader({
   return (
     <>
       <Head>
-        <title>WAVED | {title}</title>
+        <title>{`WAVED | ${groupTitle}`}</title>
         <meta
           name="description"
-          content={`${title} 에 대한 상세 정보를 볼 수 있는 페이지입니다.`}
+          content={`${groupTitle} 에 대한 상세 정보를 볼 수 있는 페이지입니다.`}
         />
         <meta
           name="viewport"
