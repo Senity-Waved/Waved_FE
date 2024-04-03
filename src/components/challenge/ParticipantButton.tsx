@@ -64,16 +64,30 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         setCanCancelParticpant(false);
+        const challengePath = `/challenge/${groupId}`;
         router
           .replace(
             {
               pathname: `/challenge/${groupId}`,
               query: { cancelParticipantSuccess: true },
             },
-            `/challenge/${groupId}`,
+            challengePath,
             { shallow: false },
           )
           .catch((error) => console.error('페이지 이동 실패', error));
+        setTimeout(() => {
+          const { cancelParticipantSuccess, ...restQuery } = router.query;
+          router
+            .replace(
+              {
+                pathname: `/challenge/${groupId}`,
+                query: { ...restQuery },
+              },
+              challengePath,
+              { shallow: true },
+            )
+            .catch((error) => console.error('쿼리 제거 실패', error));
+        }, 3500);
       }
     } catch (deleteError) {
       console.error(
@@ -151,5 +165,6 @@ export default function ParticipantButton({
       handleRouting();
     }
   }, [query, router, openSnackBar]);
+
   return <BottomFixedBtn btns={[btnConfig]} />;
 }
