@@ -39,6 +39,11 @@ const getReviewsApi = (challengeId: number, serverInstance: AxiosInstance) => {
 const getMoreReviewsApi = (pageParam: number, challengeId: number) => {
   return axiosInstance.get<IChallengeReviewList>(
     `/challenges/${challengeId}/reviews?page=${pageParam}&limit=5`,
+    {
+      headers: {
+        Authorization: '',
+      },
+    },
   );
 };
 
