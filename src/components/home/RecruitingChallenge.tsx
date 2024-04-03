@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import ChallengeCard from '@/components/home/ChallengeCard';
+import RecruitingChallengeCard from '@/components/home/RecruitingChallengeCard';
 import EmptyView from '@/components/common/EmptyView';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 
@@ -14,7 +14,10 @@ export default function RecruitingChallenge({
       {recruitingChallenges && recruitingChallenges.length > 0 ? (
         <SList>
           {recruitingChallenges.map((challenge) => (
-            <ChallengeCard key={challenge.challengeGroupId} {...challenge} />
+            <RecruitingChallengeCard
+              key={challenge.challengeGroupId}
+              {...challenge}
+            />
           ))}
         </SList>
       ) : (

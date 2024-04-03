@@ -5,7 +5,7 @@ import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import calculateDDay from '@/utils/calculateDDay';
 import getChallengeImagePath from '@/utils/getChallengeImagePath';
 
-export default function ChallengeCardWide({
+export default function ProcessingChallengeCard({
   challengeGroupId,
   groupTitle,
   startDate,
@@ -20,7 +20,7 @@ export default function ChallengeCardWide({
   };
 
   return (
-    <SChallengeCardWide>
+    <SChallengeCard>
       <Link href={`/challenge/${challengeGroupId}`}>
         <SThumbnail>
           <Image
@@ -34,11 +34,11 @@ export default function ChallengeCardWide({
         </SThumbnail>
         <STitle>{groupTitle}</STitle>
       </Link>
-    </SChallengeCardWide>
+    </SChallengeCard>
   );
 }
 
-const SChallengeCardWide = styled.li`
+const SChallengeCard = styled.li`
   display: inline-block;
   width: 260px;
   &:last-child {

@@ -9,7 +9,7 @@ import axios from 'axios';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import TopBanner from '@/components/home/TopBanner';
-import ChallengeCardWide from '@/components/home/ChallengeCardWide';
+import ProcessingChallengeCard from '@/components/home/ProcessingChallengeCard';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import HomeHeader from '@/components/home/HomeHeader';
 import SnackBar from '@/components/common/SnackBar';
@@ -154,7 +154,7 @@ export default function Home({
               <ScrollXBox>
                 <SListScrollX>
                   {myProcessingChallenges.map((challenge) => (
-                    <ChallengeCardWide
+                    <ProcessingChallengeCard
                       key={challenge.challengeGroupId}
                       {...challenge}
                     />

@@ -7,7 +7,7 @@ import screenSize from '@/constants/screenSize';
 import calculateDDay from '@/utils/calculateDDay';
 import getChallengeImagePath from '@/utils/getChallengeImagePath';
 
-export default function ChallengeCard({
+export default function RecruitingChallengeCard({
   challengeGroupId,
   groupTitle,
   verificationType,
