@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
@@ -12,9 +12,9 @@ import TopBanner from '@/components/home/TopBanner';
 import FloatingBtn from '@/components/home/FloatingBtn';
 import ProcessingChallenge from '@/components/home/ProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
-import ISnackBarState from '@/types/snackbar';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
+import useSnackBar from '@/hooks/useSnackBar';
 import {
   getMyProcessingChallengeApi,
   getRecruitingChallengeApi,
@@ -38,60 +38,32 @@ export default function Home({
   errorMsg,
 }: IHome) {
   const router = useRouter();
-  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
-    open: false,
-    text: '',
-    type: 'warning',
-  });
+  const { snackBarData, openSnackBar } = useSnackBar();
 
   useEffect(() => {
     const handleRedirect = async () => {
-      const { redirected, payFailure, processFailure } = router.query;
+      const { redirected, payCancel, payFailure, processFailure } =
+        router.query;
       if (redirected) {
-        setSnackBarState({
-          open: true,
-          text: '로그인이 필요한 페이지입니다.',
-          type: 'warning',
-        });
+        openSnackBar('로그인이 필요한 페이지입니다.');
+        await router.replace('/home', undefined, { shallow: true });
+      } else if (payCancel) {
+        openSnackBar('결제 포기 | 사용자가 결제를 취소하셨습니다.');
         await router.replace('/home', undefined, { shallow: true });
       } else if (payFailure) {
-        setSnackBarState({
-          open: true,
-          text: '결제 실패 | 잠시 후 재시도 바랍니다.',
-          type: 'warning',
-        });
+        openSnackBar('결제 실패 | 잠시 후 재시도 바랍니다.');
         await router.replace('/home', undefined, { shallow: true });
       } else if (processFailure) {
-        setSnackBarState({
-          open: true,
-          text: '결제 프로세스가 비정상적으로 종료되었습니다.',
-          type: 'warning',
-        });
+        openSnackBar('결제 프로세스가 비정상적으로 종료되었습니다.');
         await router.replace('/home', undefined, { shallow: true });
       }
-      setTimeout(() => {
-        setSnackBarState({
-          open: false,
-          text: '',
-        });
-      }, 3500);
     };
     handleRedirect().catch((error) => console.error(error));
-  }, [router, router.query]);
+  }, [router, router.query, openSnackBar]);
 
   useEffect(() => {
     if (requireSnackBar && errorMsg) {
-      setSnackBarState({
-        open: true,
-        text: errorMsg,
-        type: 'warning',
-      });
-      setTimeout(() => {
-        setSnackBarState({
-          open: false,
-          text: '',
-        });
-      }, 3500);
+      openSnackBar(errorMsg);
     }
     if (!requireSnackBar && errorMsg === '500') {
       router.push('/500').catch((err) => {
@@ -126,7 +98,7 @@ export default function Home({
           console.error('클라이언트 측에서 로그아웃 처리 중 오류 발생:', err);
         });
     }
-  }, [requireSnackBar, errorMsg, router]);
+  }, [requireSnackBar, errorMsg, router, openSnackBar]);
 
   return (
     <SHomeWrapper>
@@ -141,8 +113,8 @@ export default function Home({
             />
           )}
         <RecruitingChallenge recruitingChallenges={recruitingChallenges} />
-        {snackBarState.open && (
-          <SnackBar text={snackBarState.text} type={snackBarState.type} />
+        {snackBarData.open && (
+          <SnackBar text={snackBarData.text} type={snackBarData.type} />
         )}
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
