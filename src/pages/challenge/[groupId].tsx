@@ -1,41 +1,31 @@
+import { useState } from 'react';
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { GetServerSidePropsContext } from 'next';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
-import ChallengeSummary from '@/components/challenge/ChallengeSummary';
-import ChallengeReviewItem from '@/components/challenge/ChallengeReviewItem';
-import ChallengeHeader from '@/components/challenge/ChallengeHeader';
-import EmptyView from '@/components/common/EmptyView';
-import screenSize from '@/constants/screenSize';
-import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
-import useSnackBar from '@/hooks/useSnackBar';
 import SnackBar from '@/components/common/SnackBar';
-import getChallengeImagePath from '@/utils/getChallengeImagePath';
+import Modal from '@/components/modal/Modal';
+import ChallengeHeader from '@/components/challenge/ChallengeHeader';
+import ChallengeSummary from '@/components/challenge/ChallengeSummary';
+import ChallengeReview from '@/components/challenge/ChallengeReview';
 import VeirificationExample from '@/components/challenge/VerificationExample';
+import ParticipantButton from '@/components/challenge/ParticipantButton';
+import parseDate from '@/utils/parseDate';
+import calculateDDay from '@/utils/calculateDDay';
+import getChallengeImagePath from '@/utils/getChallengeImagePath';
+import screenSize from '@/constants/screenSize';
+import WEEKDAYS from '@/constants/weekdays';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import IChallengeGroup from '@/types/challengeGroup';
 import { IChallengeReviewList } from '@/types/review';
-import parseDate from '@/utils/parseDate';
-import WEEKDAYS from '@/constants/weekdays';
-import calculateDDay from '@/utils/calculateDDay';
-import ParticipantButton from '@/components/challenge/ParticipantButton';
-import {
-  getChallengeGroupApi,
-  getMoreReviewsApi,
-  getReviewsApi,
-} from '@/lib/axios/challenge/api';
-import Modal from '@/components/modal/Modal';
+import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
+import useSnackBar from '@/hooks/useSnackBar';
 import createServerInstance from '@/lib/axios/serverInstance';
-
-interface IFetchMoreReviewsResponse extends IChallengeReviewList {
-  nextPage: number;
-}
+import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
 
 const previousStartDate = (date: string) => {
   const [year, month, day] = parseDate(date);
@@ -103,49 +93,6 @@ export default function Challenge({
     isFree: challengeInfo.isFree,
   };
 
-  const fetchMoreReviews = async ({
-    pageParam = 1,
-  }): Promise<IFetchMoreReviewsResponse> => {
-    const response = await getMoreReviewsApi(
-      pageParam,
-      challengeInfo.challengeId,
-    );
-    return {
-      content: response.data.content,
-      nextPage: pageParam + 1,
-      totalPages: response.data.totalPages,
-      totalElements: response.data.totalElements,
-    };
-  };
-  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
-    IFetchMoreReviewsResponse,
-    Error
-  >(['reviews', challengeInfo.challengeId], fetchMoreReviews, {
-    getNextPageParam: (lastPage) => {
-      if (lastPage.nextPage < reviewList.totalPages) return lastPage.nextPage;
-      return undefined;
-    },
-    initialData: {
-      pages: [
-        {
-          content: reviewList.content,
-          nextPage: 1,
-          totalPages: reviewList.totalPages,
-          totalElements: reviewList.totalElements,
-        },
-      ],
-      pageParams: [0],
-    },
-  });
-
-  const handleReviewMore = () => {
-    if (!isFetching && hasNextPage) {
-      fetchNextPage().catch((error) => {
-        console.error('리뷰 더보기 실패', error);
-      });
-    }
-  };
-
   return (
     <SLayoutWrapper withBottomFixedBtn>
       <ChallengeHeader
@@ -179,8 +126,8 @@ export default function Challenge({
         </SThumbnail>
         <ChallengeSummary
           className="description"
-          groupTitle={challengeInfo?.groupTitle}
-          participantCount={challengeInfo?.participantCount}
+          groupTitle={challengeInfo.groupTitle}
+          participantCount={challengeInfo.participantCount}
           startDate={formattedDate(challengeInfo.startDate)}
           endDate={formattedDate(challengeInfo.endDate)}
           condition={calculateCondition(
@@ -205,31 +152,10 @@ export default function Challenge({
               .map((line) => <p key={uuidv4()}>{line}</p>)}
           </SSectionContext>
         </SSection>
-        <SSection id="review">
-          <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
-          {!reviewList || reviewList.totalElements === 0 ? (
-            <SEmptyViewWrapper>
-              <EmptyView pageType="챌린지후기" />
-            </SEmptyViewWrapper>
-          ) : (
-            <>
-              <ul>
-                {data?.pages.map((page) => (
-                  <React.Fragment key={uuidv4()}>
-                    {page.content.map((review) => (
-                      <ChallengeReviewItem key={uuidv4()} {...review} />
-                    ))}
-                  </React.Fragment>
-                ))}
-              </ul>
-              {hasNextPage && (
-                <SMoreBtn type="button" onClick={handleReviewMore}>
-                  더보기
-                </SMoreBtn>
-              )}
-            </>
-          )}
-        </SSection>
+        <ChallengeReview
+          challengeId={challengeInfo?.challengeId}
+          reviewList={reviewList}
+        />
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
           <SSectionContext>
@@ -382,7 +308,7 @@ const SChips = styled.dl`
   }
 `;
 
-const SSection = styled.section`
+export const SSection = styled.section`
   position: relative;
   padding: 1.5rem 0;
   color: ${({ theme }) => theme.color.gray_3c};
@@ -438,35 +364,6 @@ const SNoticeVerification = styled.p`
   line-height: 1.8;
   b {
     color: ${({ theme }) => theme.color.normal};
-  }
-`;
-
-const SEmptyViewWrapper = styled.div`
-  position: relative;
-  height: 340px;
-`;
-
-const SMoreBtn = styled.button`
-  position: relative;
-  display: block;
-  margin: 0 auto;
-  padding: 0 1.75rem 0 0.5rem;
-  border-radius: 12px;
-  line-height: 24px;
-  background-color: ${({ theme }) => theme.color.light};
-  color: ${({ theme }) => theme.color.gray_3c};
-  font-size: ${({ theme }) => theme.fontSize.caption1};
-  font-weight: ${({ theme }) => theme.fontWeight.caption1};
-  &::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    right: 14px;
-    width: 6px;
-    height: 6px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
-    border-right: 1px solid ${({ theme }) => theme.color.gray_3c};
-    transform: rotate(45deg);
   }
 `;
 
