@@ -117,6 +117,12 @@ export default function AdminPage() {
     deleteSelectedVerification().catch(console.error);
   };
 
+  const selectedVerificationDetails =
+    selectedChallengeVerification &&
+    selectedChallengeVerification.find(
+      (verification) => verification.verificationId === selectedVerificationId,
+    );
+
   return (
     <SAdminPageWrapper>
       <Head>
@@ -169,7 +175,7 @@ export default function AdminPage() {
           <SSelectedChallengeGroupIdWrapper>
             {selectedGroupId}{' '}
             {selectedGroupId && progressChallengeGroupData
-              ? `| 이름: ${progressChallengeGroupData.find((group) => group.challengeGroupId === selectedGroupId)?.groupTitle}`
+              ? `| ${progressChallengeGroupData.find((group) => group.challengeGroupId === selectedGroupId)?.groupTitle}`
               : ''}
           </SSelectedChallengeGroupIdWrapper>
           <SVerificationBtn type="button" onClick={handleVerificationBtn}>
@@ -218,7 +224,7 @@ export default function AdminPage() {
                             ? '깃허브 커밋 상태 : 커밋 실패'
                             : verification.content}
                       </p>
-                      <p>{parseDate(verification.verificationDate)}</p>
+                      <p>날짜: {parseDate(verification.verificationDate)}</p>
                       <SVerificationStatus>
                         인증 상태 :{' '}
                         {verification.isDeleted
@@ -237,7 +243,49 @@ export default function AdminPage() {
           </SAdminVerificationWrapper>
         </SSelectedChallengeVerificationWrapper>
         <SSelectedVerificationWrapper>
-          <p>선택한 인증 내역 ID : {selectedVerificationId}</p>
+          <h3>선택한 인증 내역 상세</h3>
+          {selectedVerificationDetails ? (
+            <SSelectedVerificationBox>
+              <p>인증 내역 ID: {selectedVerificationDetails.verificationId}</p>
+              <p>닉네임: {selectedVerificationDetails.nickname}</p>
+              {selectedVerificationDetails.imageUrl && (
+                <Image
+                  src={`${selectedVerificationDetails.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
+                  alt="챌린지 인증 이미지"
+                  width={300}
+                  height={300}
+                />
+              )}
+              {selectedVerificationDetails.link && (
+                <SVerificationLink
+                  href={selectedVerificationDetails.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  [인증 링크]
+                </SVerificationLink>
+              )}
+              <p>
+                {selectedVerificationDetails.content === 'true'
+                  ? '깃허브 커밋 상태: 커밋 성공'
+                  : selectedVerificationDetails.content === 'false'
+                    ? '깃허브 커밋 상태: 커밋 실패'
+                    : selectedVerificationDetails.content !== null &&
+                      selectedVerificationDetails.content}
+              </p>
+              <p>
+                날짜: {parseDate(selectedVerificationDetails.verificationDate)}
+              </p>
+              <SVerificationStatus>
+                인증 상태:{' '}
+                {selectedVerificationDetails.isDeleted
+                  ? '인증 무효 처리됨'
+                  : '인증 성공'}
+              </SVerificationStatus>
+            </SSelectedVerificationBox>
+          ) : (
+            <p>선택한 인증 내역을 찾을 수 없습니다.</p>
+          )}
           <p>🚨 당일 인증된 내역은 무효 처리하면 안됩니다 !</p>
           <SVerificationBtn
             type="button"
@@ -357,4 +405,11 @@ const SProgressGroupInfoWrapper = styled.div`
   width: 100%;
   border-radius: 10px;
   padding: 5px 10px;
+`;
+
+const SSelectedVerificationBox = styled.div`
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: 5px 10px;
+  background-color: aliceblue;
 `;
