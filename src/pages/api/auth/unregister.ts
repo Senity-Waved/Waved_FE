@@ -6,7 +6,7 @@ export default function unregister(req: NextApiRequest, res: NextApiResponse) {
     deleteCookie('accessToken', { req, res, path: '/' });
     deleteCookie('refreshToken', { req, res, path: '/' });
 
-    res.status(200).json({ message: '탈퇴 유저의 서버 토큰 제거 성공' });
+    res.status(200).json({ message: '탈퇴 성공 | 토큰 삭제' });
   } else {
     res.setHeader('Allow', ['POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);

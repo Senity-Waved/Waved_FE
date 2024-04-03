@@ -13,7 +13,7 @@ export default async function Reissue(
       if (!refreshToken) {
         return res
           .status(401)
-          .json({ message: '리프레시 토큰이 존재하지 않습니다.' });
+          .json({ message: '🚨 refresh Token이 존재하지 않습니다.' });
       }
 
       const response = await axios.post<string>(

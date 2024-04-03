@@ -25,19 +25,15 @@ export default function OnBoarding() {
       snackBarType: 'correct' | 'warning' = 'correct',
     ): void => {
       setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
-      router
-        .replace('/', undefined, { shallow: true })
-        .catch((error: Error) =>
-          console.error('쿼리스트링 제거 후 URL 변경 실패', error),
-        );
+      router.replace('/', undefined, { shallow: true }).catch(console.error);
     };
 
     if (query.logout) {
       handleRouting('로그아웃이 완료되었습니다.');
     } else if (query.withdrawal) {
-      handleRouting('계정을 탈퇴하셨습니다');
+      handleRouting('계정을 탈퇴하셨습니다.');
     } else if (query.needLoginToParticipant) {
-      handleRouting('로그인 후 신청 가능합니다', 'warning');
+      handleRouting('로그인 후 신청 가능합니다.', 'warning');
     } else if (query.forcedLogout) {
       handleRouting('중복 로그인으로 강제 로그아웃되었습니다.', 'warning');
     }
