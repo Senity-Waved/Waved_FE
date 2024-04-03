@@ -46,15 +46,14 @@ export default function Home({
         router.query;
       if (redirected) {
         openSnackBar('로그인이 필요한 페이지입니다.');
-        await router.replace('/home', undefined, { shallow: true });
       } else if (payCancel) {
         openSnackBar('결제 포기 | 사용자가 결제를 취소하셨습니다.');
-        await router.replace('/home', undefined, { shallow: true });
       } else if (payFailure) {
         openSnackBar('결제 실패 | 잠시 후 재시도 바랍니다.');
-        await router.replace('/home', undefined, { shallow: true });
       } else if (processFailure) {
         openSnackBar('결제 프로세스가 비정상적으로 종료되었습니다.');
+      }
+      if (redirected || payCancel || payFailure || processFailure) {
         await router.replace('/home', undefined, { shallow: true });
       }
     };
