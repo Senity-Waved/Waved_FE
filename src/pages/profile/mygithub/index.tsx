@@ -215,6 +215,7 @@ const SGithubForm = styled.form<{ isGithubLinked: boolean }>`
     height: 25px;
     outline: none;
     border: none;
+    border-radius: 0;
     border-bottom: 2px solid ${({ theme }) => theme.color.gray_de};
     padding-bottom: 0.0625rem;
     font-size: ${({ theme }) => theme.fontSize.subtitle1};
@@ -224,6 +225,12 @@ const SGithubForm = styled.form<{ isGithubLinked: boolean }>`
     &::placeholder {
       color: ${({ theme, isGithubLinked }) =>
         isGithubLinked ? theme.color.gray_de : theme.color.gray_bf};
+    }
+
+    &:focus {
+      border-bottom: 2px solid
+        ${({ theme, isGithubLinked }) =>
+          isGithubLinked ? theme.color.gray_de : theme.color.gray_3c};
     }
   }
 
