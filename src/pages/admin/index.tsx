@@ -47,6 +47,21 @@ export default function AdminPage() {
   const { openModal, closeModal } = useModal();
   const router = useRouter();
 
+  const fetchSelectedChallengeVerifications = async () => {
+    try {
+      if (typeof selectedGroupId === 'number') {
+        const response = await getGroupVerificationsApi(selectedGroupId);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        setSelectedChallengeVerification(response.data.content);
+      }
+    } catch (verificationListError) {
+      console.error(
+        '선택한 챌린지 그룹의 인증 내역 조회 실패',
+        verificationListError,
+      );
+    }
+  };
+
   useEffect(() => {
     const fetchProgressGroup = async () => {
       try {
@@ -68,20 +83,6 @@ export default function AdminPage() {
   }, [router]);
 
   const handleVerificationBtn = () => {
-    const fetchSelectedChallengeVerifications = async () => {
-      try {
-        if (typeof selectedGroupId === 'number') {
-          const response = await getGroupVerificationsApi(selectedGroupId);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-          setSelectedChallengeVerification(response.data.content);
-        }
-      } catch (verificationListError) {
-        console.error(
-          '선택한 챌린지 그룹의 인증 내역 조회 실패',
-          verificationListError,
-        );
-      }
-    };
     fetchSelectedChallengeVerifications().catch(console.error);
   };
 
@@ -96,10 +97,21 @@ export default function AdminPage() {
             selectedGroupId,
             selectedVerificationId,
           );
-          console.log('인증 취소 성공 | ', response);
+          console.log('인증 취소 성공 | ', response.data);
+          // eslint-disable-next-line no-alert
+          alert('인증 취소 성공');
+
+          await fetchSelectedChallengeVerifications();
+          setSelectedVerificationId(null);
         }
-      } catch (deleteVerificationError) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (deleteVerificationError: any) {
         console.error('선택한 인증 내역 삭제 실패', deleteVerificationError);
+        // eslint-disable-next-line no-alert
+        alert(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          `인증 무효 실패 | ${deleteVerificationError.response?.data.message}`,
+        );
       }
     };
     deleteSelectedVerification().catch(console.error);
@@ -137,12 +149,11 @@ export default function AdminPage() {
                         setSelectedGroupId(challengeGroup.challengeGroupId)
                       }
                     />
-                    <span>
-                      ({challengeGroup.challengeGroupId})
-                      {challengeGroup.groupTitle}
-                    </span>
-                    <span>{parseDate(challengeGroup.startDate)}</span>~
-                    <span>{parseDate(challengeGroup.endDate)}</span>
+                    <SProgressGroupInfoWrapper>
+                      <span>{challengeGroup.groupTitle}</span>
+                      <span>{parseDate(challengeGroup.startDate)}</span>~
+                      <span>{parseDate(challengeGroup.endDate)}</span>
+                    </SProgressGroupInfoWrapper>
                   </label>
                 ))}
               </form>
@@ -154,7 +165,13 @@ export default function AdminPage() {
           )}
         </SAdminProgressChallengeWrapper>
         <SSelectedChallengeVerificationWrapper>
-          <p>선택한 챌린지 그룹 ID : {selectedGroupId}</p>
+          <h3>선택한 챌린지 그룹</h3>
+          <SSelectedChallengeGroupIdWrapper>
+            {selectedGroupId}{' '}
+            {selectedGroupId && progressChallengeGroupData
+              ? `| 이름: ${progressChallengeGroupData.find((group) => group.challengeGroupId === selectedGroupId)?.groupTitle}`
+              : ''}
+          </SSelectedChallengeGroupIdWrapper>
           <SVerificationBtn type="button" onClick={handleVerificationBtn}>
             인증 내역 조회하기
           </SVerificationBtn>
@@ -272,7 +289,6 @@ const SAdminPageWrapper = styled(SLayoutWrapper)`
 const SAdminProgressChallengeWrapper = styled.div`
   padding: 10px 0;
   margin-bottom: 10px;
-  border-bottom: 3px solid ${({ theme }) => theme.color.gray_de};
   margin: 0 20px;
 
   & form {
@@ -308,6 +324,7 @@ const SVerificationBtn = styled.button`
   color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
+  margin: 0.625rem 0;
 `;
 
 const SAdminVerificationWrapper = styled.div`
@@ -327,4 +344,17 @@ const SVerificationStatus = styled.p`
 
 const SSelectedVerificationWrapper = styled.div`
   margin: 0 20px;
+`;
+
+const SSelectedChallengeGroupIdWrapper = styled.div`
+  margin: 0.9375rem 0;
+  border-bottom: 1px solid grey;
+`;
+
+const SProgressGroupInfoWrapper = styled.div`
+  margin: 0.3125rem 0;
+  border: 1px solid darkgray;
+  width: 100%;
+  border-radius: 10px;
+  padding: 5px 10px;
 `;
