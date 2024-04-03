@@ -14,7 +14,7 @@ import ChallengeHeader from '@/components/challenge/ChallengeHeader';
 import EmptyView from '@/components/common/EmptyView';
 import screenSize from '@/constants/screenSize';
 import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
-import ISnackBarState from '@/types/snackbar';
+import useSnackBar from '@/hooks/useSnackBar';
 import SnackBar from '@/components/common/SnackBar';
 import getChallengeImagePath from '@/utils/getChallengeImagePath';
 import VeirificationExample from '@/components/challenge/VerificationExample';
@@ -88,10 +88,7 @@ export default function Challenge({
   const router = useRouter();
   const groupId = router.query.groupId as string;
   const [summaryHeight, setSummaryHeight] = useState(84);
-  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
-    open: false,
-    text: '',
-  });
+  const { snackBarData } = useSnackBar();
 
   const challengeData: ISelectedChallenge = {
     challengeGroupId: groupId,
@@ -105,6 +102,7 @@ export default function Challenge({
     participantCount: challengeInfo.participantCount,
     isFree: challengeInfo.isFree,
   };
+
   const fetchMoreReviews = async ({
     pageParam = 1,
   }): Promise<IFetchMoreReviewsResponse> => {
@@ -119,7 +117,6 @@ export default function Challenge({
       totalElements: response.data.totalElements,
     };
   };
-
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<
     IFetchMoreReviewsResponse,
     Error
@@ -140,6 +137,7 @@ export default function Challenge({
       pageParams: [0],
     },
   });
+
   const handleReviewMore = () => {
     if (!isFetching && hasNextPage) {
       fetchNextPage().catch((error) => {
@@ -153,7 +151,6 @@ export default function Challenge({
       <ChallengeHeader
         groupTitle={challengeInfo.groupTitle}
         thumbnail={challengeThumbnail}
-        setSnackBarState={setSnackBarState}
       />
       <main>
         <SThumbnail id="information">
@@ -282,13 +279,12 @@ export default function Challenge({
             isApplied={challengeInfo.isApplied}
             myChallengeId={challengeInfo.myChallengeId}
             startDate={challengeInfo.startDate}
-            setSnackBarState={setSnackBarState}
           />
         )}
-        {snackBarState.open && (
+        {snackBarData.open && (
           <SnackBar
-            text={snackBarState.text}
-            type={snackBarState.type}
+            text={snackBarData.text}
+            type={snackBarData.type}
             withBottomFixedBtn
           />
         )}

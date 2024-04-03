@@ -3,32 +3,22 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
-import ISnackBarState from '@/types/snackbar';
+import useSnackBar from '@/hooks/useSnackBar';
 
 export default function ChallengeHeader({
   groupTitle,
   thumbnail,
-  setSnackBarState,
 }: {
   groupTitle: string;
   thumbnail: string;
-  setSnackBarState: (state: ISnackBarState) => void;
 }) {
   const router = useRouter();
+  const { openSnackBar } = useSnackBar();
   const copyUrl = () => {
     const currentUrl = window.location.href.split('#')[0];
     navigator.clipboard.writeText(currentUrl).then(
       () => {
-        setSnackBarState({
-          open: true,
-          text: '링크가 복사되었습니다.',
-        });
-        setTimeout(() => {
-          setSnackBarState({
-            open: false,
-            text: '',
-          });
-        }, 3500);
+        openSnackBar('링크가 복사되었습니다.', 'correct');
       },
       (error) => {
         console.error('URL 복사 실패', error);
