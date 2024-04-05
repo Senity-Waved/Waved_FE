@@ -3,28 +3,22 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
-import ISnackBarState from '@/types/snackbar';
+import useSnackBar from '@/hooks/useSnackBar';
 
 export default function ChallengeHeader({
-  setSnackBarState,
+  groupTitle,
+  thumbnail,
 }: {
-  setSnackBarState: (state: ISnackBarState) => void;
+  groupTitle: string;
+  thumbnail: string;
 }) {
   const router = useRouter();
+  const { openSnackBar } = useSnackBar();
   const copyUrl = () => {
     const currentUrl = window.location.href.split('#')[0];
     navigator.clipboard.writeText(currentUrl).then(
       () => {
-        setSnackBarState({
-          open: true,
-          text: '링크가 복사되었습니다.',
-        });
-        setTimeout(() => {
-          setSnackBarState({
-            open: false,
-            text: '',
-          });
-        }, 3500);
+        openSnackBar('링크가 복사되었습니다.', 'correct');
       },
       (error) => {
         console.error('URL 복사 실패', error);
@@ -41,12 +35,16 @@ export default function ChallengeHeader({
   return (
     <>
       <Head>
-        <title>WAVED | 챌린지 상세 정보</title>
-        <meta name="description" content="챌린지 상세 정보입니다.." />
+        <title>{`WAVED | ${groupTitle}`}</title>
+        <meta
+          name="description"
+          content={`${groupTitle} 에 대한 상세 정보를 볼 수 있는 페이지입니다.`}
+        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
+        <meta property="og:image" content={thumbnail} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SHeaderWrapper>

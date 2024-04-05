@@ -8,15 +8,14 @@ import ASelectedChallenge from '@/atoms/selectedChallenge';
 import IChallengeGroup from '@/types/challengeGroup';
 import calculateDDay from '@/utils/calculateDDay';
 import { postCancelParticipantApi } from '@/lib/axios/challenge/api';
-import ISnackBarState from '@/types/snackbar';
 import useModal from '@/hooks/useModal';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface IParticipantButton {
   challengeData: ISelectedChallenge;
   isApplied: IChallengeGroup['isApplied'];
   myChallengeId: IChallengeGroup['myChallengeId'];
   startDate: IChallengeGroup['startDate'];
-  setSnackBarState: (state: ISnackBarState) => void;
 }
 
 export default function ParticipantButton({
@@ -24,11 +23,11 @@ export default function ParticipantButton({
   isApplied,
   myChallengeId,
   startDate,
-  setSnackBarState,
 }: IParticipantButton) {
   const { query } = useRouter();
   const router = useRouter();
   const groupId = router.query.groupId as string;
+  const { openSnackBar } = useSnackBar();
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const dDayToStart = calculateDDay(startDate);
@@ -65,16 +64,30 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         setCanCancelParticpant(false);
+        const challengePath = `/challenge/${groupId}`;
         router
           .replace(
             {
               pathname: `/challenge/${groupId}`,
               query: { cancelParticipantSuccess: true },
             },
-            `/challenge/${groupId}`,
+            challengePath,
             { shallow: false },
           )
           .catch((error) => console.error('페이지 이동 실패', error));
+        setTimeout(() => {
+          const { cancelParticipantSuccess, ...restQuery } = router.query;
+          router
+            .replace(
+              {
+                pathname: `/challenge/${groupId}`,
+                query: { ...restQuery },
+              },
+              challengePath,
+              { shallow: true },
+            )
+            .catch((error) => console.error('쿼리 제거 실패', error));
+        }, 3500);
       }
     } catch (deleteError) {
       console.error(
@@ -146,21 +159,12 @@ export default function ParticipantButton({
 
   useEffect(() => {
     const handleRouting = (): void => {
-      setSnackBarState({
-        open: true,
-        text: '챌린지 신청이 취소되었습니다.',
-      });
-      setTimeout(() => {
-        setSnackBarState({
-          open: false,
-          text: '',
-        });
-      }, 3500);
+      openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
     };
     if (query.cancelParticipantSuccess) {
       handleRouting();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, router]);
+  }, [query, router, openSnackBar]);
+
   return <BottomFixedBtn btns={[btnConfig]} />;
 }
