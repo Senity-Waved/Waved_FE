@@ -53,14 +53,8 @@ export default function Home({
       } else if (processFailure) {
         openSnackBar('결제 프로세스가 비정상적으로 종료되었습니다.');
       }
+
       if (redirected || payCancel || payFailure || processFailure) {
-        await router.replace('/home', undefined, { shallow: true });
-      } else if (payCancel) {
-        setSnackBarState({
-          open: true,
-          text: '결제 포기 | 사용자가 결제를 취소하셨습니다.',
-          type: 'warning',
-        });
         await router.replace('/home', undefined, { shallow: true });
       }
     };
