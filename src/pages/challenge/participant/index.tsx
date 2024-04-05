@@ -107,12 +107,21 @@ export default function ChallengeParticipant() {
                 });
             },
             onFailure: (error) => {
-              void router
-                .push({
-                  pathname: '/home',
-                  query: { payFailure: true },
-                })
-                .catch((routerError) => console.error(error, routerError));
+              if (error === '사용자 결제 취소') {
+                void router
+                  .push({
+                    pathname: '/home',
+                    query: { payCancel: true },
+                  })
+                  .catch((routerError) => console.error(error, routerError));
+              } else {
+                void router
+                  .push({
+                    pathname: '/home',
+                    query: { payFailure: true },
+                  })
+                  .catch((routerError) => console.error(error, routerError));
+              }
             },
           });
         } catch (error) {

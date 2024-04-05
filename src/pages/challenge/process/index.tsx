@@ -97,11 +97,11 @@ export default function ParticipantProcess() {
         } catch (error) {
           console.error(error);
         }
-      } else if (errorCode) {
+      } else if (errorMsg === '[결제포기] 사용자가 결제를 취소하셨습니다') {
         router
           .push({
             pathname: '/home',
-            query: { payFailure: true },
+            query: { payCancel: true },
           })
           .catch((error) => {
             console.error(error);
@@ -117,7 +117,6 @@ export default function ParticipantProcess() {
           });
       }
     } else {
-      console.log(`${errorCode} | ${errorMsg}`);
       router
         .push({
           pathname: '/home',

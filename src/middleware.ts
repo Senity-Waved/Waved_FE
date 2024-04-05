@@ -17,6 +17,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (token && pathname === '/') {
+    return NextResponse.redirect(new URL('/home', request.url));
+  }
+
   if (
     !token &&
     protectedPaths.some((protectedPath) => pathname.startsWith(protectedPath))

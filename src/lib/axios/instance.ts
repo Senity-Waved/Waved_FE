@@ -37,7 +37,8 @@ const onRequest = (
 const onResponse = (res: AxiosResponse): AxiosResponse => {
   const { method, url } = res.config;
   console.log(
-    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data}`,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data.message ? res.data.message : res.data}`,
   );
   return res;
 };

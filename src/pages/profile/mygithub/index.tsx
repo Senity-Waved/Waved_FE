@@ -60,7 +60,6 @@ export default function MyGithub() {
         navigateToProfile({ githubLinked: true });
       }
     } catch (error) {
-      console.error('깃허브 연동 실패 | ', error);
       navigateToProfile({ linkedFail: true });
     }
   };
