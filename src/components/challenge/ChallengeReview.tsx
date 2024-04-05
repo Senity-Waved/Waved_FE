@@ -49,6 +49,7 @@ export default function ChallengeReview({
       ],
       pageParams: [0],
     },
+    refetchOnWindowFocus: false,
   });
 
   const handleReviewMore = () => {
