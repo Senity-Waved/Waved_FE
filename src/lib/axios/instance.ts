@@ -48,7 +48,6 @@ const onErrorRequest = (err: AxiosError | Error): Promise<AxiosError> => {
 };
 
 const onResponseError = async (error: AxiosError) => {
-  console.error(error);
   if (
     error.response &&
     error.response.status === 401 &&
