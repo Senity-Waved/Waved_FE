@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
+import { RecoilEnv } from 'recoil';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import SnackBar from '@/components/common/SnackBar';
@@ -21,6 +22,8 @@ import {
 } from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 interface IHome {
   isLogined: boolean;

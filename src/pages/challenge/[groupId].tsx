@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
+import { RecoilEnv } from 'recoil';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import SnackBar from '@/components/common/SnackBar';
@@ -26,6 +27,8 @@ import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
 import useSnackBar from '@/hooks/useSnackBar';
 import createServerInstance from '@/lib/axios/serverInstance';
 import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
+
+RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 const previousStartDate = (date: string) => {
   const [year, month, day] = parseDate(date);
