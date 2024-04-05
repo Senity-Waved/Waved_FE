@@ -55,6 +55,13 @@ export default function Home({
       }
       if (redirected || payCancel || payFailure || processFailure) {
         await router.replace('/home', undefined, { shallow: true });
+      } else if (payCancel) {
+        setSnackBarState({
+          open: true,
+          text: '결제 포기 | 사용자가 결제를 취소하셨습니다.',
+          type: 'warning',
+        });
+        await router.replace('/home', undefined, { shallow: true });
       }
     };
     handleRedirect().catch((error) => console.error(error));

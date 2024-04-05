@@ -15,7 +15,7 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60 * 24,
           httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'none',
+          sameSite: 'lax',
         });
 
         setCookie('refreshToken', refreshToken, {
@@ -25,16 +25,17 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60 * 24,
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'none',
+          sameSite: 'lax',
         });
 
-        res.status(200).json({ message: '서버에 토큰 전달 성공' });
+        res.status(200).json({ message: '토큰 저장 성공' });
       } else {
-        res.status(400).json({ message: 'Missing token' });
+        res
+          .status(400)
+          .json({ message: '토큰 저장 실패 | 토큰이 존재하지 않습니다.' });
       }
     } catch (error) {
-      console.error('토큰관리에 실패하였습니다.', error);
-      res.status(500).json({ message: '서버에 토큰 전달 실패' });
+      res.status(500).json({ message: '토큰 저장에 실패하였습니다.' });
     }
   } else {
     res.setHeader('Allow', ['POST']);

@@ -9,7 +9,6 @@ export default function Oauth() {
   const [refreshToken, setRefreshToken] = useState<string | null>('');
   const [hasInfo, setHasInfo] = useState<boolean | null>(null);
   const [isTokenPosted, setIsTokenPosted] = useState<boolean>(false);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -47,7 +46,7 @@ export default function Oauth() {
           }
         })
         .catch((error) => {
-          console.error('서버에 토큰 전달 실패', error);
+          console.error('로그인 성공 후 토큰 저장 실패', error);
         });
     }
   }, [accessToken, refreshToken]);
@@ -59,9 +58,7 @@ export default function Oauth() {
       (isTokenPosted && typeof hasInfo === 'boolean') ||
       (cookieAccessToken && typeof hasInfo === 'boolean')
     ) {
-      router
-        .push(hasInfo ? '/home' : '/register')
-        .catch((error) => console.error(error));
+      router.push(hasInfo ? '/home' : '/register').catch(console.error);
     }
   }, [hasInfo, router, accessToken, isTokenPosted]);
 

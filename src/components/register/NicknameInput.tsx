@@ -66,6 +66,7 @@ const SNicknameInput = styled.input<{ isNicknameValid: boolean }>`
   margin-right: 1.25rem;
   outline: none;
   border: none;
+  border-radius: 0;
   border-bottom: 2px solid ${({ theme }) => theme.color.gray_de};
   padding-bottom: 0.0625rem;
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
