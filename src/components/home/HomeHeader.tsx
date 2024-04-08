@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Head from 'next/head';
+import Link from 'next/link';
 import { SHeaderWrapper } from '@/components/common/Header';
 
 export default function HomeHeader() {
@@ -29,6 +30,16 @@ export default function HomeHeader() {
             quality={100}
           />
         </SLogo>
+        <SAlarm href="/notification" aria-label="알림 내역">
+          <Image
+            alt="알림"
+            src="/icons/icon-notification.svg"
+            width={24}
+            height={24}
+            style={{ verticalAlign: 'top' }}
+            priority
+          />
+        </SAlarm>
       </SHeader>
     </>
   );
@@ -42,4 +53,10 @@ const SHeader = styled(SHeaderWrapper)`
 const SLogo = styled.div`
   height: 30px;
   line-height: 0;
+`;
+
+const SAlarm = styled(Link)`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
 `;
