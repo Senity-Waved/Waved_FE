@@ -71,8 +71,10 @@ export default function Home({
       }
     }
 
-    fetchTokenExpiry().catch(console.error);
-  }, []);
+    if (cookieToken) {
+      fetchTokenExpiry().catch(console.error);
+    }
+  }, [cookieToken]);
 
   useEffect(() => {
     if (expiresTime) {
@@ -144,7 +146,9 @@ export default function Home({
     }
 
     return () => {
-      eventSource.close();
+      if (eventSource) {
+        eventSource.close();
+      }
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
