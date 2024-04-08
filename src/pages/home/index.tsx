@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { RecoilEnv } from 'recoil';
+import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import SnackBar from '@/components/common/SnackBar';
@@ -22,6 +23,7 @@ import {
 } from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
+import { IAuthResponse } from '@/lib/axios/instance';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -33,6 +35,10 @@ interface IHome {
   errorMsg?: string;
 }
 
+interface ITokenExpiryResponse {
+  expiresTime: number;
+}
+
 export default function Home({
   isLogined,
   myProcessingChallenges,
@@ -42,6 +48,108 @@ export default function Home({
 }: IHome) {
   const router = useRouter();
   const { snackBarData, openSnackBar } = useSnackBar();
+
+  const EventSource = EventSourcePolyfill || NativeEventSource;
+
+  const cookieToken = getCookie('accessToken');
+  const [notificationUpdate, setNotificationUpdate] = useState<boolean>(false);
+
+  const [expiresTime, setExpiresTime] = useState<number>(0);
+  const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchTokenExpiry() {
+      try {
+        const response = await axios.get<ITokenExpiryResponse>(
+          '/api/auth/token-expiry',
+        );
+
+        const { data } = response;
+        setExpiresTime(data.expiresTime);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchTokenExpiry().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (expiresTime) {
+      const currentTime = Date.now();
+      const timeUntilExpiry = expiresTime - currentTime;
+
+      if (timeUntilExpiry < 60000) {
+        setReadyReconnect(true);
+      }
+    }
+  }, [expiresTime]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    let eventSource: EventSourcePolyfill;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const connectEventSource = (token: string) => {
+      if (eventSource) {
+        eventSource.close();
+        console.log('eventSource :', eventSource);
+        console.log('기존 eventSoruce close');
+      }
+      const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
+      eventSource = new EventSource(urlEndPoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Connection: 'keep-alive',
+        },
+        heartbeatTimeout: 600000,
+        withCredentials: true,
+      });
+
+      eventSource.addEventListener('event', () => {
+        openSnackBar('새로운 알림이 있습니다.');
+        setNotificationUpdate(true);
+      });
+    };
+
+    const refreshTokenAndReconnect = async () => {
+      try {
+        const { data } = await axios.post<IAuthResponse>(
+          '/api/auth/reissue',
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        connectEventSource(data.accessToken);
+        timeoutId = setTimeout(
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          refreshTokenAndReconnect,
+          60 * 1000 * 9,
+        );
+      } catch (error) {
+        console.error('subscribe 재연결 시 토큰 재발급 실패 | ', error);
+      }
+    };
+
+    if (cookieToken && !readyReconnect) {
+      connectEventSource(cookieToken);
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      timeoutId = setTimeout(refreshTokenAndReconnect, 60 * 1000 * 9);
+    } else if (readyReconnect) {
+      refreshTokenAndReconnect().catch(console.error);
+    }
+
+    return () => {
+      eventSource.close();
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [EventSource, cookieToken, openSnackBar, readyReconnect]);
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -105,7 +213,7 @@ export default function Home({
 
   return (
     <SHomeWrapper>
-      <HomeHeader />
+      <HomeHeader updateKey={notificationUpdate} />
       <main>
         <TopBanner />
         {isLogined &&
