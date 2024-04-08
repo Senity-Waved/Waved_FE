@@ -23,6 +23,7 @@ import {
 } from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
+import { IAuthResponse } from '@/lib/axios/instance';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -32,6 +33,10 @@ interface IHome {
   recruitingChallenges: IRecruitingChallenge[] | null;
   requireSnackBar?: boolean;
   errorMsg?: string;
+}
+
+interface ITokenExpiryResponse {
+  expiresTime: number;
 }
 
 export default function Home({
@@ -49,31 +54,104 @@ export default function Home({
   const cookieToken = getCookie('accessToken');
   const [notificationUpdate, setNotificationUpdate] = useState<boolean>(false);
 
+  const [expiresTime, setExpiresTime] = useState<number>(0);
+  const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchTokenExpiry() {
+      try {
+        const response = await axios.get<ITokenExpiryResponse>(
+          '/api/auth/token-expiry',
+        );
+
+        const { data } = response;
+        setExpiresTime(data.expiresTime);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchTokenExpiry().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (expiresTime) {
+      const currentTime = Date.now();
+      const timeUntilExpiry = expiresTime - currentTime;
+
+      console.log(timeUntilExpiry);
+      if (timeUntilExpiry < 60000) {
+        setReadyReconnect(true);
+      }
+    }
+  }, [expiresTime]);
+
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (cookieToken) {
+    let eventSource: EventSourcePolyfill;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const connectEventSource = (token: string) => {
+      if (eventSource) {
+        eventSource.close();
+        console.log('eventSource :', eventSource);
+        console.log('기존 eventSoruce close');
+      }
       const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
-      const eventSource = new EventSource(urlEndPoint, {
+      eventSource = new EventSource(urlEndPoint, {
         headers: {
-          Authorization: `Bearer ${cookieToken}`,
+          Authorization: `Bearer ${token}`,
           Connection: 'keep-alive',
         },
         heartbeatTimeout: 600000,
         withCredentials: true,
       });
 
-      eventSource.addEventListener('event', (event) => {
-        console.log('실시간 알림 테스트!');
-        console.log(event);
+      eventSource.addEventListener('event', () => {
         openSnackBar('새로운 알림이 있습니다.');
         setNotificationUpdate(true);
       });
+    };
 
-      return () => {
-        eventSource.close();
-      };
+    const refreshTokenAndReconnect = async () => {
+      try {
+        const { data } = await axios.post<IAuthResponse>(
+          '/api/auth/reissue',
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        connectEventSource(data.accessToken);
+        timeoutId = setTimeout(
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          refreshTokenAndReconnect,
+          60 * 1000 * 9,
+        );
+      } catch (error) {
+        console.error('subscribe 재연결 시 토큰 재발급 실패 | ', error);
+      }
+    };
+
+    if (cookieToken && !readyReconnect) {
+      connectEventSource(cookieToken);
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      timeoutId = setTimeout(refreshTokenAndReconnect, 60 * 1000 * 9);
+    } else if (readyReconnect) {
+      console.log('토큰 만료 전 재발급 및 재연동');
+      refreshTokenAndReconnect().catch(console.error);
     }
-  }, [EventSource, cookieToken, openSnackBar]);
+
+    return () => {
+      eventSource.close();
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [EventSource, cookieToken, openSnackBar, readyReconnect]);
 
   useEffect(() => {
     const handleRedirect = async () => {
