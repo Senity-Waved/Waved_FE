@@ -79,7 +79,6 @@ export default function Home({
       const currentTime = Date.now();
       const timeUntilExpiry = expiresTime - currentTime;
 
-      console.log(timeUntilExpiry);
       if (timeUntilExpiry < 60000) {
         setReadyReconnect(true);
       }
@@ -141,7 +140,6 @@ export default function Home({
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       timeoutId = setTimeout(refreshTokenAndReconnect, 60 * 1000 * 9);
     } else if (readyReconnect) {
-      console.log('토큰 만료 전 재발급 및 재연동');
       refreshTokenAndReconnect().catch(console.error);
     }
 
