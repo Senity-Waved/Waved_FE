@@ -6,18 +6,18 @@ export default function useSnackBar() {
   const [snackBarData, setSnackBarData] = useRecoilState(ASnackBarState);
 
   const openSnackBar = useCallback(
-    (text: string) => {
+    (text: string, type: 'warning' | 'correct' = 'warning') => {
       setSnackBarData({
         open: true,
         text,
-        type: 'warning',
+        type,
       });
 
       setTimeout(() => {
         setSnackBarData({
           open: false,
           text: '',
-          type: 'warning',
+          type,
         });
       }, 3500);
     },

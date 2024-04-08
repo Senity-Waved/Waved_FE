@@ -26,7 +26,6 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
   const [activeTab, setActiveTab] = useState('');
 
   useEffect(() => {
-    setActiveTab(tabs[0].href);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

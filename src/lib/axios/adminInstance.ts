@@ -11,6 +11,13 @@ interface IAuthResponse {
   accessToken: string;
 }
 
+interface ErrorResponseData {
+  message: string;
+  code: string;
+  status: string;
+  errors: string[];
+}
+
 const adminInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_ADMIN_BASE_URL,
   timeout: 10000,
@@ -74,7 +81,11 @@ const onResponseError = async (error: AxiosError) => {
       console.error('액세스 토큰 재발급 실패', reissueError);
       return Promise.reject(reissueError);
     }
-  } else if (error.response && error.response.status === 403) {
+  } else if (
+    error.response &&
+    error.response.status === 403 &&
+    (error.response.data as ErrorResponseData).message === 'Access Denied'
+  ) {
     throw new Error('UnauthorizedAdminAccess');
   }
 

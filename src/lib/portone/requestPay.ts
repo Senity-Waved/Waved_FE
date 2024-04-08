@@ -59,9 +59,10 @@ const requestPay = ({
       challengePaymentsApi(paymentsProps)
         .then(() => onSuccess())
         .catch((error) => console.error(error));
+    } else if (error_msg === '[결제포기] 사용자가 결제를 취소하셨습니다') {
+      onFailure('사용자 결제 취소');
     } else {
-      onFailure(error_msg || '결제실패');
-      console.error(error_msg);
+      onFailure(error_msg || '결제 실패');
     }
   };
 

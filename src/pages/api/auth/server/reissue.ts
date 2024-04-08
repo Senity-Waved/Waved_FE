@@ -31,7 +31,7 @@ export default async function Reissue(
         const accessToken = response.data;
 
         res.status(200).json({
-          message: '🎇 액세스 토큰 재발급 성공',
+          message: '액세스 토큰 재발급 성공',
           accessToken,
         });
       } else {

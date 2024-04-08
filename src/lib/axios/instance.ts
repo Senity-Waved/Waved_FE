@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 import { getCookie } from 'cookies-next';
 
-interface IAuthResponse {
+export interface IAuthResponse {
   message: string;
   accessToken: string;
 }
@@ -37,7 +37,8 @@ const onRequest = (
 const onResponse = (res: AxiosResponse): AxiosResponse => {
   const { method, url } = res.config;
   console.log(
-    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data}`,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data.message ? res.data.message : res.data}`,
   );
   return res;
 };
@@ -47,7 +48,6 @@ const onErrorRequest = (err: AxiosError | Error): Promise<AxiosError> => {
 };
 
 const onResponseError = async (error: AxiosError) => {
-  console.error(error);
   if (
     error.response &&
     error.response.status === 401 &&

@@ -1,15 +1,27 @@
 import styled from '@emotion/styled';
-import ScrollContainer from 'react-indiana-drag-scroll';
+import useHorizontalScroll from '@/hooks/useHorizontalScroll';
 
 export default function ScrollXBox({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <SScrollXBox>{children}</SScrollXBox>;
+  const { ref, isDragging, onDragStart, onThrottleDragMove, onDragEnd } =
+    useHorizontalScroll();
+  return (
+    <SScrollXBox
+      ref={ref}
+      onMouseDown={onDragStart}
+      onMouseMove={isDragging ? onThrottleDragMove : undefined}
+      onMouseUp={onDragEnd}
+      onMouseLeave={onDragEnd}
+    >
+      {children}
+    </SScrollXBox>
+  );
 }
 
-const SScrollXBox = styled(ScrollContainer)`
+const SScrollXBox = styled.div`
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;

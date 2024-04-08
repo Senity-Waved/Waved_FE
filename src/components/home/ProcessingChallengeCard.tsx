@@ -3,13 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import calculateDDay from '@/utils/calculateDDay';
-import getChallengeThumbnailPath from '@/utils/getChallengeThumbnailPath';
+import getChallengeImagePath from '@/utils/getChallengeImagePath';
 
-export default function ChallengeCardWide({
+export default function ProcessingChallengeCard({
   challengeGroupId,
   groupTitle,
   startDate,
 }: IMyProcessingChallenge) {
+  const thumbnail = getChallengeImagePath({
+    title: groupTitle,
+  }) as string;
   const caculateProcessDay = (date: string) => {
     const dDay = Math.abs(calculateDDay(date)) + 1;
     const dDayStr = `${dDay}일차`;
@@ -17,26 +20,25 @@ export default function ChallengeCardWide({
   };
 
   return (
-    <SChallengeCardWide>
+    <SChallengeCard>
       <Link href={`/challenge/${challengeGroupId}`}>
         <SThumbnail>
           <Image
             alt={`${groupTitle} 대표 이미지`}
-            src={getChallengeThumbnailPath(groupTitle)}
+            src={thumbnail}
             width={260}
             height={126}
             style={{ objectFit: 'cover' }}
-            priority
           />
           <SProcessingDay>{caculateProcessDay(startDate)}</SProcessingDay>
         </SThumbnail>
         <STitle>{groupTitle}</STitle>
       </Link>
-    </SChallengeCardWide>
+    </SChallengeCard>
   );
 }
 
-const SChallengeCardWide = styled.li`
+const SChallengeCard = styled.li`
   display: inline-block;
   width: 260px;
   &:last-child {
