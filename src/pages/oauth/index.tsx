@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { subscribeApi } from '@/lib/axios/notification/api';
 
 export default function Oauth() {
   const [accessToken, setAccessToken] = useState<string | null>('');
@@ -44,13 +43,6 @@ export default function Oauth() {
         .then((res) => {
           if (res.status === 200) {
             setIsTokenPosted(true);
-            subscribeApi()
-              .then((subscribeRes) => {
-                console.log('subscribe API 성공', subscribeRes);
-              })
-              .catch((error) => {
-                console.error('subscribe API 호출 실패 |', error);
-              });
           }
         })
         .catch((error) => {
