@@ -13,7 +13,7 @@ const subscribeApi = () => {
  * @returns response
  */
 const newNotificationApi = () => {
-  return axiosInstance.get('/event/new');
+  return axiosInstance.get<{ newEvent: boolean }>('/event/new');
 };
 
 export { subscribeApi, newNotificationApi };
