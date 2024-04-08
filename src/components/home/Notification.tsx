@@ -9,9 +9,10 @@ export default function Notification({ updateKey }: { updateKey: boolean }) {
     ['hasNewEvent', updateKey],
     async () => {
       const response = await newNotificationApi();
-      console.log(response.data);
+      console.log('새 알림 있나요?', response.data.newEvent);
       return response.data;
     },
+    { refetchOnWindowFocus: false },
   );
   if (error) {
     console.error('새로운 알림 유무 불러오기 실패', error);
