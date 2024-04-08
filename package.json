@@ -17,6 +17,7 @@
     "cookies-next": "^4.1.1",
     "event-source-polyfill": "^1.0.31",
     "next": "14.1.0",
+    "next-pwa": "^5.6.0",
     "react": "^18",
     "react-dom": "^18",
     "react-intersection-observer": "^9.8.1",

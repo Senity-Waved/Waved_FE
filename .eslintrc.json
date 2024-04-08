@@ -15,7 +15,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["jest.*.js"],
+  "ignorePatterns": ["jest.*.js", "next.config.mjs"],
   "extends": [
     "eslint:recommended",
     "airbnb",
