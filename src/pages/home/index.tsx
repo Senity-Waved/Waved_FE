@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { RecoilEnv } from 'recoil';
+import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { SLayoutWrapper } from '@/components/common/Layout';
 import Footer from '@/components/common/Footer';
 import SnackBar from '@/components/common/SnackBar';
@@ -42,6 +43,29 @@ export default function Home({
 }: IHome) {
   const router = useRouter();
   const { snackBarData, openSnackBar } = useSnackBar();
+
+  const EventSource = EventSourcePolyfill || NativeEventSource;
+
+  const cookieToken = getCookie('accessToken');
+
+  useEffect(() => {
+    const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
+    const eventSource = new EventSource(urlEndPoint, {
+      headers: {
+        Authorization: `Bearer ${cookieToken}`,
+        Connection: 'keep-alive',
+      },
+    });
+
+    eventSource.addEventListener('event', (event) => {
+      console.log('실시간 알림 테스트!');
+      console.log(event);
+    });
+
+    return () => {
+      eventSource.close();
+    };
+  }, [EventSource, cookieToken]);
 
   useEffect(() => {
     const handleRedirect = async () => {
