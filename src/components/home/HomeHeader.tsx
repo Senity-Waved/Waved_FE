@@ -1,10 +1,19 @@
-import styled from '@emotion/styled';
-import Image from 'next/image';
 import Head from 'next/head';
-import Link from 'next/link';
+import Image from 'next/image';
+import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { getCookie } from 'cookies-next';
 import { SHeaderWrapper } from '@/components/common/Header';
+import Notification from '@/components/home/Notification';
 
 export default function HomeHeader() {
+  const [isLogined, setIsLogined] = useState<boolean>(false);
+  useEffect(() => {
+    const hasAccessToken = !!getCookie('accessToken');
+    if (hasAccessToken) {
+      setIsLogined(hasAccessToken);
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -30,16 +39,7 @@ export default function HomeHeader() {
             quality={100}
           />
         </SLogo>
-        <SNotification href="/notification" aria-label="알림 내역">
-          <Image
-            alt="알림"
-            src="/icons/icon-notification.svg"
-            width={24}
-            height={24}
-            style={{ verticalAlign: 'top' }}
-            priority
-          />
-        </SNotification>
+        {isLogined && <Notification />}
       </SHeader>
     </>
   );
@@ -53,10 +53,4 @@ const SHeader = styled(SHeaderWrapper)`
 const SLogo = styled.div`
   height: 30px;
   line-height: 0;
-`;
-
-const SNotification = styled(Link)`
-  display: inline-block;
-  width: 24px;
-  height: 24px;
 `;
