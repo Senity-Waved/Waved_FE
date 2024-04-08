@@ -30,7 +30,7 @@ export default function HomeHeader() {
             quality={100}
           />
         </SLogo>
-        <SAlarm href="/notification" aria-label="알림 내역">
+        <SNotification href="/notification" aria-label="알림 내역">
           <Image
             alt="알림"
             src="/icons/icon-notification.svg"
@@ -39,7 +39,7 @@ export default function HomeHeader() {
             style={{ verticalAlign: 'top' }}
             priority
           />
-        </SAlarm>
+        </SNotification>
       </SHeader>
     </>
   );
@@ -55,7 +55,7 @@ const SLogo = styled.div`
   line-height: 0;
 `;
 
-const SAlarm = styled(Link)`
+const SNotification = styled(Link)`
   display: inline-block;
   width: 24px;
   height: 24px;
