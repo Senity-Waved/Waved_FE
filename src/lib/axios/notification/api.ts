@@ -8,4 +8,12 @@ const subscribeApi = () => {
   return axiosInstance.get('/event/subscribe');
 };
 
-export default subscribeApi;
+/**
+ * 새로운 알림 유무 GET
+ * @returns response
+ */
+const newNotificationApi = () => {
+  return axiosInstance.get('/event/new');
+};
+
+export { subscribeApi, newNotificationApi };
