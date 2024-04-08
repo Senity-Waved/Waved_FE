@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 import { getCookie } from 'cookies-next';
 
-interface IAuthResponse {
+export interface IAuthResponse {
   message: string;
   accessToken: string;
 }
