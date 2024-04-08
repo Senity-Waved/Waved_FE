@@ -48,24 +48,28 @@ export default function Home({
 
   const cookieToken = getCookie('accessToken');
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
-    const eventSource = new EventSource(urlEndPoint, {
-      headers: {
-        Authorization: `Bearer ${cookieToken}`,
-        Connection: 'keep-alive',
-      },
-    });
+    if (cookieToken) {
+      const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
+      const eventSource = new EventSource(urlEndPoint, {
+        headers: {
+          Authorization: `Bearer ${cookieToken}`,
+          Connection: 'keep-alive',
+        },
+      });
 
-    eventSource.addEventListener('event', (event) => {
-      console.log('실시간 알림 테스트!');
-      console.log(event);
-    });
+      eventSource.addEventListener('event', (event) => {
+        console.log(event);
 
-    return () => {
-      eventSource.close();
-    };
-  }, [EventSource, cookieToken]);
+        openSnackBar('새로운 알림이 있습니다.');
+      });
+
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [EventSource, cookieToken, openSnackBar]);
 
   useEffect(() => {
     const handleRedirect = async () => {
