@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   homeNormal,
@@ -15,9 +14,19 @@ import screenSize from '@/constants/screenSize';
 export default function Footer() {
   const router = useRouter();
 
+  const navigate = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    path: string,
+  ) => {
+    e.preventDefault();
+    if (router.pathname !== path) {
+      router.push(path).catch((error) => console.error('이동 실패', error));
+    }
+  };
+
   return (
     <SFooterWrapper>
-      <SFooterNavLink href="/home">
+      <SFooterNavLink onClick={(e) => navigate(e, '/home')}>
         <SFooterNavItem isActive={router.pathname === '/home'}>
           <Image
             src={router.pathname === '/home' ? homeFilled : homeNormal}
@@ -29,7 +38,7 @@ export default function Footer() {
           <p>홈</p>
         </SFooterNavItem>
       </SFooterNavLink>
-      <SFooterNavLink href="/mychallenge">
+      <SFooterNavLink onClick={(e) => navigate(e, '/mychallenge')}>
         <SFooterNavItem isActive={router.pathname === '/mychallenge'}>
           <Image
             src={
@@ -45,7 +54,7 @@ export default function Footer() {
           <p>마이챌린지</p>
         </SFooterNavItem>
       </SFooterNavLink>
-      <SFooterNavLink href="/profile">
+      <SFooterNavLink onClick={(e) => navigate(e, '/profile')}>
         <SFooterNavItem isActive={router.pathname === '/profile'}>
           <Image
             src={router.pathname === '/profile' ? profileFilled : profileNormal}
@@ -79,7 +88,7 @@ const SFooterWrapper = styled.nav`
   border-top: 1px solid #dee1e5;
 `;
 
-const SFooterNavLink = styled(Link)`
+const SFooterNavLink = styled.button`
   width: 74px;
   height: 43px;
 `;
