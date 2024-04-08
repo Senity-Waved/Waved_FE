@@ -1,3 +1,4 @@
+import INotify from '@/types/notify';
 import axiosInstance from '../instance';
 
 /**
@@ -16,4 +17,12 @@ const newNotificationApi = () => {
   return axiosInstance.get<{ newEvent: boolean }>('/event/new');
 };
 
-export { subscribeApi, newNotificationApi };
+/**
+ * 알림 내역 조회 GET
+ * @returns response
+ */
+const notifyApi = () => {
+  return axiosInstance.get<INotify[]>('/notify');
+};
+
+export { subscribeApi, newNotificationApi, notifyApi };
