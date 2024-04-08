@@ -58,6 +58,8 @@ export default function Home({
           Authorization: `Bearer ${cookieToken}`,
           Connection: 'keep-alive',
         },
+        heartbeatTimeout: 600000,
+        withCredentials: true,
       });
 
       eventSource.addEventListener('event', (event) => {
