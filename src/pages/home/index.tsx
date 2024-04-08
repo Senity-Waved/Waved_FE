@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
@@ -47,25 +47,31 @@ export default function Home({
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
   const cookieToken = getCookie('accessToken');
+  const [notificationUpdate, setNotificationUpdate] = useState<boolean>(false);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
-    const eventSource = new EventSource(urlEndPoint, {
-      headers: {
-        Authorization: `Bearer ${cookieToken}`,
-        Connection: 'keep-alive',
-      },
-    });
+    if (cookieToken) {
+      const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
+      const eventSource = new EventSource(urlEndPoint, {
+        headers: {
+          Authorization: `Bearer ${cookieToken}`,
+          Connection: 'keep-alive',
+        },
+      });
 
-    eventSource.addEventListener('event', (event) => {
-      console.log('실시간 알림 테스트!');
-      console.log(event);
-    });
+      eventSource.addEventListener('event', (event) => {
+        console.log('실시간 알림 테스트!');
+        console.log(event);
+        openSnackBar('새로운 알림이 있습니다.');
+        setNotificationUpdate(true);
+      });
 
-    return () => {
-      eventSource.close();
-    };
-  }, [EventSource, cookieToken]);
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [EventSource, cookieToken, openSnackBar]);
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -129,7 +135,7 @@ export default function Home({
 
   return (
     <SHomeWrapper>
-      <HomeHeader />
+      <HomeHeader updateKey={notificationUpdate} />
       <main>
         <TopBanner />
         {isLogined &&
