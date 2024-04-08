@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
 import { newNotificationApi } from '@/lib/axios/notification/api';
 
-export default function Notification() {
+export default function Notification({ updateKey }: { updateKey: boolean }) {
   const { data, error } = useQuery<{ newEvent: boolean }>(
-    ['hasNewEvent'],
+    ['hasNewEvent', updateKey],
     async () => {
       const response = await newNotificationApi();
       console.log(response.data);

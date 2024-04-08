@@ -6,7 +6,7 @@ import { getCookie } from 'cookies-next';
 import { SHeaderWrapper } from '@/components/common/Header';
 import Notification from '@/components/home/Notification';
 
-export default function HomeHeader() {
+export default function HomeHeader({ updateKey }: { updateKey: boolean }) {
   const [isLogined, setIsLogined] = useState<boolean>(false);
   useEffect(() => {
     const hasAccessToken = !!getCookie('accessToken');
@@ -39,7 +39,7 @@ export default function HomeHeader() {
             quality={100}
           />
         </SLogo>
-        {isLogined && <Notification />}
+        {isLogined && <Notification updateKey={updateKey} />}
       </SHeader>
     </>
   );
