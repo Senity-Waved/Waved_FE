@@ -57,8 +57,6 @@ export default function Home({
   const [expiresTime, setExpiresTime] = useState<number>(0);
   const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
 
-  console.log(expiresTime);
-
   useEffect(() => {
     async function fetchTokenExpiry() {
       try {
@@ -82,6 +80,8 @@ export default function Home({
     if (expiresTime) {
       const currentTime = Date.now();
       const timeUntilExpiry = expiresTime - currentTime;
+
+      console.log(timeUntilExpiry);
 
       if (timeUntilExpiry < 60000) {
         setReadyReconnect(true);
