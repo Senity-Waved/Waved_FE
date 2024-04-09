@@ -238,7 +238,7 @@ export default function Home({
         )}
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
-      <Footer />
+      <Footer isLogined={isLogined} />
     </SHomeWrapper>
   );
 }
