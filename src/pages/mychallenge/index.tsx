@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
 import { TMyChallengeInfo } from '@/types/myChallenge';
@@ -22,6 +23,7 @@ interface IMyChallenges {
   getMyCompletedChallenges?: TMyChallengeInfo[];
   requireSnackBar?: boolean;
   errorMsg?: string;
+  isLogined: boolean;
 }
 
 export default function MyChallenge({
@@ -30,6 +32,7 @@ export default function MyChallenge({
   getMyCompletedChallenges,
   requireSnackBar,
   errorMsg,
+  isLogined,
 }: IMyChallenges) {
   const [completedData, setCompletedData] = useState<TMyChallengeInfo[]>(
     getMyCompletedChallenges || [],
@@ -134,6 +137,7 @@ export default function MyChallenge({
       headerText="MY 챌린지"
       title="마이챌린지"
       description="나의 챌린지 내역을 확인해보세요."
+      isLogined={isLogined}
     >
       <TabMenu
         tabs={[
@@ -182,6 +186,8 @@ export default function MyChallenge({
 
 async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
   const serverInstance = createServerInstance(context);
+  const cookieToken = getCookie('accessToken', context);
+  const isLogined = !!cookieToken;
 
   const fetchMyChallenges = async (status: string) => {
     const response = await serverInstance.get<TMyChallengeInfo[]>(
@@ -201,6 +207,7 @@ async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
       getMyProgressChallenges: myProgressChallenges,
       getMyWaitingChallenges: myWaitingChallenges,
       getMyCompletedChallenges: myCompletedChallenges,
+      isLogined,
     },
   };
 }
