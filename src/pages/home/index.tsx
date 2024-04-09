@@ -57,6 +57,8 @@ export default function Home({
   const [expiresTime, setExpiresTime] = useState<number>(0);
   const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
 
+  console.log(expiresTime);
+
   useEffect(() => {
     async function fetchTokenExpiry() {
       try {
@@ -98,6 +100,7 @@ export default function Home({
         console.log('eventSource :', eventSource);
         console.log('기존 eventSoruce close');
       }
+      console.log('SSE 연동 !');
       const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
       eventSource = new EventSource(urlEndPoint, {
         headers: {
@@ -108,9 +111,10 @@ export default function Home({
         withCredentials: true,
       });
 
-      eventSource.addEventListener('event', () => {
+      eventSource.addEventListener('event', (event) => {
         openSnackBar('새로운 알림이 있습니다.');
         setNotificationUpdate(true);
+        console.log(event);
       });
     };
 
@@ -125,7 +129,7 @@ export default function Home({
             },
           },
         );
-
+        console.log('토큰 재발급 및 SSE 재연동');
         connectEventSource(data.accessToken);
         timeoutId = setTimeout(
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -142,6 +146,7 @@ export default function Home({
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       timeoutId = setTimeout(refreshTokenAndReconnect, 60 * 1000 * 9);
     } else if (readyReconnect) {
+      console.log('토큰 만료 시간 전 재발급 및 재연동 시도');
       refreshTokenAndReconnect().catch(console.error);
     }
 
