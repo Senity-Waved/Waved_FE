@@ -10,7 +10,7 @@ permissions:
 on:
   push:
     branches:
-      - main
+      - test/#100
   workflow_dispatch:
 
 jobs:
@@ -64,14 +64,13 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-        
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}	
-
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
