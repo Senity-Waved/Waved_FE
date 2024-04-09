@@ -15,7 +15,7 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60 * 24,
           httpOnly: false,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          sameSite: 'none',
         });
 
         setCookie('refreshToken', refreshToken, {
@@ -25,7 +25,7 @@ export default function Session(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60 * 24,
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          sameSite: 'none',
         });
 
         res.status(200).json({ message: '토큰 저장 성공' });
