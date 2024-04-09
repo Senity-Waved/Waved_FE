@@ -83,6 +83,8 @@ export default function Home({
       const currentTime = Date.now();
       const timeUntilExpiry = expiresTime - currentTime;
 
+      console.log(timeUntilExpiry);
+
       if (timeUntilExpiry < 60000) {
         setReadyReconnect(true);
       }
@@ -238,7 +240,7 @@ export default function Home({
         )}
       </main>
       <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
-      <Footer />
+      <Footer isLogined={isLogined} />
     </SHomeWrapper>
   );
 }

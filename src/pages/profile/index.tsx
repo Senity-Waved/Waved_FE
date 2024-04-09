@@ -187,6 +187,7 @@ export default function Profile({
       noHeader
       title="프로필"
       description="WAVED 회원의 프로필 페이지입니다. 챌린지 기록, 계정 설정, 고객 센터 등을 확인할 수 있습니다. "
+      isLogined={isLogined}
     >
       <SProfileWrapper>
         <h2 className="a11yHidden">프로필</h2>
@@ -370,7 +371,7 @@ export default function Profile({
         <SProfileEtc>
           <div>
             <p>현재 버전</p>
-            <p>1.0.2</p>
+            <p>1.0.1</p>
           </div>
         </SProfileEtc>
         <SwithdrawalBtnWrapper>

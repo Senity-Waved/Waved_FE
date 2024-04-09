@@ -2,7 +2,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
 import {
   homeNormal,
   homeFilled,
@@ -14,9 +13,14 @@ import {
 } from '../../../public/icons';
 import screenSize from '@/constants/screenSize';
 
-export default function Footer() {
+interface IFooterProps {
+  isLogined: boolean;
+}
+
+export default function Footer({ isLogined }: IFooterProps) {
   const router = useRouter();
-  const cookieToken = getCookie('accessToken');
+  // const cookieToken = getCookie('accessToken');
+  // const isLogined = !!cookieToken;
 
   const navigate = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -24,7 +28,7 @@ export default function Footer() {
   ) => {
     e.preventDefault();
 
-    if (!cookieToken && path === '/mychallenge') {
+    if (!isLogined && path === '/mychallenge') {
       return;
     }
 
@@ -50,11 +54,11 @@ export default function Footer() {
       <SFooterNavLink onClick={(e) => navigate(e, '/mychallenge')}>
         <SMyChallengeNavItem
           isActive={router.pathname === '/mychallenge'}
-          isLogined={cookieToken !== null}
+          isLogined={isLogined}
         >
           <Image
             src={
-              cookieToken !== null
+              isLogined
                 ? router.pathname === '/mychallenge'
                   ? myChallengeFilled
                   : myChallengeNormal
