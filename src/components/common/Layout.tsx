@@ -15,6 +15,7 @@ interface ILayout {
   noHeader?: boolean;
   withBottomFixedBtn?: boolean;
   rightOnClick?: () => void;
+  isLogined?: boolean;
 }
 
 export default function Layout({
@@ -27,6 +28,7 @@ export default function Layout({
   noHeader,
   withBottomFixedBtn,
   rightOnClick,
+  isLogined,
 }: ILayout) {
   return (
     <SLayoutWrapper
@@ -42,7 +44,7 @@ export default function Layout({
         />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
+          content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -55,7 +57,7 @@ export default function Layout({
         />
       )}
       <main>{children}</main>
-      {noFooter || <Footer />}
+      {noFooter || <Footer isLogined={isLogined !== undefined && isLogined} />}
     </SLayoutWrapper>
   );
 }
