@@ -10,7 +10,7 @@ permissions:
 on:
   push:
     branches:
-      - test/#100
+      - main
   workflow_dispatch:
 
 jobs:
