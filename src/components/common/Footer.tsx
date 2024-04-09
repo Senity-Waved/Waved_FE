@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -6,19 +7,31 @@ import {
   homeFilled,
   myChallengeNormal,
   myChallengeFilled,
+  myChallengeDisabled,
   profileNormal,
   profileFilled,
 } from '../../../public/icons';
 import screenSize from '@/constants/screenSize';
 
-export default function Footer() {
+interface IFooterProps {
+  isLogined: boolean;
+}
+
+export default function Footer({ isLogined }: IFooterProps) {
   const router = useRouter();
+  // const cookieToken = getCookie('accessToken');
+  // const isLogined = !!cookieToken;
 
   const navigate = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     path: string,
   ) => {
     e.preventDefault();
+
+    if (!isLogined && path === '/mychallenge') {
+      return;
+    }
+
     if (router.pathname !== path) {
       router.push(path).catch((error) => console.error('이동 실패', error));
     }
@@ -39,12 +52,17 @@ export default function Footer() {
         </SFooterNavItem>
       </SFooterNavLink>
       <SFooterNavLink onClick={(e) => navigate(e, '/mychallenge')}>
-        <SFooterNavItem isActive={router.pathname === '/mychallenge'}>
+        <SMyChallengeNavItem
+          isActive={router.pathname === '/mychallenge'}
+          isLogined={isLogined}
+        >
           <Image
             src={
-              router.pathname === '/mychallenge'
-                ? myChallengeFilled
-                : myChallengeNormal
+              isLogined
+                ? router.pathname === '/mychallenge'
+                  ? myChallengeFilled
+                  : myChallengeNormal
+                : myChallengeDisabled
             }
             alt="마이 챌린지 아이콘"
             width={24}
@@ -52,7 +70,7 @@ export default function Footer() {
             blurDataURL="/icons/icon-mychallenge-normal"
           />
           <p>마이챌린지</p>
-        </SFooterNavItem>
+        </SMyChallengeNavItem>
       </SFooterNavLink>
       <SFooterNavLink onClick={(e) => navigate(e, '/profile')}>
         <SFooterNavItem isActive={router.pathname === '/profile'}>
@@ -98,7 +116,27 @@ const SFooterNavItem = styled.div<{ isActive: boolean }>`
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
-  color: ${({ isActive, theme }) => !isActive && theme.color.gray_83};
+  color: ${({ isActive, theme }) =>
+    !isActive ? theme.color.gray_83 : theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.caption1};
+  font-weight: ${({ theme }) => theme.fontWeight.caption1};
+`;
+
+const SMyChallengeNavItem = styled.div<{
+  isActive: boolean;
+  isLogined: boolean;
+}>`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
+  color: ${({ isActive, isLogined, theme }) =>
+    !isActive
+      ? isLogined
+        ? theme.color.gray_83
+        : theme.color.gray_bf
+      : theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;
