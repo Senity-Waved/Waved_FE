@@ -370,7 +370,7 @@ export default function Profile({
         <SProfileEtc>
           <div>
             <p>현재 버전</p>
-            <p>1.0.0</p>
+            <p>1.0.1</p>
           </div>
         </SProfileEtc>
         <SwithdrawalBtnWrapper>
