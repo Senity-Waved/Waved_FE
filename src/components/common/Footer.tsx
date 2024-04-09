@@ -17,6 +17,7 @@ import screenSize from '@/constants/screenSize';
 export default function Footer() {
   const router = useRouter();
   const cookieToken = getCookie('accessToken');
+  const isLogined = !!cookieToken;
 
   const navigate = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -24,7 +25,7 @@ export default function Footer() {
   ) => {
     e.preventDefault();
 
-    if (!cookieToken && path === '/mychallenge') {
+    if (!isLogined && path === '/mychallenge') {
       return;
     }
 
@@ -50,11 +51,11 @@ export default function Footer() {
       <SFooterNavLink onClick={(e) => navigate(e, '/mychallenge')}>
         <SMyChallengeNavItem
           isActive={router.pathname === '/mychallenge'}
-          isLogined={cookieToken !== null}
+          isLogined={isLogined}
         >
           <Image
             src={
-              cookieToken !== null
+              isLogined
                 ? router.pathname === '/mychallenge'
                   ? myChallengeFilled
                   : myChallengeNormal
