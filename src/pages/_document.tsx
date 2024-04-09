@@ -5,7 +5,6 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
-        <link rel="manifest" href="/manifest.json" />
         <Script
           src="https://cdn.iamport.kr/v1/iamport.js"
           strategy="beforeInteractive"
