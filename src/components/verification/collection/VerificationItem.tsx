@@ -20,22 +20,22 @@ export default function VerificationItem({
   isMine,
   nickname,
   content,
-  isLiked,
+  liked,
   likesCount,
   link,
   selectedId,
   setSelectedId,
 }: IVerificationItem) {
-  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const isSelected = selectedId === verificationId;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (liked) {
+    if (isLiked) {
       deleteLikeApi(verificationId)
         .then(() => {
-          setLiked(false);
+          setIsLiked(false);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -48,7 +48,7 @@ export default function VerificationItem({
     } else {
       postLikeApi(verificationId)
         .then(() => {
-          setLiked(true);
+          setIsLiked(true);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -83,7 +83,7 @@ export default function VerificationItem({
       )}
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
-        <SLikeBtn type="button" onClick={toggleLike} isLiked={liked} />
+        <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
         <SLikeCount>{likeCountNum}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>
@@ -111,6 +111,7 @@ const SAuthor = styled.h3`
 `;
 
 const SLink = styled.a`
+  display: block;
   color: ${({ theme }) => theme.color.middle};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
@@ -118,6 +119,9 @@ const SLink = styled.a`
   display: flex;
   align-items: center;
   width: fit-content;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &::before {
     content: '';

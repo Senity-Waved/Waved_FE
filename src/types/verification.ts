@@ -4,7 +4,7 @@ export interface IVerificationInfo {
   nickname: string;
   content: string;
   imageUrl: string;
-  isLiked: boolean;
+  liked: boolean;
   likesCount: number;
   verificationDate: string; // zonedDateTime
   link?: string | null;
