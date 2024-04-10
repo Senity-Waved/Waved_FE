@@ -109,7 +109,7 @@ export const getQuizApi = async (
   date: string,
 ): Promise<{ date: string; question: string }> => {
   const response = await axiosInstance.get(
-    `/verify/${groupId}/dates?quizDate=${date} 09:00:00.0`,
+    `/quiz/${groupId}/dates?quizDate=${date} 09:00:00.0`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
