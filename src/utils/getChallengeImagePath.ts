@@ -14,10 +14,10 @@ function getChallengeImagePath({
   const challengeInfo = CHALLENGE_IMAGE_PATHS[challengeTitle];
 
   if (type === 'verification') {
-    return challengeInfo.verificationExample || [];
+    return challengeInfo?.verificationExample || [];
   }
   return (
-    challengeInfo.thumbnail ||
+    challengeInfo?.thumbnail ||
     'https://via.placeholder.com/600/E9F1FF/838A94.jpg?text=EMPTY'
   );
 }
