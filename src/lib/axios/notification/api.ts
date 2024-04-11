@@ -25,4 +25,13 @@ const notifyApi = () => {
   return axiosInstance.get<INotify[]>('/notify');
 };
 
-export { subscribeApi, newNotificationApi, notifyApi };
+/**
+ * 알림 내역 삭제 DELETE
+ * @param notificationId
+ * @returns status, message
+ */
+const deleteNotificationApi = (notificationId: number) => {
+  return axiosInstance.delete(`/notify/${notificationId}`);
+};
+
+export { subscribeApi, newNotificationApi, notifyApi, deleteNotificationApi };

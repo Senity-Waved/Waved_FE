@@ -27,6 +27,10 @@ const emptyText = {
     mainText: '나만의 커밋 인증',
     subText: '1일 1커밋 챌린지는 내 인증 내역만 볼 수 있습니다.',
   },
+  알림내역: {
+    mainText: '알림 목록이 비어 있어요',
+    subText: '최근 2주 동안 받은 알림을 확인할 수 있어요.',
+  },
 };
 
 export default emptyText;

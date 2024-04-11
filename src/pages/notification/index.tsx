@@ -1,12 +1,19 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
-import { v4 as uuidv4 } from 'uuid';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import Layout from '@/components/common/Layout';
 import EmptyView from '@/components/common/EmptyView';
 import INotify from '@/types/notify';
-import { notifyApi } from '@/lib/axios/notification/api';
+import { deleteNotificationApi, notifyApi } from '@/lib/axios/notification/api';
+import NotificationBox from '@/components/notification/NotificationBox';
+import NotificationModal from '@/components/notification/NotificationModal';
 
 export default function Notification() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<
+    number | null
+  >(null);
+  const queryClient = useQueryClient();
   const { data, error } = useQuery<INotify[]>(
     ['notifyList'],
     async () => {
@@ -15,9 +22,29 @@ export default function Notification() {
     },
     { refetchOnWindowFocus: false },
   );
+
+  const deleteMutation = useMutation(deleteNotificationApi, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['notifyList']).catch(console.error);
+      setIsModalOpen(false);
+    },
+  });
+
+  const openDeleteModal = (notificationId: number) => {
+    setSelectedNotificationId(notificationId);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    if (selectedNotificationId !== null) {
+      deleteMutation.mutate(selectedNotificationId);
+    }
+  };
+
   if (error) {
     console.error('새로운 알림 유무 불러오기 실패', error);
   }
+
   return (
     <Layout
       noFooter
@@ -30,17 +57,22 @@ export default function Notification() {
         {data && data.length > 0 ? (
           <div>
             {data.map((notify) => (
-              <div key={uuidv4()}>
-                <p>{notify.title}</p>
-                <p>{notify.message}</p>
-                <p>{notify.createDate}</p>
-              </div>
+              <NotificationBox
+                key={notify.notificationId}
+                notification={notify}
+                openDeleteModal={() => openDeleteModal(notify.notificationId)}
+              />
             ))}
           </div>
         ) : (
-          <EmptyView pageType="예치금내역" />
+          <EmptyView pageType="알림내역" />
         )}
       </SNotificationWrapper>
+      <NotificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onDelete={handleDelete}
+      />
     </Layout>
   );
 }
