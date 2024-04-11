@@ -1,12 +1,18 @@
 import styled from '@emotion/styled';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
+import { useState } from 'react';
 import Layout from '@/components/common/Layout';
 import EmptyView from '@/components/common/EmptyView';
 import INotify from '@/types/notify';
 import { deleteNotificationApi, notifyApi } from '@/lib/axios/notification/api';
+import NotificationBox from '@/components/notification/NotificationBox';
+import NotificationModal from '@/components/notification/NotificationModal';
 
 export default function Notification() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<
+    number | null
+  >(null);
   const queryClient = useQueryClient();
   const { data, error } = useQuery<INotify[]>(
     ['notifyList'],
@@ -17,20 +23,27 @@ export default function Notification() {
     { refetchOnWindowFocus: false },
   );
 
-  if (error) {
-    console.error('새로운 알림 유무 불러오기 실패', error);
-  }
-
   const deleteMutation = useMutation(deleteNotificationApi, {
     onSuccess: () => {
       queryClient.invalidateQueries(['notifyList']).catch(console.error);
+      setIsModalOpen(false);
     },
   });
 
-  const handleDelete = (notificationId: number, event: React.MouseEvent) => {
-    event.stopPropagation();
-    deleteMutation.mutate(notificationId);
+  const openDeleteModal = (notificationId: number) => {
+    setSelectedNotificationId(notificationId);
+    setIsModalOpen(true);
   };
+
+  const handleDelete = () => {
+    if (selectedNotificationId !== null) {
+      deleteMutation.mutate(selectedNotificationId);
+    }
+  };
+
+  if (error) {
+    console.error('새로운 알림 유무 불러오기 실패', error);
+  }
 
   return (
     <Layout
@@ -44,31 +57,22 @@ export default function Notification() {
         {data && data.length > 0 ? (
           <div>
             {data.map((notify) => (
-              <SNotificationBox key={notify.notificationId}>
-                <button
-                  type="button"
-                  onClick={(event) =>
-                    handleDelete(notify.notificationId, event)
-                  }
-                >
-                  <SDeleteIcon
-                    src="/icons/icon-trash.svg"
-                    alt="삭제 아이콘"
-                    width={16}
-                    height={16}
-                    priority
-                  />
-                </button>
-                <p>{notify.title}</p>
-                <p>{notify.message}</p>
-                <p>{notify.createDate}</p>
-              </SNotificationBox>
+              <NotificationBox
+                key={notify.notificationId}
+                notification={notify}
+                openDeleteModal={() => openDeleteModal(notify.notificationId)}
+              />
             ))}
           </div>
         ) : (
           <EmptyView pageType="알림내역" />
         )}
       </SNotificationWrapper>
+      <NotificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onDelete={handleDelete}
+      />
     </Layout>
   );
 }
@@ -77,15 +81,4 @@ const SNotificationWrapper = styled.div`
   min-height: 80vh;
   width: 100%;
   height: auto;
-`;
-
-const SNotificationBox = styled.div`
-  border: 1px solid ${({ theme }) => theme.color.gray_3c};
-  border-radius: 10px;
-  margin: 0.625rem;
-  padding: 0.625rem 0.3125rem;
-`;
-
-const SDeleteIcon = styled(Image)`
-  cursor: pointer;
 `;
