@@ -59,7 +59,6 @@ export default function Notification() {
                     priority
                   />
                 </button>
-                <p>{notify.notificationId}</p>
                 <p>{notify.title}</p>
                 <p>{notify.message}</p>
                 <p>{notify.createDate}</p>
