@@ -147,6 +147,7 @@ export default function VeirificationCollection() {
               direction="prev"
               onClick={getPreviousDay}
               disabled={isStartday}
+              aria-label="이전날짜 버튼"
             />
             <SDate>
               {year}. {month}. {day}
@@ -155,6 +156,7 @@ export default function VeirificationCollection() {
               direction="next"
               onClick={getNextDay}
               disabled={isToday || isEndday}
+              aria-label="다음날짜 버튼"
             />
           </SDateWrapper>
           <VerificationList

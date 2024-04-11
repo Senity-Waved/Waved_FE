@@ -18,7 +18,10 @@ export default function ChallengeProgress({
     <SWrapper>
       <SProgressWrapper>
         <SProgerssNum>
-          <p>{dealt}%</p>
+          <p>
+            <span className="a11yHidden">인증 달성률</span>
+            {dealt}%
+          </p>
           <p>100%</p>
         </SProgerssNum>
         <SProgressBar dealt={dealt}>

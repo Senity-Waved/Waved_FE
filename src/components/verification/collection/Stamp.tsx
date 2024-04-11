@@ -28,13 +28,25 @@ export default function Stamp({ results, startDate }: IStamp) {
     }
   };
 
+  const getResultText = (result: number) => {
+    switch (result) {
+      case 2:
+        return '인증성공 스탬프';
+      case 1:
+        return '인증실패 스탬프';
+      default:
+        return '미인증 스탬프';
+    }
+  };
+
+  console.log(getResultText(2));
   return (
     <SStampWrapper>
       {resultStamps.map((result) => (
         <SStampItem key={uuidv4()}>
           <Image
             src={getResultStamp(result)}
-            alt={`stamp-${result}`}
+            alt={getResultText(result)}
             width={33}
             height={33}
           />

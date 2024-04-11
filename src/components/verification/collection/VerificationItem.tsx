@@ -92,7 +92,12 @@ export default function VerificationItem({
       )}
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
-        <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
+        <SLikeBtn
+          type="button"
+          aria-label="좋아요 버튼"
+          onClick={toggleLike}
+          isLiked={isLiked}
+        />
         <SLikeCount>{likeCountNum}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>

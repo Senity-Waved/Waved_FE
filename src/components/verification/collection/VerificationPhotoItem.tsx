@@ -84,7 +84,11 @@ export default function VerificationPhotoItem({
         <SShadow />
         {isMine && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
-          <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
+          <SLikeBtnWhite
+            aria-label="좋아요 버튼"
+            isLiked={isLiked}
+            onClick={toggleLike}
+          />
           <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>
