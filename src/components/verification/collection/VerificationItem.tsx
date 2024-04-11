@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
+import Image from 'next/image';
 import { IVerificationInfo } from '@/types/verification';
 import {
   deleteLikeApi,
@@ -20,22 +21,22 @@ export default function VerificationItem({
   isMine,
   nickname,
   content,
-  isLiked,
+  liked,
   likesCount,
   link,
   selectedId,
   setSelectedId,
 }: IVerificationItem) {
-  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const isSelected = selectedId === verificationId;
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (liked) {
+    if (isLiked) {
       deleteLikeApi(verificationId)
         .then(() => {
-          setLiked(false);
+          setIsLiked(false);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -48,7 +49,7 @@ export default function VerificationItem({
     } else {
       postLikeApi(verificationId)
         .then(() => {
-          setLiked(true);
+          setIsLiked(true);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -77,13 +78,21 @@ export default function VerificationItem({
       {isMine && <SMineLabel>내 인증</SMineLabel>}
       <SAuthor>{nickname}</SAuthor>
       {link && (
-        <SLink href={link} target="_blank" onClick={clickLink}>
-          {link}
-        </SLink>
+        <SLinkWrapper>
+          <Image
+            src="/icons/icon-link.svg"
+            alt="인증링크 아이콘"
+            width={20}
+            height={20}
+          />
+          <SLink href={link} target="_blank" onClick={clickLink}>
+            {link}
+          </SLink>
+        </SLinkWrapper>
       )}
       <SContent isSelected={isSelected}>{content}</SContent>
       <SLikeWrapper>
-        <SLikeBtn type="button" onClick={toggleLike} isLiked={liked} />
+        <SLikeBtn type="button" onClick={toggleLike} isLiked={isLiked} />
         <SLikeCount>{likeCountNum}</SLikeCount>
       </SLikeWrapper>
     </SWrapper>
@@ -110,22 +119,22 @@ const SAuthor = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
+const SLinkWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+`;
+
 const SLink = styled.a`
+  display: block;
   color: ${({ theme }) => theme.color.middle};
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  margin-bottom: 0.25rem;
-  display: flex;
-  align-items: center;
-  width: fit-content;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url('/icons/icon-link.svg') no-repeat center;
-  }
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ellipsisStyle = css`

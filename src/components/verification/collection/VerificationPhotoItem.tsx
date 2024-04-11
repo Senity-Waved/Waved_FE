@@ -25,10 +25,10 @@ export default function VerificationPhotoItem({
   verificationId,
   isMine,
   imageUrl,
-  isLiked,
+  liked,
   likesCount,
 }: IPhotoItem) {
-  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
@@ -36,10 +36,10 @@ export default function VerificationPhotoItem({
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    if (liked) {
+    if (isLiked) {
       deleteLikeApi(verificationId)
         .then(() => {
-          setLiked(false);
+          setIsLiked(false);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -52,7 +52,7 @@ export default function VerificationPhotoItem({
     } else {
       postLikeApi(verificationId)
         .then(() => {
-          setLiked(true);
+          setIsLiked(true);
           getLikeCountApi(verificationId)
             .then((data) => {
               setLikeCountNum(data.likedCount);
@@ -78,7 +78,7 @@ export default function VerificationPhotoItem({
         <SShadow />
         {isMine && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
-          <SLikeBtnWhite isLiked={liked} onClick={toggleLike} />
+          <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
           <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>

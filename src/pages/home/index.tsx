@@ -57,8 +57,6 @@ export default function Home({
   const [expiresTime, setExpiresTime] = useState<number>(0);
   const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
 
-  console.log(expiresTime);
-
   useEffect(() => {
     async function fetchTokenExpiry() {
       try {
@@ -83,8 +81,6 @@ export default function Home({
       const currentTime = Date.now();
       const timeUntilExpiry = expiresTime - currentTime;
 
-      console.log(timeUntilExpiry);
-
       if (timeUntilExpiry < 60000) {
         setReadyReconnect(true);
       }
@@ -102,7 +98,6 @@ export default function Home({
         console.log('eventSource :', eventSource);
         console.log('기존 eventSoruce close');
       }
-      console.log('SSE 연동 !');
       const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
       eventSource = new EventSource(urlEndPoint, {
         headers: {
@@ -131,7 +126,6 @@ export default function Home({
             },
           },
         );
-        console.log('토큰 재발급 및 SSE 재연동');
         connectEventSource(data.accessToken);
         timeoutId = setTimeout(
           // eslint-disable-next-line @typescript-eslint/no-misused-promises

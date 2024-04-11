@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { GetServerSidePropsContext } from 'next';
 import { CustomAxiosRequestConfig } from './axiosConfig';
 
@@ -38,10 +38,14 @@ const createServerInstance = (context: GetServerSidePropsContext) => {
       ) {
         try {
           const refreshToken = getCookie('refreshToken', { req: context.req });
+
           if (!refreshToken) {
-            throw new Error(
-              'accessToken 재발급을 위한 refreshToken이 존재하지 않습니다.',
-            );
+            deleteCookie('accessToken', {
+              req: context.req,
+              res: context.res,
+              path: '/',
+            });
+            throw new Error('인증 정보가 만료되어 로그아웃 되었습니다.');
           }
 
           const { data: reissueData } = await axios.post<IReissueResponse>(
