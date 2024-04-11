@@ -9,7 +9,6 @@ export default function Notification({ updateKey }: { updateKey: boolean }) {
     ['hasNewEvent', updateKey],
     async () => {
       const response = await newNotificationApi();
-      console.log('새 알림 있나요?', response.data.newEvent);
       return response.data;
     },
     { refetchOnWindowFocus: false },
