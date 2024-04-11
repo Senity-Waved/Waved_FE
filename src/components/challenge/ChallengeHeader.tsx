@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import styled from '@emotion/styled';
-import { SBackBtn, SHeaderWrapper } from '@/components/common/Header';
+import Link from 'next/link';
+import { SHeaderWrapper } from '@/components/common/Header';
 import useSnackBar from '@/hooks/useSnackBar';
 
 export default function ChallengeHeader({
@@ -12,7 +12,6 @@ export default function ChallengeHeader({
   groupTitle: string;
   thumbnail: string;
 }) {
-  const router = useRouter();
   const { openSnackBar } = useSnackBar();
   const copyUrl = () => {
     const currentUrl = window.location.href.split('#')[0];
@@ -24,12 +23,6 @@ export default function ChallengeHeader({
         console.error('URL 복사 실패', error);
       },
     );
-  };
-
-  const goToHome = () => {
-    router.push('/home').catch((error) => {
-      console.error('페이지 이동에 실패하였습니다.', error);
-    });
   };
 
   return (
@@ -48,15 +41,15 @@ export default function ChallengeHeader({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SHeaderWrapper>
-        <SBackBtn type="button" onClick={goToHome} aria-label="홈으로 가기">
+        <SGoHomeLink href="/home">
           <Image
-            src="/icons/icon-left-arrow.svg"
-            alt="뒤로가기 아이콘"
-            width={24}
-            height={24}
-            priority
+            src="/icons/icon-waved-logo.png"
+            alt="WAVED 로고"
+            width={96}
+            height={37}
+            quality={100}
           />
-        </SBackBtn>
+        </SGoHomeLink>
         <SShareBtn
           type="button"
           onClick={copyUrl}
@@ -66,6 +59,12 @@ export default function ChallengeHeader({
     </>
   );
 }
+
+const SGoHomeLink = styled(Link)`
+  display: inline-block;
+  height: 36px;
+  margin-left: 20px;
+`;
 
 const SShareBtn = styled.button`
   position: absolute;
