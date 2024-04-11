@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios, { AxiosError } from 'axios';
-import { getCookie, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 export default async function Reissue(
   req: NextApiRequest,
@@ -11,9 +11,14 @@ export default async function Reissue(
       const refreshToken = getCookie('refreshToken', { req, res });
 
       if (!refreshToken) {
+        deleteCookie('accessToken', {
+          req,
+          res,
+          path: '/',
+        });
         return res
           .status(401)
-          .json({ message: '🚨 refresh Token이 존재하지 않습니다.' });
+          .json({ message: '인증 정보가 만료되어 로그아웃 되었습니다.' });
       }
 
       const response = await axios.post<string>(
