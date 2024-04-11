@@ -62,10 +62,9 @@ export default function VerificationPost() {
       }
     } catch (error) {
       const err = error as AxiosError;
-      if (
-        err.response &&
-        err.response.data === '이미 오늘의 인증을 완료했습니다.'
-      ) {
+      const status = err.response?.status;
+      const statusText = err.response?.statusText;
+      if (status === 403 && statusText === 'Forbidden') {
         navigateToCollection({ duplicateSubmission: true });
       }
       setIsLoading(false);

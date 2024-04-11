@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import ISnackBarState from '@/types/snackbar';
 import ONE_DAY from '@/constants/day';
 import Layout from '@/components/common/Layout';
 import Stamp from '@/components/verification/collection/Stamp';
@@ -20,11 +19,7 @@ export default function VeirificationCollection() {
   const challengeGroupId = router.query.challengeGroupId as string;
   const verificationType = router.query.type as string;
   const myChallengeId = router.query.myChallengeId as string;
-  const [snackBarState, setSnackBarState] = useState<ISnackBarState>({
-    open: false,
-    text: '',
-  });
-
+  const { snackBarData, openSnackBar } = useSnackBar();
   const [stampData, setStampData] = useState<number[]>([]);
   const [challengeData, setChallengeData] = useState<ICollectionInfo>({
     groupTitle: '',
@@ -79,13 +74,9 @@ export default function VeirificationCollection() {
   useEffect(() => {
     const handleRouting = (
       snackBarText: string,
-      snackBarType: 'correct' | 'warning' = 'correct',
+      snackBarType: 'correct' | 'warning' = 'warning',
     ): void => {
-      setSnackBarState({
-        open: true,
-        text: snackBarText,
-        type: snackBarType,
-      });
+      openSnackBar(snackBarText, snackBarType);
       router
         .replace(
           {
@@ -103,25 +94,21 @@ export default function VeirificationCollection() {
         .catch((error: Error) =>
           console.error('쿼리스트링 제거 후 페이지 이동 실패', error),
         );
-      setTimeout(() => {
-        setSnackBarState({
-          open: false,
-          text: '',
-        });
-      }, 3500);
     };
     if (query.successSubmission) {
-      handleRouting('인증 제출이 완료되었습니다.');
+      handleRouting('인증 제출이 완료되었습니다.', 'correct');
     }
     if (query.duplicateSubmission) {
       handleRouting('오늘의 인증을 이미 완료했습니다.', 'warning');
     }
-  }, [query, router, challengeGroupId, myChallengeId, verificationType]);
-
-  const { snackBarData } = useSnackBar();
-  useEffect(() => {
-    setSnackBarState(snackBarData);
-  }, [snackBarData]);
+  }, [
+    query,
+    router,
+    challengeGroupId,
+    myChallengeId,
+    verificationType,
+    openSnackBar,
+  ]);
 
   return (
     <Layout
@@ -178,12 +165,8 @@ export default function VeirificationCollection() {
           />
         </>
       )}
-      {snackBarState.open && (
-        <SnackBar
-          text={snackBarState.text}
-          type={snackBarState.type}
-          noFooter
-        />
+      {snackBarData.open && (
+        <SnackBar text={snackBarData.text} type={snackBarData.type} noFooter />
       )}
     </Layout>
   );

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
+import { AxiosError } from 'axios';
 import { IVerificationInfo } from '@/types/verification';
 import VerificationItem from './VerificationItem';
 import VerificationPhotoItem from './VerificationPhotoItem';
@@ -62,9 +63,13 @@ export default function VerificationList({
       setVerificationsData(veriData);
       setIsEmptyData(false);
     } catch (veriError) {
-      setVerificationsData([]);
-      setIsEmptyData(true);
-      console.error('날짜별 인증내역 불러오기 실패');
+      const err = veriError as AxiosError;
+      const status = err.response?.status;
+      const statusText = err.response?.statusText;
+      if (status === 404 && statusText === 'Not Found') {
+        setVerificationsData([]);
+        setIsEmptyData(true);
+      }
     }
   }, [challengeGroupId, date]);
 

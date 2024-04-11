@@ -43,7 +43,7 @@ export const postMyCommitVerifiactionApi = (groupId: number) => {
 export const getQuizApi = async (
   groupId: string,
 ): Promise<{ date: string; question: string }> => {
-  const response = await axiosInstance.get(`/verify/${groupId}`);
+  const response = await axiosInstance.get(`/quiz/${groupId}`);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
 };
