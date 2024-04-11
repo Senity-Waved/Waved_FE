@@ -60,6 +60,7 @@ export default function ChallengeItem({
         <ChallengeProgress
           successCount={successCount}
           startDate={startDate}
+          endDate={endDate}
           isVerified={isVerified}
         />
       )}

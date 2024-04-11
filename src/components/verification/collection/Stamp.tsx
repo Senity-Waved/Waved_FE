@@ -39,7 +39,6 @@ export default function Stamp({ results, startDate }: IStamp) {
     }
   };
 
-  console.log(getResultText(2));
   return (
     <SStampWrapper>
       {resultStamps.map((result) => (
