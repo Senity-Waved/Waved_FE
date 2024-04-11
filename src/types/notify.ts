@@ -1,5 +1,5 @@
 interface INotify {
-  notificaitonId: number;
+  notificationId: number;
   title: string;
   message: string;
   createDate: string;

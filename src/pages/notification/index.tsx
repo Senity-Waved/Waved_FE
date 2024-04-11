@@ -44,18 +44,22 @@ export default function Notification() {
         {data && data.length > 0 ? (
           <div>
             {data.map((notify) => (
-              <SNotificationBox
-                key={notify.notificaitonId}
-                onClick={(event) => handleDelete(notify.notificaitonId, event)}
-              >
-                <SDeleteIcon
-                  src="/icons/icon-trash.svg"
-                  alt="삭제 아이콘"
-                  width={16}
-                  height={16}
-                  priority
-                />
-                <p>{notify.notificaitonId}</p>
+              <SNotificationBox key={notify.notificationId}>
+                <button
+                  type="button"
+                  onClick={(event) =>
+                    handleDelete(notify.notificationId, event)
+                  }
+                >
+                  <SDeleteIcon
+                    src="/icons/icon-trash.svg"
+                    alt="삭제 아이콘"
+                    width={16}
+                    height={16}
+                    priority
+                  />
+                </button>
+                <p>{notify.notificationId}</p>
                 <p>{notify.title}</p>
                 <p>{notify.message}</p>
                 <p>{notify.createDate}</p>
