@@ -46,7 +46,11 @@ export default function VeirificationExample({ title }: { title: string }) {
                           fill
                           sizes="100%"
                         />
-                        <SCloseBtn type="button" onClick={closeModal} />
+                        <SCloseBtn
+                          type="button"
+                          onClick={closeModal}
+                          aria-label="크게 보기 닫기"
+                        />
                       </SPhotoModal>
                     </SModalWrapper>
                   </Portal>
@@ -83,7 +87,7 @@ const SPhotoModal = styled.div`
   min-width: calc(${screenSize.min}px - 4rem);
   max-width: calc(${screenSize.max}px - 4rem);
   width: calc(100% - 4rem);
-  border-radius: 8px;
+  border-radius: 3rem;
   overflow: hidden;
 `;
 
@@ -93,8 +97,8 @@ const SModalImage = styled(Image)`
 
 const SCloseBtn = styled.button`
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
   width: 24px;
   height: 24px;
   background: url('/icons/icon-photo-delete.svg') no-repeat center;
