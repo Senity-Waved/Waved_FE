@@ -58,10 +58,9 @@ export default function VeirificationCollection() {
         })
         .catch((error) => {
           const err = error as AxiosError;
-          if (
-            err.response &&
-            err.response.data === '해당 마이 챌린지를 찾을 수 없습니다.'
-          ) {
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 404 && statusText === 'Not Found') {
             router
               .push(`/404`)
               .catch((er) => console.error('404페이지로 이동 실패', er));
