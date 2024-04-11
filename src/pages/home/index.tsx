@@ -220,7 +220,7 @@ export default function Home({
           <SnackBar text={snackBarData.text} type={snackBarData.type} />
         )}
       </main>
-      <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
+      {isLogined || <FloatingBtn />}
       <Footer isLogined={isLogined} />
     </SHomeWrapper>
   );
