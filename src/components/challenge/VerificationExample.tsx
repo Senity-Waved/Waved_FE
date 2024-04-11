@@ -5,21 +5,22 @@ import { SSectionTitle } from '@/pages/challenge/[groupId]';
 import ScrollXBox from '@/components/common/ScrollXBox';
 import Portal from '@/components/modal/ModalPortal';
 import { SModalWrapper } from '@/components/modal/Modal';
-import getChallengeImagePath from '@/utils/getChallengeImagePath';
 import screenSize from '@/constants/screenSize';
+import parseChallengeTitle from '@/utils/parseChallengeTitle';
+import VERIFICATION_EXAMPLE from '@/constants/verificationExamplePaths';
 
 export default function VeirificationExample({ title }: { title: string }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(-1);
   const openModal = (index: number) => setSelectedImageIndex(index);
   const closeModal = () => setSelectedImageIndex(-1);
 
-  const examplePaths = getChallengeImagePath({
-    title,
-    type: 'verification',
-  }) as string[];
+  const challengeTitle = parseChallengeTitle(title);
+  const examplePaths = (VERIFICATION_EXAMPLE[challengeTitle] || []).map((url) =>
+    decodeURIComponent(url),
+  );
 
   return (
-    examplePaths.length === 0 || (
+    examplePaths.length > 0 && (
       <>
         <SSectionTitle>예시</SSectionTitle>
         <ScrollXBox>
