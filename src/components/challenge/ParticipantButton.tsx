@@ -24,14 +24,12 @@ export default function ParticipantButton({
   myChallengeId,
   startDate,
 }: IParticipantButton) {
-  const { query } = useRouter();
   const router = useRouter();
-  const groupId = router.query.groupId as string;
+  const { openModal, closeModal } = useModal();
   const { openSnackBar } = useSnackBar();
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const dDayToStart = calculateDDay(startDate);
-
   const [canCancelParticpant, setCanCancelParticpant] =
     useState<boolean>(isApplied);
 
@@ -64,40 +62,12 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         setCanCancelParticpant(false);
-        const challengePath = `/challenge/${groupId}`;
-        router
-          .replace(
-            {
-              pathname: `/challenge/${groupId}`,
-              query: { cancelParticipantSuccess: true },
-            },
-            challengePath,
-            { shallow: false },
-          )
-          .catch((error) => console.error('페이지 이동 실패', error));
-        setTimeout(() => {
-          const { cancelParticipantSuccess, ...restQuery } = router.query;
-          router
-            .replace(
-              {
-                pathname: `/challenge/${groupId}`,
-                query: { ...restQuery },
-              },
-              challengePath,
-              { shallow: true },
-            )
-            .catch((error) => console.error('쿼리 제거 실패', error));
-        }, 3500);
+        openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
       }
     } catch (deleteError) {
-      console.error(
-        '챌린지 취소 및 환불 요청 실패했습니다',
-        myChallengeId,
-        deleteError,
-      );
+      openSnackBar('잠시 후 다시 시도해주세요', 'warning');
     }
   };
-  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     const isLogined = getCookie('accessToken');
@@ -156,15 +126,6 @@ export default function ParticipantButton({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canCancelParticpant]);
-
-  useEffect(() => {
-    const handleRouting = (): void => {
-      openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
-    };
-    if (query.cancelParticipantSuccess) {
-      handleRouting();
-    }
-  }, [query, router, openSnackBar]);
 
   return <BottomFixedBtn btns={[btnConfig]} />;
 }
