@@ -57,8 +57,6 @@ export default function Home({
   const [expiresTime, setExpiresTime] = useState<number>(0);
   const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
 
-  console.log(expiresTime);
-
   useEffect(() => {
     async function fetchTokenExpiry() {
       try {
