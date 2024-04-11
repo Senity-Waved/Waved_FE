@@ -141,7 +141,6 @@ export default function Home({
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       timeoutId = setTimeout(refreshTokenAndReconnect, 60 * 1000 * 9);
     } else if (readyReconnect) {
-      console.log('토큰 만료 시간 전 재발급 및 재연동 시도');
       refreshTokenAndReconnect().catch(console.error);
     }
 
