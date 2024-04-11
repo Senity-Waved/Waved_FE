@@ -34,7 +34,7 @@ export default function ParticipantButton({
     useState<boolean>(isApplied);
 
   const [btnConfig, setBtnConfig] = useState<IBtn>({
-    text: '대기',
+    text: '모집 마감',
     styleType: 'disabled',
     size: 'large',
   });
@@ -90,19 +90,7 @@ export default function ParticipantButton({
       }
     };
 
-    if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
-      setBtnConfig({
-        text: '신청하기',
-        styleType: 'primary',
-        size: 'large',
-        onClick: handleClick,
-      });
-    } else if (
-      isLogined &&
-      !canCancelParticpant &&
-      dDayToStart <= 14 &&
-      dDayToStart >= 1
-    ) {
+    if (!canCancelParticpant && dDayToStart <= 14 && dDayToStart >= 1) {
       setBtnConfig({
         text: '신청하기',
         styleType: 'primary',
@@ -116,12 +104,17 @@ export default function ParticipantButton({
         size: 'large',
         onClick: handleClick,
       });
-    } else if (dDayToStart < 1) {
+    } else if (dDayToStart > 14) {
       setBtnConfig({
-        text: '마감이지만 테스트를 위해 신청 허용',
-        styleType: 'primary',
+        text: '모집 대기',
+        styleType: 'disabled',
         size: 'large',
-        onClick: handleClick,
+      });
+    } else {
+      setBtnConfig({
+        text: '모집 마감',
+        styleType: 'disabled',
+        size: 'large',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
