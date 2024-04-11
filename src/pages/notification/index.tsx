@@ -67,7 +67,7 @@ export default function Notification() {
             ))}
           </div>
         ) : (
-          <EmptyView pageType="예치금내역" />
+          <EmptyView pageType="알림내역" />
         )}
       </SNotificationWrapper>
     </Layout>

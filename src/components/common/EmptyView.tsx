@@ -11,7 +11,8 @@ interface IEmptyView {
     | '내후기'
     | '예치금내역'
     | '인증내역'
-    | '커밋인증';
+    | '커밋인증'
+    | '알림내역';
 }
 
 export default function EmptyView({ pageType }: IEmptyView) {
