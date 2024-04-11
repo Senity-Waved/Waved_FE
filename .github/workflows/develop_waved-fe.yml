@@ -37,6 +37,7 @@ jobs:
           NEXT_PUBLIC_CLIENT_BASE_URL: ${{ secrets.NEXT_PUBLIC_CLIENT_BASE_URL }}
           NEXT_PUBLIC_ADMIN_BASE_URL: ${{ secrets.NEXT_PUBLIC_ADMIN_BASE_URL }}
           NEXT_PUBLIC_IMAGE_TOKEN: ${{ secrets.NEXT_PUBLIC_IMAGE_TOKEN }}
+          NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* .next -qr
@@ -87,3 +88,4 @@ jobs:
           NEXT_PUBLIC_CLIENT_BASE_URL: ${{ secrets.NEXT_PUBLIC_CLIENT_BASE_URL }}
           NEXT_PUBLIC_ADMIN_BASE_URL: ${{ secrets.NEXT_PUBLIC_ADMIN_BASE_URL }}
           NEXT_PUBLIC_IMAGE_TOKEN: ${{ secrets.NEXT_PUBLIC_IMAGE_TOKEN }}
+          NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
