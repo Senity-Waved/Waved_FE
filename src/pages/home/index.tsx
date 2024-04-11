@@ -95,8 +95,6 @@ export default function Home({
     const connectEventSource = (token: string) => {
       if (eventSource) {
         eventSource.close();
-        console.log('eventSource :', eventSource);
-        console.log('기존 eventSoruce close');
       }
       const urlEndPoint = `${process.env.NEXT_PUBLIC_BASE_URL}/event/subscribe`;
       eventSource = new EventSource(urlEndPoint, {
