@@ -34,6 +34,12 @@ export default function VerificationPhotoItem({
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.target === event.currentTarget) {
+      closeModal();
+    }
+  };
+
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     if (isLiked) {
@@ -84,7 +90,7 @@ export default function VerificationPhotoItem({
       </SVerificationWrapper>
       {isModalOpen && (
         <Portal>
-          <SModalWrapper>
+          <SModalWrapper onClick={handleBackgroundClick}>
             <SPhotoModal>
               <SImgae
                 src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
