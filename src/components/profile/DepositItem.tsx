@@ -31,7 +31,8 @@ export default function DepositItem({ depositData }: IDepositItem) {
         </SDepositHistoryDate>
       </div>
       <SDepositHistory>
-        {depositData.status === 'CANCELED' && <span>+</span>}
+        {(depositData.status === 'CANCELED' ||
+          depositData.status === 'FAIL') && <span>+</span>}
         {depositData.status === 'APPLIED' && depositData.deposit === 0 && (
           <span>-</span>
         )}
@@ -64,8 +65,8 @@ const SChallengeInfo = styled.p`
 
 const SChallengeStatus = styled.p<{ challengeStatus: TDepositStatusKey }>`
   line-height: 22px;
-  width: ${({ challengeStatus }) =>
-    challengeStatus === 'APPLIED' ? '46px' : '70px'};
+  width: 62px;
+  height: 26px;
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
   color: ${({ challengeStatus, theme }) =>
@@ -76,27 +77,27 @@ const SChallengeStatus = styled.p<{ challengeStatus: TDepositStatusKey }>`
         : challengeStatus === 'FAIL'
           ? theme.color.error
           : theme.color.posotive};
-  border: 1px solid
-    ${({ challengeStatus, theme }) =>
-      challengeStatus === 'APPLIED'
-        ? theme.color.normal
-        : challengeStatus === 'CANCELED'
-          ? theme.color.gray_83
-          : challengeStatus === 'FAIL'
-            ? theme.color.error
-            : theme.color.posotive};
-  border-radius: 14px;
+  background-color: ${({ challengeStatus, theme }) =>
+    challengeStatus === 'APPLIED'
+      ? theme.color.light
+      : challengeStatus === 'CANCELED'
+        ? theme.color.gray_ec
+        : challengeStatus === 'FAIL'
+          ? '#FCE7E8'
+          : '#E9F7EB'};
+  border-radius: 16px;
   text-align: center;
   padding: 2px 2px;
-  margin-top: 0.875rem;
-  font-size: ${({ theme }) => theme.fontSize.body3};
+  margin-top: 0.75rem;
+  font-size: ${({ theme }) => theme.fontSize.caption2};
+  font-weight: ${({ theme }) => theme.fontWeight.caption2};
 `;
 
 const SDepositHistoryDate = styled.p`
   flex-shrink: 0;
   font-size: ${({ theme }) => theme.fontSize.caption2};
   font-weight: ${({ theme }) => theme.fontWeight.caption2};
-  color: ${({ theme }) => theme.color.gray_70};
+  color: ${({ theme }) => theme.color.gray_99};
   margin-left: 0.625rem;
 `;
 const SDepositHistory = styled.p`
