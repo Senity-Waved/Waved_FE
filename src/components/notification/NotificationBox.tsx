@@ -19,7 +19,7 @@ function NotificationBox({ notification, openDeleteModal }: INotificationBox) {
           onClick={() => openDeleteModal(notification.notificationId)}
         >
           <SDeleteIcon
-            src="/icons/icon-trash.svg"
+            src="/icons/icon-notification-trash.svg"
             alt="삭제 아이콘"
             width={16}
             height={16}
