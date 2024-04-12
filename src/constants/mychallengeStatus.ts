@@ -1,7 +1,7 @@
 const mychallengeStatus = {
   PROGRESS: {
     title: '진행 중',
-    icon: '/icons/icon-mychallenge-progress.svg',
+    icon: '/icons/icon-challenge.svg',
   },
   WAITING: {
     title: '대기 중',

@@ -2,7 +2,7 @@ const emptyViewType = {
   모집챌린지: {
     mainText: '현재 모집중인 챌린지가 없어요',
     subText: '다음 챌린지가 모집될 때까지 잠시만 기다려주세요!',
-    imagePath: '/images/image-emptyview-mychallenge-progress.png',
+    imagePath: '/images/image-emptyview-challenge.png',
   },
   마이챌린지: {
     mainText: '아직 내 챌린지가 없어요',
@@ -12,7 +12,7 @@ const emptyViewType = {
   PROGRESS: {
     mainText: '진행 중인 챌린지가 없어요.',
     subText: '',
-    imagePath: '/images/image-emptyview-mychallenge-progress.png',
+    imagePath: '/images/image-emptyview-challenge.png',
   },
   WAITING: {
     mainText: '대기 중인 챌린지가 없어요.',
