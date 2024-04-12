@@ -164,7 +164,9 @@ export default function VerificationList({
             />
           );
         })}
-        {isEmptyData && <EmptyView pageType="인증내역" />}
+        {isEmptyData && (
+          <EmptyView pageType="인증내역" center={false} size="small" />
+        )}
       </SList>
     </SWrapper>
   );

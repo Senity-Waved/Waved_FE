@@ -18,9 +18,14 @@ interface IEmptyView {
     | '커밋인증'
     | '알림내역';
   center?: boolean;
+  size?: 'large' | 'small';
 }
 
-export default function EmptyView({ pageType, center = true }: IEmptyView) {
+export default function EmptyView({
+  pageType,
+  center = true,
+  size = 'large',
+}: IEmptyView) {
   const { mainText } = emptyViewType[pageType];
   const { subText } = emptyViewType[pageType];
   const { imagePath } = emptyViewType[pageType];
@@ -30,12 +35,13 @@ export default function EmptyView({ pageType, center = true }: IEmptyView) {
       <Image
         src={imagePath}
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
-        width={235}
-        height={215}
+        width={size === 'large' ? 247 : 207}
+        height={size === 'large' ? 247 : 207}
+        style={{ objectFit: 'contain' }}
         priority
       />
       <SEmptyMainText>{mainText}</SEmptyMainText>
-      <SEmptySubText>{subText}</SEmptySubText>
+      {!!subText.length && <SEmptySubText>{subText}</SEmptySubText>}
     </SEmptyWrapper>
   );
 }

@@ -26,7 +26,7 @@ const emptyViewType = {
   },
   챌린지후기: {
     mainText: '남기신 후기가 없어요',
-    subText: '챌린지에 참여하시고 후기를 남겨보세요!',
+    subText: '챌린지에 참여하고 후기를 남겨보세요!',
     imagePath: '/images/image-emptyview-review.png',
   },
   내후기: {
