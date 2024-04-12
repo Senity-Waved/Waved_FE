@@ -12,6 +12,7 @@ import { getCollectionInfoApi } from '@/lib/axios/verification/collection/api';
 import { ICollectionInfo } from '@/types/verification';
 import useSnackBar from '@/hooks/useSnackBar';
 import EmptyView from '@/components/common/EmptyView';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function VeirificationCollection() {
   const router = useRouter();
@@ -49,12 +50,14 @@ export default function VeirificationCollection() {
     if (myChallengeId) {
       getCollectionInfoApi(myChallengeId)
         .then((data) => {
-          setStampData(data.myVerifs);
           setChallengeData({
             groupTitle: data.groupTitle,
             startDate: data.startDate,
             endDate: data.endDate,
           });
+          const daysDiff =
+            Math.abs(calculateDDay(data.startDate, data.endDate)) + 1;
+          setStampData(data.myVerifs.slice(daysDiff));
         })
         .catch((error) => {
           const err = error as AxiosError;
