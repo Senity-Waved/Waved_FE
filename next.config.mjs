@@ -4,7 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const pwaConfig = withPWA({
   dest: 'public',
-  disable: !isProd,
+  disable: false,
   runtimeCaching: [],
 });
 
