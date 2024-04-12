@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { AxiosError } from 'axios';
 import { SModalWrapper } from '@/components/modal/Modal';
 import Portal from '@/components/modal/ModalPortal';
 import {
@@ -16,6 +17,7 @@ import {
   getLikeCountApi,
   postLikeApi,
 } from '@/lib/axios/verification/collection/api';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface IPhotoItem extends IVerificationInfo {
   isMine: boolean;
@@ -33,6 +35,7 @@ export default function VerificationPhotoItem({
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+  const { openSnackBar } = useSnackBar();
 
   const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
@@ -51,10 +54,17 @@ export default function VerificationPhotoItem({
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 404 && statusText === 'Not Found') {
+            openSnackBar('해당 인증 내역에 좋아요를 누르지 않았습니다.');
+          }
+        });
     } else {
       postLikeApi(verificationId)
         .then(() => {
@@ -64,12 +74,24 @@ export default function VerificationPhotoItem({
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 403 && statusText === 'Forbidden') {
+            openSnackBar('이미 좋아요를 누른 인증 내역 입니다.');
+          }
+        });
     }
   };
+
+  useEffect(() => {
+    setIsLiked(liked);
+    setLikeCountNum(likesCount);
+  }, [liked, likesCount]);
 
   return (
     <>

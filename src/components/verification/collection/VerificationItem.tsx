@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
 import Image from 'next/image';
+import { AxiosError } from 'axios';
 import { IVerificationInfo } from '@/types/verification';
 import {
   deleteLikeApi,
   getLikeCountApi,
   postLikeApi,
 } from '@/lib/axios/verification/collection/api';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface IVerificationItem extends IVerificationInfo {
   selectedId: number;
@@ -30,6 +32,7 @@ export default function VerificationItem({
   const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [likeCountNum, setLikeCountNum] = useState<number>(likesCount);
   const isSelected = selectedId === verificationId;
+  const { openSnackBar } = useSnackBar();
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -45,7 +48,14 @@ export default function VerificationItem({
               console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 404 && statusText === 'Not Found') {
+            openSnackBar('해당 인증 내역에 좋아요를 누르지 않았습니다.');
+          }
+        });
     } else {
       postLikeApi(verificationId)
         .then(() => {
@@ -58,7 +68,14 @@ export default function VerificationItem({
               console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 403 && statusText === 'Forbidden') {
+            openSnackBar('이미 좋아요를 누른 인증 내역 입니다.');
+          }
+        });
     }
   };
 
@@ -72,6 +89,11 @@ export default function VerificationItem({
 
   const clickLink = (event: React.MouseEvent<HTMLElement>) =>
     event.stopPropagation();
+
+  useEffect(() => {
+    setIsLiked(liked);
+    setLikeCountNum(likesCount);
+  }, [liked, likesCount]);
 
   return (
     <SWrapper isSelected={isSelected} onClick={toggleContent}>
