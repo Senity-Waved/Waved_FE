@@ -106,7 +106,6 @@ export default function Register() {
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <SHeaderWrapper>
