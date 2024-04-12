@@ -150,21 +150,18 @@ export default function MyChallenge({
       <div>
         {progressDataLength !== 0 && (
           <ChallengeSection
-            mainText="🧑🏻‍💻 진행 중"
             status="PROGRESS"
             challenges={getMyProgressChallenges || []}
           />
         )}
         {waitingDataLength !== 0 && (
           <ChallengeSection
-            mainText="📚 대기 중"
             status="WAITING"
             challenges={getMyWaitingChallenges || []}
           />
         )}
         {completedDataLength !== 0 && (
           <ChallengeSection
-            mainText="🥳 진행 완료"
             status="COMPLETED"
             challenges={completedData}
             setData={setCompletedData}
