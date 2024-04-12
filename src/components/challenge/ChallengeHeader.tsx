@@ -38,7 +38,6 @@ export default function ChallengeHeader({
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
         <meta property="og:image" content={thumbnail} />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <SHeaderWrapper>
         <SGoHomeLink href="/home">

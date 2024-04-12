@@ -19,6 +19,7 @@ import getRecruitingChallengeApi from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 import { IAuthResponse } from '@/lib/axios/instance';
+import A2HS from '@/components/home/A2HS';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -204,6 +205,7 @@ export default function Home({
     <SHomeWrapper>
       <HomeHeader updateKey={notificationUpdate} />
       <main>
+        <A2HS />
         <TopBanner />
         <RecruitingChallenge recruitingChallenges={recruitingChallenges} />
         {snackBarData.open && (
