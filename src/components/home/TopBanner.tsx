@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { useState } from 'react';
+import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from '@emotion/styled';
-import Link from 'next/link';
+
 import screenSize from '@/constants/screenSize';
 
 interface IBannerItem {
@@ -12,37 +12,25 @@ interface IBannerItem {
     src: string;
     alt: string;
   };
-  link?: {
-    href: string;
-    text: string;
-  };
 }
 
 const bannerItems: IBannerItem[] = [
   {
     image: {
       src: '/images/image-waved-banner1.png',
-      alt: '2주동안 매일 웨이브드와 함께 챌린지를 완주해 보아요!',
-    },
-    link: {
-      href: 'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263',
-      text: '더 알아보기',
+      alt: '개발자로 이끌 챌린지의 파도, WAVED! 서퍼가 되어 도전하세요!',
     },
   },
   {
     image: {
       src: '/images/image-waved-banner2.png',
-      alt: '깃허브 연동하고 1일 1커밋 챌린지 시작하세요!',
-    },
-    link: {
-      href: '/profile',
-      text: '지금 연동하기',
+      alt: '챌린지 달성률 80% 이상이면 예치금을 환급받을 수 있어요!',
     },
   },
   {
     image: {
       src: '/images/image-waved-banner3.png',
-      alt: '예치금 환불 안내. 챌린지 당성률 80%를 이루고 예치금을 환불받으세요.',
+      alt: '내가 원하는 챌린지가 없다면 문의하기를 통해 챌린지 개설을 요청할 수 있어요!',
     },
   },
 ];
@@ -59,10 +47,12 @@ export default function TopBanner() {
     autoplay: true,
     infinite: true,
     speed: 500,
+    autoplaySpeed: 2500,
     slidesToShow: 1,
     slidesToScroll: 1,
     appendDots: CustomDots,
     afterChange: setCurrentIndex,
+    accessibility: true,
   };
 
   return (
@@ -78,25 +68,6 @@ export default function TopBanner() {
               style={{ objectFit: 'cover' }}
               priority
             />
-            {item.link && (
-              <SLink
-                target={
-                  item.link.href ===
-                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
-                    ? '_blank'
-                    : undefined
-                }
-                rel={
-                  item.link.href ===
-                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
-                    ? 'noreferrer noopener'
-                    : undefined
-                }
-                href={item.link.href}
-              >
-                {item.link.text}
-              </SLink>
-            )}
           </SSlides>
         ))}
       </SSlider>
@@ -122,20 +93,6 @@ const SSlides = styled.div`
   position: relative;
   width: 100%;
   height: 230px;
-`;
-
-const SLink = styled(Link)`
-  position: absolute;
-  bottom: 50px;
-  left: 20px;
-  display: inline-block;
-  padding: 0 0.5rem;
-  background-color: ${({ theme }) => theme.color.gray_3c};
-  border-radius: 0.375rem;
-  line-height: 30px;
-  color: ${({ theme }) => theme.color.gray_de};
-  font-size: ${({ theme }) => theme.fontSize.caption1};
-  font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;
 
 const SIndicators = styled.ul`

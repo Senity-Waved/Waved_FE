@@ -17,7 +17,6 @@ import VeirificationExample from '@/components/challenge/VerificationExample';
 import ParticipantButton from '@/components/challenge/ParticipantButton';
 import parseDate from '@/utils/parseDate';
 import calculateDDay from '@/utils/calculateDDay';
-import getChallengeImagePath from '@/utils/getChallengeImagePath';
 import screenSize from '@/constants/screenSize';
 import WEEKDAYS from '@/constants/weekdays';
 import VERIFICATION_TYPE from '@/constants/verificationType';
@@ -71,11 +70,9 @@ const calculateCondition = (startDate: string, endDate: string): TCondition => {
 
 export default function Challenge({
   challengeInfo,
-  challengeThumbnail,
   reviewList,
 }: {
   challengeInfo: IChallengeGroup;
-  challengeThumbnail: string;
   reviewList: IChallengeReviewList;
 }) {
   const router = useRouter();
@@ -100,13 +97,13 @@ export default function Challenge({
     <SLayoutWrapper withBottomFixedBtn>
       <ChallengeHeader
         groupTitle={challengeInfo.groupTitle}
-        thumbnail={challengeThumbnail}
+        thumbnail={`${challengeInfo.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
       />
       <main>
         <SThumbnail id="information">
           <Image
             alt={`${groupId}의 대표 이미지`}
-            src={challengeThumbnail}
+            src={`${challengeInfo.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
             fill
             sizes={`${screenSize.max}px`}
             style={{ objectFit: 'cover' }}
@@ -161,7 +158,7 @@ export default function Challenge({
         />
         <SSection id="verification">
           <SSectionTitle>인증 방식</SSectionTitle>
-          <SSectionContext>
+          <SVerificationContext>
             {challengeInfo?.groupTitle.includes('스크린타임') && (
               <SNoticeVerification>
                 스크린타임 챌린지는 <b>하루 전 날</b>의 핸드폰 사용 시간 인증
@@ -173,7 +170,7 @@ export default function Challenge({
             {challengeInfo?.verificationDescription
               .split('\n')
               .map((line) => <p key={uuidv4()}>{line}</p>)}
-          </SSectionContext>
+          </SVerificationContext>
           <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
         <SLinkItem
@@ -229,7 +226,6 @@ export async function getServerSideProps(
   | {
       props: {
         challengeInfo: IChallengeGroup;
-        challengeThumbnail: string;
         reviewList: IChallengeReviewList;
       };
     }
@@ -251,10 +247,6 @@ export async function getServerSideProps(
     return { notFound: true };
   }
 
-  const challengeThumbnail = getChallengeImagePath({
-    title: challengeInfo.groupTitle,
-  }) as string;
-
   const { challengeId } = challengeInfo;
   async function fetchReviews() {
     try {
@@ -273,7 +265,6 @@ export async function getServerSideProps(
   return {
     props: {
       challengeInfo,
-      challengeThumbnail,
       reviewList: {
         content: reviewList.content,
         totalPages: reviewList.totalPages,
@@ -354,6 +345,10 @@ const SSectionContext = styled.div`
   font-size: ${({ theme }) => theme.fontSize.body2};
   font-weight: ${({ theme }) => theme.fontWeight.body2};
   line-height: 1.8;
+`;
+
+const SVerificationContext = styled(SSectionContext)`
+  font-size: 0.9375rem;
 `;
 
 const SNoticeVerification = styled.p`

@@ -24,19 +24,17 @@ export default function ParticipantButton({
   myChallengeId,
   startDate,
 }: IParticipantButton) {
-  const { query } = useRouter();
   const router = useRouter();
-  const groupId = router.query.groupId as string;
+  const { openModal, closeModal } = useModal();
   const { openSnackBar } = useSnackBar();
   const selectedChallenge =
     useSetRecoilState<ISelectedChallenge>(ASelectedChallenge);
   const dDayToStart = calculateDDay(startDate);
-
   const [canCancelParticpant, setCanCancelParticpant] =
     useState<boolean>(isApplied);
 
   const [btnConfig, setBtnConfig] = useState<IBtn>({
-    text: '대기',
+    text: '모집 마감',
     styleType: 'disabled',
     size: 'large',
   });
@@ -64,40 +62,12 @@ export default function ParticipantButton({
       const response = await postCancelParticipantApi(myChallengeId);
       if (response) {
         setCanCancelParticpant(false);
-        const challengePath = `/challenge/${groupId}`;
-        router
-          .replace(
-            {
-              pathname: `/challenge/${groupId}`,
-              query: { cancelParticipantSuccess: true },
-            },
-            challengePath,
-            { shallow: false },
-          )
-          .catch((error) => console.error('페이지 이동 실패', error));
-        setTimeout(() => {
-          const { cancelParticipantSuccess, ...restQuery } = router.query;
-          router
-            .replace(
-              {
-                pathname: `/challenge/${groupId}`,
-                query: { ...restQuery },
-              },
-              challengePath,
-              { shallow: true },
-            )
-            .catch((error) => console.error('쿼리 제거 실패', error));
-        }, 3500);
+        openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
       }
     } catch (deleteError) {
-      console.error(
-        '챌린지 취소 및 환불 요청 실패했습니다',
-        myChallengeId,
-        deleteError,
-      );
+      openSnackBar('잠시 후 다시 시도해주세요', 'warning');
     }
   };
-  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     const isLogined = getCookie('accessToken');
@@ -120,19 +90,7 @@ export default function ParticipantButton({
       }
     };
 
-    if (!isLogined && dDayToStart <= 14 && dDayToStart >= 1) {
-      setBtnConfig({
-        text: '신청하기',
-        styleType: 'primary',
-        size: 'large',
-        onClick: handleClick,
-      });
-    } else if (
-      isLogined &&
-      !canCancelParticpant &&
-      dDayToStart <= 14 &&
-      dDayToStart >= 1
-    ) {
+    if (!canCancelParticpant && dDayToStart <= 14 && dDayToStart >= 1) {
       setBtnConfig({
         text: '신청하기',
         styleType: 'primary',
@@ -146,25 +104,21 @@ export default function ParticipantButton({
         size: 'large',
         onClick: handleClick,
       });
-    } else if (dDayToStart < 1) {
+    } else if (dDayToStart > 14) {
       setBtnConfig({
-        text: '마감이지만 테스트를 위해 신청 허용',
-        styleType: 'primary',
+        text: '모집 대기',
+        styleType: 'disabled',
         size: 'large',
-        onClick: handleClick,
+      });
+    } else {
+      setBtnConfig({
+        text: '모집 마감',
+        styleType: 'disabled',
+        size: 'large',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canCancelParticpant]);
-
-  useEffect(() => {
-    const handleRouting = (): void => {
-      openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
-    };
-    if (query.cancelParticipantSuccess) {
-      handleRouting();
-    }
-  }, [query, router, openSnackBar]);
 
   return <BottomFixedBtn btns={[btnConfig]} />;
 }

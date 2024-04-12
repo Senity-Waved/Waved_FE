@@ -23,7 +23,7 @@ export default function EditReview({ prevContent }: { prevContent: string }) {
     {
       onSuccess: () => {
         router
-          .push({
+          .replace({
             pathname: '/profile/myreview',
             query: {
               editReviewSuccess: true,
