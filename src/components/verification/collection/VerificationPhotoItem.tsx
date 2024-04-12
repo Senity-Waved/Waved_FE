@@ -96,11 +96,12 @@ export default function VerificationPhotoItem({
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae
+        <Image
           src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
           alt="챌린지 인증 이미지"
           fill
           sizes="100%"
+          style={{ objectFit: 'cover' }}
           priority
         />
         <SShadow />
@@ -118,7 +119,7 @@ export default function VerificationPhotoItem({
         <Portal>
           <SModalWrapper onClick={handleBackgroundClick}>
             <SPhotoModal>
-              <SImgae
+              <SImage
                 src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
                 alt="챌린지 인증 이미지"
                 fill
@@ -155,16 +156,17 @@ const SPhotoModal = styled.div`
   border-radius: 8px;
   min-width: ${screenSize.min - 64}px;
   max-width: ${screenSize.max - 64}px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 9/16;
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   margin: 0 2rem;
+  background-color: ${({ theme }) => theme.color.gray_70};
 `;
 
-const SImgae = styled(Image)`
-  object-fit: cover;
+const SImage = styled(Image)`
+  object-fit: contain;
   object-position: center;
 `;
 
