@@ -128,6 +128,7 @@ export default function ChallengeParticipant() {
           console.error('챌린지 그룹 신청 실패', error);
         }
       } else if (myChallengeId !== 0 && challengeData.isFree && deposit === 0) {
+        increaseParticipantCount();
         router
           .push({
             pathname: '/challenge/participant/success',

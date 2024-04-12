@@ -2,35 +2,12 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import screenSize from '@/constants/screenSize';
 
-interface IFloatingBtn {
-  type: 'challengeRequest' | 'register';
-}
-
-export default function FloatingBtn({ type }: IFloatingBtn) {
-  const renderButtonContent = () => {
-    if (type === 'challengeRequest') {
-      return (
-        <SFloatingBtnWrapper>
-          <SChallengeRequest
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://open.kakao.com/o/sFCnMohg"
-          >
-            챌린지 요청
-          </SChallengeRequest>
-        </SFloatingBtnWrapper>
-      );
-    }
-    if (type === 'register') {
-      return (
-        <SFloatingBtnWrapper>
-          <SRegister href="/">회원가입 및 로그인</SRegister>
-        </SFloatingBtnWrapper>
-      );
-    }
-    return null;
-  };
-  return renderButtonContent();
+export default function FloatingBtn() {
+  return (
+    <SFloatingBtnWrapper>
+      <SRegister href="/">회원가입 및 로그인</SRegister>
+    </SFloatingBtnWrapper>
+  );
 }
 
 const SFloatingBtnWrapper = styled.div`
@@ -53,18 +30,6 @@ const SFloatingBtn = styled(Link)`
   font-size: ${({ theme }) => theme.fontSize.body1};
   font-weight: ${({ theme }) => theme.fontWeight.body1};
   line-height: 24px;
-`;
-
-const SChallengeRequest = styled(SFloatingBtn)`
-  margin: 0 1.25rem 0 auto;
-  padding: 0.625rem 1.25rem;
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background: url('/icons/icon-write-form.svg') no-repeat center;
-  }
 `;
 
 const SRegister = styled(SFloatingBtn)`

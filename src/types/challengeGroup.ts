@@ -2,6 +2,7 @@ import { TVerificationType } from './verification';
 
 interface IChallengeGroup {
   groupTitle: string;
+  imageUrl: string;
   participantCount: number;
   startDate: string;
   endDate: string;

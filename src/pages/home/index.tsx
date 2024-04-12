@@ -12,15 +12,10 @@ import SnackBar from '@/components/common/SnackBar';
 import HomeHeader from '@/components/home/HomeHeader';
 import TopBanner from '@/components/home/TopBanner';
 import FloatingBtn from '@/components/home/FloatingBtn';
-import ProcessingChallenge from '@/components/home/ProcessingChallenge';
 import RecruitingChallenge from '@/components/home/RecruitingChallenge';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
-import IMyProcessingChallenge from '@/types/myProcessingChallenge';
 import useSnackBar from '@/hooks/useSnackBar';
-import {
-  getMyProcessingChallengeApi,
-  getRecruitingChallengeApi,
-} from '@/lib/axios/home/api';
+import getRecruitingChallengeApi from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 import { IAuthResponse } from '@/lib/axios/instance';
@@ -29,7 +24,6 @@ RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 interface IHome {
   isLogined: boolean;
-  myProcessingChallenges: IMyProcessingChallenge[] | null;
   recruitingChallenges: IRecruitingChallenge[] | null;
   requireSnackBar?: boolean;
   errorMsg?: string;
@@ -41,19 +35,15 @@ interface ITokenExpiryResponse {
 
 export default function Home({
   isLogined,
-  myProcessingChallenges,
   recruitingChallenges,
   requireSnackBar,
   errorMsg,
 }: IHome) {
   const router = useRouter();
   const { snackBarData, openSnackBar } = useSnackBar();
-
   const EventSource = EventSourcePolyfill || NativeEventSource;
-
   const cookieToken = getCookie('accessToken');
   const [notificationUpdate, setNotificationUpdate] = useState<boolean>(false);
-
   const [expiresTime, setExpiresTime] = useState<number>(0);
   const [readyReconnect, setReadyReconnect] = useState<boolean>(false);
 
@@ -63,14 +53,12 @@ export default function Home({
         const response = await axios.get<ITokenExpiryResponse>(
           '/api/auth/token-expiry',
         );
-
         const { data } = response;
         setExpiresTime(data.expiresTime);
       } catch (error) {
         console.error(error);
       }
     }
-
     if (cookieToken) {
       fetchTokenExpiry().catch(console.error);
     }
@@ -217,19 +205,12 @@ export default function Home({
       <HomeHeader updateKey={notificationUpdate} />
       <main>
         <TopBanner />
-        {isLogined &&
-          myProcessingChallenges &&
-          myProcessingChallenges.length > 0 && (
-            <ProcessingChallenge
-              myProcessingChallenges={myProcessingChallenges}
-            />
-          )}
         <RecruitingChallenge recruitingChallenges={recruitingChallenges} />
         {snackBarData.open && (
           <SnackBar text={snackBarData.text} type={snackBarData.type} />
         )}
       </main>
-      <FloatingBtn type={isLogined ? 'challengeRequest' : 'register'} />
+      {isLogined || <FloatingBtn />}
       <Footer isLogined={isLogined} />
     </SHomeWrapper>
   );
@@ -240,29 +221,19 @@ async function getServerSidePropsFunction(
 ): Promise<{
   props: {
     isLogined: boolean;
-    myProcessingChallenges: IMyProcessingChallenge[] | null;
     recruitingChallenges: IRecruitingChallenge[] | null;
   };
 }> {
   const cookieToken = getCookie('accessToken', context);
   const isLogined = !!cookieToken;
   const serverInstance = createServerInstance(context);
-  const fetchMyProcessingChallenges = async () => {
-    const response = await getMyProcessingChallengeApi(serverInstance);
-    return response.data;
-  };
   const fetchRecruitingChallenges = async () => {
     const response = await getRecruitingChallengeApi(serverInstance);
     return response.data;
   };
-  let myProcessingChallenges = null;
-  if (isLogined) {
-    myProcessingChallenges = await fetchMyProcessingChallenges();
-  }
   const recruitingChallenges = await fetchRecruitingChallenges();
   return {
     props: {
-      myProcessingChallenges,
       recruitingChallenges,
       isLogined,
     },

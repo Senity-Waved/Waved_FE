@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import { useState } from 'react';
 
 interface ITextArea {
@@ -22,15 +23,23 @@ export default function TextArea({
   };
 
   return (
-    <SWrapper>
-      <STextArea
-        placeholder={placeholder}
-        maxLength={300}
-        onChange={countTextLength}
-        value={value}
-      />
-      <STextLength>&#40;{textLength}/300&#41;</STextLength>
-    </SWrapper>
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+        />
+      </Head>
+      <SWrapper>
+        <STextArea
+          placeholder={placeholder}
+          maxLength={300}
+          onChange={countTextLength}
+          value={value}
+        />
+        <STextLength>&#40;{textLength}/300&#41;</STextLength>
+      </SWrapper>
+    </>
   );
 }
 
