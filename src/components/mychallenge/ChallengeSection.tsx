@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import ChallengeItem from '@/components/mychallenge/ChallengeItem';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
 import mychallengeStatus from '@/constants/mychallengeStatus';
+import EmptyView from '../common/EmptyView';
 
 interface IChallengeSection {
   status: TMyChallengeStatus;
@@ -21,16 +22,20 @@ export default function ChallengeSection({
           {mychallengeStatus[status].title}
         </SStatusTitle>
       </div>
-      <SChallengeList>
-        {challenges.map((challenge) => (
-          <ChallengeItem
-            key={challenge.challengeGroupId}
-            status={status}
-            {...challenge}
-            setData={setData}
-          />
-        ))}
-      </SChallengeList>
+      {challenges.length ? (
+        <SChallengeList>
+          {challenges.map((challenge) => (
+            <ChallengeItem
+              key={challenge.challengeGroupId}
+              status={status}
+              {...challenge}
+              setData={setData}
+            />
+          ))}
+        </SChallengeList>
+      ) : (
+        <EmptyView pageType={status} center={false} />
+      )}
     </SWrapper>
   );
 }

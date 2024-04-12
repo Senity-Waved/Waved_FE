@@ -11,11 +11,11 @@ import { TMyChallengeInfo } from '@/types/myChallenge';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
-import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
+import EmptyView from '@/components/common/EmptyView';
 
 interface IMyChallenges {
   getMyProgressChallenges?: TMyChallengeInfo[];
@@ -134,45 +134,42 @@ export default function MyChallenge({
 
   return (
     <Layout
-      headerText="MY 챌린지"
+      headerText="마이챌린지"
       title="마이챌린지"
       description="나의 챌린지 내역을 확인해보세요."
       isLogined={isLogined}
     >
-      <TabMenu
-        tabs={[
-          { href: '#PROGRESS', text: '진행 중' },
-          { href: '#WAITING', text: '대기 중' },
-          { href: '#COMPLETED', text: '진행 완료' },
-        ]}
-      />
-
-      <div>
-        {progressDataLength !== 0 && (
-          <ChallengeSection
-            status="PROGRESS"
-            challenges={getMyProgressChallenges || []}
+      {isEmptyData === 0 ? (
+        <EmptyView pageType="마이챌린지" />
+      ) : (
+        <>
+          <TabMenu
+            tabs={[
+              { href: '#PROGRESS', text: '진행 중' },
+              { href: '#WAITING', text: '대기 중' },
+              { href: '#COMPLETED', text: '진행 완료' },
+            ]}
           />
-        )}
-        {waitingDataLength !== 0 && (
-          <ChallengeSection
-            status="WAITING"
-            challenges={getMyWaitingChallenges || []}
-          />
-        )}
-        {completedDataLength !== 0 && (
-          <ChallengeSection
-            status="COMPLETED"
-            challenges={completedData}
-            setData={setCompletedData}
-          />
-        )}
-      </div>
-      {isEmptyData === 0 && <ChallengeEmptyView />}
-      {progressDataLength + waitingDataLength === 0 &&
-        completedDataLength !== 0 && (
-          <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
-        )}
+          <div>
+            <ChallengeSection
+              status="PROGRESS"
+              challenges={getMyProgressChallenges || []}
+            />
+            <ChallengeSection
+              status="WAITING"
+              challenges={getMyWaitingChallenges || []}
+            />
+            <ChallengeSection
+              status="COMPLETED"
+              challenges={completedData}
+              setData={setCompletedData}
+            />
+          </div>
+        </>
+      )}
+      {progressDataLength + waitingDataLength === 0 && (
+        <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
+      )}
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
