@@ -6,12 +6,13 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
-        <meta name="theme-color" content={color.NORMAL} />
+        <meta name="theme-color" content={color.WHITE} />
         <meta name="msapplication-TileColor" content={color.NORMAL} />
         <meta
           name="msapplication-TileImage"
           content="/app-assets/logo/144.png"
         />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/app-assets/logo/192.png" />
         <link rel="apple-touch-icon" href="/app-assets/logo/512.png" />
         <link rel="manifest" href="/manifest.json" />

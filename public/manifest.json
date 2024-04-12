@@ -1,12 +1,13 @@
 {
-  "name": "WAVED",
+  "name": "웨이브드 (WAVED)",
   "short_name": "WAVED",
   "description": "WAVED와 함께 챌린지의 파도를 넘어 취업으로",
-  "theme_color": "#2470ff",
-  "background_color": "#2470ff",
+  "theme_color": "#2470FF",
+  "background_color": "#FFFFFF",
   "display": "standalone",
+  "orientation": "portrait",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/?app=pwa",
   "application_scope": "/",
   "icons": [
     {
