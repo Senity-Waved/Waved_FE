@@ -59,8 +59,7 @@ const SStampWrapper = styled.ul`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px 9px;
-  max-width: 309px;
+  gap: 8px 12px;
   padding: 0.75rem;
   margin: 1rem auto;
   border-radius: 16px;
