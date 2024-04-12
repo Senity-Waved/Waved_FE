@@ -95,7 +95,7 @@ export default function Home({
       });
 
       eventSource.addEventListener('event', () => {
-        openSnackBar('새로운 알림이 있습니다.');
+        openSnackBar('새로운 알림이 있습니다.', 'notification');
         setNotificationUpdate(true);
       });
     };

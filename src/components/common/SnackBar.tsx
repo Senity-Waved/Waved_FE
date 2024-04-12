@@ -1,9 +1,10 @@
+/* eslint-disable no-nested-ternary */
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface ISnackBar {
   text: string;
-  type?: 'correct' | 'warning';
+  type?: 'correct' | 'warning' | 'notification';
   noFooter?: boolean;
   withBottomFixedBtn?: boolean;
 }
@@ -74,7 +75,9 @@ const SSnackBar = styled.p<Partial<ISnackBar>>`
     background-image: ${({ type }) =>
       type === 'warning'
         ? "url('/icons/icon-warning.svg')"
-        : "url('/icons/icon-correct.svg')"};
+        : type === 'correct'
+          ? "url('/icons/icon-correct.svg')"
+          : "url('/icons/icon-notification-snackbar.svg')"};
     background-repeat: no-repeat;
     background-position: center;
     width: 24px;
