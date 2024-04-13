@@ -6,7 +6,10 @@ export default function useSnackBar() {
   const [snackBarData, setSnackBarData] = useRecoilState(ASnackBarState);
 
   const openSnackBar = useCallback(
-    (text: string, type: 'warning' | 'correct' = 'warning') => {
+    (
+      text: string,
+      type: 'warning' | 'correct' | 'notification' = 'warning',
+    ) => {
       setSnackBarData({
         open: true,
         text,

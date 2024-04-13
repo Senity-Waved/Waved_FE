@@ -18,7 +18,12 @@ export default function Notification() {
     ['notifyList'],
     async () => {
       const response = await notifyApi();
-      return response.data;
+      const sortedData = response.data.sort(
+        (a, b) =>
+          new Date(b.createDate).getTime() - new Date(a.createDate).getTime(),
+      );
+      queryClient.setQueryData(['notifyList'], sortedData);
+      return sortedData;
     },
     { refetchOnWindowFocus: false },
   );
@@ -42,7 +47,7 @@ export default function Notification() {
   };
 
   if (error) {
-    console.error('새로운 알림 유무 불러오기 실패', error);
+    console.error('알림 내역 불러오기 실패', error);
   }
 
   return (
@@ -55,7 +60,7 @@ export default function Notification() {
       <h2 className="a11yHidden">알림 내역</h2>
       <SNotificationWrapper>
         {data && data.length > 0 ? (
-          <div>
+          <ul>
             {data.map((notify) => (
               <NotificationBox
                 key={notify.notificationId}
@@ -63,7 +68,7 @@ export default function Notification() {
                 openDeleteModal={() => openDeleteModal(notify.notificationId)}
               />
             ))}
-          </div>
+          </ul>
         ) : (
           <EmptyView pageType="알림내역" />
         )}
