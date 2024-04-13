@@ -15,7 +15,6 @@ interface ILayout {
   noHeader?: boolean;
   withBottomFixedBtn?: boolean;
   rightOnClick?: () => void;
-  isLogined?: boolean;
 }
 
 export default function Layout({
@@ -28,7 +27,6 @@ export default function Layout({
   noHeader,
   withBottomFixedBtn,
   rightOnClick,
-  isLogined,
 }: ILayout) {
   return (
     <SLayoutWrapper
@@ -56,7 +54,7 @@ export default function Layout({
         />
       )}
       <main>{children}</main>
-      {noFooter || <Footer isLogined={isLogined !== undefined && isLogined} />}
+      {noFooter || <Footer />}
     </SLayoutWrapper>
   );
 }

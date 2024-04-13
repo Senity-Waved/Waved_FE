@@ -211,7 +211,7 @@ export default function Home({
         )}
       </main>
       {isLogined || <FloatingBtn />}
-      <Footer isLogined={isLogined} />
+      <Footer />
     </SHomeWrapper>
   );
 }
