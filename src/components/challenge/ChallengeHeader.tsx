@@ -42,10 +42,10 @@ export default function ChallengeHeader({
       <SHeaderWrapper>
         <SGoHomeLink href="/home">
           <Image
-            src="/icons/icon-waved-logo.svg"
+            src="/icons/icon-waved-title.svg"
             alt="WAVED 로고"
-            width={88}
-            height={38}
+            width={122}
+            height={26}
             quality={100}
           />
         </SGoHomeLink>

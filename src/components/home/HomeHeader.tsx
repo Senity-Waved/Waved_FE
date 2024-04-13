@@ -32,9 +32,9 @@ export default function HomeHeader({ updateKey }: { updateKey: boolean }) {
           <h1 className="a11yHidden">WAVED</h1>
           <Image
             alt="WAVED 로고"
-            src="/icons/icon-waved-logo.svg"
-            width={88}
-            height={38}
+            src="/icons/icon-waved-title.svg"
+            width={122}
+            height={26}
             quality={100}
           />
         </SLogo>
