@@ -23,29 +23,64 @@ function Tab({ href, text, isActive }: ITab & { isActive: boolean }) {
 }
 
 export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState<string>(tabs[0].href);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveTab(`#${entry.target.id}`);
+    const handleScroll = () => {
+      const currentScrollPosition = window.scrollY + window.innerHeight / 1.5;
+      let activeTabId = activeTab;
+
+      tabs.forEach((tab, index) => {
+        const id = tab.href.slice(1);
+        const element = document.getElementById(id);
+        if (element) {
+          const { top, bottom } = element.getBoundingClientRect();
+          const elementTopToPageTop = top + window.scrollY;
+          const elementBottomToPageTop = bottom + window.scrollY;
+          if (
+            currentScrollPosition >= elementTopToPageTop &&
+            currentScrollPosition <= elementBottomToPageTop
+          ) {
+            activeTabId = `#${id}`;
+          } else {
+            if (index < tabs.length - 1) {
+              const nextTabId = tabs[index + 1].href.slice(1);
+              const nextElement = document.getElementById(nextTabId);
+              if (nextElement) {
+                const nextTop =
+                  nextElement.getBoundingClientRect().top + window.scrollY;
+                if (
+                  currentScrollPosition > elementBottomToPageTop &&
+                  currentScrollPosition < nextTop
+                ) {
+                  activeTabId = `#${id}`;
+                }
+              }
+            }
+            if (index > 0) {
+              const prevTabId = tabs[index - 1].href.slice(1);
+              const prevElement = document.getElementById(prevTabId);
+              if (prevElement) {
+                const prevBottom =
+                  prevElement.getBoundingClientRect().bottom + window.scrollY;
+                if (
+                  currentScrollPosition < elementTopToPageTop &&
+                  currentScrollPosition > prevBottom
+                ) {
+                  activeTabId = `#${tabs[index - 1].href.slice(1)}`;
+                }
+              }
+            }
           }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.7,
-      },
-    );
-    tabs.forEach((tab) => {
-      const id = tab.href.slice(1);
-      const section = document.querySelector(`#${id}`);
-      if (section) observer.observe(section);
-    });
-    return () => observer.disconnect();
-  }, [tabs, positionTop]);
+        }
+      });
+      setActiveTab(activeTabId);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [tabs, activeTab]);
 
   return (
     <STabMenu positionTop={positionTop}>
