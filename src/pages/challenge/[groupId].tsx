@@ -293,7 +293,7 @@ const SChips = styled.dl`
     display: inline-block;
     height: 24px;
     padding: 0 0.75rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: ${({ theme }) => theme.color.gray_3c};
     border-radius: 12px;
     line-height: 24px;
     color: ${({ theme }) => theme.color.gray_ec};

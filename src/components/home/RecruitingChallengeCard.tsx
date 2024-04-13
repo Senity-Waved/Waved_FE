@@ -34,7 +34,7 @@ export default function RecruitingChallengeCard({
             src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
             fill
             sizes={`${screenSize.max}px`}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', objectPosition: 'top -10px right 0' }}
             priority
           />
           <SParticipant>{participantCount}</SParticipant>
@@ -102,7 +102,7 @@ const SRecruitDDay = styled.span`
   position: absolute;
   bottom: 0.5rem;
   right: 0.75rem;
-  color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
   line-height: 16px;
