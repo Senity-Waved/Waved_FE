@@ -64,7 +64,7 @@ export default function ChallengeReview({
       <SSectionTitle>챌린지 참여자 후기</SSectionTitle>
       {!reviewList || reviewList.totalElements === 0 ? (
         <SEmptyViewWrapper>
-          <EmptyView pageType="챌린지후기" />
+          <EmptyView pageType="챌린지후기" center={false} size="small" />
         </SEmptyViewWrapper>
       ) : (
         <>
@@ -90,7 +90,7 @@ export default function ChallengeReview({
 
 const SEmptyViewWrapper = styled.div`
   position: relative;
-  height: 340px;
+  margin: 2rem 0;
 `;
 
 const SMoreBtn = styled.button`
