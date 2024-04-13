@@ -21,9 +21,7 @@ function NotificationBox({ notification, openDeleteModal }: INotificationBox) {
             height={20}
             priority
           />
-          <SNotificationTitle>
-            {notification.title.slice(0, -3)}
-          </SNotificationTitle>
+          <SNotificationTitle>{notification.title}</SNotificationTitle>
           <button
             type="button"
             onClick={() => openDeleteModal(notification.notificationId)}
@@ -87,6 +85,7 @@ const SNotificationMessage = styled.p`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_70};
+  white-space: pre-wrap;
 `;
 
 const SNotificationDate = styled.p`
