@@ -33,8 +33,9 @@ export default function HomeHeader({ updateKey }: { updateKey: boolean }) {
           <Image
             alt="WAVED 로고"
             src="/icons/icon-waved-title.svg"
-            width={122}
-            height={26}
+            width={90}
+            height={20}
+            style={{ verticalAlign: 'top' }}
             quality={100}
           />
         </SLogo>
@@ -50,5 +51,5 @@ const SHeader = styled(SHeaderWrapper)`
 `;
 
 const SLogo = styled.div`
-  height: 38px;
+  height: 20px;
 `;
