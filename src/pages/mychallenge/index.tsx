@@ -140,7 +140,10 @@ export default function MyChallenge({
       isLogined={isLogined}
     >
       {isEmptyData === 0 ? (
-        <EmptyView pageType="마이챌린지" />
+        <SEmptyWrapper>
+          <EmptyView pageType="마이챌린지" center={false} />
+          <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
+        </SEmptyWrapper>
       ) : (
         <>
           <TabMenu
@@ -165,10 +168,10 @@ export default function MyChallenge({
               setData={setCompletedData}
             />
           </div>
+          {progressDataLength + waitingDataLength === 0 && (
+            <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
+          )}
         </>
-      )}
-      {progressDataLength + waitingDataLength === 0 && (
-        <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
       )}
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
@@ -208,13 +211,21 @@ async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
 
 export const getServerSideProps = serverErrorCatch(getServerSidePropsFunction);
 
+const SEmptyWrapper = styled.div`
+  min-height: calc(90vh - 147px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 const SLinkToHome = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-size: ${({ theme }) => theme.fontSize.body4};
   line-height: 1.5rem;
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_3c};
   display: block;
   text-align: center;
+  margin-top: 1.875rem;
   margin-bottom: 2rem;
   text-decoration: underline;
   text-underline-offset: 2px;
