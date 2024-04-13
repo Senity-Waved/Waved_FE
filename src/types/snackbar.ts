@@ -1,7 +1,7 @@
 interface ISnackBarState {
   open: boolean;
   text: string;
-  type?: 'correct' | 'warning';
+  type?: 'correct' | 'warning' | 'notification';
 }
 
 export default ISnackBarState;
