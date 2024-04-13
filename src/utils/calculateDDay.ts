@@ -1,9 +1,13 @@
 import ONE_DAY from '@/constants/day';
 
-export default function calculateDDay(date: string): number {
-  const today = new Date();
-  const targetDate = new Date(date.replace(/Z/g, ''));
-  const timeDiff = targetDate.getTime() - today.getTime();
+export default function calculateDDay(
+  date1: string,
+  date2: string = 'today',
+): number {
+  const targetDate1 = new Date(date1.replace(/Z/g, ''));
+  const targetData2 =
+    date2 === 'today' ? new Date() : new Date(date2.replace(/Z/g, ''));
+  const timeDiff = targetDate1.getTime() - targetData2.getTime();
   const daysDiff = Math.ceil(timeDiff / ONE_DAY);
   return daysDiff;
 }

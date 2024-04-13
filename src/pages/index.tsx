@@ -52,7 +52,6 @@ export default function OnBoarding() {
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
@@ -152,7 +151,7 @@ const SOnBoardingWrapper = styled(SLayoutWrapper)`
 `;
 
 const SPreviewImage = styled.div`
-  height: 455px;
+  height: 468px;
   position: relative;
   top: 30%;
   left: 48%;
@@ -198,7 +197,6 @@ const SServiceRegisterText = styled.p`
   line-height: 1.4;
   margin: 0 auto;
   text-align: center;
-  margin-bottom: 0.75rem;
 `;
 
 const SServicePolicyLink = styled(Link)`

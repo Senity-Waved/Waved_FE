@@ -7,30 +7,19 @@ import {
   homeFilled,
   myChallengeNormal,
   myChallengeFilled,
-  myChallengeDisabled,
   profileNormal,
   profileFilled,
 } from '../../../public/icons';
 import screenSize from '@/constants/screenSize';
 
-interface IFooterProps {
-  isLogined: boolean;
-}
-
-export default function Footer({ isLogined }: IFooterProps) {
+export default function Footer() {
   const router = useRouter();
-  // const cookieToken = getCookie('accessToken');
-  // const isLogined = !!cookieToken;
 
   const navigate = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     path: string,
   ) => {
     e.preventDefault();
-
-    if (!isLogined && path === '/mychallenge') {
-      return;
-    }
 
     if (router.pathname !== path) {
       router.push(path).catch((error) => console.error('이동 실패', error));
@@ -52,17 +41,12 @@ export default function Footer({ isLogined }: IFooterProps) {
         </SFooterNavItem>
       </SFooterNavLink>
       <SFooterNavLink onClick={(e) => navigate(e, '/mychallenge')}>
-        <SMyChallengeNavItem
-          isActive={router.pathname === '/mychallenge'}
-          isLogined={isLogined}
-        >
+        <SMyChallengeNavItem isActive={router.pathname === '/mychallenge'}>
           <Image
             src={
-              isLogined
-                ? router.pathname === '/mychallenge'
-                  ? myChallengeFilled
-                  : myChallengeNormal
-                : myChallengeDisabled
+              router.pathname === '/mychallenge'
+                ? myChallengeFilled
+                : myChallengeNormal
             }
             alt="마이 챌린지 아이콘"
             width={24}
@@ -124,19 +108,13 @@ const SFooterNavItem = styled.div<{ isActive: boolean }>`
 
 const SMyChallengeNavItem = styled.div<{
   isActive: boolean;
-  isLogined: boolean;
 }>`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
-  cursor: ${({ isLogined }) => (isLogined ? 'pointer' : 'not-allowed')};
-  color: ${({ isActive, isLogined, theme }) =>
-    !isActive
-      ? isLogined
-        ? theme.color.gray_83
-        : theme.color.gray_bf
-      : theme.color.gray_3c};
+  color: ${({ isActive, theme }) =>
+    !isActive ? theme.color.gray_83 : theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.caption1};
   font-weight: ${({ theme }) => theme.fontWeight.caption1};
 `;

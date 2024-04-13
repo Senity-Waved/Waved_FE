@@ -8,6 +8,7 @@ interface IRecruitingChallenge {
   isFree: boolean;
   participantCount: number;
   startDate: string;
+  endDate: string;
 }
 
 export default IRecruitingChallenge;

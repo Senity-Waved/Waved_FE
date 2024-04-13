@@ -5,12 +5,17 @@ import calculateDDay from '@/utils/calculateDDay';
 export default function ChallengeProgress({
   successCount,
   startDate,
+  endDate,
   isVerified,
-}: Pick<TMyChallengeInfo, 'successCount' | 'startDate' | 'isVerified'>) {
+}: Pick<
+  TMyChallengeInfo,
+  'successCount' | 'startDate' | 'endDate' | 'isVerified'
+>) {
+  const daysDiff = Math.abs(calculateDDay(startDate, endDate)) + 1;
   const failCount =
     Math.abs(calculateDDay(startDate)) - successCount + (isVerified ? 1 : 0);
   const dealt = (() => {
-    const percent = (100 / 14) * successCount;
+    const percent = (100 / daysDiff) * successCount;
     return Math.round(percent);
   })();
 
@@ -18,7 +23,10 @@ export default function ChallengeProgress({
     <SWrapper>
       <SProgressWrapper>
         <SProgerssNum>
-          <p>{dealt}%</p>
+          <p>
+            <span className="a11yHidden">인증 달성률</span>
+            {dealt}%
+          </p>
           <p>100%</p>
         </SProgerssNum>
         <SProgressBar dealt={dealt}>
@@ -36,7 +44,7 @@ export default function ChallengeProgress({
         </li>
         <li>
           <SResult>남은 인증</SResult>
-          <SCount>{14 - failCount - successCount}회</SCount>
+          <SCount>{daysDiff - failCount - successCount}회</SCount>
         </li>
       </SCountList>
     </SWrapper>

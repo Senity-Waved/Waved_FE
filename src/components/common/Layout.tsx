@@ -15,7 +15,6 @@ interface ILayout {
   noHeader?: boolean;
   withBottomFixedBtn?: boolean;
   rightOnClick?: () => void;
-  isLogined?: boolean;
 }
 
 export default function Layout({
@@ -28,7 +27,6 @@ export default function Layout({
   noHeader,
   withBottomFixedBtn,
   rightOnClick,
-  isLogined,
 }: ILayout) {
   return (
     <SLayoutWrapper
@@ -46,7 +44,6 @@ export default function Layout({
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       {noHeader || (
@@ -57,7 +54,7 @@ export default function Layout({
         />
       )}
       <main>{children}</main>
-      {noFooter || <Footer isLogined={isLogined !== undefined && isLogined} />}
+      {noFooter || <Footer />}
     </SLayoutWrapper>
   );
 }

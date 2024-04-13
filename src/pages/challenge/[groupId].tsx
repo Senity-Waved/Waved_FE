@@ -26,6 +26,7 @@ import ISelectedChallenge, { TCondition } from '@/types/selectedChallenge';
 import useSnackBar from '@/hooks/useSnackBar';
 import createServerInstance from '@/lib/axios/serverInstance';
 import { getChallengeGroupApi, getReviewsApi } from '@/lib/axios/challenge/api';
+import calculatePeriod from '@/utils/calculatePeriod';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -113,7 +114,9 @@ export default function Challenge({
             <dt className="a11yHidden">챌린지 인증 빈도</dt>
             <dd>매일</dd>
             <dt className="a11yHidden">챌린지 진행 기한</dt>
-            <dd>2주</dd>
+            <dd>
+              {calculatePeriod(challengeInfo.startDate, challengeInfo.endDate)}
+            </dd>
             <dt className="a11yHidden">챌린지 인증 방식</dt>
             <dd>{VERIFICATION_TYPE[challengeInfo.verificationType]}</dd>
             {challengeInfo.isFree && (
@@ -293,7 +296,7 @@ const SChips = styled.dl`
     display: inline-block;
     height: 24px;
     padding: 0 0.75rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: ${({ theme }) => theme.color.gray_3c};
     border-radius: 12px;
     line-height: 24px;
     color: ${({ theme }) => theme.color.gray_ec};

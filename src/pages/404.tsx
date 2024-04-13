@@ -14,16 +14,15 @@ export default function Custom404() {
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
         <SCustom404>
           <Image
-            src="/icons/icon-404-error.svg"
+            src="/images/image-404.svg"
             alt="404 에러"
-            width={170}
-            height={76}
+            width={247}
+            height={247}
             priority
           />
           <SMainText>해당 페이지를 찾을 수 없습니다.</SMainText>
@@ -54,7 +53,7 @@ const SCustom404 = styled.section`
 `;
 
 const SMainText = styled.h3`
-  margin: 2.5rem 0 0.5rem;
+  margin: 1rem 0 0.5rem;
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headlineh2};
