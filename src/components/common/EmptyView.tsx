@@ -40,6 +40,7 @@ export default function EmptyView({
         height={size === 'large' ? 247 : size === 'medium' ? 207 : 167}
         style={{ objectFit: 'contain' }}
         priority
+        quality={100}
       />
       <SEmptyMainText>{mainText}</SEmptyMainText>
       {!!subText.length && <SEmptySubText>{subText}</SEmptySubText>}

@@ -37,10 +37,10 @@ export default function RegisterSuccess() {
             <SRegisterSuccessBox>
               <div>
                 <Image
-                  src="/images/image-fanfare.svg"
-                  alt="팡파레 이미지"
-                  width={88}
-                  height={88}
+                  src="/images/image-register-success.svg"
+                  alt="회원가입 성공 이미지"
+                  width={247}
+                  height={247}
                   priority
                 />
                 <SSuccessText>회원가입 완료</SSuccessText>

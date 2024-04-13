@@ -10,7 +10,7 @@ export default function RecruitingChallenge({
 }) {
   return (
     <SSection>
-      <STitle>✅ 모집 중인 챌린지</STitle>
+      <STitle>모집 중인 챌린지</STitle>
       {recruitingChallenges && recruitingChallenges.length > 0 ? (
         <SList>
           {recruitingChallenges.map((challenge) => (
@@ -37,6 +37,9 @@ const SEmptyViewWrapper = styled.div`
 `;
 
 const STitle = styled.h2`
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
   width: calc(100% - 2.5rem);
   height: 60px;
   margin: 0 1.25rem;
@@ -44,6 +47,13 @@ const STitle = styled.h2`
   line-height: 60px;
   font-size: ${({ theme }) => theme.fontSize.subtitle1};
   font-weight: ${({ theme }) => theme.fontWeight.subtitle1};
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url('/icons/icon-challenge.svg') no-repeat center;
+  }
 `;
 
 const SList = styled.ul`
