@@ -42,10 +42,11 @@ export default function ChallengeHeader({
       <SHeaderWrapper>
         <SGoHomeLink href="/home">
           <Image
-            src="/icons/icon-waved-logo.svg"
+            src="/icons/icon-waved-title.svg"
             alt="WAVED 로고"
-            width={88}
-            height={38}
+            width={90}
+            height={20}
+            style={{ verticalAlign: 'top' }}
             quality={100}
           />
         </SGoHomeLink>
@@ -61,7 +62,7 @@ export default function ChallengeHeader({
 
 const SGoHomeLink = styled(Link)`
   display: inline-block;
-  height: 38px;
+  height: 20px;
   margin-left: 20px;
 `;
 
