@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import INotify from '@/types/notify';
-import formatNotificationDate from '@/types/formatNotificationDate';
+import formatNotificationDate from '@/utils/formatNotificationDate';
 
 interface INotificationBox {
   notification: INotify;
