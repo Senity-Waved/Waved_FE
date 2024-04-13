@@ -4,8 +4,8 @@ import Link from 'next/link';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
-import calculateDDayPrev from '@/utils/calculateDDayPrev';
 import calculatePeriod from '@/utils/calculatePeriod';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function RecruitingChallengeCard({
   challengeGroupId,
@@ -18,7 +18,7 @@ export default function RecruitingChallengeCard({
   isFree,
 }: IRecruitingChallenge) {
   const caculateRecruitDDay = (date: string) => {
-    const dDay = calculateDDayPrev(date) - 1;
+    const dDay = calculateDDay(date) - 1;
     let dDayStr;
     if (dDay < 0) {
       dDayStr = '모집 마감';
