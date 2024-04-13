@@ -57,10 +57,10 @@ export default function Stamp({ results, startDate }: IStamp) {
 
 const SStampWrapper = styled.ul`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 12px;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   margin: 1rem auto;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.color.gray_f9};
