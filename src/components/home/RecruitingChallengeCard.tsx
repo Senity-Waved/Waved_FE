@@ -5,6 +5,7 @@ import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
 import calculateDDay from '@/utils/calculateDDay';
+import calculatePeriod from '@/utils/calculatePeriod';
 
 export default function RecruitingChallengeCard({
   challengeGroupId,
@@ -13,6 +14,7 @@ export default function RecruitingChallengeCard({
   verificationType,
   participantCount,
   startDate,
+  endDate,
   isFree,
 }: IRecruitingChallenge) {
   const caculateRecruitDDay = (date: string) => {
@@ -45,7 +47,7 @@ export default function RecruitingChallengeCard({
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
           <dd>매일</dd>
           <dt className="a11yHidden">챌린지 진행 기한</dt>
-          <dd>2주</dd>
+          <dd>{calculatePeriod(startDate, endDate)}</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
           <dd>{VERIFICATION_TYPE[verificationType]}</dd>
           {isFree && (
