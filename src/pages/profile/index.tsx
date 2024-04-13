@@ -299,7 +299,7 @@ export default function Profile({
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
-                href="https://www.notion.so/waved-challenge/WAVED-ddc88b3e696447a09816a19e48ff1dcc"
+                href="https://waved-challenge.notion.site/WAVED-ddc88b3e696447a09816a19e48ff1dcc?pvs=4"
               >
                 <p>서비스 이용 가이드</p>
                 <Image

@@ -185,7 +185,7 @@ const SNonMemberLink = styled(Link)`
   font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: ${({ theme }) => theme.color.gray_3c};
   border-bottom: 1px solid ${({ theme }) => theme.color.gray_3c};
-  margin: 0 auto 2rem auto;
+  margin: 0 auto 1.5rem auto;
 `;
 
 const SServiceRegisterText = styled.p`
