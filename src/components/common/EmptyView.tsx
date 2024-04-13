@@ -18,7 +18,7 @@ interface IEmptyView {
     | '커밋인증'
     | '알림내역';
   center?: boolean;
-  size?: 'large' | 'small';
+  size?: 'large' | 'medium' | 'small';
 }
 
 export default function EmptyView({
@@ -36,7 +36,8 @@ export default function EmptyView({
         src={imagePath}
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
         width={size === 'large' ? 247 : 207}
-        height={size === 'large' ? 247 : 207}
+        // eslint-disable-next-line no-nested-ternary
+        height={size === 'large' ? 247 : size === 'medium' ? 207 : 167}
         style={{ objectFit: 'contain' }}
         priority
       />

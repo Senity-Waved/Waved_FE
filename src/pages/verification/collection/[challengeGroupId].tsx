@@ -128,7 +128,7 @@ export default function VeirificationCollection() {
       </SStampWrapper>
       {verificationType === 'GITHUB' ? (
         <SGithubWrapper>
-          <EmptyView pageType="커밋인증" center={false} size="small" />
+          <EmptyView pageType="커밋인증" center={false} size="medium" />
           <SGithubCautionList>
             <h3>주의사항</h3>
             <SGithubCautionItem>
