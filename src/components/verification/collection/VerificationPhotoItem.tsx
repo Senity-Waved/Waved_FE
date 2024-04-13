@@ -154,6 +154,7 @@ const SShadow = styled.div`
 
 const SPhotoModal = styled.div`
   border-radius: 8px;
+  width: 100%;
   min-width: ${screenSize.min - 64}px;
   max-width: ${screenSize.max - 64}px;
   aspect-ratio: 9/16;
@@ -162,7 +163,7 @@ const SPhotoModal = styled.div`
   display: flex;
   align-items: center;
   margin: 0 2rem;
-  background-color: ${({ theme }) => theme.color.gray_70};
+  background-color: ${({ theme }) => theme.color.gray_52};
 `;
 
 const SImage = styled(Image)`
