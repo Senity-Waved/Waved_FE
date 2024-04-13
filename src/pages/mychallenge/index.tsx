@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
 import { TMyChallengeInfo } from '@/types/myChallenge';
@@ -50,6 +51,9 @@ export default function MyChallenge({
     open: false,
     text: '',
   });
+
+  const cookieToken = getCookie('accessToken');
+  const isLogined = !!cookieToken;
 
   // 스낵바
   useEffect(() => {
@@ -128,6 +132,19 @@ export default function MyChallenge({
         });
     }
   }, [requireSnackBar, errorMsg, router]);
+
+  useEffect(() => {
+    if (!isLogined) {
+      router
+        .push({
+          pathname: '/home',
+          query: {
+            redirected: true,
+          },
+        })
+        .catch(console.error);
+    }
+  }, [isLogined, router]);
 
   return (
     <Layout
