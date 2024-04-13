@@ -18,10 +18,10 @@ export default function Custom500() {
       <main>
         <SCustom500>
           <Image
-            src="/icons/icon-500-error.svg"
+            src="/images/image-500.svg"
             alt="500 에러"
-            width={170}
-            height={76}
+            width={247}
+            height={247}
             priority
           />
           <SMainText>서버에 문제가 발생했습니다.</SMainText>
@@ -51,7 +51,7 @@ const SCustom500 = styled.section`
 `;
 
 const SMainText = styled.h3`
-  margin: 2.5rem 0 0.5rem;
+  margin: 1rem 0 0.5rem;
   color: ${({ theme }) => theme.color.gray_3c};
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headlineh2};
