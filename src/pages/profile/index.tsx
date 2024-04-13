@@ -300,6 +300,38 @@ export default function Profile({
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
+                href="https://www.notion.so/waved-challenge/WAVED-ddc88b3e696447a09816a19e48ff1dcc"
+              >
+                <p>서비스 이용 가이드</p>
+                <Image
+                  src="/icons/icon-down-arrow.svg"
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(270deg)' }}
+                />
+              </Link>
+            </SPropfileBaseMenuWrapper>
+            <SPropfileBaseMenuWrapper>
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
+                href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+              >
+                <p>약관 및 정책</p>
+                <Image
+                  src="/icons/icon-down-arrow.svg"
+                  alt="화살표 아이콘"
+                  width={24}
+                  height={24}
+                  style={{ transform: 'rotate(270deg)' }}
+                />
+              </Link>
+            </SPropfileBaseMenuWrapper>
+            <SPropfileBaseMenuWrapper>
+              <Link
+                target="_blank"
+                rel="noreferrer noopener"
                 href="https://waved-challenge.notion.site/FAQ-d61402baa16047caa19b90588caab233"
               >
                 <p>자주 묻는 질문</p>
@@ -328,50 +360,12 @@ export default function Profile({
                 />
               </Link>
             </SPropfileBaseMenuWrapper>
-            <SProfileActiveMenuWrapper isLogined={isLogined}>
-              <Link
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://open.kakao.com/o/sFCnMohg"
-              >
-                <p>챌린지 요청</p>
-                <Image
-                  src={
-                    isLogined
-                      ? '/icons/icon-down-arrow.svg'
-                      : '/icons/icon-small-arrow.svg'
-                  }
-                  alt="화살표 아이콘"
-                  width={24}
-                  height={24}
-                  style={{
-                    transform: isLogined ? 'rotate(270deg)' : 'rotate(360deg)',
-                  }}
-                />
-              </Link>
-            </SProfileActiveMenuWrapper>
-            <SPropfileBaseMenuWrapper>
-              <Link
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
-              >
-                <p>약관 및 정책</p>
-                <Image
-                  src="/icons/icon-down-arrow.svg"
-                  alt="화살표 아이콘"
-                  width={24}
-                  height={24}
-                  style={{ transform: 'rotate(270deg)' }}
-                />
-              </Link>
-            </SPropfileBaseMenuWrapper>
           </ul>
         </div>
         <SProfileEtc>
           <div>
             <p>현재 버전</p>
-            <p>1.0.2</p>
+            <p>1.1.0</p>
           </div>
         </SProfileEtc>
         <SwithdrawalBtnWrapper>
