@@ -36,7 +36,7 @@ export default function RecruitingChallengeCard({
             src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
             fill
             sizes={`${screenSize.max}px`}
-            style={{ objectFit: 'cover', objectPosition: 'top -10px right 0' }}
+            style={{ objectFit: 'cover' }}
             priority
           />
           <SParticipant>{participantCount}</SParticipant>
