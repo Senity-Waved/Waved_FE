@@ -197,7 +197,6 @@ const SServiceRegisterText = styled.p`
   line-height: 1.4;
   margin: 0 auto;
   text-align: center;
-  /* margin-bottom: 0.75rem; */
 `;
 
 const SServicePolicyLink = styled(Link)`
