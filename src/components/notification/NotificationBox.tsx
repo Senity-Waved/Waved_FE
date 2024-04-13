@@ -15,7 +15,7 @@ function NotificationBox({ notification, openDeleteModal }: INotificationBox) {
       <div>
         <SNotificationBoxTitle>
           <SWavedLogoIcon
-            src="/icons/icon-waved-logo.svg"
+            src="/icons/icon-notification-waved.svg"
             alt="웨이브드 아이콘"
             width={20}
             height={20}
