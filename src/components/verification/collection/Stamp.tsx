@@ -28,13 +28,24 @@ export default function Stamp({ results, startDate }: IStamp) {
     }
   };
 
+  const getResultText = (result: number) => {
+    switch (result) {
+      case 2:
+        return '인증성공 스탬프';
+      case 1:
+        return '인증실패 스탬프';
+      default:
+        return '미인증 스탬프';
+    }
+  };
+
   return (
     <SStampWrapper>
       {resultStamps.map((result) => (
         <SStampItem key={uuidv4()}>
           <Image
             src={getResultStamp(result)}
-            alt={`stamp-${result}`}
+            alt={getResultText(result)}
             width={33}
             height={33}
           />
@@ -46,11 +57,10 @@ export default function Stamp({ results, startDate }: IStamp) {
 
 const SStampWrapper = styled.ul`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px 9px;
-  max-width: 309px;
-  padding: 0.75rem;
+  gap: 8px 12px;
+  padding: 0.75rem 1rem;
   margin: 1rem auto;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.color.gray_f9};

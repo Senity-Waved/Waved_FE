@@ -44,6 +44,7 @@ export default function ChallengeItem({
         <h3>{groupTitle}</h3>
         <div>
           <SDuration>
+            <span className="a11yHidden">챌린지 기간</span>
             {startYY}.{startMM}.{startDD}~{endYY}.{endMM}.{endDD}
           </SDuration>
           <SDeposit>
@@ -51,12 +52,15 @@ export default function ChallengeItem({
             <span>{deposit ? changePriceFormat(deposit) : 0}원</span>
           </SDeposit>
         </div>
-        <SDetailBtn href={`/challenge/${challengeGroupId}`} />
+        <SDetailBtn href={`/challenge/${challengeGroupId}`}>
+          <span className="a11yHidden">챌린지 상세보기 버튼</span>
+        </SDetailBtn>
       </SInfoWrapper>
       {status === 'PROGRESS' && (
         <ChallengeProgress
           successCount={successCount}
           startDate={startDate}
+          endDate={endDate}
           isVerified={isVerified}
         />
       )}

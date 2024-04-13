@@ -11,11 +11,11 @@ import { TMyChallengeInfo } from '@/types/myChallenge';
 import Layout from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
-import ChallengeEmptyView from '@/components/mychallenge/ChallengeEmptyView';
 import SnackBar from '@/components/common/SnackBar';
 import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
+import EmptyView from '@/components/common/EmptyView';
 
 interface IMyChallenges {
   getMyProgressChallenges?: TMyChallengeInfo[];
@@ -134,48 +134,45 @@ export default function MyChallenge({
 
   return (
     <Layout
-      headerText="MY 챌린지"
+      headerText="마이챌린지"
       title="마이챌린지"
       description="나의 챌린지 내역을 확인해보세요."
       isLogined={isLogined}
     >
-      <TabMenu
-        tabs={[
-          { href: '#PROGRESS', text: '진행 중' },
-          { href: '#WAITING', text: '대기 중' },
-          { href: '#COMPLETED', text: '진행 완료' },
-        ]}
-      />
-
-      <div>
-        {progressDataLength !== 0 && (
-          <ChallengeSection
-            mainText="🧑🏻‍💻 진행 중"
-            status="PROGRESS"
-            challenges={getMyProgressChallenges || []}
-          />
-        )}
-        {waitingDataLength !== 0 && (
-          <ChallengeSection
-            mainText="📚 대기 중"
-            status="WAITING"
-            challenges={getMyWaitingChallenges || []}
-          />
-        )}
-        {completedDataLength !== 0 && (
-          <ChallengeSection
-            mainText="🥳 진행 완료"
-            status="COMPLETED"
-            challenges={completedData}
-            setData={setCompletedData}
-          />
-        )}
-      </div>
-      {isEmptyData === 0 && <ChallengeEmptyView />}
-      {progressDataLength + waitingDataLength === 0 &&
-        completedDataLength !== 0 && (
+      {isEmptyData === 0 ? (
+        <SEmptyWrapper>
+          <EmptyView pageType="마이챌린지" center={false} />
           <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
-        )}
+        </SEmptyWrapper>
+      ) : (
+        <>
+          <TabMenu
+            tabs={[
+              { href: '#PROGRESS', text: '진행 중' },
+              { href: '#WAITING', text: '대기 중' },
+              { href: '#COMPLETED', text: '진행 완료' },
+            ]}
+          />
+          <div>
+            <ChallengeSection
+              status="PROGRESS"
+              challenges={getMyProgressChallenges || []}
+            />
+            <ChallengeSection
+              status="WAITING"
+              challenges={getMyWaitingChallenges || []}
+            />
+            <ChallengeSection
+              status="COMPLETED"
+              challenges={completedData}
+              setData={setCompletedData}
+            />
+          </div>
+          {progressDataLength + waitingDataLength === 0 && (
+            <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
+          )}
+        </>
+      )}
       {snackBarState.open && (
         <SnackBar text={snackBarState.text} type={snackBarState.type} />
       )}
@@ -214,13 +211,21 @@ async function getServerSidePropsFunction(context: GetServerSidePropsContext) {
 
 export const getServerSideProps = serverErrorCatch(getServerSidePropsFunction);
 
+const SEmptyWrapper = styled.div`
+  min-height: calc(90vh - 147px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 const SLinkToHome = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSize.body2};
+  font-size: ${({ theme }) => theme.fontSize.body4};
   line-height: 1.5rem;
-  font-weight: ${({ theme }) => theme.fontWeight.body2};
+  font-weight: ${({ theme }) => theme.fontWeight.body4};
   color: ${({ theme }) => theme.color.gray_3c};
   display: block;
   text-align: center;
+  margin-top: 1.875rem;
   margin-bottom: 2rem;
   text-decoration: underline;
   text-underline-offset: 2px;

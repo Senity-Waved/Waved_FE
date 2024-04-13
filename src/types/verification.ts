@@ -14,6 +14,7 @@ export interface ICollectionInfo {
   groupTitle: string;
   startDate: string;
   endDate: string;
+  isTodayVerified: boolean;
 }
 
 export type TVerificationType = 'TEXT' | 'GITHUB' | 'PICTURE' | 'LINK';

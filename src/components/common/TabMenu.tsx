@@ -15,7 +15,7 @@ interface ITabMenu {
 function Tab({ href, text, isActive }: ITab & { isActive: boolean }) {
   return (
     <STab isActive={isActive}>
-      <Link href={href} replace>
+      <Link href={href} replace role="tab">
         {text}
       </Link>
     </STab>

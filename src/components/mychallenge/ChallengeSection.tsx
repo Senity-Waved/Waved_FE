@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import ChallengeItem from '@/components/mychallenge/ChallengeItem';
 import { TMyChallengeInfo, TMyChallengeStatus } from '@/types/myChallenge';
+import mychallengeStatus from '@/constants/mychallengeStatus';
+import EmptyView from '../common/EmptyView';
 
 interface IChallengeSection {
-  mainText: '🧑🏻‍💻 진행 중' | '📚 대기 중' | '🥳 진행 완료';
   status: TMyChallengeStatus;
   challenges: TMyChallengeInfo[];
   setData?: React.Dispatch<React.SetStateAction<TMyChallengeInfo[]>>;
@@ -11,25 +12,30 @@ interface IChallengeSection {
 
 export default function ChallengeSection({
   status,
-  mainText,
   challenges,
   setData,
 }: IChallengeSection) {
   return (
     <SWrapper id={status}>
       <div>
-        <SStatus>{mainText}</SStatus>
+        <SStatusTitle status={status}>
+          {mychallengeStatus[status].title}
+        </SStatusTitle>
       </div>
-      <SChallengeList>
-        {challenges.map((challenge) => (
-          <ChallengeItem
-            key={challenge.challengeGroupId}
-            status={status}
-            {...challenge}
-            setData={setData}
-          />
-        ))}
-      </SChallengeList>
+      {challenges.length ? (
+        <SChallengeList>
+          {challenges.map((challenge) => (
+            <ChallengeItem
+              key={challenge.challengeGroupId}
+              status={status}
+              {...challenge}
+              setData={setData}
+            />
+          ))}
+        </SChallengeList>
+      ) : (
+        <EmptyView pageType={status} center={false} />
+      )}
     </SWrapper>
   );
 }
@@ -55,11 +61,25 @@ const SWrapper = styled.section`
   }
 `;
 
-const SStatus = styled.h2`
+const SStatusTitle = styled.h2<{ status: TMyChallengeStatus }>`
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
+  display: flex;
+  align-items: center;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url(${({ status }) => mychallengeStatus[status].icon});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-right: 0.375rem;
+  }
 `;
 
 const SChallengeList = styled.ul`

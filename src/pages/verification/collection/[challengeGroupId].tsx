@@ -12,6 +12,7 @@ import { getCollectionInfoApi } from '@/lib/axios/verification/collection/api';
 import { ICollectionInfo } from '@/types/verification';
 import useSnackBar from '@/hooks/useSnackBar';
 import EmptyView from '@/components/common/EmptyView';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function VeirificationCollection() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function VeirificationCollection() {
     groupTitle: '',
     startDate: '',
     endDate: '',
+    isTodayVerified: false,
   });
 
   const today = new Date().getTime();
@@ -49,19 +51,22 @@ export default function VeirificationCollection() {
     if (myChallengeId) {
       getCollectionInfoApi(myChallengeId)
         .then((data) => {
-          setStampData(data.myVerifs);
+          const daysDiff =
+            Math.abs(calculateDDay(data.startDate, data.endDate)) + 1;
+          const todayDiff = Math.abs(calculateDDay(data.startDate));
+          setStampData(data.myVerifs.slice(0, daysDiff));
           setChallengeData({
             groupTitle: data.groupTitle,
             startDate: data.startDate,
             endDate: data.endDate,
+            isTodayVerified: !!data.myVerifs[todayDiff],
           });
         })
         .catch((error) => {
           const err = error as AxiosError;
-          if (
-            err.response &&
-            err.response.data === '해당 마이 챌린지를 찾을 수 없습니다.'
-          ) {
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 404 && statusText === 'Not Found') {
             router
               .push(`/404`)
               .catch((er) => console.error('404페이지로 이동 실패', er));
@@ -118,12 +123,12 @@ export default function VeirificationCollection() {
       noFooter
     >
       <SStampWrapper>
-        <STitle>📌 내 인증 현황 </STitle>
+        <STitle>내 인증 현황 </STitle>
         <Stamp results={stampData} startDate={challengeData.startDate} />
       </SStampWrapper>
       {verificationType === 'GITHUB' ? (
         <SGithubWrapper>
-          <EmptyView pageType="커밋인증" />
+          <EmptyView pageType="커밋인증" center={false} size="medium" />
           <SGithubCautionList>
             <h3>주의사항</h3>
             <SGithubCautionItem>
@@ -147,6 +152,7 @@ export default function VeirificationCollection() {
               direction="prev"
               onClick={getPreviousDay}
               disabled={isStartday}
+              aria-label="이전날짜 버튼"
             />
             <SDate>
               {year}. {month}. {day}
@@ -155,14 +161,21 @@ export default function VeirificationCollection() {
               direction="next"
               onClick={getNextDay}
               disabled={isToday || isEndday}
+              aria-label="다음날짜 버튼"
             />
           </SDateWrapper>
-          <VerificationList
-            verificationType={verificationType}
-            challengeGroupId={challengeGroupId}
-            date={`${year}-${month}-${day}`}
-            isToday={isToday}
-          />
+          {isToday &&
+          verificationType === 'TEXT' &&
+          !challengeData.isTodayVerified ? (
+            <EmptyView pageType="기술면접인증" center={false} size="small" />
+          ) : (
+            <VerificationList
+              verificationType={verificationType}
+              challengeGroupId={challengeGroupId}
+              date={`${year}-${month}-${day}`}
+              isToday={isToday}
+            />
+          )}
         </>
       )}
       {snackBarData.open && (
@@ -181,6 +194,20 @@ const STitle = styled.h2`
   line-height: 1.4;
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
   color: ${({ theme }) => theme.color.gray_3c};
+  display: flex;
+  align-items: center;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('/icons/icon-verification-collection.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-right: 0.375rem;
+  }
 `;
 
 const SDateWrapper = styled.div`
@@ -210,7 +237,7 @@ const SDateBtn = styled.button<{ direction: 'prev' | 'next' }>`
 `;
 
 const SGithubWrapper = styled.div`
-  padding: 0 2rem;
+  padding: 0 1.25rem;
 `;
 
 const SGithubCautionList = styled.ul`

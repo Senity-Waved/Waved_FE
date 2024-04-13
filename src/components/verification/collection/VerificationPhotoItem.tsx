@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { AxiosError } from 'axios';
 import { SModalWrapper } from '@/components/modal/Modal';
 import Portal from '@/components/modal/ModalPortal';
 import {
@@ -16,6 +17,7 @@ import {
   getLikeCountApi,
   postLikeApi,
 } from '@/lib/axios/verification/collection/api';
+import useSnackBar from '@/hooks/useSnackBar';
 
 interface IPhotoItem extends IVerificationInfo {
   isMine: boolean;
@@ -33,6 +35,13 @@ export default function VerificationPhotoItem({
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+  const { openSnackBar } = useSnackBar();
+
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.target === event.currentTarget) {
+      closeModal();
+    }
+  };
 
   const toggleLike = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -45,10 +54,17 @@ export default function VerificationPhotoItem({
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 404 && statusText === 'Not Found') {
+            openSnackBar('해당 인증 내역에 좋아요를 누르지 않았습니다.');
+          }
+        });
     } else {
       postLikeApi(verificationId)
         .then(() => {
@@ -58,35 +74,52 @@ export default function VerificationPhotoItem({
               setLikeCountNum(data.likedCount);
             })
             .catch((error) => {
-              console.error('getLikeCount API 실패', error);
+              console.error(error);
             });
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          const err = error as AxiosError;
+          const status = err.response?.status;
+          const statusText = err.response?.statusText;
+          if (status === 403 && statusText === 'Forbidden') {
+            openSnackBar('이미 좋아요를 누른 인증 내역 입니다.');
+          }
+        });
     }
   };
+
+  useEffect(() => {
+    setIsLiked(liked);
+    setLikeCountNum(likesCount);
+  }, [liked, likesCount]);
 
   return (
     <>
       <SVerificationWrapper onClick={openModal}>
-        <SImgae
+        <Image
           src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
           alt="챌린지 인증 이미지"
           fill
           sizes="100%"
+          style={{ objectFit: 'cover' }}
           priority
         />
         <SShadow />
         {isMine && <SMinePhotoLabel>내 인증</SMinePhotoLabel>}
         <SLikeWrapperWhite>
-          <SLikeBtnWhite isLiked={isLiked} onClick={toggleLike} />
+          <SLikeBtnWhite
+            aria-label="좋아요 버튼"
+            isLiked={isLiked}
+            onClick={toggleLike}
+          />
           <SLikeCountWhite>{likeCountNum}</SLikeCountWhite>
         </SLikeWrapperWhite>
       </SVerificationWrapper>
       {isModalOpen && (
         <Portal>
-          <SModalWrapper>
+          <SModalWrapper onClick={handleBackgroundClick}>
             <SPhotoModal>
-              <SImgae
+              <SImage
                 src={`${imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
                 alt="챌린지 인증 이미지"
                 fill
@@ -121,18 +154,20 @@ const SShadow = styled.div`
 
 const SPhotoModal = styled.div`
   border-radius: 8px;
+  width: 100%;
   min-width: ${screenSize.min - 64}px;
   max-width: ${screenSize.max - 64}px;
-  aspect-ratio: 1/1;
+  aspect-ratio: 9/16;
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   margin: 0 2rem;
+  background-color: ${({ theme }) => theme.color.gray_52};
 `;
 
-const SImgae = styled(Image)`
-  object-fit: cover;
+const SImage = styled(Image)`
+  object-fit: contain;
   object-position: center;
 `;
 

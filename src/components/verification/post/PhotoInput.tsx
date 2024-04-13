@@ -28,7 +28,11 @@ export default function PhotoInput({ setFile }: IPhotoInput) {
       {photoPreview ? (
         <>
           <SPhotoPreview src={photoPreview} alt="첨부 사진 미리보기" fill />
-          <SPhotoDeleteBtn type="button" onClick={deletePhoto}>
+          <SPhotoDeleteBtn
+            type="button"
+            aria-label="인증 사진 삭제"
+            onClick={deletePhoto}
+          >
             <Image
               src="/icons/icon-photo-delete.svg"
               alt="첨부 사진 삭제 버튼 이미지"
