@@ -27,7 +27,8 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollPosition = window.scrollY + window.innerHeight / 1.5;
+      const currentScrollPosition =
+        window.scrollY + window.innerHeight / (positionTop ? 2.1 : 2.3);
       let activeTabId = activeTab;
 
       tabs.forEach((tab, index) => {
@@ -80,7 +81,7 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [tabs, activeTab]);
+  }, [tabs, activeTab, positionTop]);
 
   return (
     <STabMenu positionTop={positionTop}>
