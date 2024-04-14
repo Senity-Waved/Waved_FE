@@ -83,14 +83,14 @@ const SProgressBar = styled.div<{ dealt: number }>`
     width: 14px;
     height: 18px;
     background-image: ${({ dealt }) =>
-      dealt >= 80
+      dealt >= 70
         ? 'url(/icons/icon-pointer-blue.svg)'
         : 'url(/icons/icon-pointer-gray.svg)'};
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
     top: 0;
-    right: 20%;
+    right: 30%;
     transform: translate(50%, -100%);
   }
 `;
