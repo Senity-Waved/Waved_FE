@@ -6,6 +6,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
+        <meta property="og:image" content="/app-assets/og-image.png" />
         <meta name="theme-color" content={color.WHITE} />
         <meta name="msapplication-TileColor" content={color.NORMAL} />
         <meta
