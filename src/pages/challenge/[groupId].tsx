@@ -177,7 +177,7 @@ export default function Challenge({
           <VeirificationExample title={challengeInfo.groupTitle} />
         </SSection>
         <SLinkItem
-          href="https://waved-challenge.notion.site/bd9580432ee8470da26234db32ec15d7"
+          href="https://waved-likelion.notion.site/bd9580432ee8470da26234db32ec15d7"
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -190,7 +190,7 @@ export default function Challenge({
           />
         </SLinkItem>
         <SLinkItem
-          href="https://waved-challenge.notion.site/cbc09e0792fe470da7da980034534919"
+          href="https://waved-likelion.notion.site/cbc09e0792fe470da7da980034534919"
           target="_blank"
           rel="noreferrer noopener"
         >

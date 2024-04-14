@@ -108,7 +108,7 @@ export default function OnBoarding() {
         <SServiceRegisterText>
           계정 생성 시 WAVED의&nbsp;
           <SServicePolicyLink
-            href="https://waved-challenge.notion.site/10970657567d47128df672d68aa4d16a"
+            href="https://waved-likelion.notion.site/10970657567d47128df672d68aa4d16a"
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -116,7 +116,7 @@ export default function OnBoarding() {
           </SServicePolicyLink>
           &nbsp;및 &nbsp;
           <SServicePolicyLink
-            href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+            href="https://waved-likelion.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
             target="_blank"
             rel="noreferrer noopener"
           >

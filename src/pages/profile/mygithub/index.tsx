@@ -139,7 +139,7 @@ export default function MyGithub() {
           <SGithubGuideLink
             target="_blank"
             rel="noreferrer noopener"
-            href="https://waved-challenge.notion.site/GitHub-d6e9b94f8193411f83bd701f5b749d0c"
+            href="https://waved-likelion.notion.site/GitHub-d6e9b94f8193411f83bd701f5b749d0c"
           >
             <span>토큰 가져오는 방법</span>
           </SGithubGuideLink>

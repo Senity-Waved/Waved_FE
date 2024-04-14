@@ -299,7 +299,7 @@ export default function Profile({
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
-                href="https://waved-challenge.notion.site/WAVED-ddc88b3e696447a09816a19e48ff1dcc?pvs=4"
+                href="https://waved-likelion.notion.site/WAVED-ddc88b3e696447a09816a19e48ff1dcc?pvs=4"
               >
                 <p>서비스 이용 가이드</p>
                 <Image
@@ -315,7 +315,7 @@ export default function Profile({
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
-                href="https://waved-challenge.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
+                href="https://waved-likelion.notion.site/0c37aaa907014e1fbbe3d62cf9a7690e"
               >
                 <p>약관 및 정책</p>
                 <Image
@@ -331,7 +331,7 @@ export default function Profile({
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
-                href="https://waved-challenge.notion.site/FAQ-d61402baa16047caa19b90588caab233"
+                href="https://waved-likelion.notion.site/FAQ-d61402baa16047caa19b90588caab233"
               >
                 <p>자주 묻는 질문</p>
                 <Image
