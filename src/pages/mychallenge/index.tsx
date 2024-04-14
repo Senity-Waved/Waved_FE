@@ -16,7 +16,7 @@ import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 import EmptyView from '@/components/common/EmptyView';
-import MychallengeHeader from '@/components/mychallenge/MychallengeHeader';
+import MyChallengeHeader from '@/components/mychallenge/MyChallengeHeader';
 import Footer from '@/components/common/Footer';
 
 interface IMyChallenges {
@@ -150,7 +150,7 @@ export default function MyChallenge({
 
   return (
     <SLayoutWrapper>
-      <MychallengeHeader />
+      <MyChallengeHeader />
       <main>
         {isEmptyData === 0 ? (
           <SEmptyWrapper>
