@@ -103,7 +103,7 @@ export default function Challenge({
       <main>
         <SThumbnail id="information">
           <Image
-            alt={`${groupId}의 대표 이미지`}
+            alt={`${challengeInfo.groupTitle}의 대표 이미지`}
             src={`${challengeInfo.imageUrl}${process.env.NEXT_PUBLIC_IMAGE_TOKEN}`}
             fill
             sizes={`${screenSize.max}px`}

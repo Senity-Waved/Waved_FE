@@ -130,7 +130,7 @@ const SSlides = styled.div`
 
 const SLink = styled(Link)`
   position: absolute;
-  top: 120px;
+  top: 126px;
   left: 50%;
   transform: translateX(-50%);
   display: inline-block;
