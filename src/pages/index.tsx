@@ -77,7 +77,7 @@ export default function OnBoarding() {
           <SPreviewImage>
             <Image
               src="/images/image-waved-preview3.png"
-              alt="인증 80% 이상 달성 시 전액 환급을 받을 수 있어요. 결심을 달성하기 위해 WAVED와 함께 도전해보세요!"
+              alt="인증 70% 이상 달성 시 전액 환급을 받을 수 있어요. 결심을 달성하기 위해 WAVED와 함께 도전해보세요!"
               width={390}
               height={518}
               priority
