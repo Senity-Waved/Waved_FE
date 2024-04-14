@@ -75,6 +75,9 @@ export default function TabMenu({ tabs, positionTop = 0 }: ITabMenu) {
           }
         }
       });
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        activeTabId = `#${tabs[tabs.length - 1].href.slice(1)}`;
+      }
       setActiveTab(activeTabId);
     };
     window.addEventListener('scroll', handleScroll);
