@@ -18,7 +18,8 @@ export default function RecruitingChallengeCard({
   isFree,
 }: IRecruitingChallenge) {
   const caculateRecruitDDay = (date: string) => {
-    const dDay = calculateDDay(date) - 1;
+    let dDay = -1;
+    dDay = calculateDDay(date) - 1;
     let dDayStr;
     if (dDay < 0) {
       dDayStr = '모집 마감';
