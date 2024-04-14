@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { SHeaderCenter, SHeaderWrapper } from '@/components/common/Header';
 
-export default function MychallengeHeader() {
+export default function MyChallengeHeader() {
   return (
     <>
       <Head>
