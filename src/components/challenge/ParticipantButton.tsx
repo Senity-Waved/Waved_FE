@@ -2,6 +2,7 @@ import { getCookie } from 'cookies-next';
 import { useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import BottomFixedBtn, { IBtn } from '@/components/common/BottomFixedBtn';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
@@ -64,8 +65,14 @@ export default function ParticipantButton({
         setCanCancelParticpant(false);
         openSnackBar('챌린지 신청이 취소되었습니다', 'correct');
       }
-    } catch (deleteError) {
-      openSnackBar('잠시 후 다시 시도해주세요', 'warning');
+    } catch (error) {
+      const err = error as AxiosError;
+      const statusText = err.response?.statusText;
+      if (statusText === 'NOT_FOUND') {
+        openSnackBar('해당 마이 챌린지를 찾을 수 없습니다.', 'warning');
+      } else {
+        openSnackBar('잠시 후 다시 시도해주세요', 'warning');
+      }
     }
   };
 
