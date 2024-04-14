@@ -28,7 +28,7 @@ const bannerItems: IBannerItem[] = [
   {
     image: {
       src: '/images/image-waved-banner2.png',
-      alt: '챌린지 달성률 80% 이상이면 예치금을 환급받을 수 있어요!',
+      alt: '챌린지 달성률 70% 이상이면 예치금을 환급받을 수 있어요!',
     },
   },
   {
