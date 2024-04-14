@@ -9,7 +9,8 @@ interface IStamp {
 }
 
 export default function Stamp({ results, startDate }: IStamp) {
-  const diff = Math.abs(calculateDDay(startDate));
+  let diff = 1;
+  diff = Math.abs(calculateDDay(startDate));
   const resultStamps = results.map((value, index) => {
     if (index <= diff - 1 && value === 0) {
       return 1;
