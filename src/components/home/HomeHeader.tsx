@@ -31,12 +31,10 @@ export default function HomeHeader({ updateKey }: { updateKey: boolean }) {
         <SLogo>
           <h1 className="a11yHidden">WAVED</h1>
           <Image
+            src="/icons/icon-waved.svg"
             alt="WAVED 로고"
-            src="/icons/icon-waved-title.svg"
             width={90}
             height={20}
-            style={{ verticalAlign: 'top' }}
-            quality={100}
           />
         </SLogo>
         {isLogined && <Notification updateKey={updateKey} />}
@@ -51,5 +49,7 @@ const SHeader = styled(SHeaderWrapper)`
 `;
 
 const SLogo = styled.div`
+  display: flex;
+  align-items: center;
   height: 20px;
 `;
