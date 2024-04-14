@@ -309,7 +309,7 @@ export const SSection = styled.section`
   position: relative;
   padding: 1.5rem 0;
   color: ${({ theme }) => theme.color.gray_3c};
-  scroll-margin-top: 182px;
+  scroll-margin-top: 192px;
   &:last-of-type {
     padding-bottom: 1.5rem;
   }
