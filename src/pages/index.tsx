@@ -68,7 +68,7 @@ export default function OnBoarding() {
           <SPreviewImage>
             <Image
               src="/images/image-waved-preview2.png"
-              alt="목표에 돈을 걸어서 목표를 달성해보세요. 목표를 세우고 잘 못 지키는 일이 있었나요? WAVED와 함께라면 달성할 수 있어요!"
+              alt="챌린지에 예치금을 걸어 목표를 달성해보세요. WAVED와 함께라면 달성할 수 있어요!"
               width={390}
               height={518}
               priority
@@ -77,7 +77,7 @@ export default function OnBoarding() {
           <SPreviewImage>
             <Image
               src="/images/image-waved-preview3.png"
-              alt="인증을 100% 달성하면 전액 환급을 받을 수 있어요. 결심을 달성하기 위해 WAVED와 함께 도전해보세요!"
+              alt="인증 80% 이상 달성 시 전액 환급을 받을 수 있어요. 결심을 달성하기 위해 WAVED와 함께 도전해보세요!"
               width={390}
               height={518}
               priority
@@ -151,7 +151,7 @@ const SOnBoardingWrapper = styled(SLayoutWrapper)`
 `;
 
 const SPreviewImage = styled.div`
-  height: 468px;
+  height: 462px;
   position: relative;
   top: 30%;
   left: 48%;
@@ -197,6 +197,7 @@ const SServiceRegisterText = styled.p`
   line-height: 1.4;
   margin: 0 auto;
   text-align: center;
+  margin-bottom: 0.25rem;
 `;
 
 const SServicePolicyLink = styled(Link)`
