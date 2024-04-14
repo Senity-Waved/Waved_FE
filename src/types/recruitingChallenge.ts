@@ -9,6 +9,10 @@ interface IRecruitingChallenge {
   participantCount: number;
   startDate: string;
   endDate: string;
+  dateDiff: {
+    startToToday: number;
+    startToEnd: number;
+  };
 }
 
 export default IRecruitingChallenge;
