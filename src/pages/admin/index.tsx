@@ -97,7 +97,9 @@ export default function AdminPage() {
             selectedGroupId,
             selectedVerificationId,
           );
-          console.log('인증 취소 성공 | ', response.data);
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('인증 취소 성공 | ', response.data);
+          }
           // eslint-disable-next-line no-alert
           alert('인증 취소 성공');
 

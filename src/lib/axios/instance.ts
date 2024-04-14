@@ -22,7 +22,9 @@ const onRequest = (
   config: InternalAxiosRequestConfig,
 ): InternalAxiosRequestConfig => {
   const { method, url } = config;
-  console.log(`🛫 [API - REQUEST] ${method?.toUpperCase()} ${url}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`🛫 [API - REQUEST] ${method?.toUpperCase()} ${url}`);
+  }
 
   const accessToken = getCookie('accessToken');
 
@@ -36,10 +38,12 @@ const onRequest = (
 
 const onResponse = (res: AxiosResponse): AxiosResponse => {
   const { method, url } = res.config;
-  console.log(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data.message ? res.data.message : res.data}`,
-  );
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data.message ? res.data.message : res.data}`,
+    );
+  }
   return res;
 };
 

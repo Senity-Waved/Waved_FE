@@ -29,7 +29,9 @@ const onRequest = (
   config: InternalAxiosRequestConfig,
 ): InternalAxiosRequestConfig => {
   const { method, url } = config;
-  console.log(`🛫 [API - REQUEST] ${method?.toUpperCase()} ${url}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`🛫 [API - REQUEST] ${method?.toUpperCase()} ${url}`);
+  }
 
   const accessToken = getCookie('accessToken');
 
@@ -43,9 +45,11 @@ const onRequest = (
 
 const onResponse = (res: AxiosResponse): AxiosResponse => {
   const { method, url } = res.config;
-  console.log(
-    `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data}`,
-  );
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(
+      `🛫 [API - RESPONSE] ${method?.toUpperCase()} ${url} | ${res.data}`,
+    );
+  }
   return res;
 };
 
@@ -74,8 +78,9 @@ const onResponseError = async (error: AxiosError) => {
 
       // eslint-disable-next-line no-param-reassign
       error.config.headers.Authorization = `Bearer ${data.accessToken}`;
-
-      console.log(data.message);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(data.message);
+      }
       return await adminInstance(error.config);
     } catch (reissueError) {
       console.error('액세스 토큰 재발급 실패', reissueError);
