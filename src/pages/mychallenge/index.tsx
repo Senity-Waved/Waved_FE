@@ -8,7 +8,7 @@ import { getCookie } from 'cookies-next';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
 import ISnackBarState from '@/types/snackbar';
 import { TMyChallengeInfo } from '@/types/myChallenge';
-import Layout from '@/components/common/Layout';
+import { SLayoutWrapper } from '@/components/common/Layout';
 import TabMenu from '@/components/common/TabMenu';
 import ChallengeSection from '@/components/mychallenge/ChallengeSection';
 import SnackBar from '@/components/common/SnackBar';
@@ -16,6 +16,8 @@ import Modal from '@/components/modal/Modal';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 import EmptyView from '@/components/common/EmptyView';
+import MychallengeHeader from '@/components/mychallenge/MychallengeHeader';
+import Footer from '@/components/common/Footer';
 
 interface IMyChallenges {
   getMyProgressChallenges?: TMyChallengeInfo[];
@@ -147,50 +149,50 @@ export default function MyChallenge({
   }, [isLogined, router]);
 
   return (
-    <Layout
-      headerText="마이챌린지"
-      title="마이챌린지"
-      description="나의 챌린지 내역을 확인해보세요."
-    >
-      {isEmptyData === 0 ? (
-        <SEmptyWrapper>
-          <EmptyView pageType="마이챌린지" center={false} />
-          <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
-        </SEmptyWrapper>
-      ) : (
-        <>
-          <TabMenu
-            tabs={[
-              { href: '#PROGRESS', text: '진행 중' },
-              { href: '#WAITING', text: '대기 중' },
-              { href: '#COMPLETED', text: '진행 완료' },
-            ]}
-          />
-          <div>
-            <ChallengeSection
-              status="PROGRESS"
-              challenges={getMyProgressChallenges || []}
-            />
-            <ChallengeSection
-              status="WAITING"
-              challenges={getMyWaitingChallenges || []}
-            />
-            <ChallengeSection
-              status="COMPLETED"
-              challenges={completedData}
-              setData={setCompletedData}
-            />
-          </div>
-          {progressDataLength + waitingDataLength === 0 && (
+    <SLayoutWrapper>
+      <MychallengeHeader />
+      <main>
+        {isEmptyData === 0 ? (
+          <SEmptyWrapper>
+            <EmptyView pageType="마이챌린지" center={false} />
             <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
-          )}
-        </>
-      )}
-      {snackBarState.open && (
-        <SnackBar text={snackBarState.text} type={snackBarState.type} />
-      )}
-      <Modal />
-    </Layout>
+          </SEmptyWrapper>
+        ) : (
+          <>
+            <TabMenu
+              tabs={[
+                { href: '#PROGRESS', text: '진행 중' },
+                { href: '#WAITING', text: '대기 중' },
+                { href: '#COMPLETED', text: '진행 완료' },
+              ]}
+            />
+            <div>
+              <ChallengeSection
+                status="PROGRESS"
+                challenges={getMyProgressChallenges || []}
+              />
+              <ChallengeSection
+                status="WAITING"
+                challenges={getMyWaitingChallenges || []}
+              />
+              <ChallengeSection
+                status="COMPLETED"
+                challenges={completedData}
+                setData={setCompletedData}
+              />
+            </div>
+            {progressDataLength + waitingDataLength === 0 && (
+              <SLinkToHome href="/home">챌린지 둘러보기</SLinkToHome>
+            )}
+          </>
+        )}
+        {snackBarState.open && (
+          <SnackBar text={snackBarState.text} type={snackBarState.type} />
+        )}
+        <Modal />
+      </main>
+      <Footer />
+    </SLayoutWrapper>
   );
 }
 
