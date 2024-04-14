@@ -26,6 +26,12 @@ export default function OnBoarding() {
     ): void => {
       setSnackBarState({ open: true, text: snackBarText, type: snackBarType });
       router.replace('/', undefined, { shallow: true }).catch(console.error);
+      setTimeout(() => {
+        setSnackBarState({
+          open: false,
+          text: '',
+        });
+      }, 3500);
     };
 
     if (query.logout) {
@@ -197,7 +203,7 @@ const SServiceRegisterText = styled.p`
   line-height: 1.4;
   margin: 0 auto;
   text-align: center;
-  margin-bottom: 0.25rem;
+  margin-bottom: 2.5rem;
 `;
 
 const SServicePolicyLink = styled(Link)`
