@@ -1,16 +1,20 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
 import screenSize from '@/constants/screenSize';
 
 interface IBannerItem {
   image: {
     src: string;
     alt: string;
+  };
+  link?: {
+    href: string;
+    text: string;
   };
 }
 
@@ -31,6 +35,16 @@ const bannerItems: IBannerItem[] = [
     image: {
       src: '/images/image-waved-banner3.png',
       alt: '내가 원하는 챌린지가 없다면 문의하기를 통해 챌린지 개설을 요청할 수 있어요!',
+    },
+  },
+  {
+    image: {
+      src: '/images/image-waved-banner4.png',
+      alt: '서비스 이용 가이드 확인!',
+    },
+    link: {
+      href: 'https://waved-likelion.notion.site/WAVED-ddc88b3e696447a09816a19e48ff1dcc',
+      text: '지금 보러가기',
     },
   },
 ];
@@ -68,6 +82,25 @@ export default function TopBanner() {
               style={{ objectFit: 'cover' }}
               priority
             />
+            {item.link && (
+              <SLink
+                target={
+                  item.link.href ===
+                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
+                    ? '_blank'
+                    : undefined
+                }
+                rel={
+                  item.link.href ===
+                  'https://waved-challenge.notion.site/WAVED-0aefef71e80e429492ad7304ac697263'
+                    ? 'noreferrer noopener'
+                    : undefined
+                }
+                href={item.link.href}
+              >
+                {item.link.text}
+              </SLink>
+            )}
           </SSlides>
         ))}
       </SSlider>
@@ -93,6 +126,21 @@ const SSlides = styled.div`
   position: relative;
   width: 100%;
   height: 230px;
+`;
+
+const SLink = styled(Link)`
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  padding: 0 0.625rem;
+  background-color: ${({ theme }) => theme.color.white};
+  border-radius: 0.375rem;
+  line-height: 32px;
+  color: ${({ theme }) => theme.color.gray_3c};
+  font-size: ${({ theme }) => theme.fontSize.body3};
+  font-weight: ${({ theme }) => theme.fontWeight.body3};
 `;
 
 const SIndicators = styled.ul`
