@@ -32,7 +32,8 @@ export default function DepositItem({ depositData }: IDepositItem) {
       </div>
       <SDepositHistory>
         {(depositData.status === 'CANCELED' ||
-          depositData.status === 'FAIL') && <span>+</span>}
+          depositData.status === 'FAIL' ||
+          depositData.status === 'SUCCESS') && <span>+</span>}
         {depositData.status === 'APPLIED' && depositData.deposit === 0 && (
           <span>-</span>
         )}
