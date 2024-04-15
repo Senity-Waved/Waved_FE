@@ -13,8 +13,10 @@ import { ICollectionInfo } from '@/types/verification';
 import useSnackBar from '@/hooks/useSnackBar';
 import EmptyView from '@/components/common/EmptyView';
 import calculateDDay from '@/utils/calculateDDay';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function VeirificationCollection() {
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const { query } = useRouter();
   const challengeGroupId = router.query.challengeGroupId as string;
@@ -61,6 +63,7 @@ export default function VeirificationCollection() {
             endDate: data.endDate,
             isTodayVerified: !!data.myVerifs[todayDiff],
           });
+          setLoading(false);
         })
         .catch((error) => {
           const err = error as AxiosError;
@@ -115,7 +118,9 @@ export default function VeirificationCollection() {
     openSnackBar,
   ]);
 
-  return (
+  return loading ? (
+    <LoadingSpinner />
+  ) : (
     <Layout
       headerText={challengeData.groupTitle}
       title={`인증내역-${challengeData.groupTitle}`}
