@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import RecruitingChallengeCard from '@/components/home/RecruitingChallengeCard';
 import EmptyView from '@/components/common/EmptyView';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function RecruitingChallenge({
   recruitingChallenges,
@@ -10,7 +11,7 @@ export default function RecruitingChallenge({
 }) {
   const filteredChallenges =
     recruitingChallenges?.filter(
-      (challenge) => challenge.dateDiff.startToToday > 0,
+      (challenge) => calculateDDay(challenge.startDate) > 0,
     ) || [];
 
   return (
