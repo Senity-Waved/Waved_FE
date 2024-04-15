@@ -158,7 +158,7 @@ export default function ChallengeBtn({
     case 'WAITING':
       return (
         <SBtnWrapper>
-          <SBtn styleType="gray">
+          <SBtn styleType="gray" suppressHydrationWarning>
             챌린지 시작하기까지 D-{Math.abs(calculateDDay(startDate))}
           </SBtn>
         </SBtnWrapper>
