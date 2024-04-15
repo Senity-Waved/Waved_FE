@@ -76,7 +76,7 @@ const SChallengeStatus = styled.p<{ challengeStatus: TDepositStatusKey }>`
         ? theme.color.gray_83
         : challengeStatus === 'FAIL'
           ? theme.color.error
-          : theme.color.posotive};
+          : theme.color.positive};
   background-color: ${({ challengeStatus, theme }) =>
     challengeStatus === 'APPLIED'
       ? theme.color.light
