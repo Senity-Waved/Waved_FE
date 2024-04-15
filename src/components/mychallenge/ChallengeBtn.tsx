@@ -80,10 +80,7 @@ export default function ChallengeBtn({
               onClick: () => {
                 router
                   .push({
-                    pathname: `/mychallenge/review`,
-                    query: {
-                      challengeId: challengeGroupId,
-                    },
+                    pathname: `/mychallenge/review/${myChallengeId}`,
                   })
                   .catch((error) => {
                     console.error('페이지 이동에 실패하였습니다.', error);
