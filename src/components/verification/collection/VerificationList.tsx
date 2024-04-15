@@ -55,7 +55,6 @@ export default function VerificationList({
       setMyVerificationData(myVeriData);
     } catch (MyVeriError) {
       setMyVerificationData([]);
-      console.error('날짜별 내 인증내역 불러오기 실패');
     }
     // 전체 인증내역 GET
     try {
