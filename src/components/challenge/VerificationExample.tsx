@@ -15,9 +15,13 @@ export default function VeirificationExample({ title }: { title: string }) {
   const closeModal = () => setSelectedImageIndex(-1);
 
   const challengeTitle = parseChallengeTitle(title);
-  const examplePaths = (VERIFICATION_EXAMPLE[challengeTitle] || []).map((url) =>
-    decodeURIComponent(url),
-  );
+  const examplePaths = VERIFICATION_EXAMPLE[challengeTitle] || [];
+
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.target === event.currentTarget) {
+      closeModal();
+    }
+  };
 
   return (
     examplePaths.length > 0 && (
@@ -38,7 +42,7 @@ export default function VeirificationExample({ title }: { title: string }) {
                 </SButton>
                 {selectedImageIndex === index && (
                   <Portal>
-                    <SModalWrapper>
+                    <SModalWrapper onClick={handleBackgroundClick}>
                       <SPhotoModal>
                         <SModalImage
                           src={url}
