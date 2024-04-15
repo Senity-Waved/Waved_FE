@@ -37,7 +37,7 @@ export default function EmptyView({
         alt="데이터가 없을때 나오는 Empty view 화면 일러스트"
         width={size === 'large' ? 247 : 207}
         // eslint-disable-next-line no-nested-ternary
-        height={size === 'large' ? 247 : size === 'medium' ? 207 : 167}
+        height={size === 'large' ? 247 : size === 'medium' ? 207 : 164}
         style={{ objectFit: 'contain' }}
         priority
         quality={100}
@@ -67,12 +67,12 @@ const SEmptyWrapper = styled.div<IEmptyView>`
 const SEmptyMainText = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.headline2};
   font-weight: ${({ theme }) => theme.fontWeight.headline2};
-  color: ${({ theme }) => theme.color.gray_3c};
+  color: ${({ theme }) => theme.color.gray_52};
   margin-top: 0.5rem;
 `;
 
 const SEmptySubText = styled.p`
   font-size: ${({ theme }) => theme.fontSize.body4};
   font-weight: ${({ theme }) => theme.fontWeight.body4};
-  color: ${({ theme }) => theme.color.gray_52};
+  color: ${({ theme }) => theme.color.gray_70};
 `;
