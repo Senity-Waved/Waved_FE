@@ -40,13 +40,11 @@ export default function ChallengeProgress({
         </li>
         <li>
           <SResult>인증 실패</SResult>
-          <SCount suppressHydrationWarning>{failCount}회</SCount>
+          <SCount>{failCount}회</SCount>
         </li>
         <li>
           <SResult>남은 인증</SResult>
-          <SCount suppressHydrationWarning>
-            {daysDiff - failCount - successCount}회
-          </SCount>
+          <SCount>{daysDiff - failCount - successCount}회</SCount>
         </li>
       </SCountList>
     </SWrapper>
