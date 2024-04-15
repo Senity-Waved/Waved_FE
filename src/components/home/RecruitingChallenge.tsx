@@ -8,12 +8,17 @@ export default function RecruitingChallenge({
 }: {
   recruitingChallenges: IRecruitingChallenge[] | null;
 }) {
+  const filteredChallenges =
+    recruitingChallenges?.filter(
+      (challenge) => challenge.dateDiff.startToToday > 0,
+    ) || [];
+
   return (
     <SSection>
       <STitle>모집 중인 챌린지</STitle>
-      {recruitingChallenges && recruitingChallenges.length > 0 ? (
+      {filteredChallenges.length > 0 ? (
         <SList>
-          {recruitingChallenges.map((challenge) => (
+          {filteredChallenges.map((challenge) => (
             <RecruitingChallengeCard
               key={challenge.challengeGroupId}
               {...challenge}

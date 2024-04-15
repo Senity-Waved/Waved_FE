@@ -1,7 +1,7 @@
 const emptyViewType = {
   모집챌린지: {
     mainText: '현재 모집중인 챌린지가 없어요.',
-    subText: '다음 챌린지가 모집될 때까지 잠시만 기다려주세요!',
+    subText: '다음 챌린지를 모집할 때까지 잠시만 기다려주세요!',
     imagePath: '/images/image-emptyview-challenge.png',
   },
   마이챌린지: {
