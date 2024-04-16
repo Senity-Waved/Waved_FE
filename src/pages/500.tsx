@@ -9,10 +9,6 @@ export default function Custom500() {
       <Head>
         <title>WAVED | 500 에러</title>
         <meta name="description" content="서버에 문제가 발생했습니다." />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>

@@ -40,10 +40,6 @@ export default function Layout({
           name="description"
           content={description || 'Waved 챌린지 서비스입니다.'}
         />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       {noHeader || (

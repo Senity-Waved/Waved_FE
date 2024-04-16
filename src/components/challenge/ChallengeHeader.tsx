@@ -33,10 +33,6 @@ export default function ChallengeHeader({
           name="description"
           content={`${groupTitle} 에 대한 상세 정보를 볼 수 있는 페이지입니다.`}
         />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
         <meta property="og:image" content={thumbnail} />
       </Head>
       <SHeaderWrapper>

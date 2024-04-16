@@ -40,10 +40,6 @@ export default function ParticipantSuccess() {
       <Head>
         <title>WAVED | 챌린지 신청</title>
         <meta name="description" content="챌린지 신청 완료" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>

@@ -22,10 +22,6 @@ export default function HomeHeader({ updateKey }: { updateKey: boolean }) {
           name="description"
           content="개발 직군 취준생들을 위한 챌린지 서비스, WAVED입니다."
         />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <SHeader>
         <SLogo>

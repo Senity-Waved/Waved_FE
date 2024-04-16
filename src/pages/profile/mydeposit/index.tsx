@@ -1,13 +1,19 @@
 import styled from '@emotion/styled';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { v4 as uuidv4 } from 'uuid';
 import Layout from '@/components/common/Layout';
 import DepositItem from '@/components/profile/DepositItem';
 import EmptyView from '@/components/common/EmptyView';
 import { getMyDepositApi } from '@/lib/axios/profile/api';
-import { IFetchMoreDepositResponse } from '@/types/deposit';
+import { IFetchMoreDepositResponse, TDepositStatusKey } from '@/types/deposit';
+
+interface IDepositItem {
+  groupTitle: string;
+  status: TDepositStatusKey;
+  createDate: string;
+  deposit: number;
+}
 
 const fetchMoreDeposit = async ({
   pageParam = 0,
@@ -46,6 +52,24 @@ export default function MyDeposit() {
     if (inView) handleDepositMore();
   }, [handleDepositMore, inView]);
 
+  const filteredData = useMemo(() => {
+    const result: IDepositItem[] = [];
+    let prevItem: IDepositItem | null = null;
+    data?.pages.forEach((page) => {
+      page.content.forEach((item) => {
+        if (
+          !prevItem ||
+          prevItem.groupTitle !== item.groupTitle ||
+          prevItem.status !== item.status
+        ) {
+          result.push(item);
+        }
+        prevItem = item;
+      });
+    });
+    return result;
+  }, [data]);
+
   return (
     <Layout
       noFooter
@@ -59,12 +83,8 @@ export default function MyDeposit() {
           <EmptyView pageType="예치금내역" />
         ) : (
           <ul>
-            {data.pages.map((page) => (
-              <React.Fragment key={uuidv4()}>
-                {page.content.map((deposit) => (
-                  <DepositItem key={deposit.createDate} depositData={deposit} />
-                ))}
-              </React.Fragment>
+            {filteredData.map((deposit) => (
+              <DepositItem key={deposit.createDate} depositData={deposit} />
             ))}
             {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
           </ul>

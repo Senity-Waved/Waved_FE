@@ -18,10 +18,6 @@ export default function ChallengeRequestSuccess() {
       <Head>
         <title>WAVED | 챌린지 요청</title>
         <meta name="description" content="챌린지 요청 완료" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>

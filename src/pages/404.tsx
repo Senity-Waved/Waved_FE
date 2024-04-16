@@ -10,10 +10,6 @@ export default function Custom404() {
       <Head>
         <title>WAVED | 404 에러</title>
         <meta name="description" content="해당 페이지를 찾을 수 없습니다." />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>

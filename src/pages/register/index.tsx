@@ -102,10 +102,6 @@ export default function Register() {
       <Head>
         <title>WAVED | 회원가입</title>
         <meta name="description" content="WAVED의 회원가입 페이지입니다." />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <SHeaderWrapper>

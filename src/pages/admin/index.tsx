@@ -130,10 +130,6 @@ export default function AdminPage() {
       <Head>
         <title>WAVED | 관리자 페이지</title>
         <meta name="description" content="관리자 페이지" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
       </Head>
       <h1 className="a11yHidden">WAVED</h1>
       <main>
