@@ -116,7 +116,7 @@ export default function ParticipantProcess() {
             console.error(error);
           });
       }
-    } else {
+    } else if (errorMsg !== null && errorMsg !== '') {
       router
         .push({
           pathname: '/home',
