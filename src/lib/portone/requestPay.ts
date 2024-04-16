@@ -45,6 +45,15 @@ const requestPay = ({
     amount: deposit,
     ...(nickname ? { buyer_name: nickname } : {}),
     m_redirect_url: `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/challenge/process?mychallenge_id=${myChallengeId}&deposit=${deposit}`,
+    card: {
+      detail: [
+        { card_code: '*', enabled: false },
+        { card_code: '041', enabled: true }, // 우리카드
+        { card_code: '366', enabled: true }, // 신한카드
+        { card_code: '367', enabled: true }, // 현대카드
+        { card_code: '368', enabled: true }, // 롯데카드
+      ],
+    },
   };
 
   const callback = (response: RequestPayResponse) => {
