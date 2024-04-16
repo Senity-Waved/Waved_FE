@@ -141,7 +141,7 @@ export default function MyReview() {
 
 const SMyReviewHeader = styled(SLayoutWrapper)`
   position: relative;
-  margin-bottom: 3rem;
+  margin-bottom: 0;
 `;
 
 const SGoProfileLink = styled(Link)`
