@@ -19,7 +19,6 @@ import getRecruitingChallengeApi from '@/lib/axios/home/api';
 import createServerInstance from '@/lib/axios/serverInstance';
 import serverErrorCatch from '@/lib/axios/serverErrorCatch';
 import { IAuthResponse } from '@/lib/axios/instance';
-import calculateDDay from '@/utils/calculateDDay';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -233,17 +232,10 @@ async function getServerSidePropsFunction(
     return response.data;
   };
   const recruitingChallenges = await fetchRecruitingChallenges();
-  const enhancedChallenges = recruitingChallenges.map((challenge) => ({
-    ...challenge,
-    dateDiff: {
-      startToToday: calculateDDay(challenge.startDate),
-      startToEnd: calculateDDay(challenge.startDate, challenge.endDate),
-    },
-  }));
 
   return {
     props: {
-      recruitingChallenges: enhancedChallenges,
+      recruitingChallenges,
       isLogined,
     },
   };

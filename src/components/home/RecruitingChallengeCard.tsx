@@ -4,6 +4,8 @@ import Link from 'next/link';
 import IRecruitingChallenge from '@/types/recruitingChallenge';
 import VERIFICATION_TYPE from '@/constants/verificationType';
 import screenSize from '@/constants/screenSize';
+import calculatePeriod from '@/utils/calculatePeriod';
+import calculateDDay from '@/utils/calculateDDay';
 
 export default function RecruitingChallengeCard({
   challengeGroupId,
@@ -11,11 +13,12 @@ export default function RecruitingChallengeCard({
   imageUrl,
   verificationType,
   participantCount,
+  startDate,
+  endDate,
   isFree,
-  dateDiff,
 }: IRecruitingChallenge) {
-  const calculateRecruitDDay = (day: number) => {
-    const dDay = day - 1;
+  const calculateRecruitDDay = (date: string) => {
+    const dDay = calculateDDay(date) - 1;
     let dDayStr;
     if (dDay < 0) {
       dDayStr = '모집 마감';
@@ -23,16 +26,6 @@ export default function RecruitingChallengeCard({
       dDayStr = `모집 마감일 D-${dDay === 0 ? 'DAY' : dDay}`;
     }
     return dDayStr;
-  };
-  const calculateProgressePeroid = (day: number) => {
-    const days = Math.abs(day) + 1;
-    let periodStr = '';
-    if (days % 7 === 0) {
-      periodStr = `${days / 7}주`;
-    } else {
-      periodStr = `${days}일`;
-    }
-    return periodStr;
   };
   return (
     <SChallengeCard>
@@ -47,16 +40,14 @@ export default function RecruitingChallengeCard({
             priority
           />
           <SParticipant>{participantCount}</SParticipant>
-          <SRecruitDDay>
-            {calculateRecruitDDay(dateDiff.startToToday)}
-          </SRecruitDDay>
+          <SRecruitDDay>{calculateRecruitDDay(startDate)}</SRecruitDDay>
         </SThumbnail>
         <STitle>{groupTitle}</STitle>
         <SChips>
           <dt className="a11yHidden">챌린지 인증 빈도</dt>
           <dd>매일</dd>
           <dt className="a11yHidden">챌린지 진행 기한</dt>
-          <dd>{calculateProgressePeroid(dateDiff.startToEnd)}</dd>
+          <dd>{calculatePeriod(startDate, endDate)}</dd>
           <dt className="a11yHidden">챌린지 인증 방식</dt>
           <dd>{VERIFICATION_TYPE[verificationType]}</dd>
           {isFree && (
