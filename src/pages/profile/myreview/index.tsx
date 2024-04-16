@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import { useInView } from 'react-intersection-observer';
-import Layout from '@/components/common/Layout';
+import { SHeaderWrapper } from '@/components/common/Header';
+import { SLayoutWrapper } from '@/components/common/Layout';
+import Modal from '@/components/modal/Modal';
 import MyReviewItem from '@/components/profile/myreview/MyReviewItem';
 import SnackBar from '@/components/common/SnackBar';
 import EmptyView from '@/components/common/EmptyView';
 import ISnackBarState from '@/types/snackbar';
 import REVIEW_SNACKBAR_TEXT from '@/constants/reviewSnackBarText';
-import Modal from '@/components/modal/Modal';
 import { getMyReviewsApi } from '@/lib/axios/review/api';
 import { IMyReviewList } from '@/types/review';
 
@@ -93,34 +96,68 @@ export default function MyReview() {
   }, [query, router]);
 
   return (
-    <Layout headerText="나의 후기" title="나의 후기" noFooter>
-      {!data || data.pages[0].totalElements === 0 ? (
-        <SEmptyViewWrapper>
-          <EmptyView pageType="내후기" />
-        </SEmptyViewWrapper>
-      ) : (
-        <ul>
-          {data.pages.map((page) => (
-            <React.Fragment key={uuidv4()}>
-              {page.content.map((review) => (
-                <MyReviewItem key={review.reviewId} {...review} />
-              ))}
-            </React.Fragment>
-          ))}
-          {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
-        </ul>
-      )}
-      {snackBarState.open && (
-        <SnackBar
-          text={snackBarState.text}
-          type={snackBarState.type}
-          noFooter
+    <SMyReviewHeader>
+      <Head>
+        <title>WAVED | 나의 후기</title>
+        <meta
+          name="description"
+          content="내가 작성한 후기를 볼 수 있는 페이지입니다."
         />
-      )}
-      <Modal />
-    </Layout>
+      </Head>
+      <h1 className="a11yHidden">WAVED</h1>
+      <SHeaderWrapper>
+        <SGoProfileLink href="/profile" aria-label="프로필로 이동" />
+        <STitle>나의 후기</STitle>
+      </SHeaderWrapper>
+      <main>
+        {!data || data.pages[0].totalElements === 0 ? (
+          <SEmptyViewWrapper>
+            <EmptyView pageType="내후기" />
+          </SEmptyViewWrapper>
+        ) : (
+          <ul>
+            {data.pages.map((page) => (
+              <React.Fragment key={uuidv4()}>
+                {page.content.map((review) => (
+                  <MyReviewItem key={review.reviewId} {...review} />
+                ))}
+              </React.Fragment>
+            ))}
+            {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
+          </ul>
+        )}
+        {snackBarState.open && (
+          <SnackBar
+            text={snackBarState.text}
+            type={snackBarState.type}
+            noFooter
+          />
+        )}
+        <Modal />
+      </main>
+    </SMyReviewHeader>
   );
 }
+
+const SMyReviewHeader = styled(SLayoutWrapper)`
+  position: relative;
+  margin-bottom: 3rem;
+`;
+
+const SGoProfileLink = styled(Link)`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin: 0 20px;
+  background: url('/icons/icon-left-arrow.svg') no-repeat center;
+`;
+
+const STitle = styled.h2`
+  flex: 1;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSize.headline2};
+  font-weight: ${({ theme }) => theme.fontWeight.headline2};
+`;
 
 const SEmptyViewWrapper = styled.div`
   width: 100%;
