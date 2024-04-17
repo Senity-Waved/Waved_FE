@@ -8,8 +8,8 @@ import axiosInstance from '../../instance';
  * {
  *  myVerifys: [0,1,2]
  *  groupTitle: "백엔드 기술면접 챌린지 2기",
- *  startDate: "2024-03-11T00:00:00+09:00",
- *  endDate: "2024-03-24T00:00:00+09:00"
+ *  startDate: "2024-03-11T00:00:00+00:00",
+ *  endDate: "2024-03-24T00:00:00+00:00"
  * }
  */
 export const getCollectionInfoApi = async (
@@ -36,7 +36,7 @@ export const getMyVerifiactionApi = async (
   date: string, // -> 2024-03-19
 ): Promise<IVerificationInfo[]> => {
   const response = await axiosInstance.get(
-    `/challengeGroups/${groupId}/myVerifies?verificationDate=${date} 09:00:00.000`,
+    `/challengeGroups/${groupId}/myVerifies?verificationDate=${date} 00:00:00.000`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
@@ -53,7 +53,7 @@ export const getVerificationsApi = async (
   date: string, // -> 2024-03-19
 ): Promise<IVerificationInfo[]> => {
   const response = await axiosInstance.get(
-    `/challengeGroups/${groupId}?verificationDate=${date} 09:00:00.0`,
+    `/challengeGroups/${groupId}?verificationDate=${date} 00:00:00.0`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;
@@ -100,7 +100,7 @@ export const deleteLikeApi = (verificationId: number) => {
  * @param date
  * @returns
  * {
- *  date: "2024-03-24T00:00:00+09:00",
+ *  date: "2024-03-24T00:00:00+00:00",
  *  question: "3월 24일 백엔드 퀴즈 문제"
  * }
  */
@@ -109,7 +109,7 @@ export const getQuizApi = async (
   date: string,
 ): Promise<{ date: string; question: string }> => {
   const response = await axiosInstance.get(
-    `/quiz/${groupId}/dates?quizDate=${date} 09:00:00.0`,
+    `/quiz/${groupId}/dates?quizDate=${date} 00:00:00.0`,
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return response.data;

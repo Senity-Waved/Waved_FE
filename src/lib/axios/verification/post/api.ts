@@ -36,7 +36,7 @@ export const postMyCommitVerifiactionApi = (groupId: number) => {
  * @param challengeGroupId
  * @returns
  * {
- *  "date": "2024-03-24T00:00:00+09:00",
+ *  "date": "2024-03-24T00:00:00+00:00",
  *  "question": "3월 24일 백엔드 퀴즈 문제"
  * }
  */
