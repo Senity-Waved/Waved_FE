@@ -12,7 +12,7 @@ import changePriceFormat from '@/utils/changePriceFormat';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 import ISelectedChallenge from '@/types/selectedChallenge';
 import ScrollXBox from '@/components/common/ScrollXBox';
-import { challengeGroupApplyApi } from '@/lib/axios/challengeRequest/api';
+import { challengeGroupApplyApi } from '@/lib/axios/challengeParticiapnt/api';
 import requestPay from '@/lib/portone/requestPay';
 import { getProfileApi } from '@/lib/axios/profile/api';
 import ISnackBarState from '@/types/snackbar';

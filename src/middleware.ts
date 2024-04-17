@@ -7,7 +7,6 @@ export default function middleware(request: NextRequest) {
   const protectedPaths = [
     '/challenge/participant',
     '/mychallenge',
-    '/challenge/request',
     '/verification',
     '/profile/',
     '/register',

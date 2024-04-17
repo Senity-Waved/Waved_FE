@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import {
   IPayments,
   challengePaymentsApi,
-} from '@/lib/axios/challengeRequest/api';
+} from '@/lib/axios/challengeParticiapnt/api';
 import ASelectedChallenge from '@/atoms/selectedChallenge';
 
 export default function ParticipantProcess() {

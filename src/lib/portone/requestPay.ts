@@ -3,7 +3,7 @@ import { RequestPayParams, RequestPayResponse } from '@/types/portone';
 import {
   IPayments,
   challengePaymentsApi,
-} from '@/lib/axios/challengeRequest/api';
+} from '@/lib/axios/challengeParticiapnt/api';
 
 interface IRequestPayArguments {
   deposit: number;
