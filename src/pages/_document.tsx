@@ -6,6 +6,10 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
+        <meta
+          property="og:description"
+          content="챌린지의 파도를 넘어 취업으로! 개발 직군 취준생들을 위한 챌린지 플랫폼 WAVED 입니다"
+        />
         <meta property="og:image" content="/app-assets/og-image.png" />
         <meta name="theme-color" content={color.WHITE} />
         <meta name="msapplication-TileColor" content={color.NORMAL} />
