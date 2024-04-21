@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import Script from 'next/script';
 import theme from '@/styles/theme';
 import global from '@/styles/global';
@@ -36,6 +37,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <Global styles={global} />
           {process.env.NODE_ENV === 'production' && (
             <>
+              <Head>
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1, viewport-fit=cover"
+                />
+              </Head>
               <Script
                 strategy="afterInteractive"
                 src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
