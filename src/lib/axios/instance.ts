@@ -47,7 +47,7 @@ const onResponse = (res: AxiosResponse): AxiosResponse => {
   return res;
 };
 
-const onErrorRequest = (err: AxiosError | Error): Promise<AxiosError> => {
+const onRequestError = (err: AxiosError | Error): Promise<AxiosError> => {
   return Promise.reject(err);
 };
 
@@ -82,7 +82,7 @@ const onResponseError = async (error: AxiosError) => {
   return Promise.reject(error);
 };
 
-axiosInstance.interceptors.request.use(onRequest, onErrorRequest);
+axiosInstance.interceptors.request.use(onRequest, onRequestError);
 axiosInstance.interceptors.response.use(onResponse);
 axiosInstance.interceptors.response.use(
   (response) => response,
