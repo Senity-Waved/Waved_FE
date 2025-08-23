@@ -1,4 +1,10 @@
-![1](https://github.com/Senity-Waved/Waved_FE/assets/102462534/1729f44d-8b01-4eb4-a1e3-adfe6992e724)
+
+
+[▶ PC 시연 영상 보러가기](https://youtu.be/LCyXasZwMN8)
+[▶ 모바일 시연 영상 보러가기](https://youtube.com/shorts/V-M89W4KCgg?feature=share)
+
+📍 아래 이미지를 클릭하면 시연 영상으로 이동합니다.
+[![시연영상](https://github.com/Senity-Waved/Waved_FE/assets/102462534/1729f44d-8b01-4eb4-a1e3-adfe6992e724)](https://youtu.be/LCyXasZwMN8)
 ![2](https://github.com/Senity-Waved/Waved_FE/assets/102462534/809fb206-53a2-4c30-b425-e7fcf51c560f)
 ![3](https://github.com/Senity-Waved/Waved_FE/assets/102462534/93108a7b-b3b3-4fcb-9108-60284320e960)
 ![4](https://github.com/Senity-Waved/Waved_FE/assets/102462534/3e5a1c5d-a7e8-49a2-a8a6-d9bcdf9e71fa)
